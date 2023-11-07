@@ -2,9 +2,10 @@
 
 import { MantineProvider } from "@mantine/core"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import { AppProgressBar as ProgressBar } from 'next-nprogress-bar';
 import { PropsWithChildren, useState } from "react"
 
-import { defaultTheme } from "@/themes/default"
+import { defaultTheme, defaultThemeVars } from "@/themes/default"
 
 const AppProviders: React.FC<PropsWithChildren> = ({ children }) => {
   const [queryClient] = useState(() => new QueryClient({
@@ -19,6 +20,12 @@ const AppProviders: React.FC<PropsWithChildren> = ({ children }) => {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <ProgressBar
+        height="2px"
+        color={defaultThemeVars.colors["primary-green"][9]}
+        options={{ showSpinner: false }}
+        shallowRouting
+      />
       <MantineProvider theme={defaultTheme}>
         {children}
       </MantineProvider>

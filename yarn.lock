@@ -592,13 +592,6 @@
     "@mantine/store" "7.2.0"
     react-transition-group "4.4.5"
 
-"@mantine/nprogress@^7.2.0":
-  version "7.2.0"
-  resolved "https://registry.yarnpkg.com/@mantine/nprogress/-/nprogress-7.2.0.tgz#511cd627c8efc2e28be50e4bc18a2d2a130bf92a"
-  integrity sha512-Zwqctwv8YKmZSm9r//lqQ4AlutuQOwDWvTNFB7wtkGjoH0OA4LiC7cixKUgtgtAH3wFXN/ezXD9Vmu0lsytyYQ==
-  dependencies:
-    "@mantine/store" "7.2.0"
-
 "@mantine/store@7.2.0":
   version "7.2.0"
   resolved "https://registry.yarnpkg.com/@mantine/store/-/store-7.2.0.tgz#c5be316c9beb10e67349112ee277009f149e9976"
@@ -2579,6 +2572,13 @@ natural-compare@^1.4.0:
   resolved "https://registry.yarnpkg.com/natural-compare/-/natural-compare-1.4.0.tgz#4abebfeed7541f2c27acfb29bdbbd15c8d5ba4f7"
   integrity sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==
 
+next-nprogress-bar@^2.1.2:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/next-nprogress-bar/-/next-nprogress-bar-2.1.2.tgz#47ccfba165569a1ecd03410af432fd23d2227676"
+  integrity sha512-2Df5d7fr6uPx+BX8MkoWCfl+RjG+uWI5mA399e5sEe8mbT3q/GIUvCXLzBgJBIISpKuMmdLAOYEzqpjlsRVOWw==
+  dependencies:
+    nprogress "^0.2.0"
+
 next@14.0.1:
   version "14.0.1"
   resolved "https://registry.yarnpkg.com/next/-/next-14.0.1.tgz#1375d94c5dc7af730234af48401be270e975cb22"
@@ -2613,6 +2613,11 @@ npm-run-path@^5.1.0:
   integrity sha512-sJOdmRGrY2sjNTRMbSvluQqg+8X7ZK61yvzBEIDhz4f8z1TZFYABsqjjCBd/0PUNE9M6QDgHJXQkGUEm7Q+l9Q==
   dependencies:
     path-key "^4.0.0"
+
+nprogress@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/nprogress/-/nprogress-0.2.0.tgz#cb8f34c53213d895723fcbab907e9422adbcafb1"
+  integrity sha512-I19aIingLgR1fmhftnbWWO3dXc0hSxqHQHQb3H8m+K3TnEn/iSeTZZOyvKXWqQESMwuUVnatlCnZdLBZZt2VSA==
 
 object-assign@^4.1.1:
   version "4.1.1"
