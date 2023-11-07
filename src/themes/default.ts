@@ -15,7 +15,10 @@ export const defaultTheme = createTheme({
   },
   colors: {
     'primary-green': generateColors('#026055'),
-    'primary-gray': generateColors('#778490')
+    'primary-gray': generateColors('#778490'),
+    'secondary-blue': generateColors('#20BFDB'),
+    'secondary-pink': generateColors('#E5BDAC'),
+    'secondary-gray': generateColors('#A2ADA6')
   },
   primaryColor: 'primary-green',
   primaryShade: 9
@@ -26,6 +29,9 @@ export const defaultThemeVars = themeToVars(defaultTheme);
 type ExtendedCustomColors = 
   | 'primary-green'
   | 'primary-gray'
+  | 'secondary-blue'
+  | 'secondary-pink'
+  | 'secondary-gray'
   | DefaultMantineColor;
 
 declare module '@mantine/core' {

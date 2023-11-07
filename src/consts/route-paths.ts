@@ -1,3 +1,10 @@
 export const ROUTE_PATHS = {
-  HOME: '/'
+  HOME: '/',
+  PRODUCT: {
+    INDEX: '/products',
+    SLUG: '/products/{slug}'
+  },
+  SUPPORT: '/support',
+  ABOUT: '/about-us',
+  CART: '/cart'
 }
