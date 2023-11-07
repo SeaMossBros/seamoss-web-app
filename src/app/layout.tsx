@@ -1,9 +1,11 @@
 import './globals.css'
 import '@mantine/core/styles.css';
 
-import { ColorSchemeScript } from '@mantine/core';
+import { AppShell, AppShellHeader, AppShellMain, ColorSchemeScript } from '@mantine/core';
 import type { Metadata } from 'next'
 
+import Header from '@/components/Header';
+import { interFont } from '@/fonts/inter';
 import AppProviders from '@/providers/AppProviders';
 
 export const metadata: Metadata = {
@@ -21,9 +23,18 @@ export default function RootLayout({
       <head>
         <ColorSchemeScript />
       </head>
-      <body>
+      <body className={interFont.className}>
         <AppProviders>
-          {children}
+          <AppShell header={{
+            height: 60
+          }}>
+            <AppShellHeader>
+              <Header />
+            </AppShellHeader>
+            <AppShellMain>
+              {children}
+            </AppShellMain>
+          </AppShell>
         </AppProviders>
       </body>
     </html>
