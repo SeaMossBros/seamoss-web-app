@@ -1,4 +1,4 @@
-import { Container, Text } from "@mantine/core"
+import { Container, Text } from '@mantine/core'
 
 type ProductDetailPageProps = {
   params: {
@@ -7,7 +7,6 @@ type ProductDetailPageProps = {
 }
 
 const ProductDetailPage: React.FC<ProductDetailPageProps> = ({ params }) => {
-
   return (
     <Container>
       <Text>Product Detail Page</Text>

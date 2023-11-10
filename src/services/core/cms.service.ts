@@ -1,0 +1,11 @@
+import { APP_CONFIG } from '@/config/app'
+import { isServerSide } from '@/utils/environment'
+
+export default class CMSService {
+  protected baseURL = isServerSide() ? APP_CONFIG.STRAPI.API_URL : APP_CONFIG.STRAPI.PROXY_API_URL
+  protected headers = isServerSide()
+    ? {
+        Authorization: `bearer ${APP_CONFIG.STRAPI.ACCESS_TOKEN}`,
+      }
+    : undefined
+}

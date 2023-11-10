@@ -1,4 +1,4 @@
-import { Container, Text } from "@mantine/core"
+import { Container, Text } from '@mantine/core'
 
 const AboutUsPage: React.FC = () => {
   return (

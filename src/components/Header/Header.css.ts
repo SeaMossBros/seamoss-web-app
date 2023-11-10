@@ -1,27 +1,27 @@
-import { style } from "@vanilla-extract/css";
+import { style } from '@vanilla-extract/css'
 
 export const container = style({
-  height: '100%'
+  height: '100%',
 })
 
 export const wrapper = style({
-  height: '100%'
+  height: '100%',
 })
 
 export const navLinkContainer = style({
   flexGrow: 1,
-  justifyContent: 'flex-end'
+  justifyContent: 'flex-end',
 })
 
 export const logoContainer = style({
-  flex: 1
+  flex: 1,
 })
 
 export const navLink = style({
   textAlign: 'center',
-  width: 'fit-content'
+  width: 'fit-content',
 })
 
 export const cartIcon = style({
-  margin: 'auto'
+  margin: 'auto',
 })
