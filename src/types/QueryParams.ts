@@ -35,8 +35,16 @@ export type PaginationOptions = {
   withCount?: boolean
 }
 
+export type DeepPopulation<TData> = {
+  populate?: Population<TData>
+}
+
+export type Population<TData> = '*' | Array<keyof TData> | {
+  [key: string]: DeepPopulation<any> | true
+}
+
 export interface QueryParams<TData = any> {
-  populate?: '*' | Array<keyof TData>
+  populate?: Population<TData>
   fields?: Array<keyof TData>
   filter?: FilterOptions<TData>
   locale?: string | string[]

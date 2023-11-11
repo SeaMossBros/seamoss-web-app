@@ -7,6 +7,8 @@ import { PropsWithChildren, useState } from 'react'
 
 import { defaultTheme, defaultThemeVars } from '@/themes/default'
 
+import CartProvider from './CartProvider'
+
 const AppProviders: React.FC<PropsWithChildren> = ({ children }) => {
   const [queryClient] = useState(
     () =>
@@ -29,7 +31,11 @@ const AppProviders: React.FC<PropsWithChildren> = ({ children }) => {
         options={{ showSpinner: false }}
         shallowRouting
       />
-      <MantineProvider theme={defaultTheme}>{children}</MantineProvider>
+      <MantineProvider theme={defaultTheme}>
+        <CartProvider>
+          {children}
+        </CartProvider>
+      </MantineProvider>
     </QueryClientProvider>
   )
 }

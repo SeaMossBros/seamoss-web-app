@@ -12,7 +12,7 @@ export type WithMetadata<TData> = {
 }
 
 export interface QueryResponse<TData = any> {
-  data: Array<WithMetadata<TData>>
+  data: TData | null
   meta: {
     pagination: PaginationMeta
   }

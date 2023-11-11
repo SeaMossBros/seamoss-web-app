@@ -3,7 +3,7 @@ import { usePathname } from "next/navigation"
 
 import { ROUTE_PATHS } from "@/consts/route-paths"
 
-import NavLinkItem from "../Header/NavLinkItem"
+import NavLinkItem from "../NavLinkItem"
 import { navLink } from "./NavBar.css"
 
 export type NavBarProps = {

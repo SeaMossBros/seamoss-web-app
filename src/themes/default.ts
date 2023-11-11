@@ -1,11 +1,13 @@
+'use client'
+
 import { generateColors } from '@mantine/colors-generator'
-import { createTheme, DefaultMantineColor, MantineColorsTuple, rem } from '@mantine/core'
+import { createTheme, rem } from '@mantine/core'
 import { themeToVars } from '@mantine/vanilla-extract'
 
-import { interFont } from '@/fonts/inter'
+// import { interFont } from '@/fonts/inter'
 
 export const defaultTheme = createTheme({
-  fontFamily: interFont.style.fontFamily,
+  // fontFamily: interFont.style.fontFamily,
   radius: {
     lg: rem(0),
     md: rem(0),
@@ -32,17 +34,3 @@ export const defaultTheme = createTheme({
 })
 
 export const defaultThemeVars = themeToVars(defaultTheme)
-
-type ExtendedCustomColors =
-  | 'primary-green'
-  | 'primary-gray'
-  | 'secondary-blue'
-  | 'secondary-pink'
-  | 'secondary-gray'
-  | DefaultMantineColor
-
-declare module '@mantine/core' {
-  export interface MantineThemeColorsOverride {
-    colors: Record<ExtendedCustomColors, MantineColorsTuple>
-  }
-}

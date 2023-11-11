@@ -1,5 +1,6 @@
 import { Container, Grid, GridCol } from '@mantine/core'
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
+import { Metadata } from 'next'
 
 import getQueryClient from '@/react-query/getQueryClient'
 import ProductService from '@/services/product.service'
@@ -8,12 +9,16 @@ import { QueryParams } from '@/types/QueryParams'
 
 import ProductList from './ProductList'
 
+export const metadata: Metadata = {
+  title: 'Products | SeaTheMoss'
+}
+
 const ProductsPage: React.FC = async () => {
   const queryClient = getQueryClient()
   const productService = new ProductService()
 
   const params: QueryParams<Product> = {
-    populate: ['images']
+    populate: ['images', 'thumbnail', 'product_variants']
   }
 
   await queryClient.prefetchQuery({
@@ -27,15 +32,15 @@ const ProductsPage: React.FC = async () => {
         <Grid>
           <GridCol span={{
             base: 12,
-            sm: 3
+            md: 3
           }}>
 
           </GridCol>
           <GridCol span={{
             base: 12,
-            sm: 9
+            md: 9
           }}>
-            <ProductList />
+            <ProductList queryParams={params} />
           </GridCol>
         </Grid>
       </Container>

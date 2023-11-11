@@ -7,8 +7,9 @@ import { usePathname } from 'next/navigation'
 
 import { ROUTE_PATHS } from '@/consts/route-paths'
 
-import { cartIcon, container, logoContainer, navLinkContainer, wrapper } from './Header.css'
-import NavLinkItem from './NavLinkItem'
+import CartDropdown from '../CartNavLink'
+import NavLinkItem from '../NavLinkItem'
+import { container, logoContainer, navLinkContainer, wrapper } from './Header.css'
 
 export type HeaderProps = {
   navOpened: boolean
@@ -48,28 +49,10 @@ const Header: React.FC<HeaderProps> = ({ navOpened, toggleNav }) => {
             href={ROUTE_PATHS.ABOUT}
             active={pathname.startsWith(ROUTE_PATHS.ABOUT)}
           />
-          <Indicator offset={6} color='primary-green'>
-            <NavLinkItem
-              href={ROUTE_PATHS.CART}
-              leftSection={<IconShoppingCart />}
-              classNames={{
-                section: cartIcon,
-              }}
-              active={pathname.startsWith(ROUTE_PATHS.CART)}
-            />
-          </Indicator>
+          <CartDropdown />
         </Flex>
         <Flex hiddenFrom="sm" className={navLinkContainer} gap='md'>
-          <Indicator offset={6} color='primary-green'>
-            <NavLinkItem
-              href={ROUTE_PATHS.CART}
-              leftSection={<IconShoppingCart />}
-              classNames={{
-                section: cartIcon,
-              }}
-              active={pathname.startsWith(ROUTE_PATHS.CART)}
-            />
-          </Indicator>
+          <CartDropdown />
           <Burger opened={navOpened} onClick={toggleNav} aria-label="Toggle navigation" />
         </Flex>
       </Group>

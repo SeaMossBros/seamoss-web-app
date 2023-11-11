@@ -14,7 +14,7 @@ export function middleware(request: NextRequest) {
 
   const reqUrl = new URL(request.url)
 
-  request.nextUrl.href = `${APP_CONFIG.STRAPI.API_URL}${reqUrl.pathname.replace('/api/cms', '')}`;
+  request.nextUrl.href = `${APP_CONFIG.STRAPI.API_URL}${reqUrl.pathname.replace('/api/cms', '')}${reqUrl.search}`;
 
   return NextResponse.rewrite(request.nextUrl, {
     request: {
