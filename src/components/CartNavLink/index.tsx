@@ -28,8 +28,8 @@ const CartNavLink: React.FC = () => {
   })
 
   const itemsCount = useMemo(
-    () => cart?.attributes.cart_items.data.length,
-    [cart?.attributes.cart_items?.data.length],
+    () => cart?.attributes.cart_items.data?.length,
+    [cart?.attributes.cart_items?.data?.length],
   )
 
   return (
