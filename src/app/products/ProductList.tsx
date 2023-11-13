@@ -67,7 +67,7 @@ const ProductList: React.FC<ProductListProps> = ({ queryParams }) => {
       if (!cartId) {
         const cart = await createCart()
         flushSync(() => {
-          setCartId(cart.data.id)
+          setCartId(cart.data!.id)
         })
       }
       addToCart({
