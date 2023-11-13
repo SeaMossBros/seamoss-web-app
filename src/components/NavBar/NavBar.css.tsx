@@ -1,5 +1,5 @@
-import { style } from "@vanilla-extract/css";
+import { style } from '@vanilla-extract/css'
 
 export const navLink = style({
-  width: '100%'
+  width: '100%',
 })

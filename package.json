@@ -11,6 +11,7 @@
     "format": "prettier --write 'src/**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.3.2",
     "@mantine/colors-generator": "^7.2.1",
     "@mantine/core": "^7.2.0",
     "@mantine/hooks": "^7.2.0",
@@ -28,7 +29,8 @@
     "qs": "^6.11.2",
     "query-string": "^8.1.0",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "react-hook-form": "^7.48.2"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.201",
@@ -36,11 +38,16 @@
     "@types/qs": "^6.9.10",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "@typescript-eslint/eslint-plugin": "^6.10.0",
+    "@typescript-eslint/parser": "^6.10.0",
     "@vanilla-extract/next-plugin": "^2.3.1",
     "eslint": "^8",
     "eslint-config-next": "14.0.1",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-import": "^2.29.0",
+    "eslint-plugin-prettier": "^5.0.1",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-simple-import-sort": "^10.0.0",
     "husky": "^8.0.3",
     "lint-staged": "^15.0.2",

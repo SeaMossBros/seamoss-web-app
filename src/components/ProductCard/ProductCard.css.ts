@@ -1,9 +1,9 @@
-import { style } from "@vanilla-extract/css";
+import { style } from '@vanilla-extract/css'
 
-import { defaultThemeVars } from "@/themes/default";
+import { defaultThemeVars } from '@/themes/default'
 
 export const card = style({
-  cursor: 'pointer'
+  cursor: 'pointer',
 })
 
 export const actionsContainer = style({
@@ -13,5 +13,5 @@ export const actionsContainer = style({
   paddingBottom: defaultThemeVars.spacing.md,
   paddingLeft: defaultThemeVars.spacing.md,
   paddingRight: defaultThemeVars.spacing.md,
-  width: '100%'
+  width: '100%',
 })

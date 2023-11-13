@@ -27,10 +27,10 @@ export const defaultTheme = createTheme({
   components: {
     Container: {
       defaultProps: {
-        size: 'lg'
-      }
-    }
-  }
+        size: 'lg',
+      },
+    },
+  },
 })
 
 export const defaultThemeVars = themeToVars(defaultTheme)

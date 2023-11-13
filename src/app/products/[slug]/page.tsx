@@ -1,5 +1,5 @@
 import { Container } from '@mantine/core'
-import { dehydrate,HydrationBoundary } from '@tanstack/react-query'
+import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 
@@ -14,16 +14,14 @@ type Props = {
   params: { slug: string }
 }
 
-export const generateMetadata = async ({ params: {
-  slug
-} }: Props): Promise<Metadata> => {
+export const generateMetadata = async ({ params: { slug } }: Props): Promise<Metadata> => {
   const productService = new ProductService()
 
   const product = await productService.getBySlug(slug)
 
   return {
     title: `${product.data?.attributes.name ?? slug} | SeaTheMoss`,
-    description: product.data?.attributes.description
+    description: product.data?.attributes.description,
   }
 }
 
@@ -41,14 +39,17 @@ const ProductDetailPage: React.FC<Props> = async ({ params }: Props) => {
       videos: true,
       thumbnail: true,
       product_variants: {
-        populate: ['image']
-      }
-    }
+        populate: ['image'],
+      },
+      product_properties: {
+        populate: ['image'],
+      },
+    },
   }
 
   await queryClient.prefetchQuery({
     queryKey: ProductService.queryKeys.getBySlug(params.slug, queryParams),
-    queryFn: () => productService.getBySlug(params.slug, queryParams)
+    queryFn: () => productService.getBySlug(params.slug, queryParams),
   })
 
   return (

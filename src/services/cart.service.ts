@@ -1,10 +1,10 @@
-import qs from "qs";
+import qs from 'qs'
 
-import { Cart } from "@/types/Cart";
-import { CartItem } from "@/types/CartItem";
-import { QueryResponse, WithMetadata } from "@/types/QueryResponse";
+import { Cart } from '@/types/Cart'
+import { CartItem } from '@/types/CartItem'
+import { QueryResponse, WithMetadata } from '@/types/QueryResponse'
 
-import CMSService from "./core/cms.service";
+import CMSService from './core/cms.service'
 
 export default class CartService extends CMSService {
   static queryKeys = {
@@ -14,14 +14,14 @@ export default class CartService extends CMSService {
   getById = async (cartId: number) => {
     const url = `${this.baseURL}/carts/${cartId}`
     const search = qs.stringify({
-      populate: ['cart_items']
+      populate: ['cart_items'],
     })
 
     const res = await fetch(`${url}?${search}`, {
-      headers: this.headers
+      headers: this.headers,
     })
 
-    return await res.json() as QueryResponse<WithMetadata<Cart>>
+    return (await res.json()) as QueryResponse<WithMetadata<Cart>>
   }
 
   createCart = async () => {
@@ -31,14 +31,14 @@ export default class CartService extends CMSService {
       method: 'post',
       headers: {
         ...this.headers,
-        'Accept': 'application/json',
+        Accept: 'application/json',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        data: {}
-      })
-    });
-    return await res.json() as QueryResponse<WithMetadata<Cart>>;
+        data: {},
+      }),
+    })
+    return (await res.json()) as QueryResponse<WithMetadata<Cart>>
   }
 
   createCartItem = async (cartId: number, productId: number, quantity: number) => {
@@ -47,20 +47,20 @@ export default class CartService extends CMSService {
       data: {
         product: productId,
         cart: cartId,
-        quantity
-      }
+        quantity,
+      },
     })
 
     const res = await fetch(url, {
       method: 'post',
       headers: {
         ...this.headers,
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
       },
-      body
-    });
-    return await res.json() as QueryResponse<WithMetadata<CartItem>>;
+      body,
+    })
+    return (await res.json()) as QueryResponse<WithMetadata<CartItem>>
   }
 
   updateQuantity = async (cartItemId: number, quantity: number) => {
@@ -68,21 +68,21 @@ export default class CartService extends CMSService {
 
     const body = JSON.stringify({
       data: {
-        quantity
-      }
+        quantity,
+      },
     })
 
     const res = await fetch(url, {
       method: 'put',
       headers: {
         ...this.headers,
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
       },
-      body
+      body,
     })
 
-    return await res.json() as QueryResponse<WithMetadata<CartItem>>;
+    return (await res.json()) as QueryResponse<WithMetadata<CartItem>>
   }
 
   addToCart = async (cartId: number, productId: number, quantity: number) => {
@@ -91,22 +91,22 @@ export default class CartService extends CMSService {
       filters: {
         product: {
           id: {
-            '$eq': productId
-          }
+            $eq: productId,
+          },
         },
         cart: {
           id: {
-            '$eq': cartId
-          }
-        }
-      }
+            $eq: cartId,
+          },
+        },
+      },
     })
 
-    const existances = await fetch(`${checkExistsUrl}?${checkExistsSearch}`, {
-      headers: this.headers
-    }).then(res => res.json()) as QueryResponse<Array<WithMetadata<CartItem>>>
+    const existances = (await fetch(`${checkExistsUrl}?${checkExistsSearch}`, {
+      headers: this.headers,
+    }).then((res) => res.json())) as QueryResponse<Array<WithMetadata<CartItem>>>
     const existingCartItem = existances.data[0]
-    
+
     if (!existingCartItem) return this.createCartItem(cartId, productId, quantity)
 
     return this.updateQuantity(existingCartItem.id, existingCartItem.attributes.quantity + quantity)

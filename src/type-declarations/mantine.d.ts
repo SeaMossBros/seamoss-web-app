@@ -1,4 +1,4 @@
-import { DefaultMantineColor, MantineColorsTuple } from "@mantine/core"
+import { DefaultMantineColor, MantineColorsTuple } from '@mantine/core'
 
 type ExtendedCustomColors =
   | 'primary-green'

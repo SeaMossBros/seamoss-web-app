@@ -1,6 +1,6 @@
-import { style } from "@vanilla-extract/css";
+import { style } from '@vanilla-extract/css'
 
-import { defaultThemeVars } from "@/themes/default";
+import { defaultThemeVars } from '@/themes/default'
 
 export const previewImage = style({
   borderWidth: 2,
@@ -9,7 +9,7 @@ export const previewImage = style({
 
   selectors: {
     '&[data-active="true"]': {
-      borderColor: defaultThemeVars.colors["primary-green"][9]
-    }
-  }
+      borderColor: defaultThemeVars.colors['primary-green'][9],
+    },
+  },
 })

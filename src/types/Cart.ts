@@ -1,5 +1,5 @@
-import { CartItem } from "./CartItem"
-import { QueryResponse, WithMetadata } from "./QueryResponse"
+import { CartItem } from './CartItem'
+import { QueryResponse, WithMetadata } from './QueryResponse'
 
 export interface Cart {
   id: number

@@ -26,15 +26,13 @@ const AppProviders: React.FC<PropsWithChildren> = ({ children }) => {
   return (
     <QueryClientProvider client={queryClient}>
       <ProgressBar
-        height='2px'
+        height="2px"
         color={defaultThemeVars.colors['primary-green'][9]}
         options={{ showSpinner: false }}
         shallowRouting
       />
       <MantineProvider theme={defaultTheme}>
-        <CartProvider>
-          {children}
-        </CartProvider>
+        <CartProvider>{children}</CartProvider>
       </MantineProvider>
     </QueryClientProvider>
   )

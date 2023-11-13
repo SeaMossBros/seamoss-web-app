@@ -4,8 +4,8 @@ import { Box, Flex, Image, ScrollArea, Stack } from '@mantine/core'
 import { default as NextImage } from 'next/image'
 import { useCallback, useState } from 'react'
 
-import { Media } from "@/types/Media"
-import { WithMetadata } from "@/types/QueryResponse"
+import { Media } from '@/types/Media'
+import { WithMetadata } from '@/types/QueryResponse'
 import { getStrapiUploadUrl } from '@/utils/cms'
 
 import { previewImage } from './ProductImages.css'
@@ -16,20 +16,19 @@ export type ProductImagesProps = {
   images: Array<WithMetadata<Media>>
 }
 
-const ProductImages: React.FC<ProductImagesProps> = ({
-  defaultImage,
-  images,
-  productName
-}) => {
+const ProductImages: React.FC<ProductImagesProps> = ({ defaultImage, images, productName }) => {
   const [currentImage, setCurrentImage] = useState<WithMetadata<Media>>(defaultImage ?? images[0])
 
-  const onSelectImage = useCallback(function onSelectImageImpl(this: WithMetadata<Media>, e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
+  const onSelectImage = useCallback(function onSelectImageImpl(
+    this: WithMetadata<Media>,
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>,
+  ) {
     const target = e.target as HTMLDivElement
 
     target.scrollIntoView({
       inline: 'center',
       behavior: 'smooth',
-      block: 'nearest'
+      block: 'nearest',
     })
 
     setCurrentImage(this)
@@ -49,7 +48,7 @@ const ProductImages: React.FC<ProductImagesProps> = ({
       />
       <ScrollArea maw="100%" mx="auto">
         <Flex gap="md">
-          {images.map(image => (
+          {images.map((image) => (
             <Box
               key={image.id}
               w={100}

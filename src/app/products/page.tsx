@@ -10,7 +10,7 @@ import { QueryParams } from '@/types/QueryParams'
 import ProductList from './ProductList'
 
 export const metadata: Metadata = {
-  title: 'Products | SeaTheMoss'
+  title: 'Products | SeaTheMoss',
 }
 
 const ProductsPage: React.FC = async () => {
@@ -18,7 +18,7 @@ const ProductsPage: React.FC = async () => {
   const productService = new ProductService()
 
   const params: QueryParams<Product> = {
-    populate: ['images', 'thumbnail', 'product_variants']
+    populate: ['images', 'thumbnail', 'product_variants'],
   }
 
   await queryClient.prefetchQuery({
@@ -30,16 +30,18 @@ const ProductsPage: React.FC = async () => {
     <HydrationBoundary state={dehydrate(queryClient)}>
       <Container>
         <Grid>
-          <GridCol span={{
-            base: 12,
-            md: 3
-          }}>
-
-          </GridCol>
-          <GridCol span={{
-            base: 12,
-            md: 9
-          }}>
+          <GridCol
+            span={{
+              base: 12,
+              md: 3,
+            }}
+          ></GridCol>
+          <GridCol
+            span={{
+              base: 12,
+              md: 9,
+            }}
+          >
             <ProductList queryParams={params} />
           </GridCol>
         </Grid>

@@ -8,8 +8,12 @@ import CMSService from './core/cms.service'
 
 export default class ProductService extends CMSService {
   static queryKeys = {
-    list: (params?:  QueryParams<Product>) => ['/products', params],
-    getBySlug: (slug: string, params?: QueryParams<Product>) => ['/slugify/slugs/product', slug, params]
+    list: (params?: QueryParams<Product>) => ['/products', params],
+    getBySlug: (slug: string, params?: QueryParams<Product>) => [
+      '/slugify/slugs/product',
+      slug,
+      params,
+    ],
   }
 
   list = (params?: QueryParams<Product>) => {
@@ -23,9 +27,9 @@ export default class ProductService extends CMSService {
   getBySlug = (slug: string, params?: QueryParams<Product>) => {
     const url = `${this.baseURL}/slugify/slugs/product/${slug}`
     const search = qs.stringify(params)
-    
+
     return fetch(`${url}?${search}`, {
-      headers: this.headers
-    }).then(res => res.json()) as Promise<QueryResponse<WithMetadata<Product>>>
+      headers: this.headers,
+    }).then((res) => res.json()) as Promise<QueryResponse<WithMetadata<Product>>>
   }
 }

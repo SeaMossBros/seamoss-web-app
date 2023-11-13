@@ -22,8 +22,8 @@ const DefaultLayout: React.FC<PropsWithChildren> = ({ children }) => {
         breakpoint: 'sm',
         collapsed: {
           mobile: !navOpened,
-          desktop: true
-        }
+          desktop: true,
+        },
       }}
     >
       <AppShellHeader>

@@ -1,7 +1,6 @@
 'use client'
 
-import { Burger, Container, Flex, Group, Indicator, Title } from '@mantine/core'
-import { IconShoppingCart } from '@tabler/icons-react'
+import { Burger, Container, Flex, Group, Title } from '@mantine/core'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
@@ -21,37 +20,37 @@ const Header: React.FC<HeaderProps> = ({ navOpened, toggleNav }) => {
 
   return (
     <Container className={container}>
-      <Group className={wrapper} justify='space-between' align='center'>
+      <Group className={wrapper} justify="space-between" align="center">
         <Link href={ROUTE_PATHS.HOME} className={logoContainer}>
-          <Title c='primary-green' order={2}>
+          <Title c="primary-green" order={2}>
             SeaTheMoss
           </Title>
         </Link>
 
-        <Flex visibleFrom="sm" className={navLinkContainer} gap='md'>
+        <Flex visibleFrom="sm" className={navLinkContainer} gap="md">
           <NavLinkItem
-            label='Home'
+            label="Home"
             href={ROUTE_PATHS.HOME}
             active={pathname === '' || pathname === '/'}
           />
           <NavLinkItem
-            label='Products'
+            label="Products"
             href={ROUTE_PATHS.PRODUCT.INDEX}
             active={pathname.startsWith(ROUTE_PATHS.PRODUCT.INDEX)}
           />
           <NavLinkItem
-            label='Support'
+            label="Support"
             href={ROUTE_PATHS.SUPPORT}
             active={pathname.startsWith(ROUTE_PATHS.SUPPORT)}
           />
           <NavLinkItem
-            label='About us'
+            label="About us"
             href={ROUTE_PATHS.ABOUT}
             active={pathname.startsWith(ROUTE_PATHS.ABOUT)}
           />
           <CartDropdown />
         </Flex>
-        <Flex hiddenFrom="sm" className={navLinkContainer} gap='md'>
+        <Flex hiddenFrom="sm" className={navLinkContainer} gap="md">
           <CartDropdown />
           <Burger opened={navOpened} onClick={toggleNav} aria-label="Toggle navigation" />
         </Flex>

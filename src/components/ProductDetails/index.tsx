@@ -1,41 +1,43 @@
 'use client'
 
-import { List, ListItem, Stack, Text, Title } from "@mantine/core"
-import { useMemo } from "react"
+import { Fieldset, Flex, Stack, Title } from '@mantine/core'
 
-import { Product } from "@/types/Product"
-import { ProductVariant } from "@/types/ProductVariant"
-import { WithMetadata } from "@/types/QueryResponse"
-import { formatPrice } from "@/utils/price"
+import { Product } from '@/types/Product'
+import { WithMetadata } from '@/types/QueryResponse'
+
+import ProductPropertySelection from './ProductPropertySelection'
+import ProductVariantSelection from './ProductVariantSelection'
+import TotalPrice from './TotalPrice'
 
 export type ProductDetailsProps = {
   product: WithMetadata<Product>
-  variant?: WithMetadata<ProductVariant>
-  setVariant: (variant: WithMetadata<ProductVariant>) => void
 }
 
-const ProductDetails: React.FC<ProductDetailsProps> = ({ product, variant }) => {
-  const totalPrice = useMemo(() => {
-    if (!variant) return null
-
-    const { attributes: {
-      unit_price,
-      units_per_stock = 1
-    } } = variant
-
-    if (!unit_price) return null
-    return unit_price * units_per_stock
-  }, [variant])
+const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
+  const { attributes } = product
 
   return (
     <Stack>
-      <Title>{product.attributes.name}</Title>
-      <Text fz="xl" c="primary-green" fw={600}>{formatPrice(totalPrice)}</Text>
-      <List type="ordered">
-        <ListItem>
-          <Text>{product.attributes.variant_selection_text || 'Select Variant'}</Text>
-        </ListItem>
-      </List>
+      <Title>{attributes.name}</Title>
+      <TotalPrice />
+      {attributes.product_variants?.data?.length ? (
+        <Fieldset legend={attributes.variant_selection_text || 'Select Variant'}>
+          <Flex gap="sm" wrap="wrap">
+            {attributes.product_variants?.data?.map((productVariant) => (
+              <ProductVariantSelection key={productVariant.id} variant={productVariant} />
+            ))}
+          </Flex>
+        </Fieldset>
+      ) : null}
+      {attributes.product_properties?.data?.length ? (
+        <Fieldset legend={attributes.unit_property_selection_text || 'Select Properties'}>
+          <Flex gap="sm" wrap="wrap">
+            {attributes.product_properties.data.map((property) => (
+              <ProductPropertySelection key={property.id} property={property} />
+            ))}
+          </Flex>
+        </Fieldset>
+      ) : null}
     </Stack>
   )
 }

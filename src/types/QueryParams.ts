@@ -39,9 +39,12 @@ export type DeepPopulation<TData> = {
   populate?: Population<TData>
 }
 
-export type Population<TData> = '*' | Array<keyof TData> | {
-  [key: string]: DeepPopulation<any> | true
-}
+export type Population<TData> =
+  | '*'
+  | Array<keyof TData>
+  | {
+      [key: string]: DeepPopulation<any> | true
+    }
 
 export interface QueryParams<TData = any> {
   populate?: Population<TData>
