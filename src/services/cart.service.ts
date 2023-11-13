@@ -105,7 +105,7 @@ export default class CartService extends CMSService {
     const existances = (await fetch(`${checkExistsUrl}?${checkExistsSearch}`, {
       headers: this.headers,
     }).then((res) => res.json())) as QueryResponse<Array<WithMetadata<CartItem>>>
-    const existingCartItem = existances.data[0]
+    const existingCartItem = existances.data?.[0]
 
     if (!existingCartItem) return this.createCartItem(cartId, productId, quantity)
 
