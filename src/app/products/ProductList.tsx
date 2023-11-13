@@ -85,7 +85,7 @@ const ProductList: React.FC<ProductListProps> = ({ queryParams }) => {
 
   return (
     <Grid>
-      {products?.data.map((product) => (
+      {products?.data?.map((product) => (
         <ProductCol key={product.id}>
           <ProductCard
             product={{
