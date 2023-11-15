@@ -8,8 +8,6 @@ export const propertySelectionContainer = style({
 
 export const propertyWrapper = style({
   position: 'relative',
-  width: 100,
-  minHeight: 125,
   padding: defaultThemeVars.spacing.sm,
   cursor: 'pointer',
   boxShadow: defaultThemeVars.shadows.xs,
@@ -19,6 +17,10 @@ export const propertyWrapper = style({
     boxShadow: defaultThemeVars.shadows.md,
   },
   selectors: {
+    '&[data-withImage="true"]': {
+      minHeight: 125,
+      width: 100,
+    },
     '&[data-selected="true"]': {
       borderColor: defaultThemeVars.colors['primary-green'][9],
       boxShadow: 'none',

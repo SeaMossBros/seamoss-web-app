@@ -10,24 +10,24 @@ import { useCallback, useMemo } from 'react'
 
 import { ROUTE_PATHS } from '@/consts/route-paths'
 import { Product } from '@/types/Product'
+import { WithMetadata } from '@/types/QueryResponse'
 import { getStrapiUploadUrl } from '@/utils/cms'
 import { formatPrice } from '@/utils/price'
 
 import { actionsContainer, card } from './ProductCard.css'
 
 export type ProductCardProps = {
-  product: Product
-  isAddingToCart: boolean
-  onAddToCart: (product: Product) => void
+  product: WithMetadata<Product>
+  onAddToCart: (product: WithMetadata<Product>) => void
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ product, isAddingToCart, onAddToCart }) => {
+const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
   const { ref, hovered } = useHover()
   const router = useRouter()
 
   const productUrl = useMemo(
-    () => ROUTE_PATHS.PRODUCT.SLUG.replaceAll('{slug}', product.slug),
-    [product.slug],
+    () => ROUTE_PATHS.PRODUCT.SLUG.replaceAll('{slug}', product.attributes.slug),
+    [product.attributes.slug],
   )
 
   const onAddToCartClick = useCallback(
@@ -40,12 +40,16 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAddingToCart, onAd
 
   const thumbnail = useMemo(() => {
     return (
-      product.thumbnail?.data?.attributes.formats.small ?? product.images?.data?.[0]?.attributes
+      product.attributes.thumbnail?.data?.attributes.formats.small ??
+      product.attributes.images?.data?.[0]?.attributes
     )
-  }, [product.images?.data, product.thumbnail?.data?.attributes.formats.small])
+  }, [
+    product.attributes.images?.data,
+    product.attributes.thumbnail?.data?.attributes.formats.small,
+  ])
 
   const lowestPrice = useMemo(() => {
-    const lowestPriceVariant = minBy(product.product_variants?.data ?? [], (variant) => {
+    const lowestPriceVariant = minBy(product.attributes.product_variants?.data ?? [], (variant) => {
       if (!variant.attributes.unit_price) return Infinity
       return variant.attributes.unit_price * (variant.attributes.units_per_stock || 1)
     })
@@ -56,11 +60,11 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAddingToCart, onAd
       lowestPriceVariant.attributes.unit_price *
       (lowestPriceVariant.attributes.units_per_stock || 1)
     )
-  }, [product.product_variants])
+  }, [product.attributes.product_variants])
 
   const isInStock = useMemo(() => {
-    return product.product_variants?.data?.some((variant) => !!variant.attributes.stock)
-  }, [product.product_variants?.data])
+    return product.attributes.product_variants?.data?.some((variant) => !!variant.attributes.stock)
+  }, [product.attributes.product_variants?.data])
 
   const onClick = useCallback(() => {
     router.push(productUrl)
@@ -78,7 +82,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAddingToCart, onAd
       <Card.Section>
         <Image
           src={thumbnail?.url ? getStrapiUploadUrl(thumbnail.url) : '/images/img-placeholder.webp'}
-          alt={product.name}
+          alt={product.attributes.name}
           component={NextImage}
           height={250}
           width={350}
@@ -89,13 +93,13 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAddingToCart, onAd
       <Stack mt="sm">
         <Stack gap={0}>
           <Anchor
-            title={product.name}
+            title={product.attributes.name}
             component={Link}
             href={productUrl}
             lineClamp={2}
             c="secondary-gray"
           >
-            {product.name}
+            {product.attributes.name}
           </Anchor>
           <Indicator
             position="middle-start"
@@ -110,9 +114,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAddingToCart, onAd
             <Text fz="sm" c="primary-green">
               From {formatPrice(lowestPrice)}
             </Text>
-            <Button onClick={onAddToCartClick} loading={isAddingToCart}>
-              Add to cart
-            </Button>
+            <Button onClick={onAddToCartClick}>Add to cart</Button>
           </Group>
         </Stack>
       </Stack>

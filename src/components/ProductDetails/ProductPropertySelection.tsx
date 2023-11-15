@@ -29,6 +29,7 @@ export type ProductPropertySelectionProps = {
   update: UseFieldArrayUpdate<ProductSelectionFormData, 'properties'>
   remove: UseFieldArrayRemove
   variant: ProductSelectionFormData['variant']
+  showImage?: boolean
 }
 
 const ProductPropertySelection: React.FC<ProductPropertySelectionProps> = ({
@@ -38,6 +39,7 @@ const ProductPropertySelection: React.FC<ProductPropertySelectionProps> = ({
   append,
   update,
   remove,
+  showImage,
 }) => {
   const { attributes } = property
 
@@ -107,10 +109,11 @@ const ProductPropertySelection: React.FC<ProductPropertySelectionProps> = ({
         className={propertyWrapper}
         data-selected={!!selected}
         data-disabled={!max}
+        data-withImage={showImage}
         onClick={onSelect}
         withBorder
       >
-        {attributes.image?.data?.attributes.url ? (
+        {attributes.image?.data?.attributes.url && showImage ? (
           <Box>
             <Image
               component={NextImage}

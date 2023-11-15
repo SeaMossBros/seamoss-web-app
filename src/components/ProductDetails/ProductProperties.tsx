@@ -5,7 +5,9 @@ import { ProductSelectionFormData } from '@/types/ProductForm'
 
 import ProductPropertySelection from './ProductPropertySelection'
 
-const ProductProperties: React.FC = () => {
+const ProductProperties: React.FC<{
+  showImages?: boolean
+}> = ({ showImages }) => {
   const product = useWatch<ProductSelectionFormData, 'product'>({
     name: 'product',
   })
@@ -39,6 +41,7 @@ const ProductProperties: React.FC = () => {
             append={append}
             remove={remove}
             update={update}
+            showImage={showImages}
           />
         ))}
       </Flex>

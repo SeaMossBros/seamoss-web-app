@@ -6,7 +6,9 @@ import { ProductSelectionFormData } from '@/types/ProductForm'
 
 import ProductVariantSelection from './ProductVariantSelection'
 
-const ProductVariants: React.FC = () => {
+const ProductVariants: React.FC<{
+  showImages?: boolean
+}> = ({ showImages }) => {
   const fieldsetLegend = useWatch<
     ProductSelectionFormData,
     'product.attributes.variant_selection_text'
@@ -22,7 +24,11 @@ const ProductVariants: React.FC = () => {
     <Fieldset legend={fieldsetLegend || 'Select Variant'}>
       <Flex gap="sm" wrap="wrap">
         {variants?.map((productVariant) => (
-          <ProductVariantSelection key={productVariant.id} variant={productVariant} />
+          <ProductVariantSelection
+            key={productVariant.id}
+            variant={productVariant}
+            showImage={showImages}
+          />
         ))}
       </Flex>
     </Fieldset>

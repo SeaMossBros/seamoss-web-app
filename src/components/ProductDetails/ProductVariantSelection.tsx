@@ -19,9 +19,13 @@ import {
 
 export type ProductVariantSelectionProps = {
   variant: WithMetadata<ProductVariant>
+  showImage?: boolean
 }
 
-const ProductVariantSelection: React.FC<ProductVariantSelectionProps> = ({ variant }) => {
+const ProductVariantSelection: React.FC<ProductVariantSelectionProps> = ({
+  variant,
+  showImage,
+}) => {
   const { attributes } = variant
 
   const methods = useFormContext<ProductSelectionFormData>()
@@ -49,7 +53,7 @@ const ProductVariantSelection: React.FC<ProductVariantSelectionProps> = ({ varia
   return (
     <Box className={variantSelectionContainer}>
       <Card className={variantWrapper} data-selected={isSelected} onClick={onSelect} withBorder>
-        {attributes.image?.data?.attributes.url ? (
+        {attributes.image?.data?.attributes.url && showImage ? (
           <Box>
             <Image
               component={NextImage}
