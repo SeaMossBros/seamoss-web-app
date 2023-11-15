@@ -44,6 +44,7 @@ const ProductDetailPage: React.FC<Props> = async ({ params }: Props) => {
       product_properties: {
         populate: ['image'],
       },
+      purchase_options: true,
     },
   }
 

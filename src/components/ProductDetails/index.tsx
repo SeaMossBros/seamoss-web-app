@@ -5,8 +5,9 @@ import { Fieldset, Flex, Stack, Title } from '@mantine/core'
 import { Product } from '@/types/Product'
 import { WithMetadata } from '@/types/QueryResponse'
 
-import ProductPropertySelection from './ProductPropertySelection'
+import ProductProperties from './ProductProperties'
 import ProductVariantSelection from './ProductVariantSelection'
+import PurchaseOptions from './PurchaseOptions'
 import TotalPrice from './TotalPrice'
 
 export type ProductDetailsProps = {
@@ -29,15 +30,8 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
           </Flex>
         </Fieldset>
       ) : null}
-      {attributes.product_properties?.data?.length ? (
-        <Fieldset legend={attributes.unit_property_selection_text || 'Select Properties'}>
-          <Flex gap="sm" wrap="wrap">
-            {attributes.product_properties.data.map((property) => (
-              <ProductPropertySelection key={property.id} property={property} />
-            ))}
-          </Flex>
-        </Fieldset>
-      ) : null}
+      {attributes.product_properties?.data?.length ? <ProductProperties /> : null}
+      {attributes.purchase_options?.data?.length ? <PurchaseOptions /> : null}
     </Stack>
   )
 }

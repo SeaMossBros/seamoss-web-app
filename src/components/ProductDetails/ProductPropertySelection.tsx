@@ -1,8 +1,13 @@
 import { Box, Card, Flex, Image, NumberInput, NumberInputHandlers, Text } from '@mantine/core'
 import { IconMinus, IconPlus } from '@tabler/icons-react'
 import { default as NextImage } from 'next/image'
-import { useCallback, useMemo, useRef } from 'react'
-import { useFieldArray, useFormContext } from 'react-hook-form'
+import { useCallback, useEffect, useMemo, useRef } from 'react'
+import {
+  FieldArrayWithId,
+  UseFieldArrayAppend,
+  UseFieldArrayRemove,
+  UseFieldArrayUpdate,
+} from 'react-hook-form'
 
 import { ProductSelectionFormData } from '@/types/ProductForm'
 import { ProductProperty } from '@/types/ProductProperty'
@@ -19,26 +24,24 @@ import {
 
 export type ProductPropertySelectionProps = {
   property: WithMetadata<ProductProperty>
+  selectedProperties: FieldArrayWithId<ProductSelectionFormData, 'properties', 'key'>[]
+  append: UseFieldArrayAppend<ProductSelectionFormData, 'properties'>
+  update: UseFieldArrayUpdate<ProductSelectionFormData, 'properties'>
+  remove: UseFieldArrayRemove
+  variant: ProductSelectionFormData['variant']
 }
 
-const ProductPropertySelection: React.FC<ProductPropertySelectionProps> = ({ property }) => {
+const ProductPropertySelection: React.FC<ProductPropertySelectionProps> = ({
+  property,
+  variant,
+  selectedProperties,
+  append,
+  update,
+  remove,
+}) => {
   const { attributes } = property
 
   const quantityInput = useRef<NumberInputHandlers>(null)
-
-  const methods = useFormContext<ProductSelectionFormData>()
-  const variant = methods.watch('variant')
-
-  // TODO: Don't use this hook in every property, should have a wrapper
-  const {
-    fields: selectedProperties,
-    append,
-    update,
-    remove,
-  } = useFieldArray<ProductSelectionFormData, 'properties', 'key'>({
-    name: 'properties',
-    keyName: 'key',
-  })
 
   const selectedIndex = useMemo(
     () => selectedProperties.findIndex((p) => p.id === property.id),
@@ -67,6 +70,12 @@ const ProductPropertySelection: React.FC<ProductPropertySelectionProps> = ({ pro
 
     return availableStocks
   }, [property.id, selectedProperties, variant])
+
+  useEffect(() => {
+    if (max && max < 0) {
+      remove(selectedIndex)
+    }
+  }, [max, remove, selectedIndex])
 
   const onSelect = useCallback(() => {
     if (!!selected) return

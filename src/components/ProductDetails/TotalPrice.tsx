@@ -1,26 +1,38 @@
-import { Text } from '@mantine/core'
-import { useMemo } from 'react'
+import { Skeleton, Text } from '@mantine/core'
 import { useWatch } from 'react-hook-form'
 
 import { ProductSelectionFormData } from '@/types/ProductForm'
 import { formatPrice } from '@/utils/price'
 
 const TotalPrice: React.FC = () => {
-  const variant = useWatch<ProductSelectionFormData, 'variant'>({
-    name: 'variant',
+  const totalPrice = useWatch<ProductSelectionFormData, 'totalPrice'>({
+    name: 'totalPrice',
+  })
+  const discountedPrice = useWatch<ProductSelectionFormData, 'discountedPrice'>({
+    name: 'discountedPrice',
   })
 
-  const totalPrice = useMemo(() => {
-    if (!variant) return null
+  if (!totalPrice)
+    return (
+      <Skeleton width={100} visible>
+        <Text fz="xl" c="primary-green" fw={600}>
+          --
+        </Text>
+      </Skeleton>
+    )
 
-    const {
-      attributes: { unit_price, units_per_stock = 1 },
-      quantity,
-    } = variant
-
-    if (!unit_price) return null
-    return unit_price * units_per_stock * quantity
-  }, [variant])
+  if (discountedPrice) {
+    return (
+      <Text component="p">
+        <Text component="span" td="line-through">
+          {formatPrice(totalPrice)}
+        </Text>
+        <Text component="span" c="primary-green" ml="sm" fz="xl" fw={600}>
+          {formatPrice(discountedPrice)}
+        </Text>
+      </Text>
+    )
+  }
 
   return (
     <Text fz="xl" c="primary-green" fw={600}>
