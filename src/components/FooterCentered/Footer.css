@@ -1,10 +1,6 @@
 .footer {
   width: 100%;
   height: auto;
-  /* Uncomment below property to change border-top when hovering over footer */
-  /* border-top: rem(1px) solid light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-5)); */  
-  transition: 0.3s ease-in-out;
-  background-color: #fff;
 }
 
 .footer-image {
@@ -40,11 +36,13 @@
   padding-top: 0;
   margin-top: 0;
   opacity: 12%;
+  transition: 0.3s ease-in-out;
 }
 
-.footer:hover {
+/* * Uncomment below property to change border-top when hovering over footer */
+/* .footer:hover {
   border-top-color: light-dark(var(--mantine-color-red-9), var(--mantine-color-dark-5));
-}
+} */
 
 .footer:hover .spinner-stopper-button {
   opacity: 1;

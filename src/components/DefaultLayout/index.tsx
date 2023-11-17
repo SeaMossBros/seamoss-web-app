@@ -13,7 +13,7 @@ import FooterCentered from '@/components/FooterCentered'
 import Header from '@/components/Header'
 
 import NavBar from '../NavBar'
-import { main } from './layout.css'
+import { footer, main } from './layout.css'
 
 const DefaultLayout: React.FC<PropsWithChildren> = ({ children }) => {
   const [navOpened, navbar] = useDisclosure(false)
@@ -39,7 +39,7 @@ const DefaultLayout: React.FC<PropsWithChildren> = ({ children }) => {
         <NavBar onClose={navbar.close} />
       </AppShellNavbar>
       <AppShellMain className={main}>{children}</AppShellMain>
-      <AppShellFooter>
+      <AppShellFooter className={footer}>
         <FooterCentered />
       </AppShellFooter>
     </AppShell>

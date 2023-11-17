@@ -2,6 +2,10 @@
 .not-found-root {
   padding-top: rem(80px);
   padding-bottom: rem(80px);
+  @media (max-width: $mantine-breakpoint-md) {
+    padding-top: 0;
+    margin-bottom: 90px;
+  }
 }
 
 .not-found-title {

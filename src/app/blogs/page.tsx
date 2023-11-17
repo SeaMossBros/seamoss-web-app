@@ -9,6 +9,7 @@ const BlogsPage: React.FC = () => {
       <Grid>
         <GridCol span={12}>
           <BlogsList />
+          <div className="blogs-background"></div>
         </GridCol>
       </Grid>
     </Container>
