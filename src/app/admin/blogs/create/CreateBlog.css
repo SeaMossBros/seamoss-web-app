@@ -1,0 +1,10 @@
+#blog-create-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+#light-text {
+    margin-top: 12px;
+}
