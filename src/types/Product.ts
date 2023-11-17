@@ -1,6 +1,7 @@
 import { Media } from './Media'
 import { ProductProperty } from './ProductProperty'
 import { ProductVariant } from './ProductVariant'
+import { PurchaseOption } from './PurchaseOption'
 import { QueryResponse, WithMetadata } from './QueryResponse'
 
 export enum Units {
@@ -42,4 +43,5 @@ export interface Product {
   variant_selection_text?: string
   unit_property_selection_text?: string
   product_properties?: QueryResponse<Array<WithMetadata<ProductProperty>>>
+  purchase_options?: QueryResponse<Array<WithMetadata<PurchaseOption>>>
 }

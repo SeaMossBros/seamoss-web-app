@@ -11,9 +11,17 @@ export type WithMetadata<TData> = {
   meta?: object
 }
 
+export type APIError = {
+  details: any
+  message: string
+  name: string
+  status: number
+}
+
 export interface QueryResponse<TData = any> {
   data: TData | null
   meta: {
     pagination: PaginationMeta
   }
+  error?: APIError
 }

@@ -49,7 +49,7 @@ export type Population<TData> =
 export interface QueryParams<TData = any> {
   populate?: Population<TData>
   fields?: Array<keyof TData>
-  filter?: FilterOptions<TData>
+  filters?: FilterOptions<TData>
   locale?: string | string[]
   publicationState?: 'live' | 'preview'
   sort?: string | string[]

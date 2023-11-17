@@ -6,6 +6,19 @@ import { QueryResponse, WithMetadata } from '@/types/QueryResponse'
 
 import CMSService from './core/cms.service'
 
+export type AddToCartData = {
+  cartId: number
+  productId: number
+  variant: {
+    variantId: number
+    quantity: number
+  }
+  properties?: Array<{
+    propertyId: number
+    quantity: number
+  }>
+  purchaseOptionId: number
+}
 export default class CartService extends CMSService {
   static queryKeys = {
     getById: (cartId: number) => ['/carts', cartId],
@@ -41,16 +54,24 @@ export default class CartService extends CMSService {
     return (await res.json()) as QueryResponse<WithMetadata<Cart>>
   }
 
-  createCartItem = async (cartId: number, productId: number, quantity: number) => {
-    const url = `${this.baseURL}/cart-items`
-    const body = JSON.stringify({
+  createCartItem = async (data: AddToCartData) => {
+    const payload = {
       data: {
-        product: productId,
-        cart: cartId,
-        quantity,
+        cart: data.cartId,
+        product: data.productId,
+        options: {
+          product_variant: data.variant.variantId,
+          quantity: data.variant.quantity,
+          properties: data.properties?.map((property) => ({
+            product_property: property.propertyId,
+            quantity: property.quantity,
+          })),
+        },
+        purchase_option: data.purchaseOptionId,
       },
-    })
-
+    }
+    const url = `${this.baseURL}/cart-items`
+    const body = JSON.stringify(payload)
     const res = await fetch(url, {
       method: 'post',
       headers: {
@@ -85,30 +106,34 @@ export default class CartService extends CMSService {
     return (await res.json()) as QueryResponse<WithMetadata<CartItem>>
   }
 
-  addToCart = async (cartId: number, productId: number, quantity: number) => {
-    const checkExistsUrl = `${this.baseURL}/cart-items`
-    const checkExistsSearch = qs.stringify({
-      filters: {
-        product: {
-          id: {
-            $eq: productId,
-          },
-        },
-        cart: {
-          id: {
-            $eq: cartId,
-          },
-        },
-      },
-    })
+  addToCart = async (data: AddToCartData) => {
+    // const checkExistsUrl = `${this.baseURL}/cart-items`
+    // const query = {
+    //   filters: {
+    //     product: {
+    //       id: {
+    //         $eq: data.productId,
+    //       },
+    //     },
+    //     options: {
+    //       product_variant: data.variant.variantId
+    //     },
+    //     cart: {
+    //       id: {
+    //         $eq: data.cartId,
+    //       },
+    //     },
+    //   },
+    // }
+    // const checkExistsSearch = qs.stringify(query)
 
-    const existances = (await fetch(`${checkExistsUrl}?${checkExistsSearch}`, {
-      headers: this.headers,
-    }).then((res) => res.json())) as QueryResponse<Array<WithMetadata<CartItem>>>
-    const existingCartItem = existances.data?.[0]
+    // const existances = (await fetch(`${checkExistsUrl}?${checkExistsSearch}`, {
+    //   headers: this.headers,
+    // }).then((res) => res.json())) as QueryResponse<Array<WithMetadata<CartItem>>>
+    // const existingCartItem = existances.data?.[0]
 
-    if (!existingCartItem) return this.createCartItem(cartId, productId, quantity)
+    return this.createCartItem(data)
 
-    return this.updateQuantity(existingCartItem.id, existingCartItem.attributes.quantity + quantity)
+    // return this.updateQuantity(existingCartItem.id, existingCartItem.attributes.quantity + quantity)
   }
 }

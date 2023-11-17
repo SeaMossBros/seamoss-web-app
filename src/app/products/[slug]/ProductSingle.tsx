@@ -1,14 +1,13 @@
 'use client'
 
-import { Grid } from '@mantine/core'
-import { useQuery } from '@tanstack/react-query'
-import { useEffect } from 'react'
-import { FormProvider, useForm } from 'react-hook-form'
+import { Button, Grid, Stack } from '@mantine/core'
+import { useCallback } from 'react'
+import { FormProvider } from 'react-hook-form'
 
 import ProductDetails from '@/components/ProductDetails'
 import ProductImages from '@/components/ProductImages'
-import { useService } from '@/hooks/useService'
-import ProductService from '@/services/product.service'
+import { useCart } from '@/hooks/useCart'
+import useProductForm from '@/hooks/useProductForm'
 import { Product } from '@/types/Product'
 import { ProductSelectionFormData } from '@/types/ProductForm'
 import { QueryParams } from '@/types/QueryParams'
@@ -19,59 +18,49 @@ export type ProductSingleProps = {
 }
 
 const ProductSingle: React.FC<ProductSingleProps> = ({ slug, queryParams }) => {
-  const productService = useService(ProductService)
+  const { addToCart, isAddingToCart } = useCart()
+  const { product, methods } = useProductForm(slug, queryParams)
 
-  const methods = useForm<ProductSelectionFormData>()
-
-  const { data: product } = useQuery({
-    queryKey: ProductService.queryKeys.getBySlug(slug, queryParams),
-    queryFn: () => productService.getBySlug(slug, queryParams),
-    select: (res) => res.data,
-  })
-
-  useEffect(() => {
-    if (product) {
-      let defaultVariant = product.attributes.product_variants?.data?.find(
-        (v) => v.attributes.is_default,
-      )
-      if (!defaultVariant) {
-        defaultVariant = product.attributes.product_variants?.data?.at(0)
-      }
-      if (defaultVariant) {
-        methods.setValue('variant', {
-          ...defaultVariant,
-          quantity: 1,
-        })
-      }
-    }
-  }, [methods, product])
+  const onSubmit = useCallback(
+    (data: ProductSelectionFormData) => {
+      addToCart(data)
+    },
+    [addToCart],
+  )
 
   if (!product) return null
 
   return (
     <FormProvider {...methods}>
-      <Grid gutter="xl">
-        <Grid.Col
-          span={{
-            base: 12,
-            md: 6,
-          }}
-        >
-          <ProductImages
-            productName={product.attributes.name}
-            defaultImage={product?.attributes.thumbnail?.data}
-            images={product?.attributes.images?.data || []}
-          />
-        </Grid.Col>
-        <Grid.Col
-          span={{
-            base: 12,
-            md: 6,
-          }}
-        >
-          <ProductDetails product={product} />
-        </Grid.Col>
-      </Grid>
+      <form onSubmit={methods.handleSubmit(onSubmit)}>
+        <Grid gutter="xl">
+          <Grid.Col
+            span={{
+              base: 12,
+              md: 6,
+            }}
+          >
+            <ProductImages
+              productName={product.attributes.name}
+              defaultImage={product?.attributes.thumbnail?.data}
+              images={product?.attributes.images?.data || []}
+            />
+          </Grid.Col>
+          <Grid.Col
+            span={{
+              base: 12,
+              md: 6,
+            }}
+          >
+            <Stack gap="lg">
+              <ProductDetails product={product} />
+              <Button type="submit" loading={isAddingToCart} fullWidth>
+                ADD TO CART
+              </Button>
+            </Stack>
+          </Grid.Col>
+        </Grid>
+      </form>
     </FormProvider>
   )
 }
