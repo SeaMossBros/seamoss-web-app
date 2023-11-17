@@ -3,7 +3,7 @@ import './Footer.css'
 
 import { ActionIcon, Anchor, Button, Group, Image } from '@mantine/core'
 import { IconBrandInstagram, IconBrandTwitter, IconBrandYoutube } from '@tabler/icons-react'
-import { useState } from 'react'
+import React, { useState } from 'react'
 
 const links = [
   { link: '/support', label: 'Contact' },
@@ -13,7 +13,7 @@ const links = [
   { link: '/about-us', label: 'About Us' },
 ]
 
-export function FooterCentered() {
+const FooterCentered = () => {
   const [spinningButtonActionText, setSpinningButtonActionText] = useState('Stop')
   const items = links.map((link) => (
     <Anchor
@@ -28,20 +28,15 @@ export function FooterCentered() {
     </Anchor>
   ))
 
-  // useEffect(() => {
-  //   console.log('clicked');
-
-  // }, [setSpinningButtonActionText])
-
   return (
     <div className={'footer'}>
       <div className={'inner'}>
-        <Image
-          className={'footer-video'}
-          src={'/videos/SeaTheMoss-Spinner-With-Wildcrafted-Raw-Extended.mp4'}
-        />
-        <Image className="footer-image" src={'/images/SeaTheMoss-StillSpinner.png'} />
         <div className="outer-hover-menu">
+          <Image
+            className={'footer-video'}
+            src={'/videos/SeaTheMoss-Spinner-With-Wildcrafted-Raw-Extended.mp4'}
+          />
+          <Image className="footer-image" src={'/images/SeaTheMoss-StillSpinner.png'} />
           <Button
             className="spinner-stopper-button"
             onClick={(e) => {
@@ -84,9 +79,17 @@ export function FooterCentered() {
           <ActionIcon size="lg" variant="default" radius="xl">
             <IconBrandTwitter style={{ width: 18, height: 18 }} stroke={1.5} />
           </ActionIcon>
-          <ActionIcon size="lg" variant="default" radius="xl">
-            <IconBrandYoutube style={{ width: 18, height: 18 }} stroke={1.5} />
-          </ActionIcon>
+          <Anchor
+            c="dimmed"
+            href={'https://www.youtube.com/channel/UCdRAVki3AJLRUyi2sg-SliA'}
+            lh={1}
+            size="sm"
+            target="_blank"
+          >
+            <ActionIcon size="lg" variant="default" radius="xl">
+              <IconBrandYoutube style={{ width: 18, height: 18 }} stroke={1.5} />
+            </ActionIcon>
+          </Anchor>
           <ActionIcon size="lg" variant="default" radius="xl">
             <IconBrandInstagram style={{ width: 18, height: 18 }} stroke={1.5} />
           </ActionIcon>
@@ -95,3 +98,5 @@ export function FooterCentered() {
     </div>
   )
 }
+
+export default FooterCentered

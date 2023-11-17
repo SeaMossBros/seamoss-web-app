@@ -5,9 +5,9 @@ import '@mantine/notifications/styles.css'
 import { ColorSchemeScript } from '@mantine/core'
 import { Notifications } from '@mantine/notifications'
 import type { Metadata } from 'next'
+import React from 'react'
 
 import DefaultLayout from '@/components/DefaultLayout'
-import { FooterCentered } from '@/components/Footer'
 import { interFont } from '@/fonts/inter'
 import AppProviders from '@/providers/AppProviders'
 
@@ -27,7 +27,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <DefaultLayout>
             <Notifications />
             {children}
-            <FooterCentered />
           </DefaultLayout>
         </AppProviders>
       </body>

@@ -6,7 +6,7 @@ import minBy from 'lodash/minBy'
 import { default as NextImage } from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useCallback, useMemo } from 'react'
+import React, { useCallback, useMemo } from 'react'
 
 import { ROUTE_PATHS } from '@/consts/route-paths'
 import { Product } from '@/types/Product'

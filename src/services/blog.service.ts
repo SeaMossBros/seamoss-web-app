@@ -9,18 +9,19 @@ import CMSService from './core/cms.service'
 export default class BlogService extends CMSService {
   static queryKeys = {
     create: () => ['/blogs'],
-    // list: (params?: QueryParams<Blog>) => ['/Blogs', params],
-    list: async (params?: QueryParams<Blog>) => {
-      try {
-        const url = `${this.baseURL}/blog`
-        const search = qs.stringify(params)
-        return fetch(`${url}?${search}`, {
-          headers: this.headers,
-        }).then((res) => res.json() as Promise<QueryResponse<Array<WithMetadata<Blog>>>>)
-      } catch (error) {
-        console.error(error)
-      }
-    },
+    list: (params?: QueryParams<Blog>) => ['/Blogs', params],
+  }
+
+  list = async (params?: QueryParams<Blog>) => {
+    try {
+      const url = `${this.baseURL}/blog`
+      const search = qs.stringify(params)
+      return fetch(`${url}?${search}`, {
+        headers: this.headers,
+      }).then((res) => res.json() as Promise<QueryResponse<Array<WithMetadata<Blog>>>>)
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   create = async (blogData: Blog) => {

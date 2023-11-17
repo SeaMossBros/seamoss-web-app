@@ -3,7 +3,7 @@
 import { Grid } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { useQuery } from '@tanstack/react-query'
-import { PropsWithChildren, useCallback, useState } from 'react'
+import React, { PropsWithChildren, useCallback, useState } from 'react'
 
 import ProductCard from '@/components/ProductCard'
 import ProductPreviewModal from '@/components/ProductPreviewModal'

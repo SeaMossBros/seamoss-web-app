@@ -1,9 +1,15 @@
 'use client'
-
-import { AppShell, AppShellHeader, AppShellMain, AppShellNavbar } from '@mantine/core'
+import {
+  AppShell,
+  AppShellFooter,
+  AppShellHeader,
+  AppShellMain,
+  AppShellNavbar,
+} from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
-import { PropsWithChildren } from 'react'
+import React, { PropsWithChildren } from 'react'
 
+import FooterCentered from '@/components/FooterCentered'
 import Header from '@/components/Header'
 
 import NavBar from '../NavBar'
@@ -33,6 +39,9 @@ const DefaultLayout: React.FC<PropsWithChildren> = ({ children }) => {
         <NavBar onClose={navbar.close} />
       </AppShellNavbar>
       <AppShellMain className={main}>{children}</AppShellMain>
+      <AppShellFooter>
+        <FooterCentered />
+      </AppShellFooter>
     </AppShell>
   )
 }
