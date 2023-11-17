@@ -1,4 +1,3 @@
-'use client'
 import './CreateBlog.css'
 
 import { useRouter } from 'next/navigation'
@@ -8,7 +7,7 @@ import BlogForm from '@/components/Blog/BlogForm'
 import BlogService from '@/services/blog.service'
 import { Blog } from '@/types/Blog'
 
-export const NewBlogPage: React.FC = () => {
+const NewBlogPage: React.FC = () => {
   'use client'
   const router = useRouter()
   const blogService = new BlogService()
@@ -37,3 +36,5 @@ export const NewBlogPage: React.FC = () => {
     </div>
   )
 }
+
+export default NewBlogPage

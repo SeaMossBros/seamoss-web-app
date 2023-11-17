@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation'
 import React, { useCallback, useMemo } from 'react'
 
 import { ROUTE_PATHS } from '@/consts/route-paths'
+import { useCart } from '@/hooks/useCart'
 import { Product } from '@/types/Product'
 import { WithMetadata } from '@/types/QueryResponse'
 import { getStrapiUploadUrl } from '@/utils/cms'
@@ -23,6 +24,7 @@ export type ProductCardProps = {
 
 const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
   const { ref, hovered } = useHover()
+  const { isAddingToCart } = useCart()
   const router = useRouter()
 
   const productUrl = useMemo(
@@ -49,10 +51,14 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
   ])
 
   const lowestPrice = useMemo(() => {
-    const lowestPriceVariant = minBy(product.attributes.product_variants?.data ?? [], (variant) => {
-      if (!variant.attributes.unit_price) return Infinity
-      return variant.attributes.unit_price * (variant.attributes.units_per_stock || 1)
-    })
+    const lowestPriceVariant = minBy(
+      product.attributes.product_variants?.data ?? [],
+      (variant: any) => {
+        // TODO: Add product variant
+        if (!variant.attributes.unit_price) return Infinity
+        return variant.attributes.unit_price * (variant.attributes.units_per_stock || 1)
+      },
+    )
 
     if (!lowestPriceVariant?.attributes.unit_price) return null
 
@@ -82,7 +88,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
       <Card.Section>
         <Image
           src={thumbnail?.url ? getStrapiUploadUrl(thumbnail.url) : '/images/placeholder.webp'}
-          alt={product.name}
+          alt={product.attributes.name}
           component={NextImage}
           height={250}
           width={350}

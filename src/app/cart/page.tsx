@@ -1,4 +1,5 @@
 import { Container, Text } from '@mantine/core'
+import React from 'react'
 
 const CartPage: React.FC = () => {
   return (
