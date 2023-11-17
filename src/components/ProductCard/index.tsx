@@ -23,7 +23,7 @@ export type ProductCardProps = {
 
 const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
   const { ref, hovered } = useHover()
-  const router = useRouter();
+  const router = useRouter()
 
   const productUrl = useMemo(
     () => ROUTE_PATHS.PRODUCT.SLUG.replaceAll('{slug}', product.attributes.slug),
@@ -67,7 +67,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
   }, [product.attributes.product_variants?.data])
 
   const onClick = useCallback(() => {
-    router.push(productUrl);
+    router.push(productUrl)
   }, [productUrl, router])
 
   return (

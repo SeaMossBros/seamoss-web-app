@@ -1,7 +1,7 @@
 import { Box, Card, Flex, Image, NumberInput, NumberInputHandlers, Text } from '@mantine/core'
 import { IconMinus, IconPlus } from '@tabler/icons-react'
 import { default as NextImage } from 'next/image'
-import { useCallback, useEffect, useMemo, useRef } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef } from 'react'
 import {
   FieldArrayWithId,
   UseFieldArrayAppend,

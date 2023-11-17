@@ -7,9 +7,9 @@ import { Notifications } from '@mantine/notifications'
 import type { Metadata } from 'next'
 
 import DefaultLayout from '@/components/DefaultLayout'
+import { FooterCentered } from '@/components/Footer'
 import { interFont } from '@/fonts/inter'
 import AppProviders from '@/providers/AppProviders'
-import { FooterCentered } from '@/components/Footer'
 
 export const metadata: Metadata = {
   title: 'SeaTheMoss',

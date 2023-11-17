@@ -1,12 +1,12 @@
-import { Container, Grid, GridCol } from '@mantine/core';
+import { Container, Grid } from '@mantine/core'
+import React from 'react'
 
 const BlogShowPage: React.FC = () => {
-    return (
-        <Container>
-            <Grid>
-            </Grid>
-        </Container>
-    );
-};
+  return (
+    <Container>
+      <Grid></Grid>
+    </Container>
+  )
+}
 
-export default BlogShowPage;
+export default BlogShowPage

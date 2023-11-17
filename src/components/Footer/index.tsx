@@ -1,8 +1,9 @@
 'use client'
-import { Anchor, Group, ActionIcon, rem, Image, Button } from '@mantine/core';
-import { IconBrandTwitter, IconBrandYoutube, IconBrandInstagram } from '@tabler/icons-react';
-import './Footer.css';
-import { useEffect, useState } from 'react';
+import './Footer.css'
+
+import { ActionIcon, Anchor, Button, Group, Image } from '@mantine/core'
+import { IconBrandInstagram, IconBrandTwitter, IconBrandYoutube } from '@tabler/icons-react'
+import { useState } from 'react'
 
 const links = [
   { link: '/support', label: 'Contact' },
@@ -10,10 +11,10 @@ const links = [
   { link: '/blogs', label: 'Blogs' },
   { link: '/products', label: 'Shop Products' },
   { link: '/about-us', label: 'About Us' },
-];
+]
 
 export function FooterCentered() {
-  const [spinningButtonActionText, setSpinningButtonActionText] = useState('Stop');
+  const [spinningButtonActionText, setSpinningButtonActionText] = useState('Stop')
   const items = links.map((link) => (
     <Anchor
       c="dimmed"
@@ -25,49 +26,49 @@ export function FooterCentered() {
     >
       {link.label}
     </Anchor>
-  ));
+  ))
 
   // useEffect(() => {
   //   console.log('clicked');
-    
+
   // }, [setSpinningButtonActionText])
 
   return (
-    <div 
-      className={'footer'} 
-    >
+    <div className={'footer'}>
       <div className={'inner'}>
-        <Image className={'footer-video'} src={'/videos/SeaTheMoss-Spinner-With-Wildcrafted-Raw-Extended.mp4'} />
-        <Image className='footer-image' src={'/images/SeaTheMoss-StillSpinner.png'}/>
-        <div className='outer-hover-menu'>
-          <Button 
-          className='spinner-stopper-button'
+        <Image
+          className={'footer-video'}
+          src={'/videos/SeaTheMoss-Spinner-With-Wildcrafted-Raw-Extended.mp4'}
+        />
+        <Image className="footer-image" src={'/images/SeaTheMoss-StillSpinner.png'} />
+        <div className="outer-hover-menu">
+          <Button
+            className="spinner-stopper-button"
             onClick={(e) => {
-              const videoEle = Array.from(document.getElementsByClassName('footer-video'))[0];
-              const imgEle = Array.from(document.getElementsByClassName('footer-image'))[0];
-              const footerEle = Array.from(document.getElementsByClassName('footer'))[0];
+              const videoEle = Array.from(document.getElementsByClassName('footer-video'))[0]
+              const imgEle = Array.from(document.getElementsByClassName('footer-image'))[0]
+              const footerEle = Array.from(document.getElementsByClassName('footer'))[0]
 
               setSpinningButtonActionText((prev) => {
                 if (prev === 'Stop') {
-                  videoEle.classList.add('hide-video');
-                  imgEle.classList.add('display-image');
-                  footerEle.classList.add('footer-border-top-change');
-                  return 'Start';
-
+                  videoEle.classList.add('hide-video')
+                  imgEle.classList.add('display-image')
+                  footerEle.classList.add('footer-border-top-change')
+                  return 'Start'
                 } else {
-                  const target = e.currentTarget;
+                  const target = e.currentTarget
                   if (target) {
-                    target.disabled = true;
+                    target.disabled = true
                     setTimeout(() => {
-                      target.disabled = false;
-                    }, 100);
+                      target.disabled = false
+                    }, 100)
                   }
-                  videoEle.classList.remove('hide-video');
-                  imgEle.classList.remove('display-image');
-                  footerEle.classList.remove('footer-border-top-change');
-                  return 'Stop';
+                  videoEle.classList.remove('hide-video')
+                  imgEle.classList.remove('display-image')
+                  footerEle.classList.remove('footer-border-top-change')
+                  return 'Stop'
                 }
-              });
+              })
             }}
             c={spinningButtonActionText === 'Stop' ? '#a9391e' : 'primary-green'}
             variant="subtle"
@@ -92,5 +93,5 @@ export function FooterCentered() {
         </Group>
       </div>
     </div>
-  );
+  )
 }

@@ -10,6 +10,6 @@ export const ROUTE_PATHS = {
   BLOG: {
     INEDX: '/blogs',
     SINGULAR: '/blogs/{id}',
-    DOUBLE: '/blogs/{id_1}{id_2}'
-  }
+    DOUBLE: '/blogs/{id_1}{id_2}',
+  },
 }

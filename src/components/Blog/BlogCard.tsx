@@ -1,5 +1,6 @@
-import { Paper, Text, Title, Button } from '@mantine/core';
-import './BlogCard.css';
+import './BlogCard.css'
+
+import { Button, Paper, Text, Title } from '@mantine/core'
 
 export function BlogCard() {
   return (
@@ -16,5 +17,5 @@ export function BlogCard() {
         Read Blog
       </Button>
     </Paper>
-  );
+  )
 }
