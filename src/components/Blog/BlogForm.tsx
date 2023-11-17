@@ -1,9 +1,7 @@
-import './BlogForm.css'
-
-import { Button, FileInput, Group, Image, Textarea, TextInput } from '@mantine/core'
 import React, { useRef, useState } from 'react'
-
+import { Button, FileInput, Group, Image, Textarea, TextInput } from '@mantine/core'
 import { Blog, ContentBlock, ImageBlock, TextBlock } from '@/types/Blog'
+import './BlogForm.css'
 
 interface BlogFormProps {
   onSubmit: (blogData: Blog) => void

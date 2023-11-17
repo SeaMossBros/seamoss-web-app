@@ -1,12 +1,12 @@
-'use client'
 import React from 'react'
 import { useRouter } from 'next/navigation'
-import './CreateBlog.css'
 import BlogForm from '@/components/Blog/BlogForm'
 import BlogService from '@/services/blog.service'
 import { Blog } from '@/types/Blog'
+import './CreateBlog.css'
 
 export const NewBlogPage: React.FC = () => {
+  'use client'
   const router = useRouter()
   const blogService = new BlogService()
 
