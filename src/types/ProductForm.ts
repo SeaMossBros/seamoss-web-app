@@ -8,7 +8,7 @@ export type ProductSelectionFormData = {
   totalPrice: number | null
   discountedPrice: number | null
   product: WithMetadata<Product>
-  variant?: WithMetadata<ProductVariant> & {
+  variant: WithMetadata<ProductVariant> & {
     quantity: number
   }
   properties?: Array<

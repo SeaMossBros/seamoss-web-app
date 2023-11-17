@@ -6,6 +6,7 @@ import { FormProvider } from 'react-hook-form'
 
 import ProductDetails from '@/components/ProductDetails'
 import ProductImages from '@/components/ProductImages'
+import { useCart } from '@/hooks/useCart'
 import useProductForm from '@/hooks/useProductForm'
 import { Product } from '@/types/Product'
 import { ProductSelectionFormData } from '@/types/ProductForm'
@@ -17,13 +18,15 @@ export type ProductSingleProps = {
 }
 
 const ProductSingle: React.FC<ProductSingleProps> = ({ slug, queryParams }) => {
+  const { addToCart, isAddingToCart } = useCart()
   const { product, methods } = useProductForm(slug, queryParams)
 
-  const onSubmit = useCallback((data: ProductSelectionFormData) => {
-    console.log({
-      data,
-    })
-  }, [])
+  const onSubmit = useCallback(
+    (data: ProductSelectionFormData) => {
+      addToCart(data)
+    },
+    [addToCart],
+  )
 
   if (!product) return null
 
@@ -51,7 +54,7 @@ const ProductSingle: React.FC<ProductSingleProps> = ({ slug, queryParams }) => {
           >
             <Stack gap="lg">
               <ProductDetails product={product} />
-              <Button type="submit" fullWidth>
+              <Button type="submit" loading={isAddingToCart} fullWidth>
                 ADD TO CART
               </Button>
             </Stack>

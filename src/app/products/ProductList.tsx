@@ -32,11 +32,7 @@ export type ProductListProps = {
 }
 
 const ProductList: React.FC<ProductListProps> = ({ queryParams }) => {
-  // const { cartId, setCartId } = useContext(CartContext)
-  // const queryClient = useQueryClient()
-
   const productService = useService(ProductService)
-  // const cartService = useService(CartService)
 
   const [selectedProduct, setSelectedProduct] = useState<WithMetadata<Product> | null>(null)
   const [productPreviewOpened, productPreview] = useDisclosure(false, {
@@ -50,36 +46,8 @@ const ProductList: React.FC<ProductListProps> = ({ queryParams }) => {
     queryFn: () => productService.list(queryParams),
   })
 
-  // const { mutateAsync: createCart, isPending: isCreatingCart } = useMutation({
-  //   mutationFn: () => cartService.createCart(),
-  // })
-
-  // const { mutate: addToCart, isPending: isAddingItem } = useMutation({
-  //   mutationFn: (data: { product: Product; quantity: number }) =>
-  //     cartService.addToCart(cartId!, data.product.id, data.quantity),
-  //   onSuccess: (_, variables) => {
-  //     notifications.show({
-  //       variant: 'success',
-  //       message: `Added ${variables.product.name} to cart`,
-  //     })
-  //     queryClient.refetchQueries({
-  //       queryKey: CartService.queryKeys.getById(cartId!),
-  //     })
-  //   },
-  // })
-
   const onAddToCart = useCallback(
     async (product: WithMetadata<Product>) => {
-      // if (!cartId) {
-      //   const cart = await createCart()
-      //   flushSync(() => {
-      //     setCartId(cart.data!.id)
-      //   })
-      // }
-      // addToCart({
-      //   product,
-      //   quantity: 1,
-      // })
       setSelectedProduct(product)
       productPreview.open()
     },

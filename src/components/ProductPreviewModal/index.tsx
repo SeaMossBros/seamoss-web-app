@@ -4,6 +4,7 @@ import { Button, Grid, Modal, ModalProps, Stack } from '@mantine/core'
 import { useCallback } from 'react'
 import { FormProvider } from 'react-hook-form'
 
+import { useCart } from '@/hooks/useCart'
 import useProductForm from '@/hooks/useProductForm'
 import { Product } from '@/types/Product'
 import { ProductSelectionFormData } from '@/types/ProductForm'
@@ -17,6 +18,8 @@ export type ProductPreviewModalProps = ModalProps & {
 }
 
 const ProductPreviewModal: React.FC<ProductPreviewModalProps> = ({ product, ...modalProps }) => {
+  const { addToCart, isAddingToCart } = useCart()
+
   const { product: productDetails, methods } = useProductForm(product?.attributes.slug, {
     populate: {
       images: true,
@@ -32,11 +35,12 @@ const ProductPreviewModal: React.FC<ProductPreviewModalProps> = ({ product, ...m
     },
   })
 
-  const onSubmit = useCallback((data: ProductSelectionFormData) => {
-    console.log({
-      data,
-    })
-  }, [])
+  const onSubmit = useCallback(
+    (data: ProductSelectionFormData) => {
+      addToCart(data)
+    },
+    [addToCart],
+  )
 
   if (!product) return null
 
@@ -66,7 +70,7 @@ const ProductPreviewModal: React.FC<ProductPreviewModalProps> = ({ product, ...m
               >
                 <Stack gap="lg">
                   <ProductDetails product={productDetails} showOptionImages={false} />
-                  <Button type="submit" fullWidth>
+                  <Button type="submit" loading={isAddingToCart} fullWidth>
                     ADD TO CART
                   </Button>
                 </Stack>
