@@ -9,6 +9,7 @@ import type { Metadata } from 'next'
 import DefaultLayout from '@/components/DefaultLayout'
 import { interFont } from '@/fonts/inter'
 import AppProviders from '@/providers/AppProviders'
+import { FooterCentered } from '@/components/Footer'
 
 export const metadata: Metadata = {
   title: 'SeaTheMoss',
@@ -26,6 +27,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <DefaultLayout>
             <Notifications />
             {children}
+            <FooterCentered />
           </DefaultLayout>
         </AppProviders>
       </body>

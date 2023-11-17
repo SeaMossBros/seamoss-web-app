@@ -20,28 +20,28 @@ const NavBar: React.FC<NavBarProps> = ({ onClose }) => {
         label="Home"
         href={ROUTE_PATHS.HOME}
         active={pathname === '' || pathname === '/'}
-        onClick={onClose}
+        onClick={() => onClose()}
       />
       <NavLinkItem
         className={navLink}
         label="Products"
         href={ROUTE_PATHS.PRODUCT.INDEX}
         active={pathname.startsWith(ROUTE_PATHS.PRODUCT.INDEX)}
-        onClick={onClose}
+        onClick={() => onClose()}
       />
       <NavLinkItem
         className={navLink}
         label="Support"
         href={ROUTE_PATHS.SUPPORT}
         active={pathname.startsWith(ROUTE_PATHS.SUPPORT)}
-        onClick={onClose}
+        onClick={() => onClose()}
       />
       <NavLinkItem
         className={navLink}
         label="About us"
         href={ROUTE_PATHS.ABOUT}
         active={pathname.startsWith(ROUTE_PATHS.ABOUT)}
-        onClick={onClose}
+        onClick={() => onClose()}
       />
     </Stack>
   )

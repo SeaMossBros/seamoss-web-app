@@ -8,6 +8,7 @@ globalStyle('*', {
 
 globalStyle('html, body', {
   maxWidth: '100vw',
+  width: '100vw',
   overflowX: 'hidden',
 })
 

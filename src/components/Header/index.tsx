@@ -44,6 +44,11 @@ const Header: React.FC<HeaderProps> = ({ navOpened, toggleNav }) => {
             active={pathname.startsWith(ROUTE_PATHS.SUPPORT)}
           />
           <NavLinkItem
+            label="Blogs"
+            href={ROUTE_PATHS.BLOG.INEDX}
+            active={pathname.startsWith(ROUTE_PATHS.BLOG.INEDX)}
+          />
+          <NavLinkItem
             label="About us"
             href={ROUTE_PATHS.ABOUT}
             active={pathname.startsWith(ROUTE_PATHS.ABOUT)}
@@ -52,7 +57,7 @@ const Header: React.FC<HeaderProps> = ({ navOpened, toggleNav }) => {
         </Flex>
         <Flex hiddenFrom="sm" className={navLinkContainer} gap="md">
           <CartDropdown />
-          <Burger opened={navOpened} onClick={toggleNav} aria-label="Toggle navigation" />
+          <Burger opened={navOpened} onClick={() => JSON.stringify(toggleNav)} aria-label="Toggle navigation" />
         </Flex>
       </Group>
     </Container>

@@ -53,7 +53,7 @@ const ProductImages: React.FC<ProductImagesProps> = ({ defaultImage, images, pro
               key={image.id}
               w={100}
               className={previewImage}
-              onClick={onSelectImage.bind(image)}
+              onClick={() => onSelectImage.bind(image)}
               data-active={currentImage.id === image.id}
             >
               <Image

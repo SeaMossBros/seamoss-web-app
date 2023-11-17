@@ -98,7 +98,7 @@ const ProductPropertySelection: React.FC<ProductPropertySelectionProps> = ({ pro
         className={propertyWrapper}
         data-selected={!!selected}
         data-disabled={!max}
-        onClick={onSelect}
+        onClick={() => onSelect()}
         withBorder
       >
         {attributes.image?.data?.attributes.url ? (

@@ -1,0 +1,35 @@
+
+.not-found-root {
+  padding-top: rem(80px);
+  padding-bottom: rem(80px);
+}
+
+.not-found-title {
+  font-weight: 900;
+  font-size: rem(34px);
+  margin-bottom: var(--mantine-spacing-md);
+  font-family: Greycliff CF, var(--mantine-font-family);
+
+  @media (max-width: $mantine-breakpoint-sm) {
+    font-size: rem(32px);
+  }
+}
+
+.not-found-control {
+  margin-right: rem(21px);
+  @media (max-width: $mantine-breakpoint-sm) {
+    width: 100%;
+  }
+}
+
+.not-found-mobileImage {
+  @media (min-width: 48em) {
+    display: none;
+  }
+}
+
+.not-found-desktopImage {
+  @media (max-width: 47.99em) {
+    display: none;
+  }
+}

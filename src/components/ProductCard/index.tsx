@@ -23,7 +23,7 @@ export type ProductCardProps = {
 
 const ProductCard: React.FC<ProductCardProps> = ({ product, isAddingToCart, onAddToCart }) => {
   const { ref, hovered } = useHover()
-  const router = useRouter()
+  const router = useRouter();
 
   const productUrl = useMemo(
     () => ROUTE_PATHS.PRODUCT.SLUG.replaceAll('{slug}', product.slug),
@@ -63,13 +63,13 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAddingToCart, onAd
   }, [product.product_variants?.data])
 
   const onClick = useCallback(() => {
-    router.push(productUrl)
+    router.push(productUrl);
   }, [productUrl, router])
 
   return (
     <Card
       ref={ref}
-      onClick={onClick}
+      onClick={() => onClick()}
       className={card}
       h={400}
       shadow={hovered ? 'lg' : undefined}
@@ -77,7 +77,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAddingToCart, onAd
     >
       <Card.Section>
         <Image
-          src={thumbnail?.url ? getStrapiUploadUrl(thumbnail.url) : '/images/img-placeholder.webp'}
+          src={thumbnail?.url ? getStrapiUploadUrl(thumbnail.url) : '/images/placeholder.webp'}
           alt={product.name}
           component={NextImage}
           height={250}
@@ -110,7 +110,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, isAddingToCart, onAd
             <Text fz="sm" c="primary-green">
               From {formatPrice(lowestPrice)}
             </Text>
-            <Button onClick={onAddToCartClick} loading={isAddingToCart}>
+            <Button onClick={(e) => onAddToCartClick(e)} loading={isAddingToCart}>
               Add to cart
             </Button>
           </Group>
