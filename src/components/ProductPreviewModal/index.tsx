@@ -1,7 +1,7 @@
 'use client'
 
 import { Button, Grid, Modal, ModalProps, Stack } from '@mantine/core'
-import { useCallback } from 'react'
+import React, { useCallback } from 'react'
 import { FormProvider } from 'react-hook-form'
 
 import { useCart } from '@/hooks/useCart'

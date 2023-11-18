@@ -21,6 +21,7 @@ export const defaultTheme = createTheme({
     'secondary-blue': generateColors('#20BFDB'),
     'secondary-pink': generateColors('#E5BDAC'),
     'secondary-gray': generateColors('#A2ADA6'),
+    'coral-red': generateColors('#a9391e'),
   },
   primaryColor: 'primary-green',
   primaryShade: 9,

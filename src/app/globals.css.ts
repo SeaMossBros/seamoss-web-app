@@ -8,9 +8,15 @@ globalStyle('*', {
 
 globalStyle('html, body', {
   maxWidth: '100vw',
+  width: '100vw',
   overflowX: 'hidden',
 })
 
 globalStyle('a', {
   textDecoration: 'none',
+})
+
+globalStyle('.blogs-background', {
+  backgroundColor: 'bisque',
+  height: '1200px',
 })

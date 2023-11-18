@@ -1,6 +1,7 @@
 import { Container, Grid, GridCol } from '@mantine/core'
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
 import { Metadata } from 'next'
+import React from 'react'
 
 import getQueryClient from '@/react-query/getQueryClient'
 import ProductService from '@/services/product.service'

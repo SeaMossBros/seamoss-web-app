@@ -5,6 +5,7 @@ import '@mantine/notifications/styles.css'
 import { ColorSchemeScript } from '@mantine/core'
 import { Notifications } from '@mantine/notifications'
 import type { Metadata } from 'next'
+import React from 'react'
 
 import DefaultLayout from '@/components/DefaultLayout'
 import { interFont } from '@/fonts/inter'
