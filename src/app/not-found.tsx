@@ -3,6 +3,7 @@ import './not-found.css'
 import { Button, Container, Image, SimpleGrid, Text, Title } from '@mantine/core'
 import Link from 'next/link'
 import React from 'react'
+import TextLink from '../components/TextLink'
 
 const NotFoundImage = () => {
   return (
@@ -13,8 +14,15 @@ const NotFoundImage = () => {
             Something is not right...
           </Title>
           <Text c="dimmed" size="lg">
-            Page you are trying to open does not exist. You may have mistyped the address, or the
-            page has been moved to another URL. If you think this is an error contact support.
+            The page you are trying to open does not exist. Please try another URL. If you think this is an error please
+            {' '}
+            <TextLink
+              textToShow={'contact support'}
+              url={'/support'}
+              size="lg"
+              highlight={true}
+              underline={true}
+            />.
           </Text>
           <Link href="/">
             <Button variant="outline" size="md" mt="xl" className={'not-found-control'}>

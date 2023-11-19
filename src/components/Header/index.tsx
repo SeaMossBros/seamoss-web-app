@@ -1,5 +1,5 @@
 'use client'
-
+import React from 'react'
 import { Burger, Container, Flex, Group, Title } from '@mantine/core'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -55,11 +55,12 @@ const Header: React.FC<HeaderProps> = ({ navOpened, toggleNav }) => {
           />
           <CartDropdown />
         </Flex>
+        {/* Hamburger Menu */}
         <Flex hiddenFrom="sm" className={navLinkContainer} gap="md">
           <CartDropdown />
           <Burger
             opened={navOpened}
-            onClick={() => JSON.stringify(toggleNav)}
+            onClick={toggleNav}
             aria-label="Toggle navigation"
           />
         </Flex>
@@ -68,4 +69,4 @@ const Header: React.FC<HeaderProps> = ({ navOpened, toggleNav }) => {
   )
 }
 
-export default Header
+export default Header;
