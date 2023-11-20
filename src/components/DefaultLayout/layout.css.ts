@@ -5,4 +5,6 @@ export const main = style({
   marginBottom: 40,
 })
 
-export const footer = style({})
+export const footer = style({
+  height: 80,
+})

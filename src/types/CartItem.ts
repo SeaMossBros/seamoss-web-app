@@ -4,15 +4,16 @@ import { ProductVariant } from './ProductVariant'
 import { PurchaseOption } from './PurchaseOption'
 import { QueryResponse, WithMetadata } from './QueryResponse'
 
-export interface CartItemProperties {
-  product_property?: ProductProperty
+export interface CartItemProperty {
+  id: number
+  product_property?: QueryResponse<WithMetadata<ProductProperty>>
   quantity: number
 }
 
-export interface CartItemVariant {
-  product_variant?: ProductVariant
+export interface CartItemOptions {
+  product_variant?: QueryResponse<WithMetadata<ProductVariant>>
   quantity: number
-  properties: CartItemProperties[]
+  properties: Array<CartItemProperty>
 }
 
 export interface CartItem {
@@ -21,6 +22,6 @@ export interface CartItem {
   updatedAt: string
   publishedAt?: string
   product?: QueryResponse<WithMetadata<Product>>
-  options?: CartItemVariant
+  options?: CartItemOptions
   purchase_option?: QueryResponse<WithMetadata<PurchaseOption>>
 }

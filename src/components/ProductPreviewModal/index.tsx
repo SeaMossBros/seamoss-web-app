@@ -37,9 +37,14 @@ const ProductPreviewModal: React.FC<ProductPreviewModalProps> = ({ product, ...m
 
   const onSubmit = useCallback(
     (data: ProductSelectionFormData) => {
-      addToCart(data)
+      addToCart(data, {
+        onSettled: (_, error) => {
+          if (error) return
+          modalProps.onClose()
+        },
+      })
     },
-    [addToCart],
+    [addToCart, modalProps],
   )
 
   if (!product) return null

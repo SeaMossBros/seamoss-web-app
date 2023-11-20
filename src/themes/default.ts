@@ -31,6 +31,11 @@ export const defaultTheme = createTheme({
         size: 'lg',
       },
     },
+    Indicator: {
+      defaultProps: {
+        zIndex: 1,
+      },
+    },
   },
 })
 

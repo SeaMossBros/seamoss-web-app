@@ -1,6 +1,7 @@
 'use client'
 
 import { MantineProvider } from '@mantine/core'
+import { ModalsProvider } from '@mantine/modals'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AppProgressBar as ProgressBar } from 'next-nprogress-bar'
 import { PropsWithChildren, useState } from 'react'
@@ -32,7 +33,9 @@ const AppProviders: React.FC<PropsWithChildren> = ({ children }) => {
         shallowRouting
       />
       <MantineProvider theme={defaultTheme}>
-        <CartProvider>{children}</CartProvider>
+        <ModalsProvider>
+          <CartProvider>{children}</CartProvider>
+        </ModalsProvider>
       </MantineProvider>
     </QueryClientProvider>
   )
