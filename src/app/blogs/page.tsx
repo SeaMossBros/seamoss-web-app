@@ -1,5 +1,4 @@
-import './BlogsPage.css'
-
+// import {} from './BlogsPage.css'
 import { Container, Grid, GridCol } from '@mantine/core'
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
 import React from 'react'

@@ -1,18 +1,18 @@
 import { Stack } from '@mantine/core'
 import { usePathname } from 'next/navigation'
+import React from 'react'
 
 import { ROUTE_PATHS } from '@/consts/route-paths'
 
 import NavLinkItem from '../NavLinkItem'
 import { navLink } from './NavBar.css'
-import React from 'react'
 
 export type NavBarProps = {
   onClose: () => void
 }
 
 const NavBar: React.FC<NavBarProps> = ({ onClose }) => {
-  const pathname = usePathname();
+  const pathname = usePathname()
 
   return (
     <Stack w="100%">

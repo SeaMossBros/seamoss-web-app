@@ -1,8 +1,8 @@
 'use client'
-import React from 'react'
 import { Burger, Container, Flex, Group, Title } from '@mantine/core'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import React from 'react'
 
 import { ROUTE_PATHS } from '@/consts/route-paths'
 
@@ -58,15 +58,11 @@ const Header: React.FC<HeaderProps> = ({ navOpened, toggleNav }) => {
         {/* Hamburger Menu */}
         <Flex hiddenFrom="sm" className={navLinkContainer} gap="md">
           <CartDropdown />
-          <Burger
-            opened={navOpened}
-            onClick={toggleNav}
-            aria-label="Toggle navigation"
-          />
+          <Burger opened={navOpened} onClick={toggleNav} aria-label="Toggle navigation" />
         </Flex>
       </Group>
     </Container>
   )
 }
 
-export default Header;
+export default Header

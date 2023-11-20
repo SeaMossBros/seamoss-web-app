@@ -7,5 +7,5 @@ export const main = style({
 
 export const footer = style({
   position: 'sticky',
-  height: 0
+  height: 0,
 })

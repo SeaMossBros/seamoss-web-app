@@ -1,9 +1,9 @@
 'use client'
-import './Footer.css'
-
 import { ActionIcon, Anchor, Group, Image } from '@mantine/core'
 import { IconBrandInstagram, IconBrandTwitter, IconBrandYoutube } from '@tabler/icons-react'
 import React from 'react'
+
+import { externalFooterLinks, footerImage, footerLinks, inner } from './Footer.css'
 
 const links = [
   { link: '/support', label: 'Contact' },
@@ -29,11 +29,15 @@ const FooterCentered = () => {
   ))
 
   return (
-    <div className={'inner'}>
-      <Image className="footer-image" src={'/images/SeaTheMoss-StillSpinner.png'} />
-      <Group className={'links'}>{items}</Group>
+    <div className={inner}>
+      <Image
+        className={footerImage}
+        src={'/images/SeaTheMoss-StillSpinner.png'}
+        alt="footer logo"
+      />
+      <Group className={footerLinks}>{items}</Group>
 
-      <Group gap="xs" justify="flex-end" wrap="nowrap">
+      <Group className={externalFooterLinks} gap="xs" justify="flex-end" wrap="nowrap">
         <ActionIcon size="lg" variant="default" radius="xl">
           <IconBrandTwitter style={{ width: 18, height: 18 }} stroke={1.5} />
         </ActionIcon>
@@ -52,17 +56,17 @@ const FooterCentered = () => {
           <IconBrandInstagram style={{ width: 18, height: 18 }} stroke={1.5} />
         </ActionIcon>
       </Group>
-      {/* <div className="outer-hover-menu">
+      {/* <div className={outerHoverMenu}>
         <Image
-          className={'footer-video'}
+          className={footerImage}
           src={'/videos/SeaTheMoss-Spinner-With-Wildcrafted-Raw-Extended.mp4'}
         />
         <Button
-          className="spinner-stopper-button"
+          className={spinnerStopperButton}
           onClick={(e) => {
-            const videoEle = Array.from(document.getElementsByClassName('footer-video'))[0];
-            const imgEle = Array.from(document.getElementsByClassName('footer-image'))[0];
-            const footerEle = Array.from(document.getElementsByClassName('inner'))[0];
+            const videoEle = Array.from(document.getElementsByClassName(footerVideo))[0];
+            const imgEle = Array.from(document.getElementsByClassName(footerImage))[0];
+            const footerEle = Array.from(document.getElementsByClassName(inner))[0];
 
             setSpinningButtonActionText((prev) => {
               if (prev === 'Stop') {

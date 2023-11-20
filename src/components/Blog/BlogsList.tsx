@@ -59,7 +59,7 @@ const BlogsList: React.FC<BlogListProps> = ({ queryParams }) => {
       {blogs.data.map((blog) => (
         <div key={blog.id}>
           <h2>{blog.id}</h2>
-          <Image src={blog.attributes.mainImage} />
+          <Image src={blog.attributes.mainImage} alt="main blog image" />
           {/* Other blog details */}
         </div>
       ))}

@@ -1,4 +1,5 @@
 import React from 'react'
+
 import HeroImage from '../components/HeroImage'
 
 const HomePage: React.FC = () => {
