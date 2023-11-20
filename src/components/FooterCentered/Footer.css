@@ -1,17 +1,14 @@
 .inner {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
   padding: var(--mantine-spacing-sm) var(--mantine-spacing-sm);
   position: relative;
+  margin: 0 3%;
 
   @media (max-width: $mantine-breakpoint-sm) {
     flex-direction: column;
   }
-}
-
-.footer-image {
-  display: none;
 }
 
 .footer-video, .footer-image {
