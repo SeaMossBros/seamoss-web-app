@@ -1,6 +1,6 @@
 'use client'
 
-import { MantineColorScheme, MantineProvider } from '@mantine/core'
+import { MantineProvider, useMantineColorScheme } from '@mantine/core'
 import { ModalsProvider } from '@mantine/modals'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AppProgressBar as ProgressBar } from 'next-nprogress-bar'
@@ -12,46 +12,28 @@ import CartProvider from './CartProvider'
 
 const colorSchemeStorageKey = 'mantine-color-scheme'
 
-const getColorScheme = (): MantineColorScheme => {
-  return (window.localStorage.getItem(colorSchemeStorageKey) as MantineColorScheme) || 'light'
-}
+const AppProviders: React.FC<PropsWithChildren> = ({ children }) => {
+  const { colorScheme, setColorScheme } = useMantineColorScheme()
 
-const setColorScheme = (value: MantineColorScheme) => {
-  window.localStorage.setItem(colorSchemeStorageKey, value)
-}
-
-const colorSchemeManager = {
-  get: getColorScheme,
-  set: setColorScheme,
-  subscribe: (onUpdate: (colorScheme: MantineColorScheme) => void) => {
-    const storageListener = (event: StorageEvent) => {
-      if (event.key === colorSchemeStorageKey && event.newValue) {
-        onUpdate(event.newValue as MantineColorScheme)
+  useEffect(() => {
+    const getColorScheme = (): void => {
+      const storedColorScheme = localStorage.getItem(colorSchemeStorageKey)
+      if (storedColorScheme === 'dark' || storedColorScheme === 'light') {
+        setColorScheme(storedColorScheme)
       }
     }
 
-    window.addEventListener('storage', storageListener)
-    return () => window.removeEventListener('storage', storageListener)
-  },
-  unsubscribe: () => {},
-  clear: () => window.localStorage.removeItem(colorSchemeStorageKey),
-}
+    getColorScheme()
 
-const AppProviders: React.FC<PropsWithChildren> = ({ children }) => {
-  const [_, setColorScheme] = useState<MantineColorScheme>(getColorScheme())
+    const handleColorSchemeChange = (event: StorageEvent) => {
+      if (event.key === colorSchemeStorageKey && event.newValue) {
+        setColorScheme(event.newValue as 'dark' | 'light')
+      }
+    }
 
-  // const toggleColorScheme = useCallback(() => {
-  //   setColorScheme((prevColorScheme) => {
-  //     const newScheme = prevColorScheme === 'dark' ? 'light' : 'dark'
-  //     colorSchemeManager.set(newScheme)
-  //     return newScheme
-  //   })
-  // }, [])
-
-  useEffect(() => {
-    const unsubscribe = colorSchemeManager.subscribe(setColorScheme)
-    return () => unsubscribe()
-  }, [])
+    window.addEventListener('storage', handleColorSchemeChange)
+    return () => window.removeEventListener('storage', handleColorSchemeChange)
+  }, [setColorScheme])
 
   const [queryClient] = useState(
     () =>
@@ -74,7 +56,7 @@ const AppProviders: React.FC<PropsWithChildren> = ({ children }) => {
         options={{ showSpinner: false }}
         shallowRouting
       />
-      <MantineProvider theme={defaultTheme} colorSchemeManager={colorSchemeManager}>
+      <MantineProvider theme={{ ...defaultTheme, colorScheme }}>
         <ModalsProvider>
           <CartProvider>{children}</CartProvider>
         </ModalsProvider>
