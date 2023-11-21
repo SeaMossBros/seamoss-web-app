@@ -11,7 +11,6 @@ import {
 
 import { ProductSelectionFormData } from '@/types/ProductForm'
 import { ProductProperty } from '@/types/ProductProperty'
-import { WithMetadata } from '@/types/QueryResponse'
 import { getStrapiUploadUrl } from '@/utils/cms'
 
 import {
@@ -23,7 +22,7 @@ import {
 } from './ProductPropertySelection.css'
 
 export type ProductPropertySelectionProps = {
-  property: WithMetadata<ProductProperty>
+  property: ProductProperty
   selectedProperties: FieldArrayWithId<ProductSelectionFormData, 'properties', 'key'>[]
   append: UseFieldArrayAppend<ProductSelectionFormData, 'properties'>
   update: UseFieldArrayUpdate<ProductSelectionFormData, 'properties'>

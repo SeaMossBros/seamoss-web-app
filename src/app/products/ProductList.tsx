@@ -7,9 +7,8 @@ import React, { PropsWithChildren, useCallback, useState } from 'react'
 import ProductCard from '@/components/ProductCard'
 import ProductPreviewModal from '@/components/ProductPreviewModal'
 import { useProducts } from '@/queries/useProducts'
-import { Product } from '@/types/Product'
+import { Product, Product_Plain } from '@/types/Product'
 import { QueryParams } from '@/types/QueryParams'
-import { WithMetadata } from '@/types/QueryResponse'
 
 const ProductCol: React.FC<PropsWithChildren> = ({ children }) => {
   return (
@@ -26,11 +25,11 @@ const ProductCol: React.FC<PropsWithChildren> = ({ children }) => {
 }
 
 export type ProductListProps = {
-  queryParams: QueryParams<Product>
+  queryParams: QueryParams<Product_Plain>
 }
 
 const ProductList: React.FC<ProductListProps> = ({ queryParams }) => {
-  const [selectedProduct, setSelectedProduct] = useState<WithMetadata<Product> | null>(null)
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
   const [productPreviewOpened, productPreview] = useDisclosure(false, {
     onClose: () => {
       setSelectedProduct(null)
@@ -40,7 +39,7 @@ const ProductList: React.FC<ProductListProps> = ({ queryParams }) => {
   const { data: products } = useProducts(queryParams)
 
   const onAddToCart = useCallback(
-    async (product: WithMetadata<Product>) => {
+    async (product: Product) => {
       setSelectedProduct(product)
       productPreview.open()
     },

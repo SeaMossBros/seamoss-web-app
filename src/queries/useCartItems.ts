@@ -3,13 +3,13 @@ import { UndefinedInitialDataOptions, useQuery } from '@tanstack/react-query'
 import { useService } from '@/hooks/useService'
 import CartService from '@/services/cart.service'
 import { CartItem } from '@/types/CartItem'
-import { QueryResponse, WithMetadata } from '@/types/QueryResponse'
+import { QueryResponse } from '@/types/QueryResponse'
 
 type QueryOptions = Omit<
   UndefinedInitialDataOptions<
-    QueryResponse<WithMetadata<CartItem>[]>,
+    QueryResponse<CartItem[]>,
     Error,
-    QueryResponse<WithMetadata<CartItem>[]>,
+    QueryResponse<CartItem[]>,
     (string | number)[]
   >,
   'queryKey' | 'queryFn'

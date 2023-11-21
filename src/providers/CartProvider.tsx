@@ -7,12 +7,11 @@ import { createContext, PropsWithChildren, useCallback, useEffect } from 'react'
 
 import { useCartData } from '@/queries/useCartData'
 import { Cart } from '@/types/Cart'
-import { WithMetadata } from '@/types/QueryResponse'
 
 export type CartContextValue = {
   cartId?: number
   setCartId: (id: number) => void
-  cart?: WithMetadata<Cart>
+  cart?: Cart
   refetch: (options?: RefetchOptions) => void
 }
 

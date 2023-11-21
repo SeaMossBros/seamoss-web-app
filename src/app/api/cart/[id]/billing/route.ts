@@ -1,6 +1,7 @@
 import { NextRequest } from 'next/server'
 
 import CartService from '@/services/cart.service'
+import { DiscountUnit } from '@/types/PurchaseOption'
 
 export const revalidate = 0 // no cache
 
@@ -48,9 +49,9 @@ export const GET = async (_: NextRequest, route: any) => {
         const { discount_unit, discount_value = 0 } = purchaseOption.attributes
 
         switch (discount_unit) {
-          case 'fiat':
+          case DiscountUnit.Fiat:
             return totalPrice - discount_value
-          case 'percentage':
+          case DiscountUnit.Percentage:
             const percentageLeft = 100 - discount_value
             return (totalPrice / 100) * percentageLeft
           default:

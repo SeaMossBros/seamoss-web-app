@@ -6,7 +6,6 @@ import { useFormContext } from 'react-hook-form'
 
 import { ProductSelectionFormData } from '@/types/ProductForm'
 import { ProductVariant } from '@/types/ProductVariant'
-import { WithMetadata } from '@/types/QueryResponse'
 import { getStrapiUploadUrl } from '@/utils/cms'
 
 import {
@@ -18,7 +17,7 @@ import {
 } from './ProductVariantSelection.css'
 
 export type ProductVariantSelectionProps = {
-  variant: WithMetadata<ProductVariant>
+  variant: ProductVariant
   showImage?: boolean
 }
 

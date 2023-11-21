@@ -8,13 +8,13 @@ import ProductDetails from '@/components/ProductDetails'
 import ProductImages from '@/components/ProductImages'
 import { useCart } from '@/hooks/useCart'
 import useProductForm from '@/hooks/useProductForm'
-import { Product } from '@/types/Product'
+import { Product_Plain } from '@/types/Product'
 import { ProductSelectionFormData } from '@/types/ProductForm'
 import { QueryParams } from '@/types/QueryParams'
 
 export type ProductSingleProps = {
   slug: string
-  queryParams: QueryParams<Product>
+  queryParams: QueryParams<Product_Plain>
 }
 
 const ProductSingle: React.FC<ProductSingleProps> = ({ slug, queryParams }) => {

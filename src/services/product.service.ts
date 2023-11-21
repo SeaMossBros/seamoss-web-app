@@ -1,42 +1,42 @@
 import qs from 'qs'
 
-import { Product } from '@/types/Product'
-import { ProductVariant } from '@/types/ProductVariant'
-import { PurchaseOption } from '@/types/PurchaseOption'
+import { Product, Product_Plain } from '@/types/Product'
+import { ProductVariant, ProductVariant_Plain } from '@/types/ProductVariant'
+import { PurchaseOption, PurchaseOption_Plain } from '@/types/PurchaseOption'
 import { QueryParams } from '@/types/QueryParams'
-import { QueryResponse, WithMetadata } from '@/types/QueryResponse'
+import { QueryResponse } from '@/types/QueryResponse'
 
 import CMSService from './core/cms.service'
 
 export default class ProductService extends CMSService {
   static queryKeys = {
-    list: (params?: QueryParams<Product>) => ['/products', params],
-    getBySlug: (slug: string, params?: QueryParams<Product>) => [
+    list: (params?: QueryParams<Product_Plain>) => ['/products', params],
+    getBySlug: (slug: string, params?: QueryParams<Product_Plain>) => [
       '/slugify/slugs/product',
       slug,
       params,
     ],
   }
 
-  list = async (params?: QueryParams<Product>) => {
+  list = async (params?: QueryParams<Product_Plain>) => {
     const url = `${this.baseURL}/products`
     const search = qs.stringify(params)
     const res = await fetch(`${url}?${search}`, {
       headers: this.headers,
     })
-    return await (res.json() as Promise<QueryResponse<Array<WithMetadata<Product>>>>)
+    return await (res.json() as Promise<QueryResponse<Array<Product>>>)
   }
 
-  getBySlug = (slug: string, params?: QueryParams<Product>) => {
+  getBySlug = (slug: string, params?: QueryParams<Product_Plain>) => {
     const url = `${this.baseURL}/slugify/slugs/product/${slug}`
     const search = qs.stringify(params)
 
     return fetch(`${url}?${search}`, {
       headers: this.headers,
-    }).then((res) => res.json()) as Promise<QueryResponse<WithMetadata<Product>>>
+    }).then((res) => res.json()) as Promise<QueryResponse<Product>>
   }
 
-  getVariantById = async (id: number, params?: QueryParams<ProductVariant>) => {
+  getVariantById = async (id: number, params?: QueryParams<ProductVariant_Plain>) => {
     const url = `${this.baseURL}/product-variants/${id}`
     const search = qs.stringify(params)
 
@@ -44,10 +44,10 @@ export default class ProductService extends CMSService {
       headers: this.headers,
     })
 
-    return res.json() as Promise<QueryResponse<WithMetadata<ProductVariant>>>
+    return res.json() as Promise<QueryResponse<ProductVariant>>
   }
 
-  getPurchaseOptionById = async (id: number, params?: QueryParams<PurchaseOption>) => {
+  getPurchaseOptionById = async (id: number, params?: QueryParams<PurchaseOption_Plain>) => {
     const url = `${this.baseURL}/purchase-options/${id}`
     const search = qs.stringify(params)
 
@@ -55,6 +55,6 @@ export default class ProductService extends CMSService {
       headers: this.headers,
     })
 
-    return res.json() as Promise<QueryResponse<WithMetadata<PurchaseOption>>>
+    return res.json() as Promise<QueryResponse<PurchaseOption>>
   }
 }

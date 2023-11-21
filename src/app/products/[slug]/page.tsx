@@ -5,7 +5,7 @@ import { notFound } from 'next/navigation'
 
 import getQueryClient from '@/react-query/getQueryClient'
 import ProductService from '@/services/product.service'
-import { Product } from '@/types/Product'
+import { Product_Plain } from '@/types/Product'
 import { QueryParams } from '@/types/QueryParams'
 
 import ProductSingle from './ProductSingle'
@@ -33,7 +33,7 @@ const ProductDetailPage: React.FC<Props> = async ({ params }: Props) => {
   const queryClient = getQueryClient()
   const productService = new ProductService()
 
-  const queryParams: QueryParams<Product> = {
+  const queryParams: QueryParams<Product_Plain> = {
     populate: {
       images: true,
       videos: true,

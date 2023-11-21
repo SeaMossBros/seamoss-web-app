@@ -5,7 +5,7 @@ import React from 'react'
 
 import getQueryClient from '@/react-query/getQueryClient'
 import ProductService from '@/services/product.service'
-import { Product } from '@/types/Product'
+import { Product_Plain } from '@/types/Product'
 import { QueryParams } from '@/types/QueryParams'
 
 import ProductList from './ProductList'
@@ -19,7 +19,7 @@ const ProductsPage: React.FC = async () => {
   const queryClient = getQueryClient()
   const productService = new ProductService()
 
-  const params: QueryParams<Product> = {
+  const params: QueryParams<Product_Plain> = {
     populate: ['images', 'thumbnail', 'product_variants'],
   }
 
