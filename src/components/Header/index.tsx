@@ -1,8 +1,17 @@
 'use client'
-import { Burger, Container, Flex, Group, Title } from '@mantine/core'
+import {
+  ActionIcon,
+  Burger,
+  Container,
+  Flex,
+  Group,
+  Title,
+  useMantineColorScheme,
+} from '@mantine/core'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React from 'react'
+import { MoonStars, Sun } from 'tabler-icons-react'
 
 import { ROUTE_PATHS } from '@/consts/route-paths'
 
@@ -17,6 +26,8 @@ export type HeaderProps = {
 
 const Header: React.FC<HeaderProps> = ({ navOpened, toggleNav }) => {
   const pathname = usePathname()
+  const { colorScheme, toggleColorScheme } = useMantineColorScheme()
+  const isDarkTheme = colorScheme === 'dark'
 
   return (
     <Container className={container}>
@@ -53,6 +64,14 @@ const Header: React.FC<HeaderProps> = ({ navOpened, toggleNav }) => {
             href={ROUTE_PATHS.ABOUT}
             active={pathname.startsWith(ROUTE_PATHS.ABOUT)}
           />
+          <ActionIcon
+            variant="outline"
+            color={isDarkTheme ? 'yellow' : 'blue'}
+            onClick={() => toggleColorScheme()}
+            title="Toggle color scheme"
+          >
+            {isDarkTheme ? <Sun size={18} /> : <MoonStars size={18} />}
+          </ActionIcon>
           <CartDropdown />
         </Flex>
         {/* Hamburger Menu */}

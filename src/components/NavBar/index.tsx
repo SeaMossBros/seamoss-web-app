@@ -1,6 +1,7 @@
-import { Stack } from '@mantine/core'
+import { ActionIcon, Stack, useMantineColorScheme } from '@mantine/core'
 import { usePathname } from 'next/navigation'
 import React from 'react'
+import { MoonStars, Sun } from 'tabler-icons-react'
 
 import { ROUTE_PATHS } from '@/consts/route-paths'
 
@@ -13,9 +14,11 @@ export type NavBarProps = {
 
 const NavBar: React.FC<NavBarProps> = ({ onClose }) => {
   const pathname = usePathname()
+  const { colorScheme, toggleColorScheme } = useMantineColorScheme()
+  const isDarkTheme = colorScheme === 'dark'
 
   return (
-    <Stack w="100%">
+    <Stack w="100%" h="100vh">
       <NavLinkItem
         className={navLink}
         label="Home"
@@ -51,6 +54,15 @@ const NavBar: React.FC<NavBarProps> = ({ onClose }) => {
         active={pathname.startsWith(ROUTE_PATHS.ABOUT)}
         onClick={onClose}
       />
+      <div>Theme</div>
+      <ActionIcon
+        variant="outline"
+        color={isDarkTheme ? 'yellow' : 'blue'}
+        onClick={() => toggleColorScheme()}
+        title="Toggle color scheme"
+      >
+        {isDarkTheme ? <Sun size={18} /> : <MoonStars size={18} />}
+      </ActionIcon>
     </Stack>
   )
 }

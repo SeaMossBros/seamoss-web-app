@@ -1,16 +1,58 @@
 'use client'
 
-import { MantineProvider } from '@mantine/core'
+import { MantineColorScheme, MantineProvider } from '@mantine/core'
 import { ModalsProvider } from '@mantine/modals'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AppProgressBar as ProgressBar } from 'next-nprogress-bar'
-import { PropsWithChildren, useState } from 'react'
+import React, { PropsWithChildren, useEffect, useState } from 'react'
 
 import { defaultTheme, defaultThemeVars } from '@/themes/default'
 
 import CartProvider from './CartProvider'
 
+const colorSchemeStorageKey = 'mantine-color-scheme'
+
+const getColorScheme = (): MantineColorScheme => {
+  return (localStorage.getItem(colorSchemeStorageKey) as MantineColorScheme) || 'light'
+}
+
+const setColorScheme = (value: MantineColorScheme) => {
+  localStorage.setItem(colorSchemeStorageKey, value)
+}
+
+const colorSchemeManager = {
+  get: getColorScheme,
+  set: setColorScheme,
+  subscribe: (onUpdate: (colorScheme: MantineColorScheme) => void) => {
+    const storageListener = (event: StorageEvent) => {
+      if (event.key === colorSchemeStorageKey && event.newValue) {
+        onUpdate(event.newValue as MantineColorScheme)
+      }
+    }
+
+    window.addEventListener('storage', storageListener)
+    return () => window.removeEventListener('storage', storageListener)
+  },
+  unsubscribe: () => {},
+  clear: () => localStorage.removeItem(colorSchemeStorageKey),
+}
+
 const AppProviders: React.FC<PropsWithChildren> = ({ children }) => {
+  const [_, setColorScheme] = useState<MantineColorScheme>(getColorScheme())
+
+  // const toggleColorScheme = useCallback(() => {
+  //   setColorScheme((prevColorScheme) => {
+  //     const newScheme = prevColorScheme === 'dark' ? 'light' : 'dark'
+  //     colorSchemeManager.set(newScheme)
+  //     return newScheme
+  //   })
+  // }, [])
+
+  useEffect(() => {
+    const unsubscribe = colorSchemeManager.subscribe(setColorScheme)
+    return () => unsubscribe()
+  }, [])
+
   const [queryClient] = useState(
     () =>
       new QueryClient({
@@ -32,7 +74,7 @@ const AppProviders: React.FC<PropsWithChildren> = ({ children }) => {
         options={{ showSpinner: false }}
         shallowRouting
       />
-      <MantineProvider theme={defaultTheme}>
+      <MantineProvider theme={defaultTheme} colorSchemeManager={colorSchemeManager}>
         <ModalsProvider>
           <CartProvider>{children}</CartProvider>
         </ModalsProvider>
