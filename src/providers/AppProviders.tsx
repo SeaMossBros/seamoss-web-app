@@ -13,11 +13,11 @@ import CartProvider from './CartProvider'
 const colorSchemeStorageKey = 'mantine-color-scheme'
 
 const getColorScheme = (): MantineColorScheme => {
-  return (localStorage.getItem(colorSchemeStorageKey) as MantineColorScheme) || 'light'
+  return (window.localStorage.getItem(colorSchemeStorageKey) as MantineColorScheme) || 'light'
 }
 
 const setColorScheme = (value: MantineColorScheme) => {
-  localStorage.setItem(colorSchemeStorageKey, value)
+  window.localStorage.setItem(colorSchemeStorageKey, value)
 }
 
 const colorSchemeManager = {
@@ -34,7 +34,7 @@ const colorSchemeManager = {
     return () => window.removeEventListener('storage', storageListener)
   },
   unsubscribe: () => {},
-  clear: () => localStorage.removeItem(colorSchemeStorageKey),
+  clear: () => window.localStorage.removeItem(colorSchemeStorageKey),
 }
 
 const AppProviders: React.FC<PropsWithChildren> = ({ children }) => {
