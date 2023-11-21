@@ -14,6 +14,7 @@ export const metadata: Metadata = {
   title: 'Products | SeaTheMoss',
 }
 
+// TODO: Add pagination
 const ProductsPage: React.FC = async () => {
   const queryClient = getQueryClient()
   const productService = new ProductService()

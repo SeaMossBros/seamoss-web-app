@@ -1,3 +1,5 @@
+import { differenceBy } from 'lodash'
+import intersectionBy from 'lodash/intersectionBy'
 import qs from 'qs'
 
 import { Cart } from '@/types/Cart'
@@ -22,6 +24,7 @@ export type AddToCartData = {
 export default class CartService extends CMSService {
   static queryKeys = {
     getById: (cartId: number) => ['/carts', cartId],
+    getCartItems: (cartId: number) => ['/cart-items', cartId],
   }
 
   getById = async (cartId: number) => {
@@ -84,14 +87,65 @@ export default class CartService extends CMSService {
     return (await res.json()) as QueryResponse<WithMetadata<CartItem>>
   }
 
-  updateQuantity = async (cartItemId: number, quantity: number) => {
-    const url = `${this.baseURL}/cart-items/${cartItemId}`
+  updateCartItem = async (cartItem: WithMetadata<CartItem>, newItem: AddToCartData) => {
+    const url = `${this.baseURL}/cart-items/${cartItem.id}`
 
-    const body = JSON.stringify({
+    let properties = cartItem.attributes.options?.properties
+
+    if (newItem.properties?.length) {
+      const propertiesToAddQuantity = intersectionBy(
+        newItem.properties.map((p) => ({
+          id: p.propertyId,
+          quantity: p.quantity,
+        })),
+        properties?.map((p) => ({
+          id: p.product_property?.data?.id,
+          quantity: p.quantity,
+        })) ?? [],
+        'id',
+      )
+
+      if (propertiesToAddQuantity.length) {
+        propertiesToAddQuantity.forEach((property) => {
+          const existingProperty = properties?.find(
+            (p) => p.product_property?.data && p.product_property?.data.id === property.id,
+          )
+
+          if (existingProperty) existingProperty.quantity += property.quantity
+        })
+      }
+      const propertiesToAdd = differenceBy(
+        newItem.properties.map((p) => ({
+          id: p.propertyId,
+          quantity: p.quantity,
+        })),
+        properties?.map((p) => ({
+          id: p.product_property?.data?.id,
+          quantity: p.quantity,
+        })) ?? [],
+        'id',
+      )
+
+      if (propertiesToAdd.length) {
+        properties = properties ?? []
+        properties.push(...propertiesToAdd)
+      }
+    }
+
+    const payload = {
       data: {
-        quantity,
+        options: {
+          product_variant: cartItem.attributes.options?.product_variant?.data?.id,
+          quantity: cartItem.attributes.options!.quantity + newItem.variant.quantity,
+          properties: properties?.map((p) => ({
+            product_property: p.product_property?.data?.id ?? p.id,
+            quantity: p.quantity,
+          })),
+        },
       },
-    })
+    }
+
+    const body = JSON.stringify(payload)
 
     const res = await fetch(url, {
       method: 'put',
@@ -107,33 +161,101 @@ export default class CartService extends CMSService {
   }
 
   addToCart = async (data: AddToCartData) => {
-    // const checkExistsUrl = `${this.baseURL}/cart-items`
-    // const query = {
-    //   filters: {
-    //     product: {
-    //       id: {
-    //         $eq: data.productId,
-    //       },
-    //     },
-    //     options: {
-    //       product_variant: data.variant.variantId
-    //     },
-    //     cart: {
-    //       id: {
-    //         $eq: data.cartId,
-    //       },
-    //     },
-    //   },
-    // }
-    // const checkExistsSearch = qs.stringify(query)
+    const checkExistsUrl = `${this.baseURL}/cart-items`
+    const query = {
+      filters: {
+        product: {
+          id: {
+            $eq: data.productId,
+          },
+        },
+        purchase_option: {
+          id: data.purchaseOptionId,
+        },
+        options: {
+          product_variant: data.variant.variantId,
+        },
+        cart: {
+          id: {
+            $eq: data.cartId,
+          },
+        },
+      },
+      populate: {
+        options: {
+          populate: {
+            product_variant: true,
+            properties: {
+              populate: {
+                product_property: true,
+              },
+            },
+          },
+        },
+      },
+    }
+    const checkExistsSearch = qs.stringify(query)
 
-    // const existances = (await fetch(`${checkExistsUrl}?${checkExistsSearch}`, {
-    //   headers: this.headers,
-    // }).then((res) => res.json())) as QueryResponse<Array<WithMetadata<CartItem>>>
-    // const existingCartItem = existances.data?.[0]
+    const existances = (await fetch(`${checkExistsUrl}?${checkExistsSearch}`, {
+      headers: this.headers,
+    }).then((res) => res.json())) as QueryResponse<Array<WithMetadata<CartItem>>>
+    const existingCartItem = existances.data?.[0]
 
-    return this.createCartItem(data)
+    if (!existingCartItem) return this.createCartItem(data)
 
-    // return this.updateQuantity(existingCartItem.id, existingCartItem.attributes.quantity + quantity)
+    return this.updateCartItem(existingCartItem, data)
+  }
+
+  getCartItems = async (cartId: number) => {
+    const url = `${this.baseURL}/cart-items`
+
+    const query = {
+      cart: {
+        id: {
+          $eq: cartId,
+        },
+      },
+      populate: {
+        product: {
+          populate: ['thumbnail'],
+        },
+        purchase_option: true,
+        options: {
+          populate: {
+            product_variant: {
+              populate: ['image'],
+            },
+            properties: {
+              populate: {
+                product_property: true,
+              },
+            },
+          },
+        },
+      },
+      pagination: {
+        start: 0,
+        limit: 1000,
+      },
+    }
+
+    const searchString = qs.stringify(query, {
+      addQueryPrefix: true,
+    })
+
+    const res = await fetch(`${url}${searchString}`, {
+      headers: this.headers,
+    })
+
+    return res.json() as Promise<QueryResponse<Array<WithMetadata<CartItem>>>>
+  }
+
+  removeItem = async (cartItemId: number) => {
+    const url = `${this.baseURL}/cart-items/${cartItemId}`
+
+    await fetch(url, {
+      headers: this.headers,
+      method: 'delete',
+    })
   }
 }

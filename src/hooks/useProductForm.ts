@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 
-import APIService from '@/services/api.service'
+import { usePriceCalculation } from '@/queries/usePriceCalculation'
 import ProductService from '@/services/product.service'
 import { Product } from '@/types/Product'
 import { ProductSelectionFormData } from '@/types/ProductForm'
@@ -13,7 +13,6 @@ import { useService } from './useService'
 
 export default function useProductForm(slug?: string, queryParams?: QueryParams<Product>) {
   const productService = useService(ProductService)
-  const apiService = useService(APIService)
 
   const methods = useForm<ProductSelectionFormData>()
 
@@ -27,16 +26,10 @@ export default function useProductForm(slug?: string, queryParams?: QueryParams<
     enabled: !!slug,
   })
 
-  const { data: estimation } = useQuery({
-    queryKey: APIService.queryKeys.getPriceEstimation(
-      variant?.id || 0,
-      variant?.quantity || 0,
-      purchaseOption?.id || 0,
-    ),
-    queryFn: () =>
-      apiService.getPriceEstimation(variant!.id, variant!.quantity, purchaseOption!.id),
-    enabled: Boolean(variant?.id && variant?.quantity && purchaseOption?.id),
-    select: (res) => res.data,
+  const { data: estimation } = usePriceCalculation({
+    variantId: variant?.id,
+    quantity: variant?.quantity,
+    purchaseOptionId: purchaseOption?.id,
   })
 
   useEffect(() => {

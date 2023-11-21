@@ -2,13 +2,11 @@
 
 import { Grid } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
-import { useQuery } from '@tanstack/react-query'
 import React, { PropsWithChildren, useCallback, useState } from 'react'
 
 import ProductCard from '@/components/ProductCard'
 import ProductPreviewModal from '@/components/ProductPreviewModal'
-import { useService } from '@/hooks/useService'
-import ProductService from '@/services/product.service'
+import { useProducts } from '@/queries/useProducts'
 import { Product } from '@/types/Product'
 import { QueryParams } from '@/types/QueryParams'
 import { WithMetadata } from '@/types/QueryResponse'
@@ -32,8 +30,6 @@ export type ProductListProps = {
 }
 
 const ProductList: React.FC<ProductListProps> = ({ queryParams }) => {
-  const productService = useService(ProductService)
-
   const [selectedProduct, setSelectedProduct] = useState<WithMetadata<Product> | null>(null)
   const [productPreviewOpened, productPreview] = useDisclosure(false, {
     onClose: () => {
@@ -41,10 +37,7 @@ const ProductList: React.FC<ProductListProps> = ({ queryParams }) => {
     },
   })
 
-  const { data: products } = useQuery({
-    queryKey: ProductService.queryKeys.list(queryParams),
-    queryFn: () => productService.list(queryParams),
-  })
+  const { data: products } = useProducts(queryParams)
 
   const onAddToCart = useCallback(
     async (product: WithMetadata<Product>) => {

@@ -31,6 +31,9 @@ const DefaultLayout: React.FC<PropsWithChildren> = ({ children }) => {
           desktop: true,
         },
       }}
+      footer={{
+        height: 80,
+      }}
     >
       <AppShellHeader>
         <Header navOpened={navOpened} toggleNav={navbar.toggle} />

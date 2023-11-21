@@ -32,6 +32,11 @@ export const defaultTheme = createTheme({
         size: 'lg',
       },
     },
+    Indicator: {
+      defaultProps: {
+        zIndex: 1,
+      },
+    },
   },
   breakpoints: {
     xs: '36em',

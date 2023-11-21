@@ -10,7 +10,7 @@ export const propertyWrapper = style({
   position: 'relative',
   padding: defaultThemeVars.spacing.sm,
   cursor: 'pointer',
-  boxShadow: defaultThemeVars.shadows.xs,
+  // boxShadow: defaultThemeVars.shadows.xs,
   borderWidth: 2,
   borderStyle: 'solid',
   ':hover': {
