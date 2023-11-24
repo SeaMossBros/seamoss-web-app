@@ -7,6 +7,7 @@ export interface Cart {
     updatedAt: string
     publishedAt?: string
     cart_items: { data: CartItem[] }
+    is_checked_out: boolean
   }
 }
 export interface Cart_Plain {

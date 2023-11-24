@@ -57,11 +57,7 @@ const Header: React.FC<HeaderProps> = ({ navOpened, toggleNav }) => {
         </Flex>
         <Flex hiddenFrom="sm" className={navLinkContainer} gap="md">
           <CartDropdown />
-          <Burger
-            opened={navOpened}
-            onClick={() => JSON.stringify(toggleNav)}
-            aria-label="Toggle navigation"
-          />
+          <Burger opened={navOpened} onClick={toggleNav} aria-label="Toggle navigation" />
         </Flex>
       </Group>
     </Container>

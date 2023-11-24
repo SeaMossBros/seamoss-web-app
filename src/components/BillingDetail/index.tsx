@@ -1,13 +1,20 @@
 import { Box, Button, Card, Skeleton, Stack, Text } from '@mantine/core'
 import isNil from 'lodash/isNil'
+import { useCallback } from 'react'
 
 import { formatPrice } from '@/utils/price'
 
 export type BillingDetailProps = {
   total: number | null
+  onCheckout: () => void
+  isCheckingOut: boolean
 }
 
-const BillingDetail: React.FC<BillingDetailProps> = ({ total }) => {
+const BillingDetail: React.FC<BillingDetailProps> = ({ total, onCheckout, isCheckingOut }) => {
+  const onCheckoutClick = useCallback(() => {
+    onCheckout()
+  }, [onCheckout])
+
   return (
     <Card withBorder>
       <Stack gap="lg">
@@ -19,7 +26,9 @@ const BillingDetail: React.FC<BillingDetailProps> = ({ total }) => {
             </Text>
           </Skeleton>
         </Box>
-        <Button fullWidth>CHECKOUT</Button>
+        <Button loading={isCheckingOut} onClick={onCheckoutClick} fullWidth>
+          CHECKOUT
+        </Button>
       </Stack>
     </Card>
   )

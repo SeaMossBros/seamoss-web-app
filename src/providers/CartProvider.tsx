@@ -29,14 +29,17 @@ const CartProvider: React.FC<PropsWithChildren> = ({ children }) => {
     },
   })
 
-  const { data: cartRes, refetch } = useCartData(cartId)
+  const { data: cartRes, refetch, isFetched } = useCartData(cartId)
 
   useEffect(() => {
     if (cartRes?.error) {
       console.error(cartRes.error)
       removeCartId()
     }
-  }, [cartRes?.error, removeCartId, setCartId])
+    if (isFetched && !cartRes?.data) {
+      removeCartId()
+    }
+  }, [cartRes, isFetched, removeCartId, setCartId])
 
   const onSetCartId = useCallback(
     (id: number) => {

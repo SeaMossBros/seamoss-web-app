@@ -31,6 +31,9 @@ export default class CartService extends CMSService {
     const url = `${this.baseURL}/carts/${cartId}`
     const search = qs.stringify({
       populate: ['cart_items'],
+      filters: {
+        is_checked_out: false,
+      },
     })
 
     const res = await fetch(`${url}?${search}`, {
@@ -210,9 +213,10 @@ export default class CartService extends CMSService {
     const url = `${this.baseURL}/cart-items`
 
     const query = {
-      cart: {
-        id: {
-          $eq: cartId,
+      filters: {
+        cart: {
+          id: cartId,
+          is_checked_out: false,
         },
       },
       populate: {

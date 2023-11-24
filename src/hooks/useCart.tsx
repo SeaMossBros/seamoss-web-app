@@ -6,7 +6,6 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import omit from 'lodash/omit'
 import Link from 'next/link'
 import { useCallback, useContext } from 'react'
-import { flushSync } from 'react-dom'
 
 import { ROUTE_PATHS } from '@/consts/route-paths'
 import { CartContext } from '@/providers/CartProvider'
@@ -66,16 +65,15 @@ export const useCart = () => {
 
   const addToCart = useCallback(
     async (data: ProductSelectionFormData, options?: Parameters<typeof addItem>[1]) => {
-      if (!cartId) {
+      let definedCartId = cartId
+      if (!definedCartId) {
         const cart = await createCart()
-        flushSync(() => {
-          setCartId(cart.data!.id)
-        })
+        setCartId(cart.data!.id)
+        definedCartId = cart.data!.id
       }
-      if (!cartId) return
       addItem(
         {
-          cartId,
+          cartId: definedCartId,
           product_name: data.product.attributes.name,
           productId: data.product.id,
           variant: {
