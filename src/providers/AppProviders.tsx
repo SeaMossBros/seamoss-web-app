@@ -34,7 +34,11 @@ const AppProviders: React.FC<PropsWithChildren> = ({ children }) => {
         options={{ showSpinner: false }}
         shallowRouting
       />
-      <MantineProvider theme={defaultTheme} colorSchemeManager={schemeManager}>
+      <MantineProvider
+        theme={defaultTheme}
+        defaultColorScheme={schemeManager.defaultScheme}
+        colorSchemeManager={schemeManager}
+      >
         <ModalsProvider>
           <CartProvider>{children}</CartProvider>
         </ModalsProvider>

@@ -1,5 +1,7 @@
-import { differenceBy } from 'lodash'
+import differenceBy from 'lodash/differenceBy'
 import intersectionBy from 'lodash/intersectionBy'
+import isUndefined from 'lodash/isUndefined'
+import omitBy from 'lodash/omitBy'
 import qs from 'qs'
 
 import { Cart } from '@/types/Cart'
@@ -21,6 +23,7 @@ export type AddToCartData = {
   }>
   purchaseOptionId: number
 }
+
 export default class CartService extends CMSService {
   static queryKeys = {
     getById: (cartId: number) => ['/carts', cartId],
@@ -90,7 +93,7 @@ export default class CartService extends CMSService {
     return (await res.json()) as QueryResponse<CartItem>
   }
 
-  updateCartItem = async (cartItem: CartItem, newItem: AddToCartData) => {
+  updateCartItemQuantity = async (cartItem: CartItem, newItem: AddToCartData) => {
     const url = `${this.baseURL}/cart-items/${cartItem.id}`
 
     let properties = cartItem.attributes.options?.properties
@@ -163,6 +166,49 @@ export default class CartService extends CMSService {
     return (await res.json()) as QueryResponse<CartItem>
   }
 
+  updateCartItem = async (id: number, data: Partial<AddToCartData>) => {
+    const url = `${this.baseURL}/cart-items/${id}`
+
+    const payload = {
+      data: omitBy(
+        {
+          options: omitBy(
+            {
+              product_variant: data.variant?.variantId,
+              quantity: data.variant?.quantity,
+              properties: data.properties?.map((property) =>
+                omitBy(
+                  {
+                    product_property: property.propertyId,
+                    quantity: property.quantity,
+                  },
+                  isUndefined,
+                ),
+              ),
+            },
+            isUndefined,
+          ),
+          purchase_option: data.purchaseOptionId,
+        },
+        isUndefined,
+      ),
+    }
+
+    const body = JSON.stringify(payload)
+
+    const res = await fetch(url, {
+      method: 'put',
+      headers: {
+        ...this.headers,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body,
+    })
+
+    return (await res.json()) as QueryResponse<CartItem>
+  }
+
   addToCart = async (data: AddToCartData) => {
     const checkExistsUrl = `${this.baseURL}/cart-items`
     const query = {
@@ -206,7 +252,7 @@ export default class CartService extends CMSService {
 
     if (!existingCartItem) return this.createCartItem(data)
 
-    return this.updateCartItem(existingCartItem, data)
+    return this.updateCartItemQuantity(existingCartItem, data)
   }
 
   getCartItems = async (cartId: number) => {

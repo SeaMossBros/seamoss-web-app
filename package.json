@@ -27,7 +27,7 @@
     "chroma-js": "^2.4.2",
     "http-status": "^1.7.3",
     "lodash": "^4.17.21",
-    "next": "14.0.1",
+    "next": "^14.0.3",
     "next-client-cookies": "^1.1.0",
     "next-nprogress-bar": "^2.1.2",
     "qs": "^6.11.2",

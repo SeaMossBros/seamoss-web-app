@@ -6,10 +6,14 @@ type SchemeSubscriber = (colorScheme: MantineColorScheme) => void
 export class ColorSchemeManager implements MantineColorSchemeManager {
   private _subscribers: Map<SchemeSubscriber, SchemeSubscriber> = new Map()
 
+  public defaultScheme: MantineColorScheme | undefined
+
   constructor(
     private cookies: Cookies,
     public key: string = '_scheme',
-  ) {}
+  ) {
+    this.defaultScheme = (this.cookies.get(this.key) as MantineColorScheme | undefined) || 'light'
+  }
 
   private setScheme = (value: MantineColorScheme) => {
     const currentValue = this.cookies.get(this.key)

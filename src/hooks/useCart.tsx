@@ -63,6 +63,33 @@ export const useCart = () => {
     },
   })
 
+  const { mutate: updateItem, isPending: isUpdatingItem } = useMutation({
+    mutationFn: (data: { id: number; data: Partial<AddToCartData> }) =>
+      cartService.updateCartItem(data.id, data.data),
+    onSuccess: (res) => {
+      if (res?.error) {
+        console.error(res.error)
+        notifications.show({
+          color: 'red',
+          message: 'Unexpected error occurred',
+        })
+        return
+      }
+      notifications.show({
+        variant: 'success',
+        message: 'Your cart has been updated',
+      })
+    },
+    onError: (err) => {
+      console.error(err)
+      notifications.show({
+        color: 'red',
+        message: 'Unexpected error occurred',
+      })
+      return
+    },
+  })
+
   const addToCart = useCallback(
     async (data: ProductSelectionFormData, options?: Parameters<typeof addItem>[1]) => {
       let definedCartId = cartId
@@ -96,6 +123,8 @@ export const useCart = () => {
     ...cartContext,
     cartId,
     addToCart,
+    updateItem,
+    isUpdatingItem,
     isAddingToCart: isCreatingCart || isAddingItem,
   }
 }

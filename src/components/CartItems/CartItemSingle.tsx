@@ -16,6 +16,7 @@ import { modals } from '@mantine/modals'
 import { IconChevronDown, IconChevronUp, IconTrash } from '@tabler/icons-react'
 import { default as NextImage } from 'next/image'
 import { useCallback } from 'react'
+import { Pencil } from 'tabler-icons-react'
 
 import { useRemoveCartItem } from '@/mutations/useRemoveCartItem'
 import { CartItem } from '@/types/CartItem'
@@ -30,6 +31,7 @@ export type CartItemSingleProps = {
   total: number | null
   discountedPrice: number | null
   onRefetch: () => void
+  onRequestUpdate: (item: CartItem) => void
 }
 
 const CartItemSingle: React.FC<CartItemSingleProps> = ({
@@ -37,10 +39,15 @@ const CartItemSingle: React.FC<CartItemSingleProps> = ({
   total,
   discountedPrice,
   onRefetch,
+  onRequestUpdate,
 }) => {
   const [optionsExpanded, optionsSection] = useDisclosure(false)
 
   const { remove } = useRemoveCartItem()
+
+  const onEditClick = useCallback(() => {
+    onRequestUpdate(item)
+  }, [item, onRequestUpdate])
 
   const onRemove = useCallback(() => {
     modals.openConfirmModal({
@@ -113,6 +120,16 @@ const CartItemSingle: React.FC<CartItemSingleProps> = ({
             <Text component="span" fz="sm">
               {options?.quantity ?? 1}
             </Text>
+            <ActionIcon
+              my="auto"
+              variant="transparent"
+              size="sm"
+              type="button"
+              ml="sm"
+              onClick={onEditClick}
+            >
+              <Pencil />
+            </ActionIcon>
             <ActionIcon
               type="button"
               variant="transparent"

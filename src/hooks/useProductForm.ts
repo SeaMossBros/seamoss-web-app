@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { useEffect } from 'react'
-import { useForm } from 'react-hook-form'
+import { useForm, UseFormProps } from 'react-hook-form'
 
 import { usePriceCalculation } from '@/queries/usePriceCalculation'
 import ProductService from '@/services/product.service'
@@ -11,10 +11,14 @@ import { QueryParams } from '@/types/QueryParams'
 
 import { useService } from './useService'
 
-export default function useProductForm(slug?: string, queryParams?: QueryParams<Product_Plain>) {
+export default function useProductForm(
+  slug?: string,
+  queryParams?: QueryParams<Product_Plain>,
+  formProps?: UseFormProps<ProductSelectionFormData>,
+) {
   const productService = useService(ProductService)
 
-  const methods = useForm<ProductSelectionFormData>()
+  const methods = useForm<ProductSelectionFormData>(formProps)
 
   const variant = methods.watch('variant')
   const purchaseOption = methods.watch('purchaseOption')
@@ -34,27 +38,34 @@ export default function useProductForm(slug?: string, queryParams?: QueryParams<
 
   useEffect(() => {
     if (product) {
-      methods.setValue('product', product)
-      let defaultVariant = product.attributes.product_variants?.data?.find(
-        (v) => v.attributes.is_default,
-      )
-      if (!defaultVariant) {
-        defaultVariant = product.attributes.product_variants?.data?.at(0)
-      }
-      if (defaultVariant) {
-        methods.setValue('variant', {
-          ...defaultVariant,
-          quantity: 1,
-        })
+      methods.setValue('product', product, {
+        shouldDirty: false,
+      })
+      if (!methods.getValues('variant')) {
+        let defaultVariant = product.attributes.product_variants?.data?.find(
+          (v) => v.attributes.is_default,
+        )
+
+        if (!defaultVariant) {
+          defaultVariant = product.attributes.product_variants?.data?.at(0)
+        }
+        if (defaultVariant) {
+          methods.setValue('variant', {
+            ...defaultVariant,
+            quantity: 1,
+          })
+        }
       }
 
-      const recurringPurchaseOption = product.attributes.purchase_options?.data?.find(
-        (opt) => opt.attributes.type === PurchaseType.Recurring,
-      )
-      if (recurringPurchaseOption) {
-        methods.setValue('purchaseOption', recurringPurchaseOption)
-      } else {
-        methods.setValue('purchaseOption', product.attributes.purchase_options?.data?.at(0))
+      if (!methods.getValues('purchaseOption')) {
+        const recurringPurchaseOption = product.attributes.purchase_options?.data?.find(
+          (opt) => opt.attributes.type === PurchaseType.Recurring,
+        )
+        if (recurringPurchaseOption) {
+          methods.setValue('purchaseOption', recurringPurchaseOption)
+        } else {
+          methods.setValue('purchaseOption', product.attributes.purchase_options?.data?.at(0))
+        }
       }
     }
   }, [methods, product])

@@ -1,7 +1,10 @@
 import { Skeleton, Stack, Text } from '@mantine/core'
+import { useDisclosure } from '@mantine/hooks'
+import { useCallback, useState } from 'react'
 
 import { CartItem } from '@/types/CartItem'
 
+import CartItemUpdateModal from '../CartItemUpdateModal'
 import CartItemSingle from './CartItemSingle'
 
 export type CartItemsProps = {
@@ -25,6 +28,22 @@ const CartItems: React.FC<CartItemsProps> = ({
   billingInfo,
   onRefetch,
 }) => {
+  const [itemToUpdate, setItemToUpdate] = useState<CartItem | null>(null)
+  const [updateModalOpened, updateModal] = useDisclosure(false, {
+    onClose: () => {
+      setItemToUpdate(null)
+      onRefetch()
+    },
+  })
+
+  const onRequestUpdate = useCallback(
+    (item: CartItem) => {
+      setItemToUpdate(item)
+      updateModal.open()
+    },
+    [updateModal],
+  )
+
   if (isFetched && !items?.length) return <Text>There is no items in your cart</Text>
 
   return (
@@ -40,8 +59,16 @@ const CartItems: React.FC<CartItemsProps> = ({
               total={billingInfo?.[item.id]?.totalPrice ?? null}
               discountedPrice={billingInfo?.[item.id]?.discountedPrice ?? null}
               onRefetch={onRefetch}
+              onRequestUpdate={onRequestUpdate}
             />
           ))}
+      {itemToUpdate ? (
+        <CartItemUpdateModal
+          item={itemToUpdate}
+          opened={updateModalOpened}
+          onClose={updateModal.close}
+        />
+      ) : null}
     </Stack>
   )
 }
