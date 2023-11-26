@@ -87,7 +87,7 @@ const CartItemSingle: React.FC<CartItemSingleProps> = ({
   if (!purchase_option?.data) return null
 
   const {
-    attributes: { type },
+    attributes: { type: purchaseType, name: purchaseOptionName },
   } = purchase_option?.data
 
   return (
@@ -108,7 +108,7 @@ const CartItemSingle: React.FC<CartItemSingleProps> = ({
         <Stack className={itemInfoWrapper} gap={0}>
           <Text fw={600}>{productName}</Text>
           <Text fz="sm">
-            {type === PurchaseType.Recurring ? 'Delivery every 1 month' : 'One-time purchase'}
+            {purchaseType === PurchaseType.Recurring ? purchaseOptionName : 'One-time purchase'}
           </Text>
           <Flex align="center">
             <Badge color="primary-gray" size="sm" component="span">
