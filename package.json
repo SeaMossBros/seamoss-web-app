@@ -14,7 +14,7 @@
   "dependencies": {
     "@hookform/resolvers": "^3.3.2",
     "@mantine/colors-generator": "^7.2.1",
-    "@mantine/core": "^7.2.0",
+    "@mantine/core": "^7.2.2",
     "@mantine/hooks": "^7.2.0",
     "@mantine/modals": "^7.2.2",
     "@mantine/notifications": "^7.2.0",
@@ -28,12 +28,14 @@
     "http-status": "^1.7.3",
     "lodash": "^4.17.21",
     "next": "14.0.1",
+    "next-client-cookies": "^1.1.0",
     "next-nprogress-bar": "^2.1.2",
     "qs": "^6.11.2",
     "query-string": "^8.1.0",
     "react": "^18",
     "react-dom": "^18",
-    "react-hook-form": "^7.48.2"
+    "react-hook-form": "^7.48.2",
+    "tabler-icons-react": "^1.56.0"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.201",

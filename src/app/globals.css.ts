@@ -15,8 +15,3 @@ globalStyle('html, body', {
 globalStyle('a', {
   textDecoration: 'none',
 })
-
-globalStyle('.blogs-background', {
-  backgroundColor: 'bisque',
-  height: '1200px',
-})

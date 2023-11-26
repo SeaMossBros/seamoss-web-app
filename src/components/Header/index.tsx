@@ -1,12 +1,13 @@
 'use client'
-
 import { Burger, Container, Flex, Group, Title } from '@mantine/core'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import React from 'react'
 
 import { ROUTE_PATHS } from '@/consts/route-paths'
 
 import CartDropdown from '../CartNavLink'
+import ColorSchemeToggler from '../ColorSchemeToggler'
 import NavLinkItem from '../NavLinkItem'
 import { container, logoContainer, navLinkContainer, wrapper } from './Header.css'
 
@@ -27,7 +28,7 @@ const Header: React.FC<HeaderProps> = ({ navOpened, toggleNav }) => {
           </Title>
         </Link>
 
-        <Flex visibleFrom="sm" className={navLinkContainer} gap="md">
+        <Flex visibleFrom="sm" className={navLinkContainer} gap="md" align="center">
           <NavLinkItem
             label="Home"
             href={ROUTE_PATHS.HOME}
@@ -53,9 +54,11 @@ const Header: React.FC<HeaderProps> = ({ navOpened, toggleNav }) => {
             href={ROUTE_PATHS.ABOUT}
             active={pathname.startsWith(ROUTE_PATHS.ABOUT)}
           />
+          <ColorSchemeToggler />
           <CartDropdown />
         </Flex>
-        <Flex hiddenFrom="sm" className={navLinkContainer} gap="md">
+        {/* Hamburger Menu */}
+        <Flex hiddenFrom="sm" className={navLinkContainer} gap="md" align="center">
           <CartDropdown />
           <Burger opened={navOpened} onClick={toggleNav} aria-label="Toggle navigation" />
         </Flex>

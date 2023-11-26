@@ -1,10 +1,13 @@
-import { Container, Text } from '@mantine/core'
+import React from 'react'
+
+import HeroImage from '../components/HeroImage'
 
 const HomePage: React.FC = () => {
   return (
-    <Container>
-      <Text>Home Page</Text>
-    </Container>
+    <div>
+      <HeroImage />
+      <div>Products</div>
+    </div>
   )
 }
 

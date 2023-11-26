@@ -1,48 +1,65 @@
 'use client'
-import { useEffect, useState } from 'react'
+import './BlogsList.css'
 
+import { Image } from '@mantine/core'
+import { useQuery } from '@tanstack/react-query'
+import React from 'react'
+
+import { useService } from '@/hooks/useService'
+import BlogService from '@/services/blog.service'
 import { Blog } from '@/types/Blog'
-// Import components for displaying individual blog entries
+import { QueryParams } from '@/types/QueryParams'
 
-const BlogsList: React.FC = () => {
-  const [blogs, setBlogs] = useState<Blog[]>([])
-  const [loading, setLoading] = useState<boolean>(true)
+export type BlogListProps = {
+  queryParams: QueryParams<Blog>
+}
 
-  useEffect(() => {
-    const fetchBlogs = async () => {
-      try {
-        const response = await fetch('http://localhost:1337/api/blogs', {
-          method: 'GET',
-          headers: { 'Content-Type': 'application/json' },
-        }) // Adjust URL as necessary
-        if (response.ok) {
-          const data = await response.json()
-          if (data && Array.isArray(data)) {
-            setBlogs(data)
-          } else {
-            console.error('Unexpected response structure:', data)
-          }
-        } else {
-          console.error('API request failed:', response.status, response.statusText)
-        }
-        setLoading(false)
-      } catch (error) {
-        console.error('Error fetching blogs:', error)
-        setLoading(false)
-      }
-    }
-    fetchBlogs()
-  }, [])
+const BlogsList: React.FC<BlogListProps> = ({ queryParams }) => {
+  const blogService = useService(BlogService)
 
-  if (loading) return <div>Loading...</div>
+  // const [blogs, setBlogs] = useState<Blog[]>([])
+  // const [loading, setLoading] = useState<boolean>(true)
+
+  // useEffect(() => {
+  //   const fetchBlogs = async () => {
+  //     try {
+  //       const response = await fetch('http://localhost:1337/api/blogs', {
+  //         method: 'GET',
+  //         headers: { 'Content-Type': 'application/json' },
+  //       })
+  //       if (response.ok) {
+  //         const data = await response.json()
+  //         if (data && Array.isArray(data)) {
+  //           setBlogs(data)
+  //         } else {
+  //           console.error('Unexpected response structure:', data)
+  //         }
+  //       } else {
+  //         console.error('API request failed:', response.status, response.statusText)
+  //       }
+  //       setLoading(false)
+  //     } catch (error) {
+  //       console.error('Error fetching blogs:', error)
+  //       setLoading(false)
+  //     }
+  //   }
+  //   fetchBlogs()
+  // }, [])
+
+  const { data: blogs } = useQuery({
+    queryKey: BlogService.queryKeys.list(queryParams),
+    queryFn: () => blogService.list(queryParams),
+  })
+
   console.log('blogs to render', blogs)
-  if (!Array.isArray(blogs)) return <div>Error loading blogs.</div>
+  if (!blogs || !blogs.data || blogs.data.length < 1) return <div>Error loading blogs.</div>
 
   return (
     <div>
-      {blogs.map((blog) => (
+      {blogs.data.map((blog) => (
         <div key={blog.id}>
-          <h2>{blog.title}</h2>
+          <h2>{blog.id}</h2>
+          <Image src={blog.attributes.mainImage} alt="main blog image" />
           {/* Other blog details */}
         </div>
       ))}
