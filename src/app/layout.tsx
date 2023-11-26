@@ -5,6 +5,7 @@ import '@mantine/notifications/styles.css'
 import { ColorSchemeScript } from '@mantine/core'
 import { Notifications } from '@mantine/notifications'
 import type { Metadata } from 'next'
+import { CookiesProvider } from 'next-client-cookies/server'
 import React from 'react'
 
 import DefaultLayout from '@/components/DefaultLayout'
@@ -28,12 +29,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="manifest" href="/site.webmanifest" />
       </head>
       <body className={interFont.className}>
-        <AppProviders>
-          <DefaultLayout>
-            <Notifications />
-            {children}
-          </DefaultLayout>
-        </AppProviders>
+        <CookiesProvider>
+          <AppProviders>
+            <DefaultLayout>
+              <Notifications />
+              {children}
+            </DefaultLayout>
+          </AppProviders>
+        </CookiesProvider>
       </body>
     </html>
   )

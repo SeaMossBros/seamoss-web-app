@@ -1,40 +1,18 @@
 'use client'
 
-import { MantineProvider, useMantineColorScheme } from '@mantine/core'
+import { MantineProvider } from '@mantine/core'
 import { ModalsProvider } from '@mantine/modals'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { AppProgressBar as ProgressBar } from 'next-nprogress-bar'
-import React, { PropsWithChildren, useEffect, useState } from 'react'
+import React, { PropsWithChildren, useState } from 'react'
 
+import { useSchemeManager } from '@/hooks/useSchemeManager'
 import { defaultTheme, defaultThemeVars } from '@/themes/default'
 
 import CartProvider from './CartProvider'
 
-const colorSchemeStorageKey = 'mantine-color-scheme'
-
 const AppProviders: React.FC<PropsWithChildren> = ({ children }) => {
-  const { setColorScheme } = useMantineColorScheme()
-
-  useEffect(() => {
-    const getColorScheme = (): void => {
-      const storedColorScheme = localStorage.getItem(colorSchemeStorageKey)
-      if (storedColorScheme === 'dark' || storedColorScheme === 'light') {
-        setColorScheme(storedColorScheme)
-      }
-    }
-
-    getColorScheme()
-
-    const handleColorSchemeChange = (event: StorageEvent) => {
-      if (event.key === colorSchemeStorageKey && event.newValue) {
-        setColorScheme(event.newValue as 'dark' | 'light')
-      }
-    }
-
-    window.addEventListener('storage', handleColorSchemeChange)
-    return () => window.removeEventListener('storage', handleColorSchemeChange)
-  }, [setColorScheme])
-
+  const schemeManager = useSchemeManager()
   const [queryClient] = useState(
     () =>
       new QueryClient({
@@ -56,7 +34,7 @@ const AppProviders: React.FC<PropsWithChildren> = ({ children }) => {
         options={{ showSpinner: false }}
         shallowRouting
       />
-      <MantineProvider theme={{ ...defaultTheme }}>
+      <MantineProvider theme={defaultTheme} colorSchemeManager={schemeManager}>
         <ModalsProvider>
           <CartProvider>{children}</CartProvider>
         </ModalsProvider>

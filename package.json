@@ -28,6 +28,7 @@
     "http-status": "^1.7.3",
     "lodash": "^4.17.21",
     "next": "14.0.1",
+    "next-client-cookies": "^1.1.0",
     "next-nprogress-bar": "^2.1.2",
     "qs": "^6.11.2",
     "query-string": "^8.1.0",
