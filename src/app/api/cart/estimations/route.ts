@@ -1,6 +1,7 @@
 import { NextRequest } from 'next/server'
 
 import ProductService from '@/services/product.service'
+import { DiscountUnit } from '@/types/PurchaseOption'
 
 export const GET = async (req: NextRequest) => {
   const { searchParams } = req.nextUrl
@@ -40,9 +41,9 @@ export const GET = async (req: NextRequest) => {
     const { discount_unit, discount_value = 0 } = purchaseOption
 
     switch (discount_unit) {
-      case 'fiat':
+      case DiscountUnit.Fiat:
         return totalPrice - discount_value
-      case 'percentage':
+      case DiscountUnit.Percentage:
         const percentageLeft = 100 - discount_value
         return (totalPrice / 100) * percentageLeft
       default:

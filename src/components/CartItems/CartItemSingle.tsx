@@ -20,14 +20,13 @@ import { useCallback } from 'react'
 import { useRemoveCartItem } from '@/mutations/useRemoveCartItem'
 import { CartItem } from '@/types/CartItem'
 import { PurchaseType } from '@/types/PurchaseOption'
-import { WithMetadata } from '@/types/QueryResponse'
 import { getStrapiUploadUrl } from '@/utils/cms'
 import { formatPrice } from '@/utils/price'
 
 import { itemInfoWrapper, priceInfoWrapper, productImg } from './CartItemSingle.css'
 
 export type CartItemSingleProps = {
-  item: WithMetadata<CartItem>
+  item: CartItem
   total: number | null
   discountedPrice: number | null
   onRefetch: () => void
@@ -141,7 +140,7 @@ const CartItemSingle: React.FC<CartItemSingleProps> = ({
               </Button>
               <Collapse in={optionsExpanded}>
                 {options.properties.map((property) => (
-                  <Text key={property.id}>
+                  <Text key={property.product_property?.data.id}>
                     <Text component="span" fz="sm">
                       {property.product_property?.data?.attributes.name ?? ''}
                     </Text>

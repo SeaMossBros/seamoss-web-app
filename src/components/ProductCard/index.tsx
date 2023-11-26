@@ -11,15 +11,14 @@ import React, { useCallback, useMemo } from 'react'
 import { ROUTE_PATHS } from '@/consts/route-paths'
 import { useCart } from '@/hooks/useCart'
 import { Product } from '@/types/Product'
-import { WithMetadata } from '@/types/QueryResponse'
 import { getStrapiUploadUrl } from '@/utils/cms'
 import { formatPrice } from '@/utils/price'
 
 import { actionsContainer, card } from './ProductCard.css'
 
 export type ProductCardProps = {
-  product: WithMetadata<Product>
-  onAddToCart: (product: WithMetadata<Product>) => void
+  product: Product
+  onAddToCart: (product: Product) => void
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
@@ -54,7 +53,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
     const lowestPriceVariant = minBy(
       product.attributes.product_variants?.data ?? [],
       (variant: any) => {
-        // TODO: Add product variant
         if (!variant.attributes.unit_price) return Infinity
         return variant.attributes.unit_price * (variant.attributes.units_per_stock || 1)
       },

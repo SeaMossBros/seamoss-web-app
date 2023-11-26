@@ -7,7 +7,6 @@ export const config = {
   matcher: '/api/cms/:path*',
 }
 
-// Proxies /product/:id to https://my-proxied-site.com/product/:id
 export function middleware(request: NextRequest) {
   const requestHeaders = new Headers(request.headers)
   requestHeaders.set('Authorization', `Bearer ${APP_CONFIG.STRAPI.ACCESS_TOKEN}`)

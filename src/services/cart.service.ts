@@ -4,7 +4,7 @@ import qs from 'qs'
 
 import { Cart } from '@/types/Cart'
 import { CartItem } from '@/types/CartItem'
-import { QueryResponse, WithMetadata } from '@/types/QueryResponse'
+import { QueryResponse } from '@/types/QueryResponse'
 
 import CMSService from './core/cms.service'
 
@@ -31,13 +31,16 @@ export default class CartService extends CMSService {
     const url = `${this.baseURL}/carts/${cartId}`
     const search = qs.stringify({
       populate: ['cart_items'],
+      filters: {
+        is_checked_out: false,
+      },
     })
 
     const res = await fetch(`${url}?${search}`, {
       headers: this.headers,
     })
 
-    return (await res.json()) as QueryResponse<WithMetadata<Cart>>
+    return (await res.json()) as QueryResponse<Cart>
   }
 
   createCart = async () => {
@@ -54,7 +57,7 @@ export default class CartService extends CMSService {
         data: {},
       }),
     })
-    return (await res.json()) as QueryResponse<WithMetadata<Cart>>
+    return (await res.json()) as QueryResponse<Cart>
   }
 
   createCartItem = async (data: AddToCartData) => {
@@ -84,10 +87,10 @@ export default class CartService extends CMSService {
       },
       body,
     })
-    return (await res.json()) as QueryResponse<WithMetadata<CartItem>>
+    return (await res.json()) as QueryResponse<CartItem>
   }
 
-  updateCartItem = async (cartItem: WithMetadata<CartItem>, newItem: AddToCartData) => {
+  updateCartItem = async (cartItem: CartItem, newItem: AddToCartData) => {
     const url = `${this.baseURL}/cart-items/${cartItem.id}`
 
     let properties = cartItem.attributes.options?.properties
@@ -137,7 +140,7 @@ export default class CartService extends CMSService {
         options: {
           product_variant: cartItem.attributes.options?.product_variant?.data?.id,
           quantity: cartItem.attributes.options!.quantity + newItem.variant.quantity,
-          properties: properties?.map((p) => ({
+          properties: properties?.map((p: any) => ({
             product_property: p.product_property?.data?.id ?? p.id,
             quantity: p.quantity,
           })),
@@ -157,7 +160,7 @@ export default class CartService extends CMSService {
       body,
     })
 
-    return (await res.json()) as QueryResponse<WithMetadata<CartItem>>
+    return (await res.json()) as QueryResponse<CartItem>
   }
 
   addToCart = async (data: AddToCartData) => {
@@ -198,7 +201,7 @@ export default class CartService extends CMSService {
 
     const existances = (await fetch(`${checkExistsUrl}?${checkExistsSearch}`, {
       headers: this.headers,
-    }).then((res) => res.json())) as QueryResponse<Array<WithMetadata<CartItem>>>
+    }).then((res) => res.json())) as QueryResponse<Array<CartItem>>
     const existingCartItem = existances.data?.[0]
 
     if (!existingCartItem) return this.createCartItem(data)
@@ -210,9 +213,10 @@ export default class CartService extends CMSService {
     const url = `${this.baseURL}/cart-items`
 
     const query = {
-      cart: {
-        id: {
-          $eq: cartId,
+      filters: {
+        cart: {
+          id: cartId,
+          is_checked_out: false,
         },
       },
       populate: {
@@ -247,7 +251,7 @@ export default class CartService extends CMSService {
       headers: this.headers,
     })
 
-    return res.json() as Promise<QueryResponse<Array<WithMetadata<CartItem>>>>
+    return res.json() as Promise<QueryResponse<Array<CartItem>>>
   }
 
   removeItem = async (cartItemId: number) => {

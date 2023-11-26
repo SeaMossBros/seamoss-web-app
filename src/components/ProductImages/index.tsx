@@ -5,22 +5,21 @@ import { default as NextImage } from 'next/image'
 import { useCallback, useState } from 'react'
 
 import { Media } from '@/types/Media'
-import { WithMetadata } from '@/types/QueryResponse'
 import { getStrapiUploadUrl } from '@/utils/cms'
 
 import { previewImage } from './ProductImages.css'
 
 export type ProductImagesProps = {
   productName: string
-  defaultImage?: WithMetadata<Media> | null
-  images: Array<WithMetadata<Media>>
+  defaultImage?: Media | null
+  images: Array<Media>
 }
 
 const ProductImages: React.FC<ProductImagesProps> = ({ defaultImage, images, productName }) => {
-  const [currentImage, setCurrentImage] = useState<WithMetadata<Media>>(defaultImage ?? images[0])
+  const [currentImage, setCurrentImage] = useState<Media>(defaultImage ?? images[0])
 
   const onSelectImage = useCallback(function onSelectImageImpl(
-    this: WithMetadata<Media>,
+    this: Media,
     e: React.MouseEvent<HTMLDivElement, MouseEvent>,
   ) {
     const target = e.target as HTMLDivElement
@@ -53,7 +52,7 @@ const ProductImages: React.FC<ProductImagesProps> = ({ defaultImage, images, pro
               key={image.id}
               w={100}
               className={previewImage}
-              onClick={() => onSelectImage.bind(image)}
+              onClick={onSelectImage.bind(image)}
               data-active={currentImage.id === image.id}
             >
               <Image

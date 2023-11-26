@@ -8,13 +8,12 @@ import { useCart } from '@/hooks/useCart'
 import useProductForm from '@/hooks/useProductForm'
 import { Product } from '@/types/Product'
 import { ProductSelectionFormData } from '@/types/ProductForm'
-import { WithMetadata } from '@/types/QueryResponse'
 
 import ProductDetails from '../ProductDetails'
 import ProductImages from '../ProductImages'
 
 export type ProductPreviewModalProps = ModalProps & {
-  product: WithMetadata<Product> | null
+  product: Product | null
 }
 
 const ProductPreviewModal: React.FC<ProductPreviewModalProps> = ({ product, ...modalProps }) => {

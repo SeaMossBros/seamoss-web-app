@@ -13,7 +13,7 @@ import CartProvider from './CartProvider'
 const colorSchemeStorageKey = 'mantine-color-scheme'
 
 const AppProviders: React.FC<PropsWithChildren> = ({ children }) => {
-  const { colorScheme, setColorScheme } = useMantineColorScheme()
+  const { setColorScheme } = useMantineColorScheme()
 
   useEffect(() => {
     const getColorScheme = (): void => {
@@ -56,7 +56,7 @@ const AppProviders: React.FC<PropsWithChildren> = ({ children }) => {
         options={{ showSpinner: false }}
         shallowRouting
       />
-      <MantineProvider theme={{ ...defaultTheme, colorScheme }}>
+      <MantineProvider theme={{ ...defaultTheme }}>
         <ModalsProvider>
           <CartProvider>{children}</CartProvider>
         </ModalsProvider>

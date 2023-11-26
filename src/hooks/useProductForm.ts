@@ -4,14 +4,14 @@ import { useForm } from 'react-hook-form'
 
 import { usePriceCalculation } from '@/queries/usePriceCalculation'
 import ProductService from '@/services/product.service'
-import { Product } from '@/types/Product'
+import { Product_Plain } from '@/types/Product'
 import { ProductSelectionFormData } from '@/types/ProductForm'
 import { PurchaseType } from '@/types/PurchaseOption'
 import { QueryParams } from '@/types/QueryParams'
 
 import { useService } from './useService'
 
-export default function useProductForm(slug?: string, queryParams?: QueryParams<Product>) {
+export default function useProductForm(slug?: string, queryParams?: QueryParams<Product_Plain>) {
   const productService = useService(ProductService)
 
   const methods = useForm<ProductSelectionFormData>()

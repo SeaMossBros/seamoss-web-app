@@ -8,7 +8,12 @@ export const useCartData = (cartId: number | undefined) => {
 
   return useQuery({
     queryKey: CartService.queryKeys.getById(cartId!),
-    queryFn: () => cartService.getById(cartId!),
+    queryFn: () =>
+      cartService.getById(cartId!).then((res) => {
+        if (res.data?.attributes.is_checked_out) return null
+        return res
+      }),
     enabled: !!cartId,
+    gcTime: 0,
   })
 }

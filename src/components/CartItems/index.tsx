@@ -1,14 +1,13 @@
 import { Skeleton, Stack, Text } from '@mantine/core'
 
 import { CartItem } from '@/types/CartItem'
-import { WithMetadata } from '@/types/QueryResponse'
 
 import CartItemSingle from './CartItemSingle'
 
 export type CartItemsProps = {
   isLoading: boolean
   isFetched: boolean
-  items: Array<WithMetadata<CartItem>>
+  items: Array<CartItem>
   billingInfo: Record<
     number,
     {

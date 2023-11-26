@@ -3,7 +3,6 @@
 import { Stack, Title } from '@mantine/core'
 
 import { Product } from '@/types/Product'
-import { WithMetadata } from '@/types/QueryResponse'
 
 import ProductProperties from './ProductProperties'
 import ProductVariants from './ProductVariants'
@@ -11,7 +10,7 @@ import PurchaseOptions from './PurchaseOptions'
 import TotalPrice from './TotalPrice'
 
 export type ProductDetailsProps = {
-  product: WithMetadata<Product>
+  product: Product
   showOptionImages?: boolean
 }
 

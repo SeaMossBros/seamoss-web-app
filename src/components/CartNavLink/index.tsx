@@ -16,11 +16,11 @@ const CartNavLink: React.FC = () => {
   const { cartId } = useContext(CartContext)
   const pathname = usePathname()
 
-  const { data: { data: cart } = {} } = useCartData(cartId)
+  const { data: cartRes } = useCartData(cartId)
 
   const itemsCount = useMemo(
-    () => cart?.attributes.cart_items.data?.length,
-    [cart?.attributes.cart_items?.data?.length],
+    () => cartRes?.data?.attributes.cart_items.data?.length,
+    [cartRes?.data?.attributes.cart_items?.data?.length],
   )
 
   return (
