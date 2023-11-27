@@ -26,6 +26,7 @@ const ProductsPage: React.FC = async () => {
   await queryClient.prefetchQuery({
     queryKey: ProductService.queryKeys.list(params),
     queryFn: () => productService.list(params),
+    gcTime: 5 * 60 * 1000,
   })
 
   return (

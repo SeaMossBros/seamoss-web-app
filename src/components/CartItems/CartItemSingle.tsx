@@ -98,7 +98,9 @@ const CartItemSingle: React.FC<CartItemSingleProps> = ({
           className={productImg}
           src={
             thumbnail?.data?.attributes?.formats?.small?.url
-              ? getStrapiUploadUrl(thumbnail.data.attributes.formats.small.url)
+              ? getStrapiUploadUrl(
+                  thumbnail.data.attributes.formats.small?.url ?? thumbnail.data.attributes.url,
+                )
               : '/images/img-placeholder.webp'
           }
           width={70}
