@@ -3,7 +3,7 @@ const { createVanillaExtractPlugin } = require('@vanilla-extract/next-plugin')
 
 const withVanillaExtract = createVanillaExtractPlugin()
 
-const strapiUrl = new URL(process.env.NEXT_PUBLIC_CMS_URL)
+const strapiUrl = new URL(process.env.NEXT_PUBLIC_MEDIA_ORIGIN || process.env.NEXT_PUBLIC_CMS_URL)
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
