@@ -23,6 +23,7 @@ export default class ProductService extends CMSService {
     const search = qs.stringify(params)
     const res = await fetch(`${url}?${search}`, {
       headers: this.headers,
+      cache: 'no-store',
     })
     return await (res.json() as Promise<QueryResponse<Array<Product>>>)
   }
@@ -33,6 +34,7 @@ export default class ProductService extends CMSService {
 
     return fetch(`${url}?${search}`, {
       headers: this.headers,
+      cache: 'no-store',
     }).then((res) => res.json()) as Promise<QueryResponse<Product>>
   }
 
@@ -42,6 +44,7 @@ export default class ProductService extends CMSService {
 
     const res = await fetch(`${url}?${search}`, {
       headers: this.headers,
+      cache: 'no-store',
     })
 
     return res.json() as Promise<QueryResponse<ProductVariant>>
@@ -53,6 +56,7 @@ export default class ProductService extends CMSService {
 
     const res = await fetch(`${url}?${search}`, {
       headers: this.headers,
+      cache: 'no-store',
     })
 
     return res.json() as Promise<QueryResponse<PurchaseOption>>

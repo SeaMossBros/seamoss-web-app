@@ -18,7 +18,9 @@ export default class APIService {
       purchaseOption: purchaseOptionId,
       quantity,
     })
-    const res = await fetch(`/api/cart/estimations?${search}`)
+    const res = await fetch(`/api/cart/estimations?${search}`, {
+      cache: 'no-store',
+    })
 
     return res.json() as Promise<{
       data: {
@@ -31,7 +33,9 @@ export default class APIService {
   getCartBillingDetails = async (cartId: number) => {
     const url = `/api/cart/${cartId}/billing`
 
-    const res = await fetch(url)
+    const res = await fetch(url, {
+      cache: 'no-store',
+    })
 
     return res.json() as Promise<{
       data: {

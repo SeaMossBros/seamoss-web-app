@@ -41,6 +41,7 @@ export default class CartService extends CMSService {
 
     const res = await fetch(`${url}?${search}`, {
       headers: this.headers,
+      cache: 'no-store',
     })
 
     return (await res.json()) as QueryResponse<Cart>
@@ -295,6 +296,7 @@ export default class CartService extends CMSService {
 
     const res = await fetch(`${url}${searchString}`, {
       headers: this.headers,
+      cache: 'no-store',
     })
 
     return res.json() as Promise<QueryResponse<Array<CartItem>>>
