@@ -53,13 +53,13 @@ export const defaultTheme = createTheme({
     xl: '20px',
   },
   fontFamily: 'Greycliff CF',
-  fontSizes: {
-    xs: '9px',
-    sm: '15px',
-    md: '21px',
-    lg: '33px',
-    xl: '42px',
-  },
+  // fontSizes: {
+  //   xs: '9px',
+  //   sm: '15px',
+  //   md: '21px',
+  //   lg: '33px',
+  //   xl: '42px',
+  // },
 })
 
 export const defaultThemeVars = themeToVars(defaultTheme)

@@ -1,7 +1,9 @@
 import { style } from '@vanilla-extract/css'
 
+import { defaultThemeVars } from '@/themes/default'
+
 export const main = style({
-  marginTop: 0,
+  marginTop: defaultThemeVars.spacing.md,
   marginBottom: 40,
 })
 
