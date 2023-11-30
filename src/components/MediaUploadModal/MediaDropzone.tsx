@@ -1,30 +1,55 @@
-import { Button, Flex, Group, Image, rem, SimpleGrid, Stack, Text, TextInput } from '@mantine/core'
+import {
+  Box,
+  Button,
+  Flex,
+  Group,
+  Image,
+  rem,
+  SimpleGrid,
+  Stack,
+  Text,
+  TextInput,
+} from '@mantine/core'
 import { Dropzone, FileWithPath } from '@mantine/dropzone'
 import { IconPhoto, IconUpload, IconX } from '@tabler/icons-react'
 import { useCallback, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { useUploadFile } from '@/mutations/useUploadFile'
-import { getStrapiUploadUrl } from '@/utils/cms'
+import { useUploadFileInfo } from '@/mutations/useUploadFileInfo'
+import { Media_Plain } from '@/types/Media'
 
 type FormData = {
   alt: string
 }
 
-export type ImageUploadProps = {
-  onSave: (options: { src: string; alt?: string | undefined }) => void
+export type MediaUploadProps = {
+  onSave: (media: Media_Plain, alt?: string) => void
 }
 
-const ImageUpload: React.FC<ImageUploadProps> = ({ onSave }) => {
+const MediaUpload: React.FC<MediaUploadProps> = ({ onSave }) => {
   const [files, setFiles] = useState<FileWithPath[]>([])
 
   const methods = useForm<FormData>()
 
   const { mutateAsync: uploadAsync, isPending: isUploading } = useUploadFile()
+  const { mutateAsync: uploadFileInfoAsync, isPending: isUpdatingInfo } = useUploadFileInfo()
 
   const previews = files.map((file, index) => {
-    const imageUrl = URL.createObjectURL(file)
-    return <Image key={index} src={imageUrl} alt="" onLoad={() => URL.revokeObjectURL(imageUrl)} />
+    const url = URL.createObjectURL(file)
+
+    return (
+      <Box key={index}>
+        {file.type.startsWith('image') ? (
+          <Image src={url} alt="" onLoad={() => URL.revokeObjectURL(url)} />
+        ) : (
+          <video key={url} src={url} width="100%" controls />
+        )}
+        <Text fz="sm" lineClamp={1}>
+          {file.name}
+        </Text>
+      </Box>
+    )
   })
 
   const onDrop = useCallback((files: FileWithPath[]) => {
@@ -36,11 +61,21 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onSave }) => {
     async (data: FormData) => {
       if (!files.length) return
       const uploadRes = await uploadAsync(files)
-      const uploadedImage = uploadRes[0]
-      const src = getStrapiUploadUrl(uploadedImage.url)
-      onSave({ src, alt: data.alt })
+      let uploadedImage = uploadRes[0]
+      if (!uploadedImage) return
+      if (data.alt) {
+        const res = await uploadFileInfoAsync({
+          id: uploadedImage.id,
+          info: {
+            alternativeText: data.alt,
+          },
+        })
+
+        uploadedImage = res
+      }
+      onSave(uploadedImage, data.alt)
     },
-    [files, onSave, uploadAsync],
+    [files, onSave, uploadAsync, uploadFileInfoAsync],
   )
 
   return (
@@ -48,10 +83,10 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onSave }) => {
       <Stack mt="lg">
         <Dropzone
           multiple={false}
-          maxSize={5242880}
-          accept={['image/*']}
+          maxSize={26214400}
+          accept={['image/*', 'video/*']}
           onDrop={onDrop}
-          loading={isUploading}
+          loading={isUploading || isUpdatingInfo}
         >
           <Group justify="center" mih={220} style={{ pointerEvents: 'none' }}>
             <Dropzone.Accept>
@@ -74,9 +109,9 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onSave }) => {
             </Dropzone.Idle>
 
             <div>
-              <Text inline>Drag image here or click to select file</Text>
+              <Text inline>Drag image/video here or click to select file</Text>
               <Text size="sm" c="dimmed" inline mt={7}>
-                Each file should not exceed 5mb
+                Each file should not exceed 25mb
               </Text>
             </div>
           </Group>
@@ -90,11 +125,11 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onSave }) => {
           {...methods.register('alt')}
           label="Alternative text"
           type="text"
-          placeholder="Image alternative text..."
+          placeholder="Media alternative text..."
         />
 
         <Flex justify="right">
-          <Button type="submit" disabled={!files.length} loading={isUploading}>
+          <Button type="submit" disabled={!files.length} loading={isUploading || isUpdatingInfo}>
             Save
           </Button>
         </Flex>
@@ -103,4 +138,4 @@ const ImageUpload: React.FC<ImageUploadProps> = ({ onSave }) => {
   )
 }
 
-export default ImageUpload
+export default MediaUpload

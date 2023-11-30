@@ -13,17 +13,19 @@ import RichTextControlImage from '../RichTextControls/Image'
 
 export type ContentEditorProps = Omit<
   RichTextEditorProps,
-  'children' | 'defaultValue' | 'editor'
+  'children' | 'defaultValue' | 'editor' | 'onChange'
 > & {
   defaultValue?: JSONContent
   placeholder?: string
   readonly?: boolean
+  onChange?: (jsonContent: JSONContent) => void
 }
 
 const ContentEditor: React.FC<ContentEditorProps> = ({
   defaultValue,
   placeholder,
   readonly,
+  onChange,
   ...richTextEditorProps
 }) => {
   const editor = useEditor({
@@ -41,6 +43,10 @@ const ContentEditor: React.FC<ContentEditorProps> = ({
     ],
     content: defaultValue,
     editable: !readonly,
+    onUpdate: ({ editor: _editor }) => {
+      const json = _editor.getJSON()
+      onChange?.(json)
+    },
   })
 
   return (

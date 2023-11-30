@@ -7,19 +7,16 @@ type FormData = {
   alt: string
 }
 
-export type ImageFromLinkProps = {
-  onSave: (options: { src: string; alt?: string | undefined }) => void
+export type MediaFromLinkProps = {
+  onSave: (media: string, alt?: string) => void
 }
 
-const ImageFromLink: React.FC<ImageFromLinkProps> = ({ onSave }) => {
+const MediaFromLink: React.FC<MediaFromLinkProps> = ({ onSave }) => {
   const methods = useForm<FormData>()
 
   const onSubmit = useCallback(
     (data: FormData) => {
-      onSave({
-        src: data.url,
-        alt: data.alt,
-      })
+      onSave(data.url, data.alt)
     },
     [onSave],
   )
@@ -31,16 +28,16 @@ const ImageFromLink: React.FC<ImageFromLinkProps> = ({ onSave }) => {
           {...methods.register('url', {
             required: true,
           })}
-          label="Image URL"
+          label="Media URL"
           type="url"
-          placeholder="Paste image link here..."
+          placeholder="Paste image/video link here..."
           autoFocus
         />
         <TextInput
           {...methods.register('alt')}
           label="Alternative text"
           type="text"
-          placeholder="Image alternative text..."
+          placeholder="Media alternative text..."
         />
         <Flex justify="right">
           <Button type="submit">Save</Button>
@@ -50,4 +47,4 @@ const ImageFromLink: React.FC<ImageFromLinkProps> = ({ onSave }) => {
   )
 }
 
-export default ImageFromLink
+export default MediaFromLink

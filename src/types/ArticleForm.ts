@@ -1,8 +1,8 @@
-import { Article_NoRelations } from './Article'
+import { Article_Plain } from './Article'
 
 export type ArticleFormData = {
-  title: Article_NoRelations['title']
-  introduction: Article_NoRelations['introduction']
-  content: Article_NoRelations['content']
-  cover_image: Article_NoRelations['cover_image']
+  title: Article_Plain['title']
+  introduction: Article_Plain['introduction']
+  content: Article_Plain['content']
+  cover: Article_Plain['cover']
 }

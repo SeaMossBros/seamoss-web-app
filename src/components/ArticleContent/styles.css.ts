@@ -23,6 +23,10 @@ export const contentEditorToolbar = style({
 
 export const contentEditorContent = style({})
 
+export const coverImageField = style({
+  cursor: 'pointer',
+})
+
 globalStyle(`.${contentEditorContent} > .tiptap`, {
   padding: 0,
   fontSize: defaultThemeVars.fontSizes.md,

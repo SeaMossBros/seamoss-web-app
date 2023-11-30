@@ -85,11 +85,12 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
     >
       <Card.Section>
         <Image
-          src={thumbnail?.url ? getStrapiUploadUrl(thumbnail.url) : '/images/placeholder.webp'}
+          src={thumbnail?.url ? getStrapiUploadUrl(thumbnail.url) : undefined}
           alt={product.attributes.name}
           component={NextImage}
           height={250}
           width={350}
+          fallbackSrc="/images/placeholder.webp"
           fit="fill"
           priority
         />

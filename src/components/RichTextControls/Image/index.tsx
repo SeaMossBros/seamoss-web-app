@@ -5,15 +5,20 @@ import { RichTextEditor, useRichTextEditorContext } from '@mantine/tiptap'
 import { IconPhoto } from '@tabler/icons-react'
 import { useCallback } from 'react'
 
-import ImageUploadModal from '@/components/ImageUploadModal'
+import MediaUploadModal from '@/components/MediaUploadModal'
+import { Media_Plain } from '@/types/Media'
+import { getStrapiUploadUrl } from '@/utils/cms'
 
 const RichTextControlImage: React.FC = () => {
   const [uploadModalOpened, uploadModal] = useDisclosure()
   const { editor } = useRichTextEditorContext()
 
   const onSave = useCallback(
-    (options: { src: string; alt?: string | undefined }) => {
-      editor?.commands.setImage(options)
+    (media: Media_Plain | string, alt?: string) => {
+      editor?.commands.setImage({
+        src: getStrapiUploadUrl(typeof media === 'string' ? media : media.url),
+        alt,
+      })
       uploadModal.close()
     },
     [editor?.commands, uploadModal],
@@ -28,7 +33,7 @@ const RichTextControlImage: React.FC = () => {
       >
         <IconPhoto stroke={1.5} size="1rem" />
       </RichTextEditor.Control>
-      <ImageUploadModal opened={uploadModalOpened} onClose={uploadModal.close} onSave={onSave} />
+      <MediaUploadModal opened={uploadModalOpened} onClose={uploadModal.close} onSave={onSave} />
     </>
   )
 }

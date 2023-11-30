@@ -1,5 +1,7 @@
 'use client'
 
+import { JSONContent } from '@tiptap/react'
+import { useCallback } from 'react'
 import { useFormContext } from 'react-hook-form'
 
 import { ArticleFormData } from '@/types/ArticleForm'
@@ -13,6 +15,13 @@ export type ArticleContentFieldProps = ArticleComponentCommonProps
 const ArticleContentField: React.FC<ArticleContentFieldProps> = ({ mode }) => {
   const methods = useFormContext<ArticleFormData>()
 
+  const onChange = useCallback(
+    (json: JSONContent) => {
+      methods.setValue('content', json)
+    },
+    [methods],
+  )
+
   return (
     <ContentEditor
       readonly={mode === 'view'}
@@ -23,6 +32,7 @@ const ArticleContentField: React.FC<ArticleContentFieldProps> = ({ mode }) => {
       }}
       defaultValue={methods.getValues('content')}
       placeholder="Article content goes here..."
+      onChange={onChange}
     />
   )
 }

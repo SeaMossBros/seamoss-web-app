@@ -12,7 +12,7 @@ export interface Article {
     introduction?: string
     content: JSONContent
     slug?: string
-    cover_image: { data: Media }
+    cover: { data: Media }
   }
 }
 export interface Article_Plain {
@@ -24,7 +24,7 @@ export interface Article_Plain {
   introduction?: string
   content: JSONContent
   slug?: string
-  cover_image: Media
+  cover: Media
 }
 
 export interface Article_NoRelations {
@@ -36,5 +36,5 @@ export interface Article_NoRelations {
   introduction?: string
   content: JSONContent
   slug?: string
-  cover_image: number
+  cover: number
 }

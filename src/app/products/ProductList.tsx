@@ -38,10 +38,6 @@ const ProductList: React.FC<ProductListProps> = ({ queryParams }) => {
 
   const { data: products } = useProducts(queryParams)
 
-  console.log({
-    products,
-  })
-
   const onAddToCart = useCallback(
     async (product: Product) => {
       setSelectedProduct(product)
