@@ -21,6 +21,7 @@ export type ContentEditorProps = Omit<
   onChange?: (jsonContent: JSONContent) => void
 }
 
+// TODO - Add video block
 const ContentEditor: React.FC<ContentEditorProps> = ({
   defaultValue,
   placeholder,
