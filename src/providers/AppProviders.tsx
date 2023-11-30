@@ -13,8 +13,7 @@ import { defaultTheme, defaultThemeVars } from '@/themes/default'
 import CartProvider from './CartProvider'
 
 const ReactQueryDevtoolsProduction = lazy(() =>
-  // @ts-expect-error deep import
-  import('@tanstack/react-query-devtools/build/lib/index.prod.js').then((d) => ({
+  import('@tanstack/react-query-devtools').then((d) => ({
     default: d.ReactQueryDevtools,
   })),
 )
