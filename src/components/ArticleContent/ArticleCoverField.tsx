@@ -53,11 +53,12 @@ const ArticleCoverField: React.FC<ArticleCoverFieldProps> = ({ mode }) => {
         {cover ? (
           cover?.attributes.mime.startsWith('image') ? (
             <Image
+              loading="eager"
               component={NextImage}
               src={cover?.attributes?.url ? getStrapiUploadUrl(cover?.attributes?.url) : undefined}
               alt={cover?.attributes?.alternativeText ?? ''}
               width={1200}
-              height={600}
+              height={628}
               fit="cover"
               fallbackSrc="/images/placeholder.webp"
               priority
@@ -80,7 +81,7 @@ const ArticleCoverField: React.FC<ArticleCoverFieldProps> = ({ mode }) => {
           />
         )}
         {mode === 'form' && hovered ? (
-          <Overlay color="black" backgroundOpacity={0.4} blur={4}>
+          <Overlay color="black" backgroundOpacity={0.4} blur={4} zIndex={0}>
             <Text fw={600} c="white">
               Select an image or video
             </Text>
