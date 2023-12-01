@@ -1,5 +1,6 @@
 'use client'
 
+import { Input } from '@mantine/core'
 import { Link, RichTextEditor, RichTextEditorProps } from '@mantine/tiptap'
 import Highlight from '@tiptap/extension-highlight'
 import Image from '@tiptap/extension-image'
@@ -9,7 +10,9 @@ import Underline from '@tiptap/extension-underline'
 import { JSONContent, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 
-import RichTextControlImage from '../RichTextControls/Image'
+import { Video } from '@/tiptap-extentions/video'
+
+import RichTextControlMedia from '../RichTextControls/Media'
 
 export type ContentEditorProps = Omit<
   RichTextEditorProps,
@@ -19,6 +22,7 @@ export type ContentEditorProps = Omit<
   placeholder?: string
   readonly?: boolean
   onChange?: (jsonContent: JSONContent) => void
+  error?: string
 }
 
 // TODO - Add video block
@@ -27,6 +31,7 @@ const ContentEditor: React.FC<ContentEditorProps> = ({
   placeholder,
   readonly,
   onChange,
+  error,
   ...richTextEditorProps
 }) => {
   const editor = useEditor({
@@ -39,6 +44,11 @@ const ContentEditor: React.FC<ContentEditorProps> = ({
       Image.configure({
         inline: true,
         allowBase64: true,
+      }),
+      Video.configure({
+        HTMLAttributes: {
+          width: '100%',
+        },
       }),
       Placeholder.configure({ placeholder: placeholder || 'Content...' }),
     ],
@@ -76,7 +86,7 @@ const ContentEditor: React.FC<ContentEditorProps> = ({
             <RichTextEditor.Hr />
             <RichTextEditor.BulletList />
             <RichTextEditor.OrderedList />
-            <RichTextControlImage />
+            <RichTextControlMedia />
           </RichTextEditor.ControlsGroup>
 
           <RichTextEditor.ControlsGroup>
@@ -93,6 +103,7 @@ const ContentEditor: React.FC<ContentEditorProps> = ({
         </RichTextEditor.Toolbar>
       ) : null}
       <RichTextEditor.Content />
+      {error ? <Input.Error>{error}</Input.Error> : null}
     </RichTextEditor>
   )
 }

@@ -9,7 +9,7 @@ import MediaFromLink from './MediaFromLink'
 
 export type MediaUploadModalContentProps = {
   uploadMethods?: Array<'upload' | 'link'>
-  onSave: (media: Media_Plain | string, alt?: string) => void
+  onSave: (type: 'video' | 'image', media: Media_Plain | string, alt?: string) => void
 }
 
 const MediaUploadModalContent: React.FC<MediaUploadModalContentProps> = ({

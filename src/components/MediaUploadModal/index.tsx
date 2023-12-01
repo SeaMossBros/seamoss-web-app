@@ -6,7 +6,7 @@ import MediaUploadModalContent from './UploadModalContent'
 
 export type MediaUploadModalProps = ModalProps & {
   uploadMethods?: Array<'upload' | 'link'>
-  onSave: (media: Media_Plain | string, alt?: string) => void
+  onSave: (type: 'video' | 'image', media: Media_Plain | string, alt?: string) => void
 }
 
 const MediaUploadModal: React.FC<MediaUploadModalProps> = ({

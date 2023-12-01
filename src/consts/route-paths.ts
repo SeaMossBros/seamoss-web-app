@@ -9,7 +9,7 @@ export const ROUTE_PATHS = {
   CART: '/cart',
   BLOG: {
     INEDX: '/blogs',
-    SINGULAR: '/blogs/{id}',
-    DOUBLE: '/blogs/{id_1}{id_2}',
+    SINGULAR: '/blogs/{slug}',
+    DOUBLE: '/blogs/{slug_1}{slug_2}',
   },
 }

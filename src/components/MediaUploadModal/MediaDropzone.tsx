@@ -24,7 +24,7 @@ type FormData = {
 }
 
 export type MediaUploadProps = {
-  onSave: (media: Media_Plain, alt?: string) => void
+  onSave: (type: 'video' | 'image', media: Media_Plain, alt?: string) => void
 }
 
 const MediaUpload: React.FC<MediaUploadProps> = ({ onSave }) => {
@@ -61,19 +61,19 @@ const MediaUpload: React.FC<MediaUploadProps> = ({ onSave }) => {
     async (data: FormData) => {
       if (!files.length) return
       const uploadRes = await uploadAsync(files)
-      let uploadedImage = uploadRes[0]
-      if (!uploadedImage) return
+      let uploadedMedia = uploadRes[0]
+      if (!uploadedMedia) return
       if (data.alt) {
         const res = await uploadFileInfoAsync({
-          id: uploadedImage.id,
+          id: uploadedMedia.id,
           info: {
             alternativeText: data.alt,
           },
         })
 
-        uploadedImage = res
+        uploadedMedia = res
       }
-      onSave(uploadedImage, data.alt)
+      onSave(uploadedMedia.mime.startsWith('image') ? 'image' : 'video', uploadedMedia, data.alt)
     },
     [files, onSave, uploadAsync, uploadFileInfoAsync],
   )

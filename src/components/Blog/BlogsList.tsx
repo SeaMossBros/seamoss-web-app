@@ -1,12 +1,12 @@
 'use client'
 import './BlogsList.css'
 
-import { Image } from '@mantine/core'
-import { useQuery } from '@tanstack/react-query'
+// import { Image } from '@mantine/core'
+// import { useQuery } from '@tanstack/react-query'
 import React from 'react'
 
-import { useService } from '@/hooks/useService'
-import BlogService from '@/services/blog.service'
+// import { useService } from '@/hooks/useService'
+// import BlogService from '@/services/blog.service'
 import { Blog } from '@/types/Blog'
 import { QueryParams } from '@/types/QueryParams'
 
@@ -14,8 +14,8 @@ export type BlogListProps = {
   queryParams: QueryParams<Blog>
 }
 
-const BlogsList: React.FC<BlogListProps> = ({ queryParams }) => {
-  const blogService = useService(BlogService)
+const BlogsList: React.FC<BlogListProps> = ({}) => {
+  // const blogService = useService(BlogService)
 
   // const [blogs, setBlogs] = useState<Blog[]>([])
   // const [loading, setLoading] = useState<boolean>(true)
@@ -46,23 +46,22 @@ const BlogsList: React.FC<BlogListProps> = ({ queryParams }) => {
   //   fetchBlogs()
   // }, [])
 
-  const { data: blogs } = useQuery({
-    queryKey: BlogService.queryKeys.list(queryParams),
-    queryFn: () => blogService.list(queryParams),
-  })
+  // const { data: blogs } = useQuery({
+  //   queryKey: BlogService.queryKeys.list(queryParams),
+  //   queryFn: () => blogService.list(queryParams),
+  // })
 
-  console.log('blogs to render', blogs)
-  if (!blogs || !blogs.data || blogs.data.length < 1) return <div>Error loading blogs.</div>
+  // console.log('blogs to render', blogs)
+  // if (!blogs || !blogs.data || blogs.data.length < 1) return <div>Error loading blogs.</div>
 
   return (
     <div>
-      {blogs.data.map((blog) => (
+      {/* {blogs.data.map((blog) => (
         <div key={blog.id}>
           <h2>{blog.id}</h2>
           <Image src={blog.attributes.mainImage} alt="main blog image" />
-          {/* Other blog details */}
         </div>
-      ))}
+      ))} */}
     </div>
   )
 }

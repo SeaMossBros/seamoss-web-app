@@ -21,10 +21,16 @@ export const contentEditorToolbar = style({
   padding: 0,
 })
 
-export const contentEditorContent = style({})
+export const contentEditorContent = style({
+  minHeight: 250,
+})
 
 export const coverImageField = style({
   cursor: 'pointer',
+})
+
+export const coverImageError = style({
+  border: `1px solid ${defaultThemeVars.colors.error}`,
 })
 
 globalStyle(`.${contentEditorContent} > .tiptap`, {

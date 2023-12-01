@@ -1,4 +1,4 @@
-import { AspectRatio, Image, Overlay, Text } from '@mantine/core'
+import { AspectRatio, Image, Input, Overlay, Text } from '@mantine/core'
 import { useDisclosure, useHover } from '@mantine/hooks'
 import classNames from 'classnames'
 import omit from 'lodash/omit'
@@ -12,7 +12,7 @@ import { getStrapiUploadUrl } from '@/utils/cms'
 
 import MediaUploadModal from '../MediaUploadModal'
 import { ArticleComponentCommonProps } from './common'
-import { coverImageField } from './styles.css'
+import { coverImageError, coverImageField } from './styles.css'
 
 export type ArticleCoverFieldProps = ArticleComponentCommonProps
 
@@ -29,13 +29,21 @@ const ArticleCoverField: React.FC<ArticleCoverFieldProps> = ({ mode }) => {
   }, [uploadModal])
 
   const onSave = useCallback(
-    (_media: string | Media_Plain) => {
+    (_type: 'video' | 'image', _media: string | Media_Plain) => {
       const media = _media as Media_Plain // we know for sure that user can only upload media by setting uploadMethods={['upload']}
       uploadModal.close()
-      methods.setValue('cover', {
-        id: media.id,
-        attributes: omit(media, 'id'),
-      })
+      methods.setValue(
+        'cover',
+        {
+          id: media.id,
+          attributes: omit(media, 'id'),
+        },
+        {
+          shouldValidate: true,
+          shouldDirty: true,
+          shouldTouch: true,
+        },
+      )
     },
     [methods, uploadModal],
   )
@@ -47,6 +55,7 @@ const ArticleCoverField: React.FC<ArticleCoverFieldProps> = ({ mode }) => {
         ratio={1200 / 628}
         className={classNames({
           [coverImageField]: mode === 'form',
+          [coverImageError]: Boolean(methods.formState.errors.cover?.message),
         })}
         onClick={onCoverClick}
       >
@@ -61,6 +70,8 @@ const ArticleCoverField: React.FC<ArticleCoverFieldProps> = ({ mode }) => {
               height={628}
               fit="cover"
               fallbackSrc="/images/placeholder.webp"
+              blurDataURL="/images/placeholder.webp"
+              placeholder="blur"
               priority
             />
           ) : (
@@ -88,6 +99,9 @@ const ArticleCoverField: React.FC<ArticleCoverFieldProps> = ({ mode }) => {
           </Overlay>
         ) : null}
       </AspectRatio>
+      {methods.formState.errors.cover?.message ? (
+        <Input.Error>{methods.formState.errors.cover.message}</Input.Error>
+      ) : null}
       <MediaUploadModal
         uploadMethods={['upload']}
         opened={uploadModalOpened}

@@ -9,16 +9,29 @@ import MediaUploadModal from '@/components/MediaUploadModal'
 import { Media_Plain } from '@/types/Media'
 import { getStrapiUploadUrl } from '@/utils/cms'
 
-const RichTextControlImage: React.FC = () => {
+const RichTextControlMedia: React.FC = () => {
   const [uploadModalOpened, uploadModal] = useDisclosure()
   const { editor } = useRichTextEditorContext()
 
   const onSave = useCallback(
-    (media: Media_Plain | string, alt?: string) => {
-      editor?.commands.setImage({
-        src: getStrapiUploadUrl(typeof media === 'string' ? media : media.url),
-        alt,
-      })
+    (type: 'video' | 'image', media: Media_Plain | string, alt?: string) => {
+      switch (type) {
+        case 'image': {
+          editor?.commands.setImage({
+            src: getStrapiUploadUrl(typeof media === 'string' ? media : media.url),
+            alt,
+          })
+          break
+        }
+        case 'video': {
+          editor?.commands.setVideo({
+            src: getStrapiUploadUrl(typeof media === 'string' ? media : media.url),
+          })
+          break
+        }
+        default:
+          break
+      }
       uploadModal.close()
     },
     [editor?.commands, uploadModal],
@@ -28,8 +41,8 @@ const RichTextControlImage: React.FC = () => {
     <>
       <RichTextEditor.Control
         onClick={uploadModal.open}
-        aria-label="Attach image"
-        title="Attach image"
+        aria-label="Attach media"
+        title="Attach media"
       >
         <IconPhoto stroke={1.5} size="1rem" />
       </RichTextEditor.Control>
@@ -38,4 +51,4 @@ const RichTextControlImage: React.FC = () => {
   )
 }
 
-export default RichTextControlImage
+export default RichTextControlMedia

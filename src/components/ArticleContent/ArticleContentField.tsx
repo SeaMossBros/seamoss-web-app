@@ -17,7 +17,11 @@ const ArticleContentField: React.FC<ArticleContentFieldProps> = ({ mode }) => {
 
   const onChange = useCallback(
     (json: JSONContent) => {
-      methods.setValue('content', json)
+      methods.setValue('content', json, {
+        shouldDirty: true,
+        shouldTouch: true,
+        shouldValidate: true,
+      })
     },
     [methods],
   )
@@ -33,6 +37,7 @@ const ArticleContentField: React.FC<ArticleContentFieldProps> = ({ mode }) => {
       defaultValue={methods.getValues('content')}
       placeholder="Article content goes here..."
       onChange={onChange}
+      error={methods.formState.errors.content?.message as unknown as string}
     />
   )
 }

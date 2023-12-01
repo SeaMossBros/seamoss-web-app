@@ -2,13 +2,15 @@ import { Button, Flex, Stack, TextInput } from '@mantine/core'
 import { useCallback } from 'react'
 import { useForm } from 'react-hook-form'
 
+import { isImage } from '@/utils/common'
+
 type FormData = {
   url: string
   alt: string
 }
 
 export type MediaFromLinkProps = {
-  onSave: (media: string, alt?: string) => void
+  onSave: (type: 'video' | 'image', media: string, alt?: string) => void
 }
 
 const MediaFromLink: React.FC<MediaFromLinkProps> = ({ onSave }) => {
@@ -16,7 +18,7 @@ const MediaFromLink: React.FC<MediaFromLinkProps> = ({ onSave }) => {
 
   const onSubmit = useCallback(
     (data: FormData) => {
-      onSave(data.url, data.alt)
+      onSave(isImage(data.url) ? 'image' : 'video', data.url, data.alt)
     },
     [onSave],
   )

@@ -25,7 +25,7 @@ const ArticleTitleField: React.FC<ArticleTitleFieldProps> = ({ mode }) => {
       fz="xl"
       fw="bold"
       errorProps={{
-        fz: 'sm',
+        fz: 'xs',
         fw: 'normal',
       }}
       classNames={{
