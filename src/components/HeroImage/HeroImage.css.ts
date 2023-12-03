@@ -3,10 +3,11 @@ import { style } from '@vanilla-extract/css'
 import { defaultThemeVars } from '@/themes/default'
 
 export const root = style({
-  backgroundSize: 'cover',
-  backgroundPosition: 'bottom',
-  backgroundImage:
-    'linear-gradient(240deg, #82c91e00 0%, #062343 81%), url(http://localhost:1337/uploads/IMG_1203_32bd46b28c.jpeg)',
+  // backgroundSize: 'cover',
+  // backgroundPosition: 'bottom',
+  // backgroundImage:
+  //   'linear-gradient(240deg, #82c91e00 0%, #062343 81%), url(http://localhost:1337/uploads/IMG_1203_32bd46b28c.jpeg)',
+  position: 'relative',
   paddingTop: `calc(${defaultThemeVars.spacing.xl} * 3)`,
   paddingLeft: `calc(${defaultThemeVars.spacing.xl} * 3)`,
   paddingBottom: `calc(${defaultThemeVars.spacing.xl} * 3)`,
@@ -21,9 +22,22 @@ export const root = style({
   },
 })
 
+export const carouselRoot = style({
+  position: 'absolute',
+  left: 0,
+  top: 0,
+  width: '100%',
+})
+
+export const slideImage = style({
+  filter: 'brightness(80%)',
+})
+
 export const inner = style({
+  position: 'relative',
   display: 'flex',
   justifyContent: 'space-between',
+  zIndex: 2,
 })
 
 export const image = style({
