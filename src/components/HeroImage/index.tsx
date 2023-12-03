@@ -50,6 +50,8 @@ const HeroImage: React.FC = () => {
               width={1512}
               height={560}
               fit="cover"
+              loading="eager"
+              priority
             />
           </Carousel.Slide>
         ))}
