@@ -1,6 +1,7 @@
 import { Container, Grid, GridCol } from '@mantine/core'
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
 import { Metadata } from 'next'
+import { headers } from 'next/headers'
 import { notFound } from 'next/navigation'
 import React from 'react'
 
@@ -44,6 +45,27 @@ const BlogShowPage: React.FC<Props> = async ({ params }) => {
     queryFn: () => blogService.getBySlug(params.slug, query),
   })
 
+  const headerList = headers()
+  const isAuthenticated = (() => {
+    const [AUTH_USER, AUTH_PASS] = (process.env.HTTP_BASIC_AUTH || ':').split(':')
+
+    const authheader = headerList.get('authorization') || headerList.get('Authorization')
+
+    if (!authheader) {
+      return false
+    }
+
+    const auth = Buffer.from(authheader.split(' ')[1], 'base64').toString().split(':')
+    const user = auth[0]
+    const pass = auth[1]
+
+    if (user == AUTH_USER && pass == AUTH_PASS) {
+      return true
+    } else {
+      return false
+    }
+  })()
+
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <Container>
@@ -54,7 +76,11 @@ const BlogShowPage: React.FC<Props> = async ({ params }) => {
               md: 9,
             }}
           >
-            <ArticleSingle slug={params.slug} queryParams={query} />
+            <ArticleSingle
+              isAuthenticated={isAuthenticated}
+              slug={params.slug}
+              queryParams={query}
+            />
           </GridCol>
           <GridCol
             visibleFrom="md"

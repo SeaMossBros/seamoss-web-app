@@ -6,7 +6,7 @@ import { APP_CONFIG } from './config/app'
 const [AUTH_USER, AUTH_PASS] = (process.env.HTTP_BASIC_AUTH || ':').split(':')
 
 export const config = {
-  matcher: ['/blogs/new', '/api/cms/:path*'],
+  matcher: ['/blogs/new', '/api/cms/:path*', '/login'],
 }
 
 function isAuthenticated(req: NextRequest) {
@@ -55,11 +55,28 @@ const handlePrivatePages = (request: NextRequest) => {
   return NextResponse.next()
 }
 
+const handleLogin = (request: NextRequest) => {
+  if (!isAuthenticated(request)) {
+    return new NextResponse('Authentication required', {
+      status: 401,
+      headers: { 'WWW-Authenticate': 'Basic' },
+    })
+  }
+
+  const requestHeaders = new Headers(request.headers)
+  const ref = requestHeaders.get('referer')
+
+  return NextResponse.redirect(ref || '/')
+}
+
 export function middleware(request: NextRequest) {
   if (request.nextUrl.pathname.startsWith('/api/cms')) {
     return handleCMSProxy(request)
   }
   if (request.nextUrl.pathname.startsWith('/blogs/new')) {
     return handlePrivatePages(request)
+  }
+  if (request.nextUrl.pathname === '/login') {
+    return handleLogin(request)
   }
 }

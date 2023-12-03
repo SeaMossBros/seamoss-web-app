@@ -1,5 +1,3 @@
-import { JSONContent } from '@tiptap/react'
-
 import { Media } from './Media'
 
 export interface Article {
@@ -10,7 +8,7 @@ export interface Article {
     publishedAt?: string
     title: string
     introduction?: string
-    content: JSONContent
+    content: string
     slug?: string
     cover: { data: Media }
   }
@@ -22,7 +20,7 @@ export interface Article_Plain {
   publishedAt?: string
   title: string
   introduction?: string
-  content: JSONContent
+  content: string
   slug?: string
   cover: Media
 }
@@ -34,7 +32,7 @@ export interface Article_NoRelations {
   publishedAt?: string
   title: string
   introduction?: string
-  content: JSONContent
+  content: string
   slug?: string
   cover: number
 }

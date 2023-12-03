@@ -25,8 +25,9 @@ const ArticleCoverField: React.FC<ArticleCoverFieldProps> = ({ mode }) => {
   const [uploadModalOpened, uploadModal] = useDisclosure()
 
   const onCoverClick = useCallback(() => {
+    if (mode !== 'form') return
     uploadModal.open()
-  }, [uploadModal])
+  }, [mode, uploadModal])
 
   const onSave = useCallback(
     (_type: 'video' | 'image', _media: string | Media_Plain) => {
@@ -62,7 +63,6 @@ const ArticleCoverField: React.FC<ArticleCoverFieldProps> = ({ mode }) => {
         {cover ? (
           cover?.attributes.mime.startsWith('image') ? (
             <Image
-              loading="eager"
               component={NextImage}
               src={cover?.attributes?.url ? getStrapiUploadUrl(cover?.attributes?.url) : undefined}
               alt={cover?.attributes?.alternativeText ?? ''}

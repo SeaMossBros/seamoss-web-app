@@ -8,8 +8,9 @@ export const ROUTE_PATHS = {
   ABOUT: '/about-us',
   CART: '/cart',
   BLOG: {
-    INEDX: '/blogs',
+    INDEX: '/blogs',
     SINGULAR: '/blogs/{slug}',
     DOUBLE: '/blogs/{slug_1}{slug_2}',
+    CREATE: '/blogs/new',
   },
 }

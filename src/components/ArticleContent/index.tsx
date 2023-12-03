@@ -3,14 +3,16 @@
 import '@mantine/tiptap/styles.css'
 
 import { yupResolver } from '@hookform/resolvers/yup'
-import { Button, Flex, Stack } from '@mantine/core'
-import { useRouter } from 'next/navigation'
+import { Button, Flex, Group, Stack, Text } from '@mantine/core'
+import { modals } from '@mantine/modals'
 import { useCallback } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
 import { object, string } from 'yup'
 
-import { ROUTE_PATHS } from '@/consts/route-paths'
 import { useCreateArticle } from '@/mutations/useCreateArticle'
+import { useDeleteArticle } from '@/mutations/useDeleteArticle'
+import { useUpdateArticle } from '@/mutations/useUpdateArticle'
+import { Article } from '@/types/Article'
 import { ArticleFormData } from '@/types/ArticleForm'
 
 import ArticleContentField from './ArticleContentField'
@@ -22,60 +24,117 @@ import { ArticleComponentCommonProps } from './common'
 const schema = object({
   title: string().required('Please input article title'),
   introduction: string().optional(),
-  content: object().required('Please input article content'),
+  content: string().required('Please input article content'),
   cover: object().required('Please select article thumbnail image'),
 })
 
 export type ArticleContentProps = ArticleComponentCommonProps & {
+  id?: number
+  isAuthenticated?: boolean
   defaultValues?: ArticleFormData
+  onEdit?: () => void
+  onSaved?: (data: Article) => void
+  onDeleted?: () => void
 }
 
-const ArticleContent: React.FC<ArticleContentProps> = ({ mode = 'view', defaultValues }) => {
-  const router = useRouter()
-
+const ArticleContent: React.FC<ArticleContentProps> = ({
+  id,
+  isAuthenticated,
+  mode = 'view',
+  defaultValues,
+  onEdit,
+  onSaved,
+  onDeleted,
+}) => {
   const methods = useForm<ArticleFormData>({
     mode: 'onChange',
     resolver: yupResolver(schema) as any,
     defaultValues,
   })
 
-  const { mutate: createArticle, isPending: isSubmitting } = useCreateArticle()
+  const { mutate: createArticle, isPending: isCreating } = useCreateArticle()
+  const { mutate: updateArticle, isPending: isUpdating } = useUpdateArticle()
+  const { mutate: deleteArticle } = useDeleteArticle()
+
+  const onDelete = useCallback(() => {
+    if (!id) return
+    modals.openConfirmModal({
+      title: 'Confirm delete article',
+      children: (
+        <Text size="sm">Are you sure to delete this article? This action is not revertable.</Text>
+      ),
+      labels: { confirm: 'Confirm', cancel: 'Cancel' },
+      confirmProps: {
+        color: 'red',
+      },
+      onConfirm: () =>
+        deleteArticle(id, {
+          onSuccess: () => onDeleted?.(),
+        }),
+    })
+  }, [deleteArticle, id, onDeleted])
 
   const onSubmit = useCallback(
     (data: ArticleFormData) => {
-      createArticle(
-        {
-          title: data.title,
-          cover: data.cover.id,
-          introduction: data.introduction,
-          content: data.content,
-        },
-        {
-          onSuccess: (data) => {
-            if (data.error || !data.data) return
-            const {
-              attributes: { slug },
-            } = data.data
-            if (!slug) return
-            router.push(ROUTE_PATHS.BLOG.SINGULAR.replaceAll('{slug}', slug))
+      const payload = {
+        title: data.title,
+        cover: data.cover.id,
+        introduction: data.introduction,
+        content: data.content,
+      }
+
+      if (id) {
+        return updateArticle(
+          {
+            id,
+            article: payload,
           },
+          {
+            onSuccess: (data) => {
+              if (data.error || !data.data) return
+              onSaved?.(data.data)
+            },
+          },
+        )
+      }
+
+      createArticle(payload, {
+        onSuccess: (data) => {
+          if (data.error || !data.data) return
+          onSaved?.(data.data)
         },
-      )
+      })
     },
-    [createArticle, router],
+    [createArticle, id, onSaved, updateArticle],
   )
 
   return (
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onSubmit)}>
         <Stack>
+          {isAuthenticated ? (
+            <Group justify="flex-end">
+              {mode === 'view' ? (
+                <>
+                  <Button variant="outline" onClick={onEdit}>
+                    Edit
+                  </Button>
+                </>
+              ) : null}
+              {id ? (
+                <Button color="red" onClick={onDelete}>
+                  Delete
+                </Button>
+              ) : null}
+            </Group>
+          ) : null}
           <ArticleCoverField mode={mode} />
           <ArticleTitleField mode={mode} />
           <ArticleIntroField mode={mode} />
           <ArticleContentField mode={mode} />
           {mode === 'form' ? (
             <Flex justify="flex-end" gap="sm">
-              <Button type="submit" loading={isSubmitting}>
+              <Button type="submit" loading={isCreating || isUpdating}>
                 Save
               </Button>
             </Flex>

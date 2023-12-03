@@ -7,8 +7,9 @@ import Image from '@tiptap/extension-image'
 import Placeholder from '@tiptap/extension-placeholder'
 import TextAlign from '@tiptap/extension-text-align'
 import Underline from '@tiptap/extension-underline'
-import { JSONContent, useEditor } from '@tiptap/react'
+import { useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
+import { useEffect } from 'react'
 
 import { Video } from '@/tiptap-extentions/video'
 
@@ -18,14 +19,13 @@ export type ContentEditorProps = Omit<
   RichTextEditorProps,
   'children' | 'defaultValue' | 'editor' | 'onChange'
 > & {
-  defaultValue?: JSONContent
+  defaultValue?: string
   placeholder?: string
   readonly?: boolean
-  onChange?: (jsonContent: JSONContent) => void
+  onChange?: (string: string) => void
   error?: string
 }
 
-// TODO - Add video block
 const ContentEditor: React.FC<ContentEditorProps> = ({
   defaultValue,
   placeholder,
@@ -55,10 +55,15 @@ const ContentEditor: React.FC<ContentEditorProps> = ({
     content: defaultValue,
     editable: !readonly,
     onUpdate: ({ editor: _editor }) => {
-      const json = _editor.getJSON()
-      onChange?.(json)
+      const html = _editor.getHTML()
+      onChange?.(html)
     },
   })
+
+  useEffect(() => {
+    return () => editor?.destroy()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <RichTextEditor {...richTextEditorProps} editor={editor}>

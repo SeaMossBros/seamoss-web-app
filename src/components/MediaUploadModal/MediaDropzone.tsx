@@ -12,7 +12,7 @@ import {
 } from '@mantine/core'
 import { Dropzone, FileWithPath } from '@mantine/dropzone'
 import { IconPhoto, IconUpload, IconX } from '@tabler/icons-react'
-import { useCallback, useState } from 'react'
+import { BaseSyntheticEvent, useCallback, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { useUploadFile } from '@/mutations/useUploadFile'
@@ -58,7 +58,8 @@ const MediaUpload: React.FC<MediaUploadProps> = ({ onSave }) => {
   }, [])
 
   const onSubmit = useCallback(
-    async (data: FormData) => {
+    async (data: FormData, e?: BaseSyntheticEvent) => {
+      e?.stopPropagation()
       if (!files.length) return
       const uploadRes = await uploadAsync(files)
       let uploadedMedia = uploadRes[0]

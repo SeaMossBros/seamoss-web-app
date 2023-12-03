@@ -4,6 +4,9 @@ import { defaultThemeVars } from '@/themes/default'
 
 export const card = style({
   cursor: 'pointer',
+  ':hover': {
+    boxShadow: defaultThemeVars.shadows.lg,
+  },
 })
 
 export const actionsContainer = style({

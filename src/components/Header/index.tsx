@@ -46,8 +46,8 @@ const Header: React.FC<HeaderProps> = ({ navOpened, toggleNav }) => {
           />
           <NavLinkItem
             label="Blogs"
-            href={ROUTE_PATHS.BLOG.INEDX}
-            active={pathname.startsWith(ROUTE_PATHS.BLOG.INEDX)}
+            href={ROUTE_PATHS.BLOG.INDEX}
+            active={pathname.startsWith(ROUTE_PATHS.BLOG.INDEX)}
           />
           <NavLinkItem
             label="About us"

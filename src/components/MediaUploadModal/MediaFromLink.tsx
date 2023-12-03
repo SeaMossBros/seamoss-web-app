@@ -1,5 +1,5 @@
 import { Button, Flex, Stack, TextInput } from '@mantine/core'
-import { useCallback } from 'react'
+import { BaseSyntheticEvent, useCallback } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { isImage } from '@/utils/common'
@@ -17,7 +17,8 @@ const MediaFromLink: React.FC<MediaFromLinkProps> = ({ onSave }) => {
   const methods = useForm<FormData>()
 
   const onSubmit = useCallback(
-    (data: FormData) => {
+    (data: FormData, e?: BaseSyntheticEvent) => {
+      e?.stopPropagation()
       onSave(isImage(data.url) ? 'image' : 'video', data.url, data.alt)
     },
     [onSave],

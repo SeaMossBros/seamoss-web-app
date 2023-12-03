@@ -1,11 +1,9 @@
 'use client'
 
-import { Anchor, Button, Card, Group, Image, Indicator, Stack, Text } from '@mantine/core'
-import { useHover } from '@mantine/hooks'
+import { Button, Card, Group, Image, Indicator, Stack, Text } from '@mantine/core'
 import minBy from 'lodash/minBy'
 import { default as NextImage } from 'next/image'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import React, { useCallback, useMemo } from 'react'
 
 import { ROUTE_PATHS } from '@/consts/route-paths'
@@ -22,9 +20,7 @@ export type ProductCardProps = {
 }
 
 const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
-  const { ref, hovered } = useHover()
   const { isAddingToCart } = useCart()
-  const router = useRouter()
 
   const productUrl = useMemo(
     () => ROUTE_PATHS.PRODUCT.SLUG.replaceAll('{slug}', product.attributes.slug),
@@ -70,19 +66,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
     return product.attributes.product_variants?.data?.some((variant) => !!variant.attributes.stock)
   }, [product.attributes.product_variants?.data])
 
-  const onClick = useCallback(() => {
-    router.push(productUrl)
-  }, [productUrl, router])
-
   return (
-    <Card
-      ref={ref}
-      onClick={() => onClick()}
-      className={card}
-      h={400}
-      shadow={hovered ? 'lg' : undefined}
-      withBorder
-    >
+    <Card className={card} h={400} component={Link} href={productUrl} withBorder>
       <Card.Section>
         <Image
           src={thumbnail?.url ? getStrapiUploadUrl(thumbnail.url) : undefined}
@@ -97,15 +82,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
       </Card.Section>
       <Stack mt="sm">
         <Stack gap={0}>
-          <Anchor
-            title={product.attributes.name}
-            component={Link}
-            href={productUrl}
-            lineClamp={2}
-            c="secondary-gray"
-          >
+          <Text title={product.attributes.name} lineClamp={2} c="primary-green">
             {product.attributes.name}
-          </Anchor>
+          </Text>
           <Indicator
             position="middle-start"
             processing={isInStock}

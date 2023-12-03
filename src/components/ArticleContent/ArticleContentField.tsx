@@ -1,8 +1,8 @@
 'use client'
 
-import { JSONContent } from '@tiptap/react'
 import { useCallback } from 'react'
 import { useFormContext } from 'react-hook-form'
+import sanitizeHtml from 'sanitize-html'
 
 import { ArticleFormData } from '@/types/ArticleForm'
 
@@ -16,8 +16,8 @@ const ArticleContentField: React.FC<ArticleContentFieldProps> = ({ mode }) => {
   const methods = useFormContext<ArticleFormData>()
 
   const onChange = useCallback(
-    (json: JSONContent) => {
-      methods.setValue('content', json, {
+    (html: string) => {
+      methods.setValue('content', html, {
         shouldDirty: true,
         shouldTouch: true,
         shouldValidate: true,
@@ -26,9 +26,21 @@ const ArticleContentField: React.FC<ArticleContentFieldProps> = ({ mode }) => {
     [methods],
   )
 
+  if (mode === 'view') {
+    const html = methods.getValues('content')
+    if (!html) return null
+    const sanitizedHtml = sanitizeHtml(html)
+    return (
+      <div
+        dangerouslySetInnerHTML={{
+          __html: sanitizedHtml,
+        }}
+      />
+    )
+  }
+
   return (
     <ContentEditor
-      readonly={mode === 'view'}
       classNames={{
         root: articleInputField,
         toolbar: contentEditorToolbar,

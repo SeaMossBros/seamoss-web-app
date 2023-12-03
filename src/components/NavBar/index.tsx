@@ -41,8 +41,8 @@ const NavBar: React.FC<NavBarProps> = ({ onClose }) => {
       <NavLinkItem
         className={navLink}
         label="Blogs"
-        href={ROUTE_PATHS.BLOG.INEDX}
-        active={pathname.startsWith(ROUTE_PATHS.BLOG.INEDX)}
+        href={ROUTE_PATHS.BLOG.INDEX}
+        active={pathname.startsWith(ROUTE_PATHS.BLOG.INDEX)}
         onClick={onClose}
       />
       <NavLinkItem
