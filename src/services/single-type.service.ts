@@ -20,7 +20,9 @@ export default class SingleTypeService extends CMSService {
       addQueryPrefix: true,
     })
 
-    const res = await fetch(`${url}${search}`)
+    const res = await fetch(`${url}${search}`, {
+      cache: 'no-cache',
+    })
 
     return res.json() as Promise<QueryResponse<HomePage>>
   }
