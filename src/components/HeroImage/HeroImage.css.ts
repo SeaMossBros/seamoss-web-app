@@ -3,10 +3,6 @@ import { style } from '@vanilla-extract/css'
 import { defaultThemeVars } from '@/themes/default'
 
 export const root = style({
-  // backgroundSize: 'cover',
-  // backgroundPosition: 'bottom',
-  // backgroundImage:
-  //   'linear-gradient(240deg, #82c91e00 0%, #062343 81%), url(http://localhost:1337/uploads/IMG_1203_32bd46b28c.jpeg)',
   position: 'relative',
   paddingTop: `calc(${defaultThemeVars.spacing.xl} * 3)`,
   paddingLeft: `calc(${defaultThemeVars.spacing.xl} * 3)`,

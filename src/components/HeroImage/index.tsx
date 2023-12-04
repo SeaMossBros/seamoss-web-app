@@ -7,6 +7,7 @@ import NextImage from 'next/image'
 import Link from 'next/link'
 import { useMemo, useRef } from 'react'
 
+import { ROUTE_PATHS } from '@/consts/route-paths'
 import { useHomePage } from '@/queries/useHomePage'
 import { getStrapiUploadUrl } from '@/utils/cms'
 
@@ -23,7 +24,9 @@ import {
 } from './HeroImage.css'
 
 const HeroImage: React.FC = () => {
-  const autoplay = useRef(Autoplay({ delay: 4000 }))
+  const autoplay = useRef(
+    Autoplay({ delay: 4000, stopOnInteraction: false, stopOnMouseEnter: false }),
+  )
   const { data } = useHomePage()
 
   const images = useMemo(() => {
@@ -66,7 +69,7 @@ const HeroImage: React.FC = () => {
               variant="gradient"
               gradient={{ from: 'blue', to: 'orange' }}
             >
-              Sea The Moss
+              SeaTheMoss
             </Text>{' '}
             Products
           </Title>
@@ -78,16 +81,25 @@ const HeroImage: React.FC = () => {
           </Text>
 
           <Box className={heroButtonContainer}>
-            <Link href="/products">
-              <Button className={control} mt={40} size="md">
-                Shop Products
-              </Button>
-            </Link>
-            <Link href="/about-us">
-              <Button variant="outline" className={control} mt={40} size="md">
-                Why Our Sea Moss?
-              </Button>
-            </Link>
+            <Button
+              component={Link}
+              href={ROUTE_PATHS.PRODUCT.INDEX}
+              className={control}
+              mt={40}
+              size="md"
+            >
+              Shop Products
+            </Button>
+            <Button
+              component={Link}
+              href={ROUTE_PATHS.ABOUT}
+              variant="outline"
+              className={control}
+              mt={40}
+              size="md"
+            >
+              Why Our Sea Moss?
+            </Button>
           </Box>
         </Box>
       </Box>
