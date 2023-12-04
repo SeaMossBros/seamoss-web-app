@@ -29,8 +29,6 @@ const PaymentSuccessModal: React.FC<{
         <Button variant="filled" component={Link} href={ROUTE_PATHS.PRODUCT.INDEX}>
           Continue shopping
         </Button>
-        {/* TODO: Add link to order details */}
-        <Button variant="outline">Go to order page</Button>
       </Group>
     </Modal>
   )
