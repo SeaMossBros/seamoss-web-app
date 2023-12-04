@@ -6,6 +6,8 @@ import { themeToVars } from '@mantine/vanilla-extract'
 
 // import { interFont } from '@/fonts/inter'
 
+console.log(generateColors('#026055'))
+
 export const defaultTheme = createTheme({
   // fontFamily: interFont.style.fontFamily,
   radius: {
@@ -25,7 +27,10 @@ export const defaultTheme = createTheme({
     'coral-red': generateColors('#a9391e'),
   },
   primaryColor: 'primary-green',
-  primaryShade: 9,
+  primaryShade: {
+    light: 9,
+    dark: 4,
+  },
   components: {
     Container: {
       defaultProps: {

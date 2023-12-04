@@ -1,5 +1,5 @@
 'use client'
-import { Burger, Container, Flex, Group, Title } from '@mantine/core'
+import { Burger, Container, Flex, Group, Image, Title } from '@mantine/core'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React from 'react'
@@ -23,6 +23,7 @@ const Header: React.FC<HeaderProps> = ({ navOpened, toggleNav }) => {
     <Container className={container}>
       <Group className={wrapper} justify="space-between" align="center">
         <Link href={ROUTE_PATHS.HOME} className={logoContainer}>
+          <Image src="/images/SeaTheMoss-StillSpinner.svg" alt="Logo" height={40} />
           <Title c="primary-green" order={2}>
             SeaTheMoss
           </Title>
