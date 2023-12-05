@@ -6,8 +6,6 @@ import { themeToVars } from '@mantine/vanilla-extract'
 
 // import { interFont } from '@/fonts/inter'
 
-console.log(generateColors('#026055'))
-
 export const defaultTheme = createTheme({
   // fontFamily: interFont.style.fontFamily,
   radius: {

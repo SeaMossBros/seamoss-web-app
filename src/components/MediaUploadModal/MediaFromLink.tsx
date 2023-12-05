@@ -25,28 +25,29 @@ const MediaFromLink: React.FC<MediaFromLinkProps> = ({ onSave }) => {
   )
 
   return (
-    <form onSubmit={methods.handleSubmit(onSubmit)}>
-      <Stack mt="lg" gap="lg">
-        <TextInput
-          {...methods.register('url', {
-            required: true,
-          })}
-          label="Media URL"
-          type="url"
-          placeholder="Paste image/video link here..."
-          autoFocus
-        />
-        <TextInput
-          {...methods.register('alt')}
-          label="Alternative text"
-          type="text"
-          placeholder="Media alternative text..."
-        />
-        <Flex justify="right">
-          <Button type="submit">Save</Button>
-        </Flex>
-      </Stack>
-    </form>
+    <Stack mt="lg" gap="lg">
+      <TextInput
+        {...methods.register('url', {
+          required: true,
+        })}
+        label="Media URL"
+        type="url"
+        placeholder="Paste image/video link here..."
+        autoFocus
+        withAsterisk
+      />
+      <TextInput
+        {...methods.register('alt')}
+        label="Alternative text"
+        type="text"
+        placeholder="Media alternative text..."
+      />
+      <Flex justify="right">
+        <Button type="button" onClick={methods.handleSubmit(onSubmit)}>
+          Save
+        </Button>
+      </Flex>
+    </Stack>
   )
 }
 

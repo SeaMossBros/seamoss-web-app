@@ -80,62 +80,65 @@ const MediaUpload: React.FC<MediaUploadProps> = ({ onSave }) => {
   )
 
   return (
-    <form onSubmit={methods.handleSubmit(onSubmit)}>
-      <Stack mt="lg">
-        <Dropzone
-          multiple={false}
-          maxSize={26214400}
-          accept={['image/*', 'video/*']}
-          onDrop={onDrop}
+    <Stack mt="lg">
+      <Dropzone
+        multiple={false}
+        maxSize={26214400}
+        accept={['image/*', 'video/*']}
+        onDrop={onDrop}
+        loading={isUploading || isUpdatingInfo}
+      >
+        <Group justify="center" mih={220} style={{ pointerEvents: 'none' }}>
+          <Dropzone.Accept>
+            <IconUpload
+              style={{ width: rem(52), height: rem(52), color: 'var(--mantine-color-blue-6)' }}
+              stroke={1.5}
+            />
+          </Dropzone.Accept>
+          <Dropzone.Reject>
+            <IconX
+              style={{ width: rem(52), height: rem(52), color: 'var(--mantine-color-red-6)' }}
+              stroke={1.5}
+            />
+          </Dropzone.Reject>
+          <Dropzone.Idle>
+            <IconPhoto
+              style={{ width: rem(52), height: rem(52), color: 'var(--mantine-color-dimmed)' }}
+              stroke={1.5}
+            />
+          </Dropzone.Idle>
+
+          <div>
+            <Text inline>Drag image/video here or click to select file</Text>
+            <Text size="sm" c="dimmed" inline mt={7}>
+              Each file should not exceed 25mb
+            </Text>
+          </div>
+        </Group>
+      </Dropzone>
+
+      <SimpleGrid cols={{ base: 1, sm: 4 }} mt={previews.length > 0 ? 'xl' : 0}>
+        {previews}
+      </SimpleGrid>
+
+      <TextInput
+        {...methods.register('alt')}
+        label="Alternative text"
+        type="text"
+        placeholder="Media alternative text..."
+      />
+
+      <Flex justify="right">
+        <Button
+          type="button"
+          onClick={methods.handleSubmit(onSubmit)}
+          disabled={!files.length}
           loading={isUploading || isUpdatingInfo}
         >
-          <Group justify="center" mih={220} style={{ pointerEvents: 'none' }}>
-            <Dropzone.Accept>
-              <IconUpload
-                style={{ width: rem(52), height: rem(52), color: 'var(--mantine-color-blue-6)' }}
-                stroke={1.5}
-              />
-            </Dropzone.Accept>
-            <Dropzone.Reject>
-              <IconX
-                style={{ width: rem(52), height: rem(52), color: 'var(--mantine-color-red-6)' }}
-                stroke={1.5}
-              />
-            </Dropzone.Reject>
-            <Dropzone.Idle>
-              <IconPhoto
-                style={{ width: rem(52), height: rem(52), color: 'var(--mantine-color-dimmed)' }}
-                stroke={1.5}
-              />
-            </Dropzone.Idle>
-
-            <div>
-              <Text inline>Drag image/video here or click to select file</Text>
-              <Text size="sm" c="dimmed" inline mt={7}>
-                Each file should not exceed 25mb
-              </Text>
-            </div>
-          </Group>
-        </Dropzone>
-
-        <SimpleGrid cols={{ base: 1, sm: 4 }} mt={previews.length > 0 ? 'xl' : 0}>
-          {previews}
-        </SimpleGrid>
-
-        <TextInput
-          {...methods.register('alt')}
-          label="Alternative text"
-          type="text"
-          placeholder="Media alternative text..."
-        />
-
-        <Flex justify="right">
-          <Button type="submit" disabled={!files.length} loading={isUploading || isUpdatingInfo}>
-            Save
-          </Button>
-        </Flex>
-      </Stack>
-    </form>
+          Save
+        </Button>
+      </Flex>
+    </Stack>
   )
 }
 
