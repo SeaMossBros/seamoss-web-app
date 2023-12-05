@@ -1,7 +1,8 @@
 'use client'
 
 import { Button, Grid, Stack } from '@mantine/core'
-import { useCallback } from 'react'
+import uniqBy from 'lodash/uniqBy'
+import { useCallback, useMemo } from 'react'
 import { FormProvider } from 'react-hook-form'
 
 import ProductDetails from '@/components/ProductDetails'
@@ -28,6 +29,18 @@ const ProductSingle: React.FC<ProductSingleProps> = ({ slug, queryParams }) => {
     [addToCart],
   )
 
+  const images = useMemo(
+    () =>
+      uniqBy(
+        [
+          ...(product?.attributes.thumbnail?.data ? [product.attributes.thumbnail.data] : []),
+          ...(product?.attributes.images?.data || []),
+        ],
+        'id',
+      ),
+    [product],
+  )
+
   if (!product) return null
 
   return (
@@ -43,7 +56,7 @@ const ProductSingle: React.FC<ProductSingleProps> = ({ slug, queryParams }) => {
             <ProductImages
               productName={product.attributes.name}
               defaultImage={product?.attributes.thumbnail?.data}
-              images={product?.attributes.images?.data || []}
+              images={images}
             />
           </Grid.Col>
           <Grid.Col

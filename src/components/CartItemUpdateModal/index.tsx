@@ -1,7 +1,8 @@
 'use client'
 
 import { Button, Flex, Grid, Modal, ModalProps, Stack } from '@mantine/core'
-import { useCallback } from 'react'
+import uniqBy from 'lodash/uniqBy'
+import { useCallback, useMemo } from 'react'
 import { FormProvider } from 'react-hook-form'
 
 import { useCart } from '@/hooks/useCart'
@@ -50,6 +51,20 @@ const CartItemUpdateModal: React.FC<CartItemUpdateModalProps> = ({ item, ...moda
     },
   )
 
+  const images = useMemo(
+    () =>
+      uniqBy(
+        [
+          ...(productDetails?.attributes.thumbnail?.data
+            ? [productDetails.attributes.thumbnail.data]
+            : []),
+          ...(productDetails?.attributes.images?.data || []),
+        ],
+        'id',
+      ),
+    [productDetails],
+  )
+
   const onSubmit = useCallback(
     (data: ProductSelectionFormData) => {
       if (!item) return
@@ -94,7 +109,7 @@ const CartItemUpdateModal: React.FC<CartItemUpdateModalProps> = ({ item, ...moda
                 <ProductImages
                   productName={productDetails.attributes.name}
                   defaultImage={productDetails.attributes.thumbnail?.data}
-                  images={productDetails.attributes.images?.data || []}
+                  images={images}
                 />
               </Grid.Col>
               <Grid.Col
