@@ -5,4 +5,5 @@ export type ArticleFormData = {
   introduction?: Article_Plain['introduction']
   content: Article_Plain['content']
   cover: Article_Plain['cover']
+  author: Article_Plain['author']
 }

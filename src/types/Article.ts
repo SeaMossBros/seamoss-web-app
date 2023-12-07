@@ -1,3 +1,4 @@
+import { Author, Author_Plain } from './Author'
 import { Media } from './Media'
 
 export interface Article {
@@ -11,6 +12,7 @@ export interface Article {
     content: string
     slug?: string
     cover: { data: Media }
+    author?: { data: Author }
   }
 }
 export interface Article_Plain {
@@ -23,6 +25,7 @@ export interface Article_Plain {
   content: string
   slug?: string
   cover: Media
+  author?: Author_Plain
 }
 
 export interface Article_NoRelations {
@@ -35,4 +38,5 @@ export interface Article_NoRelations {
   content: string
   slug?: string
   cover: number
+  author?: number
 }

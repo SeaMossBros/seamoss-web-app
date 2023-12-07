@@ -29,6 +29,13 @@ const ArticleSingle: React.FC<ArticleSingleProps> = ({ slug, queryParams, isAuth
             cover: article.data.attributes.cover.data,
             introduction: article.data.attributes.introduction,
             content: article.data.attributes.content,
+            author: article.data.attributes.author
+              ? {
+                  ...article.data.attributes.author.data.attributes,
+                  id: article.data.attributes.author.data.id,
+                  avatar: article.data.attributes.author.data.attributes.avatar?.data,
+                }
+              : undefined,
           }
         : undefined,
     [article?.data],
@@ -46,6 +53,10 @@ const ArticleSingle: React.FC<ArticleSingleProps> = ({ slug, queryParams, isAuth
     router.replace(ROUTE_PATHS.BLOG.INDEX)
   }, [router])
 
+  const onCancel = useCallback(() => {
+    setMode('view')
+  }, [])
+
   return (
     <ArticleContent
       id={article?.data?.id}
@@ -55,6 +66,7 @@ const ArticleSingle: React.FC<ArticleSingleProps> = ({ slug, queryParams, isAuth
       isAuthenticated={isAuthenticated}
       onSaved={onSaved}
       onDeleted={onDeleted}
+      onCancel={onCancel}
     />
   )
 }

@@ -37,7 +37,12 @@ const BlogShowPage: React.FC<Props> = async ({ params }) => {
 
   const query: QueryParams<Article_NoRelations> = {
     publicationState: 'live',
-    populate: '*',
+    populate: {
+      cover: true,
+      author: {
+        populate: '*',
+      },
+    },
   }
 
   await queryClient.prefetchQuery({

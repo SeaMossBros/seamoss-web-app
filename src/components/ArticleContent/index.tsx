@@ -12,9 +12,10 @@ import { object, string } from 'yup'
 import { useCreateArticle } from '@/mutations/useCreateArticle'
 import { useDeleteArticle } from '@/mutations/useDeleteArticle'
 import { useUpdateArticle } from '@/mutations/useUpdateArticle'
-import { Article } from '@/types/Article'
+import { Article, Article_NoRelations } from '@/types/Article'
 import { ArticleFormData } from '@/types/ArticleForm'
 
+import ArticleAuthorField from './ArticleAuthorField'
 import ArticleContentField from './ArticleContentField'
 import ArticleCoverField from './ArticleCoverField'
 import ArticleIntroField from './ArticleIntroField'
@@ -35,6 +36,7 @@ export type ArticleContentProps = ArticleComponentCommonProps & {
   onEdit?: () => void
   onSaved?: (data: Article) => void
   onDeleted?: () => void
+  onCancel?: () => void
 }
 
 const ArticleContent: React.FC<ArticleContentProps> = ({
@@ -45,6 +47,7 @@ const ArticleContent: React.FC<ArticleContentProps> = ({
   onEdit,
   onSaved,
   onDeleted,
+  onCancel,
 }) => {
   const methods = useForm<ArticleFormData>({
     mode: 'onChange',
@@ -76,11 +79,12 @@ const ArticleContent: React.FC<ArticleContentProps> = ({
 
   const onSubmit = useCallback(
     (data: ArticleFormData) => {
-      const payload = {
+      const payload: Partial<Article_NoRelations> = {
         title: data.title,
         cover: data.cover.id,
         introduction: data.introduction,
         content: data.content,
+        author: data.author?.id,
       }
 
       if (id) {
@@ -130,10 +134,14 @@ const ArticleContent: React.FC<ArticleContentProps> = ({
           ) : null}
           <ArticleCoverField mode={mode} />
           <ArticleTitleField mode={mode} />
+          <ArticleAuthorField mode={mode} />
           <ArticleIntroField mode={mode} />
           <ArticleContentField mode={mode} />
           {mode === 'form' ? (
             <Flex justify="flex-end" gap="sm">
+              <Button type="button" variant="default" onClick={onCancel}>
+                Cancel
+              </Button>
               <Button type="submit" loading={isCreating || isUpdating}>
                 Save
               </Button>
