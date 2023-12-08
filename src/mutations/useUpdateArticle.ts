@@ -25,7 +25,11 @@ export const useUpdateArticle = () => {
           color: 'red',
           message: 'Unexpected error occurred',
         })
+        return
       }
+      notifications.show({
+        message: 'Article saved successfully!',
+      })
     },
   })
 }

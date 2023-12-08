@@ -24,7 +24,11 @@ export const useCreateArticle = () => {
           color: 'red',
           message: 'Unexpected error occurred',
         })
+        return
       }
+      notifications.show({
+        message: 'Article created successfully!',
+      })
     },
   })
 }
