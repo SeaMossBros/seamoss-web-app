@@ -1,6 +1,6 @@
 'use client'
 
-import { Button, Card, Group, Image, Indicator, Stack, Text } from '@mantine/core'
+import { AspectRatio, Button, Card, Group, Image, Indicator, Stack, Text } from '@mantine/core'
 import minBy from 'lodash/minBy'
 import { default as NextImage } from 'next/image'
 import Link from 'next/link'
@@ -68,20 +68,22 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
   }, [product.attributes.product_variants?.data])
 
   return (
-    <Card className={card} h={400} withBorder>
+    <Card className={card} withBorder>
       <Card.Section component={Link} href={productUrl}>
-        <Image
-          src={thumbnail?.url ? getStrapiUploadUrl(thumbnail.url) : undefined}
-          alt={product.attributes.name}
-          component={NextImage}
-          height={250}
-          width={350}
-          fallbackSrc="/images/placeholder.webp"
-          fit="fill"
-          priority
-        />
+        <AspectRatio ratio={1}>
+          <Image
+            src={thumbnail?.url ? getStrapiUploadUrl(thumbnail.url) : undefined}
+            alt={product.attributes.name}
+            component={NextImage}
+            height={250}
+            width={350}
+            fallbackSrc="/images/placeholder.webp"
+            fit="fill"
+            priority
+          />
+        </AspectRatio>
       </Card.Section>
-      <Stack mt="sm">
+      <Stack mt="sm" h={130}>
         <Stack gap={0}>
           <Text
             className={productName}

@@ -4,11 +4,11 @@ export default class APIService {
   static queryKeys = {
     getPriceEstimation: (...params: Parameters<APIService['getPriceEstimation']>) => [
       '/api/cart/estimations',
-      params,
+      JSON.stringify(params),
     ],
     getCartBillingDetails: (...params: Parameters<APIService['getCartBillingDetails']>) => [
       '/api/cart/:id/billing',
-      params,
+      JSON.stringify(params),
     ],
   }
 

@@ -9,7 +9,7 @@ import React, { PropsWithChildren, useCallback, useMemo, useState } from 'react'
 import ProductCard from '@/components/ProductCard'
 import ProductPreviewModal from '@/components/ProductPreviewModal'
 import { useProducts } from '@/queries/useProducts'
-import { Product, Product_Plain } from '@/types/Product'
+import { Product, Product_NoRelations } from '@/types/Product'
 import { QueryParams } from '@/types/QueryParams'
 
 import { pagination } from './ProductList.css'
@@ -21,6 +21,7 @@ const ProductCol: React.FC<PropsWithChildren> = ({ children }) => {
         base: 12,
         xs: 6,
         sm: 4,
+        md: 3,
       }}
     >
       {children}
@@ -29,7 +30,7 @@ const ProductCol: React.FC<PropsWithChildren> = ({ children }) => {
 }
 
 export type ProductListProps = {
-  queryParams: QueryParams<Product_Plain>
+  queryParams: QueryParams<Product_NoRelations>
 }
 
 const ProductList: React.FC<ProductListProps> = ({ queryParams }) => {

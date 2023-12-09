@@ -32,7 +32,7 @@ export const defaultTheme = createTheme({
   components: {
     Container: {
       defaultProps: {
-        size: 'lg',
+        size: 'xl',
       },
     },
     Indicator: {

@@ -9,13 +9,13 @@ import CMSService from './core/cms.service'
 
 export default class BlogService extends CMSService {
   static queryKeys = {
-    list: (params: QueryParams<Article_Plain>) => ['/articles', params],
+    list: (params: QueryParams<Article_Plain>) => ['/articles', JSON.stringify(params)],
     getBySlug: (slug: string, params?: QueryParams<Article_NoRelations>) => [
       '/slugify/slugs/article',
       slug,
-      params,
+      JSON.stringify(params),
     ],
-    listAuthors: (params?: QueryParams<Author_NoRelations>) => ['/authors', params],
+    listAuthors: (params?: QueryParams<Author_NoRelations>) => ['/authors', JSON.stringify(params)],
   }
 
   list = async (params: QueryParams<Article_Plain>) => {
