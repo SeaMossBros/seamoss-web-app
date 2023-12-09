@@ -12,7 +12,7 @@ import { Product } from '@/types/Product'
 import { getStrapiUploadUrl } from '@/utils/cms'
 import { formatPrice } from '@/utils/price'
 
-import { actionsContainer, card } from './ProductCard.css'
+import { actionsContainer, card, productName } from './ProductCard.css'
 
 export type ProductCardProps = {
   product: Product
@@ -30,6 +30,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
   const onAddToCartClick = useCallback(
     (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
       e.stopPropagation()
+      e.preventDefault()
       onAddToCart(product)
     },
     [onAddToCart, product],
@@ -67,8 +68,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
   }, [product.attributes.product_variants?.data])
 
   return (
-    <Card className={card} h={400} component={Link} href={productUrl} withBorder>
-      <Card.Section>
+    <Card className={card} h={400} withBorder>
+      <Card.Section component={Link} href={productUrl}>
         <Image
           src={thumbnail?.url ? getStrapiUploadUrl(thumbnail.url) : undefined}
           alt={product.attributes.name}
@@ -82,7 +83,14 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
       </Card.Section>
       <Stack mt="sm">
         <Stack gap={0}>
-          <Text title={product.attributes.name} lineClamp={2} c="primary-green">
+          <Text
+            className={productName}
+            component={Link}
+            href={productUrl}
+            title={product.attributes.name}
+            lineClamp={2}
+            c="primary-green"
+          >
             {product.attributes.name}
           </Text>
           <Indicator
