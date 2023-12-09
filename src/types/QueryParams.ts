@@ -27,7 +27,9 @@ export enum FilterOp {
   not = '$not',
 }
 
-export type FilterOptions<TData> = Partial<Record<keyof TData, Partial<Record<FilterOp, any>>>>
+export type FilterOptions<TData> = Partial<
+  Record<keyof TData, string | number | boolean | Partial<Record<FilterOp, any>>>
+>
 
 export type PaginationOptions = {
   page?: number

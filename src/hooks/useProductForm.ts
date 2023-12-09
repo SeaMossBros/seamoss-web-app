@@ -23,7 +23,11 @@ export default function useProductForm(
   const variant = methods.watch('variant')
   const purchaseOption = methods.watch('purchaseOption')
 
-  const { data: product, isLoading } = useQuery({
+  const {
+    data: product,
+    isLoading,
+    refetch,
+  } = useQuery({
     queryKey: ProductService.queryKeys.getBySlug(slug!, queryParams),
     queryFn: () => productService.getBySlug(slug!, queryParams),
     select: (res) => res.data,
@@ -85,5 +89,6 @@ export default function useProductForm(
     estimation,
     methods,
     isLoading,
+    refetch,
   }
 }

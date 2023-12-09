@@ -1,6 +1,6 @@
 'use client'
 
-import { Stack, Title } from '@mantine/core'
+import { Rating, Stack, Title } from '@mantine/core'
 
 import { Product } from '@/types/Product'
 
@@ -20,6 +20,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product, showOptionImag
   return (
     <Stack>
       <Title>{attributes.name}</Title>
+      <Rating value={attributes.rating ?? 0} fractions={100} readOnly />
       <TotalPrice />
       {attributes.product_variants?.data?.length ? (
         <ProductVariants showImages={showOptionImages} />

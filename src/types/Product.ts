@@ -1,5 +1,6 @@
 import { Media } from './Media'
 import { ProductProperty, ProductProperty_Plain } from './ProductProperty'
+import { ProductReview, ProductReview_Plain } from './ProductReview'
 import { ProductVariant, ProductVariant_Plain } from './ProductVariant'
 import { PurchaseOption, PurchaseOption_Plain } from './PurchaseOption'
 
@@ -44,6 +45,8 @@ export interface Product {
     unit_property_selection_text?: string
     product_properties: { data: ProductProperty[] }
     purchase_options?: { data: PurchaseOption[] }
+    product_reviews: { data: ProductReview[] }
+    rating?: number
   }
 }
 export interface Product_Plain {
@@ -75,6 +78,8 @@ export interface Product_Plain {
   unit_property_selection_text?: string
   product_properties: ProductProperty_Plain[]
   purchase_options?: PurchaseOption_Plain[]
+  product_reviews: ProductReview_Plain[]
+  rating?: number
 }
 
 export interface Product_NoRelations {
@@ -106,4 +111,6 @@ export interface Product_NoRelations {
   unit_property_selection_text?: string
   product_properties: number[]
   purchase_options?: number[]
+  product_reviews: number[]
+  rating?: number
 }

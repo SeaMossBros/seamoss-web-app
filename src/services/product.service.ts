@@ -1,6 +1,7 @@
 import qs from 'qs'
 
 import { Product, Product_Plain } from '@/types/Product'
+import { ProductReview, ProductReview_NoRelations } from '@/types/ProductReview'
 import { ProductVariant, ProductVariant_Plain } from '@/types/ProductVariant'
 import { PurchaseOption, PurchaseOption_Plain } from '@/types/PurchaseOption'
 import { QueryParams } from '@/types/QueryParams'
@@ -14,6 +15,10 @@ export default class ProductService extends CMSService {
     getBySlug: (slug: string, params?: QueryParams<Product_Plain>) => [
       '/slugify/slugs/product',
       slug,
+      params,
+    ],
+    getProductReviews: (params: QueryParams<ProductReview_NoRelations>) => [
+      '/product-reviews',
       params,
     ],
   }
@@ -60,5 +65,45 @@ export default class ProductService extends CMSService {
     })
 
     return res.json() as Promise<QueryResponse<PurchaseOption>>
+  }
+
+  submitReview = async (
+    productId: number,
+    data: Omit<
+      ProductReview_NoRelations,
+      'product' | 'id' | 'createdAt' | 'updatedAt' | 'publishedAt'
+    >,
+  ) => {
+    const url = `${this.baseURL}/product-reviews`
+    const payload = {
+      data: {
+        ...data,
+        product: productId,
+      },
+    }
+
+    const body = JSON.stringify(payload)
+
+    const res = await fetch(url, {
+      method: 'post',
+      headers: {
+        ...this.headers,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body,
+    })
+
+    return res.json() as Promise<QueryResponse<ProductReview>>
+  }
+
+  getProductReviews = async (params: QueryParams<ProductReview_NoRelations>) => {
+    const url = `${this.baseURL}/product-reviews?${qs.stringify(params)}`
+
+    const res = await fetch(url, {
+      headers: this.headers,
+    })
+
+    return res.json() as Promise<QueryResponse<ProductReview[]>>
   }
 }
