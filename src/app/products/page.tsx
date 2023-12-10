@@ -43,6 +43,7 @@ const ProductsPage: React.FC<ProductsPageProps> = async ({ searchParams }) => {
   Object.entries(plainFilters).forEach(([key, value]) => {
     let val = value
     if (key === 'price_from' || key === 'price_to') val = parseFloat(value as unknown as string)
+    if (key === 'rating') val = parseInt(value as unknown as string)
     set(parsedFilters, key, val)
   })
 
@@ -63,6 +64,12 @@ const ProductsPage: React.FC<ProductsPageProps> = async ({ searchParams }) => {
     }
     if (parsedFilters.price_to) {
       anyFilters.product_variants.unit_price.$lte = parsedFilters.price_to
+    }
+  }
+
+  if (parsedFilters.rating) {
+    filters.rating = {
+      $gte: parsedFilters.rating,
     }
   }
 

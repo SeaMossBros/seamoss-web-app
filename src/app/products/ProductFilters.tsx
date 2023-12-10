@@ -9,6 +9,7 @@ import { ChangeEventHandler, useCallback, useMemo } from 'react'
 
 import CategoryFilter from '@/components/ProductFilters/CategoryFilter'
 import PriceFilter from '@/components/ProductFilters/PriceFilter'
+import RatingFilter from '@/components/ProductFilters/RatingFilter'
 import { Category } from '@/types/Product'
 
 import { chevron } from './ProductList.css'
@@ -76,6 +77,14 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({ filters }) => {
           }
           break
         }
+        case 'rating': {
+          if (!value) {
+            newFilters.rating = undefined
+            break
+          }
+          newFilters.rating = parseInt(value)
+          break
+        }
         default:
           break
       }
@@ -93,9 +102,12 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({ filters }) => {
     if (filters?.price_from || filters?.price_to) {
       items.push('price')
     }
+    if (filters?.rating) {
+      items.push('rating')
+    }
 
     return items
-  }, [filters?.category?.length, filters?.price_from, filters?.price_to])
+  }, [filters?.category?.length, filters?.price_from, filters?.price_to, filters?.rating])
 
   return (
     <Box>
@@ -117,6 +129,12 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({ filters }) => {
           <Accordion.Control>Price</Accordion.Control>
           <Accordion.Panel mt="md">
             <PriceFilter from={filters?.price_from} to={filters?.price_to} onChange={onChange} />
+          </Accordion.Panel>
+        </Accordion.Item>
+        <Accordion.Item value="rating">
+          <Accordion.Control>Rating</Accordion.Control>
+          <Accordion.Panel mt="md">
+            <RatingFilter rating={filters?.rating} onChange={onChange} />
           </Accordion.Panel>
         </Accordion.Item>
       </Accordion>
