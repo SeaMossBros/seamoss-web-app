@@ -618,10 +618,22 @@
     "@mantine/store" "7.2.2"
     react-transition-group "4.4.5"
 
+"@mantine/spotlight@^7.3.1":
+  version "7.3.1"
+  resolved "https://registry.yarnpkg.com/@mantine/spotlight/-/spotlight-7.3.1.tgz#7600b6f8514951359598cfa4dff450c5b297ba44"
+  integrity sha512-FgejHyrtwytwwErNwGab83qxrvNXe3TSCcWdJaOY4QSAbk9Awhja2ZpiDUKHV9MR5GKk3IiH6WVvEtYq5eOOhQ==
+  dependencies:
+    "@mantine/store" "7.3.1"
+
 "@mantine/store@7.2.2":
   version "7.2.2"
   resolved "https://registry.yarnpkg.com/@mantine/store/-/store-7.2.2.tgz#d5948fcc1bb3a4c4ae706692f2a636a9367696b5"
   integrity sha512-j8vR8whB332pGI8OXkM2/3rdh4LJxELJQTG+rTsCCd3VQuEJiRTQDKVaOvp9ONja3GU5b1Tk3zhKOrkpgxTJBA==
+
+"@mantine/store@7.3.1":
+  version "7.3.1"
+  resolved "https://registry.yarnpkg.com/@mantine/store/-/store-7.3.1.tgz#924e16e9e1af90cc0b383b656d90a39462cdeec1"
+  integrity sha512-B4kFI0ZhZTftlMvD5d8P0y1ATKFAMIA5MT4j0gNUgYEKMl1KkM/dT3kBPC2/32jz4GM9t2UL+D3CvkTwSX/BsA==
 
 "@mantine/tiptap@^7.2.2":
   version "7.2.2"

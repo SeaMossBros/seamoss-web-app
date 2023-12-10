@@ -1,5 +1,7 @@
 'use client'
-import { Burger, Container, Flex, Group, Image, Title } from '@mantine/core'
+import { ActionIcon, Burger, Container, Flex, Group, Image, Title } from '@mantine/core'
+import { spotlight } from '@mantine/spotlight'
+import { IconSearch } from '@tabler/icons-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React from 'react'
@@ -56,6 +58,9 @@ const Header: React.FC<HeaderProps> = ({ navOpened, toggleNav }) => {
             active={pathname.startsWith(ROUTE_PATHS.ABOUT)}
           />
           <ColorSchemeToggler />
+          <ActionIcon variant="subtle" color="primary-gray" onClick={spotlight.open}>
+            <IconSearch />
+          </ActionIcon>
           <CartDropdown />
         </Flex>
         {/* Hamburger Menu */}
