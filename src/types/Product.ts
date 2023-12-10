@@ -114,3 +114,7 @@ export interface Product_NoRelations {
   product_reviews: number[]
   rating?: number
 }
+
+export interface Product_NoRelations_WithMinPrice extends Product_NoRelations {
+  min_price?: number
+}

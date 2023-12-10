@@ -7,20 +7,20 @@ import { redirect } from 'next/navigation'
 import { ROUTE_PATHS } from '@/consts/route-paths'
 import getQueryClient from '@/react-query/getQueryClient'
 import ProductService from '@/services/product.service'
-import { Product_NoRelations } from '@/types/Product'
+import { Product_NoRelations_WithMinPrice } from '@/types/Product'
 import { QueryParams } from '@/types/QueryParams'
 
 import ProductFilters from './ProductFilters'
 import ProductList from './ProductList'
+import { ProductPageFilter } from './types'
 
 export const metadata: Metadata = {
   title: 'Products | SeaTheMoss',
 }
 
 type ProductsPageProps = {
-  searchParams: {
+  searchParams: ProductPageFilter & {
     page?: string
-    filters?: QueryParams<Product_NoRelations>['filters']
   }
 }
 
@@ -38,21 +38,41 @@ const ProductsPage: React.FC<ProductsPageProps> = async ({ searchParams }) => {
     redirect(ROUTE_PATHS.PRODUCT.INDEX)
   }
 
-  const parsedFilters: {
-    filters?: QueryParams<Product_NoRelations>['filters']
-  } = {}
+  const parsedFilters: ProductPageFilter = {}
 
-  Object.entries(plainFilters ?? {}).forEach(([key, value]) => {
-    set(parsedFilters, key, value)
+  Object.entries(plainFilters).forEach(([key, value]) => {
+    let val = value
+    if (key === 'price_from' || key === 'price_to') val = parseFloat(value as unknown as string)
+    set(parsedFilters, key, val)
   })
 
-  const params: QueryParams<Product_NoRelations> = {
+  const filters: QueryParams<Product_NoRelations_WithMinPrice>['filters'] = {}
+
+  if (parsedFilters.category) {
+    filters.category = {
+      $in: parsedFilters.category,
+    }
+  }
+
+  if (parsedFilters.price_from || parsedFilters.price_to) {
+    const anyFilters = filters as any
+    anyFilters.product_variants = anyFilters.product_variants ?? {}
+    anyFilters.product_variants.unit_price = {}
+    if (parsedFilters.price_from) {
+      anyFilters.product_variants.unit_price.$gte = parsedFilters.price_from
+    }
+    if (parsedFilters.price_to) {
+      anyFilters.product_variants.unit_price.$lte = parsedFilters.price_to
+    }
+  }
+
+  const params: QueryParams<Product_NoRelations_WithMinPrice> = {
     populate: ['images', 'thumbnail', 'product_variants'],
     pagination: {
       page,
       pageSize: LIMIT,
     },
-    filters: parsedFilters.filters,
+    filters,
   }
 
   await queryClient.prefetchQuery({
@@ -71,7 +91,7 @@ const ProductsPage: React.FC<ProductsPageProps> = async ({ searchParams }) => {
               md: 3,
             }}
           >
-            <ProductFilters filters={params.filters} />
+            <ProductFilters filters={parsedFilters} />
           </GridCol>
           <GridCol
             span={{

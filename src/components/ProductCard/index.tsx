@@ -51,16 +51,13 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
       product.attributes.product_variants?.data ?? [],
       (variant: any) => {
         if (!variant.attributes.unit_price) return Infinity
-        return variant.attributes.unit_price * (variant.attributes.units_per_stock || 1)
+        return variant.attributes.unit_price
       },
     )
 
     if (!lowestPriceVariant?.attributes.unit_price) return null
 
-    return (
-      lowestPriceVariant.attributes.unit_price *
-      (lowestPriceVariant.attributes.units_per_stock || 1)
-    )
+    return lowestPriceVariant.attributes.unit_price
   }, [product.attributes.product_variants])
 
   const isInStock = useMemo(() => {

@@ -1,16 +1,21 @@
 'use client'
 
-import { Accordion, Box, Checkbox, Stack } from '@mantine/core'
+import { Accordion, Box } from '@mantine/core'
+import { IconPlus } from '@tabler/icons-react'
 import uniq from 'lodash/uniq'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import qs from 'qs'
-import { FormEventHandler, useCallback } from 'react'
+import { ChangeEventHandler, useCallback, useMemo } from 'react'
 
-import { Category, Product_NoRelations } from '@/types/Product'
-import { FilterOp, QueryParams } from '@/types/QueryParams'
+import CategoryFilter from '@/components/ProductFilters/CategoryFilter'
+import PriceFilter from '@/components/ProductFilters/PriceFilter'
+import { Category } from '@/types/Product'
+
+import { chevron } from './ProductList.css'
+import { ProductPageFilter } from './types'
 
 export type ProductFiltersProps = {
-  filters?: QueryParams<Product_NoRelations>['filters']
+  filters?: ProductPageFilter
 }
 
 const ProductFilters: React.FC<ProductFiltersProps> = ({ filters }) => {
@@ -19,62 +24,99 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({ filters }) => {
   const router = useRouter()
 
   const onFilter = useCallback(
-    (_filters: QueryParams<Product_NoRelations>['filters']) => {
+    (_filters: ProductPageFilter) => {
       const query: any = qs.parse(searchParams.toString())
-      query.filters = _filters
-      const search = qs.stringify(query)
+      const newQuery = {
+        ...query,
+        ..._filters,
+      }
+      const search = qs.stringify(newQuery, {
+        arrayFormat: 'indices',
+      })
 
       const url = `${pathname}?${search}`
 
-      router.push(url)
+      router.replace(url)
     },
     [pathname, router, searchParams],
   )
 
-  const onChange = useCallback<FormEventHandler<HTMLDivElement>>(
+  const onChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
     (e) => {
-      const field = e.target as HTMLElement
-      const name = field.getAttribute('name')
-      const value = field.getAttribute('value')
+      const field = e.target
+      const name = field.name
+      const value = field.value
+
+      const newFilters = { ...filters }
 
       switch (name) {
         case 'category': {
-          const checked = (field as HTMLInputElement).checked
-          const categoryFilter = (filters?.category as Partial<Record<FilterOp, any>>) ?? {}
+          const checked = field.checked
           if (checked) {
-            categoryFilter.$in = uniq([...(categoryFilter.$in ?? []), value])
+            newFilters.category = uniq([...(filters?.category ?? []), value as Category])
           } else {
-            categoryFilter.$in = uniq(
-              categoryFilter.$in?.filter((category: Category) => category !== value) ?? [],
+            newFilters.category = uniq(
+              newFilters.category?.filter((category: Category) => category !== value) ?? [],
             )
           }
-          onFilter({ ...filters, category: categoryFilter })
+          break
+        }
+        case 'price': {
+          const range = JSON.parse(value)
+          const [from, to] = range
+          if (from) {
+            newFilters.price_from = from
+          }
+          if (to) {
+            if (parseFloat(to) > 100) {
+              newFilters.price_to = undefined
+              break
+            }
+            newFilters.price_to = to
+          }
           break
         }
         default:
           break
       }
+
+      onFilter(newFilters)
     },
     [filters, onFilter],
   )
 
+  const defaultOpenedItems = useMemo(() => {
+    const items: string[] = []
+    if (filters?.category?.length) {
+      items.push('category')
+    }
+    if (filters?.price_from || filters?.price_to) {
+      items.push('price')
+    }
+
+    return items
+  }, [filters?.category?.length, filters?.price_from, filters?.price_to])
+
   return (
-    <Box onChange={onChange}>
-      <Accordion>
+    <Box>
+      <Accordion
+        defaultValue={defaultOpenedItems}
+        chevron={<IconPlus />}
+        classNames={{
+          chevron: chevron,
+        }}
+        multiple
+      >
         <Accordion.Item value="category">
           <Accordion.Control>Categories</Accordion.Control>
           <Accordion.Panel mt="md">
-            <Stack>
-              {Object.values(Category).map((category) => (
-                <Checkbox
-                  key={category}
-                  name="category"
-                  value={category}
-                  label={category}
-                  defaultChecked={(filters?.category as any)?.$in?.includes(category)}
-                />
-              ))}
-            </Stack>
+            <CategoryFilter categoryFilters={filters?.category} onChange={onChange} />
+          </Accordion.Panel>
+        </Accordion.Item>
+        <Accordion.Item value="price">
+          <Accordion.Control>Price</Accordion.Control>
+          <Accordion.Panel mt="md">
+            <PriceFilter from={filters?.price_from} to={filters?.price_to} onChange={onChange} />
           </Accordion.Panel>
         </Accordion.Item>
       </Accordion>

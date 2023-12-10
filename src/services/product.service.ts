@@ -1,6 +1,6 @@
 import qs from 'qs'
 
-import { Product, Product_NoRelations, Product_Plain } from '@/types/Product'
+import { Product, Product_NoRelations_WithMinPrice, Product_Plain } from '@/types/Product'
 import { ProductReview, ProductReview_NoRelations } from '@/types/ProductReview'
 import { ProductVariant, ProductVariant_Plain } from '@/types/ProductVariant'
 import { PurchaseOption, PurchaseOption_Plain } from '@/types/PurchaseOption'
@@ -11,7 +11,10 @@ import CMSService from './core/cms.service'
 
 export default class ProductService extends CMSService {
   static queryKeys = {
-    list: (params?: QueryParams<Product_NoRelations>) => ['/products', JSON.stringify(params)],
+    list: (params?: QueryParams<Product_NoRelations_WithMinPrice>) => [
+      '/products',
+      JSON.stringify(params),
+    ],
     getBySlug: (slug: string, params?: QueryParams<Product_Plain>) => [
       '/slugify/slugs/product',
       slug,
@@ -23,7 +26,7 @@ export default class ProductService extends CMSService {
     ],
   }
 
-  list = async (params?: QueryParams<Product_NoRelations>) => {
+  list = async (params?: QueryParams<Product_NoRelations_WithMinPrice>) => {
     const url = `${this.baseURL}/products`
     const search = qs.stringify(params)
     const res = await fetch(`${url}?${search}`, {
