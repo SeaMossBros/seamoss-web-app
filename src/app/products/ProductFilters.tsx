@@ -67,6 +67,8 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({ filters }) => {
           const [from, to] = range
           if (from) {
             newFilters.price_from = from
+          } else {
+            newFilters.price_from = undefined
           }
           if (to) {
             if (parseFloat(to) > 100) {
@@ -74,6 +76,8 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({ filters }) => {
               break
             }
             newFilters.price_to = to
+          } else {
+            newFilters.price_to = undefined
           }
           break
         }
