@@ -13,6 +13,7 @@ export enum Category {
   Dry = 'Dry',
   Clothing = 'Clothing',
   Accessory = 'Accessory',
+  Dummy = 'Dummy',
 }
 
 export interface Product {
@@ -31,6 +32,7 @@ export interface Product {
     certifications?: string
     healthBenefits?: string
     ingredients?: string
+    packageDimensions?: string
     countryOfOrigin?: string
     dimensions?: string
     sku?: string
@@ -63,6 +65,7 @@ export interface Product_Plain {
   category?: Category
   certifications?: string
   healthBenefits?: string
+  packageDimensions?: string
   ingredients?: string
   countryOfOrigin?: string
   dimensions?: string
@@ -96,6 +99,7 @@ export interface Product_NoRelations {
   category?: Category
   certifications?: string
   healthBenefits?: string
+  packageDimensions?: string
   ingredients?: string
   countryOfOrigin?: string
   dimensions?: string
