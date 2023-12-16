@@ -40,9 +40,11 @@ const AppProviders: React.FC<PropsWithChildren> = ({ children }) => {
         defaultColorScheme={schemeManager.defaultScheme}
         colorSchemeManager={schemeManager}
       >
+        {/* <SessionProvider> */}
         <ModalsProvider>
           <CartProvider>{children}</CartProvider>
         </ModalsProvider>
+        {/* </SessionProvider> */}
       </MantineProvider>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>

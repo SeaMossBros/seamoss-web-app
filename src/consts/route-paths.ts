@@ -13,4 +13,5 @@ export const ROUTE_PATHS = {
     DOUBLE: '/blogs/{slug_1}{slug_2}',
     CREATE: '/blogs/new',
   },
+  LOGIN: '/auth/login',
 }

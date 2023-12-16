@@ -11,6 +11,7 @@ import { ROUTE_PATHS } from '@/consts/route-paths'
 import CartDropdown from '../CartNavLink'
 import ColorSchemeToggler from '../ColorSchemeToggler'
 import NavLinkItem from '../NavLinkItem'
+import UserMenu from '../UserMenu'
 import { container, logoContainer, navLinkContainer, wrapper } from './Header.css'
 
 export type HeaderProps = {
@@ -57,6 +58,7 @@ const Header: React.FC<HeaderProps> = ({ navOpened, toggleNav }) => {
             href={ROUTE_PATHS.ABOUT}
             active={pathname.startsWith(ROUTE_PATHS.ABOUT)}
           />
+          <UserMenu />
           <ColorSchemeToggler />
           <ActionIcon variant="subtle" color="primary-gray" onClick={spotlight.open}>
             <IconSearch />

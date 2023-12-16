@@ -1,3 +1,4 @@
+import { Stack } from '@mantine/core'
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
 import React from 'react'
 
@@ -17,8 +18,10 @@ const HomePage: React.FC = async () => {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <HeroImage />
-      <div>Products</div>
+      <Stack>
+        <HeroImage />
+        <div>Products</div>
+      </Stack>
     </HydrationBoundary>
   )
 }

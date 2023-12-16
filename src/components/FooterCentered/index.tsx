@@ -11,7 +11,7 @@ const links = [
   { link: '/blogs', label: 'Blogs' },
   { link: '/products', label: 'Shop Products' },
   { link: '/about-us', label: 'About Us' },
-  { link: '/login', label: 'Login' },
+  { link: '/login', label: 'Admin login' },
 ]
 
 const FooterCentered = () => {
