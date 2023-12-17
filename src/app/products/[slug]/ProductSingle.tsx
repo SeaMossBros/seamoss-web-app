@@ -1,10 +1,11 @@
 'use client'
 
-import { Button, Grid, Stack } from '@mantine/core'
+import { Accordion, Box, Button, Grid, Stack, Title } from '@mantine/core'
 import uniqBy from 'lodash/uniqBy'
 import { useCallback, useMemo } from 'react'
 import { FormProvider } from 'react-hook-form'
 
+import Markdown from '@/components/Markdown'
 import ProductDetails from '@/components/ProductDetails'
 import ProductImages from '@/components/ProductImages'
 import ProductReviews from '@/components/ProductReviews'
@@ -76,12 +77,44 @@ const ProductSingle: React.FC<ProductSingleProps> = ({ slug, queryParams }) => {
                 <Button type="submit" loading={isAddingToCart} fullWidth>
                   ADD TO CART
                 </Button>
+                <Accordion>
+                  {product.attributes.ingredients ? (
+                    <Accordion.Item value="ingredients">
+                      <Accordion.Control>Ingredients</Accordion.Control>
+                      <Accordion.Panel>
+                        <Markdown>{product.attributes.ingredients}</Markdown>
+                      </Accordion.Panel>
+                    </Accordion.Item>
+                  ) : null}
+                  {product.attributes.healthBenefits ? (
+                    <Accordion.Item value="healthBenefits">
+                      <Accordion.Control>Health benefits</Accordion.Control>
+                      <Accordion.Panel>
+                        <Markdown>{product.attributes.healthBenefits}</Markdown>
+                      </Accordion.Panel>
+                    </Accordion.Item>
+                  ) : null}
+                  {product.attributes.certifications ? (
+                    <Accordion.Item value="certifications">
+                      <Accordion.Control>Certifications</Accordion.Control>
+                      <Accordion.Panel>
+                        <Markdown>{product.attributes.certifications}</Markdown>
+                      </Accordion.Panel>
+                    </Accordion.Item>
+                  ) : null}
+                </Accordion>
               </Stack>
             </Grid.Col>
           </Grid>
         </form>
       </FormProvider>
-      {product ? <ProductReviews product={product} onRefetch={onRefetch} /> : null}
+      {product.attributes.description ? (
+        <Box>
+          <Title order={3}>Description</Title>
+          <Markdown>{product.attributes.description}</Markdown>
+        </Box>
+      ) : null}
+      <ProductReviews product={product} onRefetch={onRefetch} />
     </Stack>
   )
 }
