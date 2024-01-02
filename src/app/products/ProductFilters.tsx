@@ -12,7 +12,7 @@ import PriceFilter from '@/components/ProductFilters/PriceFilter'
 import RatingFilter from '@/components/ProductFilters/RatingFilter'
 import { Category } from '@/types/Product'
 
-import { chevron } from './ProductList.css'
+import { chevron, filtersContainer } from './ProductList.css'
 import { ProductPageFilter } from './types'
 
 export type ProductFiltersProps = {
@@ -114,7 +114,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({ filters }) => {
   }, [filters?.category?.length, filters?.price_from, filters?.price_to, filters?.rating])
 
   return (
-    <Box>
+    <Box className={filtersContainer}>
       <Accordion
         defaultValue={defaultOpenedItems}
         chevron={<IconPlus />}

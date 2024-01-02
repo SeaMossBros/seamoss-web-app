@@ -9,11 +9,12 @@ import React, { PropsWithChildren, useState } from 'react'
 
 import { useSchemeManager } from '@/hooks/useSchemeManager'
 import { defaultTheme, defaultThemeVars } from '@/themes/default'
+import { darkTheme, darkThemeVars } from '@/themes/dark'
 
 import CartProvider from './CartProvider'
 
 const AppProviders: React.FC<PropsWithChildren> = ({ children }) => {
-  const schemeManager = useSchemeManager()
+  const schemeManager = useSchemeManager();
   const [queryClient] = useState(
     () =>
       new QueryClient({
@@ -29,17 +30,18 @@ const AppProviders: React.FC<PropsWithChildren> = ({ children }) => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ProgressBar
-        height="2px"
-        color={defaultThemeVars.colors['primary-green'][9]}
-        options={{ showSpinner: false }}
-        shallowRouting
-      />
       <MantineProvider
-        theme={defaultTheme}
+        theme={schemeManager.get('light') === 'dark' ? darkTheme : defaultTheme}
         defaultColorScheme={schemeManager.defaultScheme}
         colorSchemeManager={schemeManager}
       >
+        <ProgressBar
+          height="2px"
+          // color={schemeManager.get('light') === 'dark' ? darkThemeVars.colors.orange[9] : defaultThemeVars.colors.teal[9]} // not working
+          color={defaultThemeVars.colors.teal[6]}
+          options={{ showSpinner: false }}
+          shallowRouting
+        />
         <ModalsProvider>
           <CartProvider>{children}</CartProvider>
         </ModalsProvider>

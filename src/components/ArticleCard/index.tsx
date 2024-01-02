@@ -10,6 +10,7 @@ import { getStrapiUploadUrl } from '@/utils/cms'
 import { isImage } from '@/utils/common'
 
 import { card } from './ArticleCard.css'
+import ToolTip from '../ToolTip'
 
 export type ArticleCardProps = {
   article: Omit<Article, 'content'>
@@ -44,10 +45,12 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
         </AspectRatio>
       </Card.Section>
       <Stack mt="sm">
-        <Text title={title} lineClamp={2} c="primary-green">
-          {title}
-        </Text>
-        <Text lineClamp={4} fz="sm" c="primary-gray">
+        <ToolTip title={title}>
+          <Text lineClamp={2} c="teal">
+            {title}
+          </Text>
+        </ToolTip>
+        <Text lineClamp={4} fz="sm" c="gray">
           {introduction}
         </Text>
       </Stack>

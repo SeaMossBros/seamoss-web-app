@@ -17,17 +17,20 @@ export const defaultTheme = createTheme({
   },
   colors: {
     white: generateColors('#fff'),
-    'primary-green': generateColors('#026055'),
-    'primary-gray': generateColors('#778490'),
-    'secondary-blue': generateColors('#20BFDB'),
-    'secondary-pink': generateColors('#E5BDAC'),
-    'secondary-gray': generateColors('#A2ADA6'),
-    'coral-red': generateColors('#a9391e'),
+    teal: generateColors('#087F5B'), // teal
+    cyan: generateColors('#0B7285'), // cyan
+    lime: generateColors('#5C940D'), // lime
+    orange: generateColors('#D9480F'), // orange
+    grape: generateColors('#862E9C'), // grape
+    red: generateColors('#C92A2A'), // red
+    gray: generateColors('#212529'), // gray
+    blue: generateColors('#1864AB'), // blue
+    pink: generateColors('#A61E4D'), // pink
   },
-  primaryColor: 'primary-green',
+  primaryColor: 'teal',
   primaryShade: {
-    light: 9,
-    dark: 4,
+    light: 6,
+    dark: 9,
   },
   components: {
     Container: {
@@ -56,6 +59,12 @@ export const defaultTheme = createTheme({
     xl: '20px',
   },
   fontFamily: 'Greycliff CF',
+  defaultGradient: {
+    from: 'white',
+    to: 'teal',
+    deg: 45
+  },
+  defaultRadius: 9
   // fontSizes: {
   //   xs: '9px',
   //   sm: '15px',

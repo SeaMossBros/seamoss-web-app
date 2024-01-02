@@ -1,6 +1,5 @@
 import { Box, Card, Flex, Image, NumberInput, NumberInputHandlers, Text } from '@mantine/core'
 import { IconMinus, IconPlus } from '@tabler/icons-react'
-import { default as NextImage } from 'next/image'
 import React, { useCallback, useEffect, useMemo, useRef } from 'react'
 import {
   FieldArrayWithId,
@@ -115,7 +114,6 @@ const ProductPropertySelection: React.FC<ProductPropertySelectionProps> = ({
         {attributes.image?.data?.attributes.url && showImage ? (
           <Box>
             <Image
-              component={NextImage}
               src={getStrapiUploadUrl(attributes.image.data.attributes.url)}
               alt={attributes.name}
               width={60}

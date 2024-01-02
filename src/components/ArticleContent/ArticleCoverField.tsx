@@ -2,7 +2,6 @@ import { AspectRatio, Image, Input, Overlay, Text } from '@mantine/core'
 import { useDisclosure, useHover } from '@mantine/hooks'
 import classNames from 'classnames'
 import omit from 'lodash/omit'
-import { default as NextImage } from 'next/image'
 import { useCallback } from 'react'
 import { useFormContext } from 'react-hook-form'
 
@@ -63,16 +62,14 @@ const ArticleCoverField: React.FC<ArticleCoverFieldProps> = ({ mode }) => {
         {cover ? (
           cover?.attributes.mime.startsWith('image') ? (
             <Image
-              component={NextImage}
               src={cover?.attributes?.url ? getStrapiUploadUrl(cover?.attributes?.url) : undefined}
               alt={cover?.attributes?.alternativeText ?? ''}
               width={1200}
               height={628}
               fit="cover"
               fallbackSrc="/images/placeholder.webp"
-              blurDataURL="/images/placeholder.webp"
               placeholder="blur"
-              priority
+              loading='eager'
             />
           ) : (
             <video
@@ -83,7 +80,6 @@ const ArticleCoverField: React.FC<ArticleCoverFieldProps> = ({ mode }) => {
           )
         ) : (
           <Image
-            component={NextImage}
             src="/images/placeholder.webp"
             alt={''}
             width={1200}

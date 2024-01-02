@@ -18,22 +18,24 @@ export const root = style({
   },
 })
 
-export const carouselRoot = style({
+export const container = style({
   position: 'absolute',
   left: 0,
   top: 0,
   width: '100%',
+  color: 'white',
 })
 
 export const slideImage = style({
   filter: 'brightness(80%)',
+  objectFit: 'cover',
 })
 
 export const inner = style({
   position: 'relative',
   display: 'flex',
   justifyContent: 'space-between',
-  zIndex: 2,
+  // zIndex: 2,
 })
 
 export const image = style({
@@ -80,7 +82,7 @@ export const heroButtonContainer = style({
   flexDirection: 'column',
 })
 
-export const control = style({
+export const actionButtons = style({
   paddingLeft: 'rem(50px)',
   paddingRight: 'rem(50px)',
   fontFamily: defaultThemeVars.fontFamily,
@@ -88,6 +90,7 @@ export const control = style({
   display: 'flex',
   justifyContent: 'center',
   flexWrap: 'wrap',
+
   '@media': {
     [`(max-width: ${defaultThemeVars.breakpoints.sm})`]: {
       width: '42%',
@@ -96,3 +99,4 @@ export const control = style({
     },
   },
 })
+

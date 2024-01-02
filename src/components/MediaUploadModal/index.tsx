@@ -3,6 +3,7 @@ import { Modal, ModalProps } from '@mantine/core'
 import { Media_Plain } from '@/types/Media'
 
 import MediaUploadModalContent from './UploadModalContent'
+import ToolTip from '../ToolTip'
 
 export type MediaUploadModalProps = ModalProps & {
   uploadMethods?: Array<'upload' | 'link'>
@@ -15,9 +16,11 @@ const MediaUploadModal: React.FC<MediaUploadModalProps> = ({
   ...modalProps
 }) => {
   return (
-    <Modal {...modalProps} title="Upload media" size="lg">
-      <MediaUploadModalContent uploadMethods={uploadMethods} onSave={onSave} />
-    </Modal>
+    <ToolTip title="Upload media">
+      <Modal {...modalProps} size="lg">
+        <MediaUploadModalContent uploadMethods={uploadMethods} onSave={onSave} />
+      </Modal>
+    </ToolTip>
   )
 }
 

@@ -32,7 +32,7 @@ const PurchaseOptions: React.FC = () => {
   if (!purchaseOptions?.data?.length) return null
 
   return (
-    <Fieldset legend="Purchase Options">
+    <Fieldset legend="Purchase Options" style={{userSelect: 'none'}}>
       <Stack gap="md">
         <SegmentedControl
           value={selectedOption?.attributes.type}

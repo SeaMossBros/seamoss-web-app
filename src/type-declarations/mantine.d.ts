@@ -1,8 +1,8 @@
 import { DefaultMantineColor, MantineColorsTuple } from '@mantine/core'
 
 type ExtendedCustomColors =
-  | 'primary-green'
-  | 'primary-gray'
+  | 'teal'
+  | 'gray'
   | 'secondary-blue'
   | 'secondary-pink'
   | 'secondary-gray'

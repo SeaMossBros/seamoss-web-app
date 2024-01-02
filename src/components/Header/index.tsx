@@ -1,5 +1,5 @@
 'use client'
-import { ActionIcon, Burger, Container, Flex, Group, Image, Title } from '@mantine/core'
+import { ActionIcon, Burger, Container, Flex, Group, Image, Title, useMantineTheme } from '@mantine/core'
 import { spotlight } from '@mantine/spotlight'
 import { IconSearch } from '@tabler/icons-react'
 import Link from 'next/link'
@@ -13,6 +13,7 @@ import ColorSchemeToggler from '../ColorSchemeToggler'
 import NavLinkItem from '../NavLinkItem'
 import UserMenu from '../UserMenu'
 import { container, logoContainer, navLinkContainer, wrapper } from './Header.css'
+import ToolTip from '../ToolTip'
 
 export type HeaderProps = {
   navOpened: boolean
@@ -21,13 +22,14 @@ export type HeaderProps = {
 
 const Header: React.FC<HeaderProps> = ({ navOpened, toggleNav }) => {
   const pathname = usePathname()
-
+  const {primaryColor} = useMantineTheme();
+  
   return (
     <Container className={container}>
       <Group className={wrapper} justify="space-between" align="center">
         <Link href={ROUTE_PATHS.HOME} className={logoContainer}>
-          <Image src="/images/SeaTheMoss-StillSpinner.svg" alt="Logo" height={40} />
-          <Title c="primary-green" order={2}>
+          <Image src="/images/SeaTheMoss-Empty-Icon.png" alt="Logo" height={40} />
+          <Title c={primaryColor} order={2}>
             SeaTheMoss
           </Title>
         </Link>
@@ -60,15 +62,19 @@ const Header: React.FC<HeaderProps> = ({ navOpened, toggleNav }) => {
           />
           <UserMenu />
           <ColorSchemeToggler />
-          <ActionIcon variant="subtle" color="primary-gray" onClick={spotlight.open}>
-            <IconSearch />
+          <ActionIcon variant="subtle" color="gray" onClick={spotlight.open}>
+            <ToolTip title='Search SeaTheMoss.com \nby products, blogs, etc' width='240px'>
+              <IconSearch />
+            </ToolTip>
           </ActionIcon>
           <CartDropdown />
         </Flex>
         {/* Hamburger Menu */}
         <Flex hiddenFrom="sm" className={navLinkContainer} gap="md" align="center">
           <CartDropdown />
-          <Burger opened={navOpened} onClick={toggleNav} aria-label="Toggle navigation" />
+          <ToolTip title='Toggle navigation'>
+            <Burger opened={navOpened} onClick={toggleNav} />
+          </ToolTip>
         </Flex>
       </Group>
     </Container>

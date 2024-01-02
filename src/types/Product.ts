@@ -13,7 +13,6 @@ export enum Category {
   Dry = 'Dry',
   Clothing = 'Clothing',
   Accessory = 'Accessory',
-  Dummy = 'Dummy',
 }
 
 export interface Product {

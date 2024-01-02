@@ -24,15 +24,16 @@ const DefaultLayout: React.FC<PropsWithChildren> = ({ children }) => {
         height: 60,
       }}
       navbar={{
-        width: 300,
+        width: 200,
         breakpoint: 'sm',
         collapsed: {
           mobile: !navOpened,
           desktop: true,
         },
       }}
+      transitionDuration={300}
       footer={{
-        height: 80,
+        height: '54vh',
       }}
     >
       <AppShellHeader>

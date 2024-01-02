@@ -12,7 +12,7 @@ import { useProducts } from '@/queries/useProducts'
 import { Product, Product_NoRelations } from '@/types/Product'
 import { QueryParams } from '@/types/QueryParams'
 
-import { pagination } from './ProductList.css'
+import { pagination, productsContainer } from './ProductList.css'
 
 const ProductCol: React.FC<PropsWithChildren> = ({ children }) => {
   return (
@@ -31,9 +31,10 @@ const ProductCol: React.FC<PropsWithChildren> = ({ children }) => {
 
 export type ProductListProps = {
   queryParams: QueryParams<Product_NoRelations>
+  onPage: string
 }
 
-const ProductList: React.FC<ProductListProps> = ({ queryParams }) => {
+const ProductList: React.FC<ProductListProps> = ({ queryParams, onPage }) => {
   const searchParams = useSearchParams()
   const pathname = usePathname()
 
@@ -48,8 +49,8 @@ const ProductList: React.FC<ProductListProps> = ({ queryParams }) => {
 
   const totalPages = useMemo(
     () =>
-      Math.ceil((products?.meta.pagination.total ?? 0) / (queryParams.pagination?.pageSize || 1)),
-    [products?.meta.pagination.total, queryParams.pagination?.pageSize],
+      Math.ceil((products?.meta?.pagination.total ?? 0) / (queryParams.pagination?.pageSize || 1)),
+    [products?.meta?.pagination.total, queryParams.pagination?.pageSize],
   )
 
   const onAddToCart = useCallback(
@@ -68,7 +69,7 @@ const ProductList: React.FC<ProductListProps> = ({ queryParams }) => {
   }
 
   return (
-    <Stack gap="lg">
+    <Stack gap="lg" className={productsContainer}>
       <Grid>
         {products?.data?.map((product) => (
           <ProductCol key={product.id}>
@@ -76,7 +77,7 @@ const ProductList: React.FC<ProductListProps> = ({ queryParams }) => {
           </ProductCol>
         ))}
       </Grid>
-      <Pagination
+      {onPage !== 'Home' && <Pagination
         className={pagination}
         total={totalPages}
         value={queryParams.pagination?.page}
@@ -119,7 +120,7 @@ const ProductList: React.FC<ProductListProps> = ({ queryParams }) => {
 
           return {}
         }}
-      />
+      />}
       <ProductPreviewModal
         opened={productPreviewOpened}
         onClose={productPreview.close}

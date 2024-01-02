@@ -1,7 +1,6 @@
 'use client'
 
-import { Box, Flex, Image, ScrollArea, Stack } from '@mantine/core'
-import { default as NextImage } from 'next/image'
+import { Box, Flex, Image, ScrollArea, Stack, useMantineColorScheme, useMantineTheme } from '@mantine/core'
 import { useCallback, useState } from 'react'
 
 import { Media } from '@/types/Media'
@@ -16,6 +15,10 @@ export type ProductImagesProps = {
 }
 
 const ProductImages: React.FC<ProductImagesProps> = ({ defaultImage, images, productName }) => {
+  const { colors, defaultRadius } = useMantineTheme();
+  const { colorScheme } = useMantineColorScheme();
+  const isDarkTheme = colorScheme === 'dark';
+  const getCorrectPrimaryColor = () => isDarkTheme ? colors.red[6] : colors.teal[7];
   const [currentImage, setCurrentImage] = useState<Media>(defaultImage ?? images[0])
 
   const onSelectImage = useCallback(function onSelectImageImpl(
@@ -38,34 +41,43 @@ const ProductImages: React.FC<ProductImagesProps> = ({ defaultImage, images, pro
   return (
     <Stack>
       <Image
-        component={NextImage}
         src={getStrapiUploadUrl(currentImage.attributes.url)}
         alt={currentImage.attributes.alternativeText || productName}
-        width={1000}
-        height={1000}
-        priority
+        width={'auto'}
+        maw={1000}
+        height={'42vh'}
+        mah={'42vh'}
+        fit='contain'
+        loading='eager'
       />
       <ScrollArea maw="100%" mx="auto">
         <Flex gap="md">
-          {images.map((image) => (
-            <Box
+          {images.map((image) => {
+            console.log('currentImage.id === image.id', currentImage.id === image.id);
+
+            return <Box
               key={image.id}
               w={100}
               className={previewImage}
               onClick={onSelectImage.bind(image)}
               data-active={currentImage.id === image.id}
+              style={{
+                borderColor: (currentImage.id === image.id && getCorrectPrimaryColor()) || colors.gray[1],
+                opacity: currentImage.id !== image.id && 0.72 || 1,
+                borderRadius: defaultRadius
+              }}
             >
               <Image
-                component={NextImage}
                 src={getStrapiUploadUrl(
                   image.attributes.formats.small?.url ?? image.attributes.url,
                 )}
                 alt={image.attributes.alternativeText || productName}
                 width={100}
                 height={100}
+                radius={defaultRadius - 2}
               />
             </Box>
-          ))}
+          })}
         </Flex>
       </ScrollArea>
     </Stack>

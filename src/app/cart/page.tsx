@@ -43,7 +43,7 @@ const CartPage: React.FC = () => {
   return (
     <Container>
       <Stack gap="lg">
-        <Title order={3} ta="center" c="primary-gray">
+        <Title order={3} ta="center" c="gray">
           Your Shopping Cart
         </Title>
         <Grid>

@@ -16,7 +16,7 @@ const NotFoundImage = () => {
     <Container className={notFoundRoot}>
       <SimpleGrid spacing={{ base: 40, sm: 80 }} cols={{ base: 1, sm: 2 }}>
         <div>
-          <Title c="primary-gray" className={notFoundTitle}>
+          <Title c="gray" className={notFoundTitle}>
             Something is not right...
           </Title>
           <Text className={notFoundDescription} c="dimmed" size="lg">

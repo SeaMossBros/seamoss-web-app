@@ -71,7 +71,6 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ product, onSuccess }) => {
         <Stack gap={40}>
           <Flex gap="md">
             <Image
-              component={NextImage}
               src={
                 product.attributes.thumbnail?.data.attributes.url
                   ? getStrapiUploadUrl(product.attributes.thumbnail?.data.attributes.url)

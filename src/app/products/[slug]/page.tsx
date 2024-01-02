@@ -17,7 +17,11 @@ type Props = {
 export const generateMetadata = async ({ params: { slug } }: Props): Promise<Metadata> => {
   const productService = new ProductService()
 
+  console.log(`Fetching product by slug: ${slug}...`);
+  
   const product = await productService.getBySlug(slug)
+  
+  console.log(`Product - ${slug}:`, product);
 
   return {
     title: `${product.data?.attributes.name ?? slug} | SeaTheMoss`,

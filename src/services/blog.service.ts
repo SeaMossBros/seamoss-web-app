@@ -1,7 +1,7 @@
 import qs from 'qs'
 
 import { Article, Article_NoRelations, Article_Plain } from '@/types/Article'
-import { Author, Author_NoRelations } from '@/types/Author'
+import { Author, Author_NoRelations, Author_Plain } from '@/types/Author'
 import { QueryParams } from '@/types/QueryParams'
 import { QueryResponse } from '@/types/QueryResponse'
 
@@ -16,6 +16,7 @@ export default class BlogService extends CMSService {
       JSON.stringify(params),
     ],
     listAuthors: (params?: QueryParams<Author_NoRelations>) => ['/authors', JSON.stringify(params)],
+    listAuthorsWithAvatar: (params?: QueryParams<Author_NoRelations>) => ['/authors', JSON.stringify(params)],
   }
 
   list = async (params: QueryParams<Article_Plain>) => {
@@ -105,5 +106,21 @@ export default class BlogService extends CMSService {
     })
 
     return res.json() as Promise<QueryResponse<Author[]>>
+  }
+
+  listAuthorsWithAvatar = async (params?: QueryParams<Author_Plain>) => {
+    const url = `${this.baseURL}/authors${qs.stringify({
+      ...params,
+      populate: ['avatar']
+    }, {
+      addQueryPrefix: true,
+    })}`
+
+    const res = await fetch(`${url}`, {
+      headers: this.headers,
+      cache: 'no-store',
+    })
+
+    return res.json() as Promise<QueryResponse<Author_Plain[]>>
   }
 }

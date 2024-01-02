@@ -88,7 +88,7 @@ const ProductPreviewModal: React.FC<ProductPreviewModalProps> = ({ product, ...m
                 <Stack gap="lg">
                   <ProductDetails product={productDetails} showOptionImages={false} />
                   <Button type="submit" loading={isAddingToCart} fullWidth>
-                    ADD TO CART
+                    Add To Cart
                   </Button>
                 </Stack>
               </Grid.Col>

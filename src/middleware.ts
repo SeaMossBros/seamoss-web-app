@@ -36,7 +36,7 @@ const handleCMSProxy = (request: NextRequest) => {
   request.nextUrl.href = `${APP_CONFIG.STRAPI.API_URL}${reqUrl.pathname.replace('/api/cms', '')}${
     reqUrl.search
   }`
-
+  console.log("request.nextUrl", request.nextUrl);
   return NextResponse.rewrite(request.nextUrl, {
     request: {
       headers: requestHeaders,

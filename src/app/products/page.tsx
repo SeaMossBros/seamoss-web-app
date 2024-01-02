@@ -106,7 +106,7 @@ const ProductsPage: React.FC<ProductsPageProps> = async ({ searchParams }) => {
               md: 9,
             }}
           >
-            <ProductList queryParams={params} />
+            <ProductList queryParams={params} onPage='Products'/>
           </GridCol>
         </Grid>
       </Container>

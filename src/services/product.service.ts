@@ -37,8 +37,12 @@ export default class ProductService extends CMSService {
   }
 
   getBySlug = (slug: string, params?: QueryParams<Product_Plain>) => {
+    // console.log('slug', slug);
+    // console.log('params in getBySlug', params);
     const url = `${this.baseURL}/slugify/slugs/product/${slug}`
     const search = qs.stringify(params)
+    console.log('url', url);
+    console.log('search', search);
 
     return fetch(`${url}?${search}`, {
       headers: this.headers,
