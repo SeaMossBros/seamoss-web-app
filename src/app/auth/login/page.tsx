@@ -1,51 +1,16 @@
-'use client'
+import { Metadata } from 'next';
+import dynamic from 'next/dynamic';
 
-import { Button, Card, Center, Group, Stack, Text } from '@mantine/core'
-import { notifications } from '@mantine/notifications'
-import { useMutation } from '@tanstack/react-query'
-import { useCallback } from 'react'
-import GoogleButton from 'react-google-button'
+const LoginClientSide = dynamic(() => import('./LoginClientSide'), { ssr: false });
 
-import { useService } from '@/hooks/useService'
-import AuthService from '@/services/auth.service'
+export const metadata: Metadata = {
+  title: 'Login | SeaTheMoss',
+};
 
-const LoginPage: React.FC = () => {
-  const authService = useService(AuthService)
-
-  const { mutate: getLoginUrl, isPending } = useMutation({
-    mutationFn: () => authService.getLoginUrl(),
-  })
-
-  const onLoginClick = useCallback(() => {
-    getLoginUrl(undefined, {
-      onSettled: (res, error) => {
-        if (!res?.url || error) {
-          console.error(error, res)
-          notifications.show({
-            color: 'red',
-            message: 'Unexpected error occurred',
-          })
-          return
-        }
-        window.location.assign(res.url)
-      },
-    })
-  }, [getLoginUrl])
-
+export default function LoginPage() {
   return (
-    <Stack justify="center" mt={64}>
-      <Center>
-        <Card withBorder>
-          <Card.Section py="sm" inheritPadding>
-            <Group>
-              <Text fw={500}>Login</Text>
-            </Group>
-          </Card.Section>
-          <Button component={GoogleButton} px={0} loading={isPending} onClick={onLoginClick} />
-        </Card>
-      </Center>
-    </Stack>
-  )
+    <div>
+      <LoginClientSide />
+    </div>
+  );
 }
-
-export default LoginPage

@@ -1,7 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Button, Flex, Image, Rating, Stack, Text, Textarea, TextInput } from '@mantine/core'
 import { notifications } from '@mantine/notifications'
-import NextImage from 'next/image'
 import React, { useCallback } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { array, number, object, ObjectSchema, string } from 'yup'

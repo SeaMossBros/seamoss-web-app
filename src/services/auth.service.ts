@@ -1,15 +1,19 @@
 import { APP_CONFIG } from '@/config/app'
 import { AuthUser, ExchangeTokenResponse, GetLoginUrlResponse } from '@/types/Auth'
+import { User } from '@/types/User';
 
 export default class AuthService {
+  static queryKeys = {
+    getUserInfo: (...params: Parameters<AuthService['getUserInfo']>) => [
+      'https://www.googleapis.com/oauth2/v3/userinfo',
+      JSON.stringify(params),
+    ],
+  }
   baseURL = APP_CONFIG.STRAPI.URL
 
-  getLoginUrl = async () => {
-    const url = `${this.baseURL}/strapi-google-auth/init`
-
-    const res = await fetch(url)
-
-    return res.json() as Promise<GetLoginUrlResponse>
+  getGoogleLoginUrl = () => {
+    const url = `${this.baseURL}/api/connect/google`;
+    window.location.href = url;  // Redirect the browser
   }
 
   exchangeCodeForAccessToken = async (code: string) => {
@@ -37,15 +41,25 @@ export default class AuthService {
     return res.json() as Promise<AuthUser | null>
   }
 
-  getUserProfile = async (token: string) => {
-    const url = `${this.baseURL}/strapi-google-auth/me`
+  getUserInfo = async (accessToken: string = ''): Promise<User> => {
+    if (!accessToken) return {
+      email: '',
+      email_verified: false,
+      picture: '',
+      sub: ''
+    };
 
-    const res = await fetch(url, {
+    // Use the access_token to fetch user info from Google's UserInfo endpoint
+    const response = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${accessToken}`,
       },
-    })
+    });
 
-    return res.json() as Promise<AuthUser>
+    if (!response.ok) {
+      throw new Error('Failed to fetch user info');
+    }
+
+    return response.json();
   }
 }
