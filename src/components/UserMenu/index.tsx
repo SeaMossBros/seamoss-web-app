@@ -11,7 +11,11 @@ import { logout } from '@/server-actions/logout'
 
 import NavLinkItem from '../NavLinkItem'
 
-const UserMenu: React.FC = () => {
+interface UserMenuProps {
+  isDarkTheme: boolean
+}
+
+const UserMenu = ({isDarkTheme}: UserMenuProps) => {
   const pathname = usePathname()
   const { data: user, refetch: refreshSession } = useProfile()
 
@@ -26,6 +30,7 @@ const UserMenu: React.FC = () => {
         label="Login"
         href={ROUTE_PATHS.LOGIN}
         active={pathname.startsWith(ROUTE_PATHS.LOGIN)}
+        style={{borderRadius: isDarkTheme ? 3 : 9}}
       />
     )
 

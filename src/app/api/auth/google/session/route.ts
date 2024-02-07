@@ -13,7 +13,7 @@ export const GET = async () => {
   }
 
   const authService = new AuthService()
-  const user = await authService.getUserProfile(accessToken.value)
+  const user = await authService.getUserInfo(accessToken.value)
 
   return Response.json(user)
 }

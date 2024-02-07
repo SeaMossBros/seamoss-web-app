@@ -54,7 +54,7 @@ const ProductVariantSelection: React.FC<ProductVariantSelectionProps> = ({
 
   return (
     <Box className={variantSelectionContainer}>
-      <Card className={variantWrapper} data-selected={isSelected} onClick={onSelect} withBorder style={{borderColor: getCorrectPrimaryColor()}}>
+      <Card className={variantWrapper} data-selected={isSelected} onClick={onSelect} withBorder style={{borderColor: isSelected ? getCorrectPrimaryColor() : 'lightgray' }}>
         {attributes.image?.data?.attributes.url && showImage ? (
           <Box>
             <Image

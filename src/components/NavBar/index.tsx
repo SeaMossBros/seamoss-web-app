@@ -1,4 +1,4 @@
-import { Stack, useMantineTheme } from '@mantine/core'
+import { Stack, useMantineColorScheme, useMantineTheme } from '@mantine/core'
 import { usePathname } from 'next/navigation'
 import React from 'react'
 
@@ -14,9 +14,12 @@ export type NavBarProps = {
 
 const NavBar: React.FC<NavBarProps> = ({ onClose }) => {
   const pathname = usePathname()
-  const { defaultRadius } = useMantineTheme();
+  const { colors, defaultRadius } = useMantineTheme();
+  const { colorScheme } = useMantineColorScheme();
+  const isDarkTheme = colorScheme === 'dark';
+
   return (
-    <Stack w="100%" h="100vh">
+    <Stack w="100%" h="100vh" pb={9} bg={isDarkTheme ? '#1a1b1e' : colors.teal[9]}>
       <NavLinkItem
         className={navLink}
         label="Home"

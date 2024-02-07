@@ -13,7 +13,7 @@ export const darkTheme = createTheme({
         md: rem(0),
         sm: rem(0),
         xl: rem(0),
-        xs: rem(0),
+        xs: rem(0)
     },
     colors: {
         white: generateColors('#fff'),
@@ -26,6 +26,7 @@ export const darkTheme = createTheme({
         gray: generateColors('#212529'), // gray
         blue: generateColors('#1864AB'), // blue
         pink: generateColors('#A61E4D'), // pink
+        // dark: '#1a1b1e' // dark
     },
     primaryColor: 'red',
     primaryShade: {

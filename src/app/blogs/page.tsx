@@ -1,4 +1,4 @@
-import { Button, Container, Group } from '@mantine/core'
+import { Button, Container, Group, Text } from '@mantine/core'
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
 import { Metadata } from 'next'
 import { headers } from 'next/headers'
@@ -10,6 +10,7 @@ import getQueryClient from '@/react-query/getQueryClient'
 import BlogService from '@/services/blog.service'
 import { Article_Plain } from '@/types/Article'
 import { QueryParams } from '@/types/QueryParams'
+import {title} from './BlogsPage.css'
 
 import BlogsList from './BlogsList'
 
@@ -55,6 +56,7 @@ const BlogsPage: React.FC = async () => {
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <Container>
+        <Text className={title}>Blogs</Text>
         {isAuthenticated ? (
           <Group justify="flex-end">
             <Button component={Link} href={ROUTE_PATHS.BLOG.CREATE}>

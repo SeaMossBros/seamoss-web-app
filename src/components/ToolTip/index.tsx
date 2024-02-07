@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
 
 import { toolTipStyle } from './ToolTip.css'
 import { useMantineColorScheme, useMantineTheme } from '@mantine/core';
@@ -29,10 +29,37 @@ const ToolTip = ({
     const childRef = useRef<HTMLDivElement>(null);
     const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
+    const handlePositioning = () => {
+        if (tooltipRef.current && childRef.current && shouldDisplay) {
+            const childRect = childRef.current.getBoundingClientRect();
+            const tooltipRect = tooltipRef.current.getBoundingClientRect();
+            const offsetX = 8; // Offset to prevent the tooltip from sticking directly to the target element
+            const offsetY = 20; // Vertical offset
+
+            let top = childRect.bottom + offsetY;
+            let left = childRect.left + (childRect.width / 2) - (tooltipRect.width / 2);
+
+            // Adjust for left edge
+            if (left < offsetX) left = offsetX;
+            // Adjust for right edge
+            if (left + tooltipRect.width > window.innerWidth) left = window.innerWidth - tooltipRect.width - offsetX;
+            // Adjust for bottom edge
+            if (top + tooltipRect.height > window.innerHeight) {
+                top = childRect.top - tooltipRect.height - offsetY;
+            }
+
+            console.log('left', left);
+            console.log('top', top);
+            tooltipRef.current.style.top = `${top}px`;
+            tooltipRef.current.style.left = `${left}px`;
+        }
+    };
+
     useEffect(() => {
         if (showTooltip) {
             timeoutRef.current = setTimeout(() => {
                 setShouldDisplay(true);
+                handlePositioning();
             }, delay);
         } else {
             if (timeoutRef.current) {

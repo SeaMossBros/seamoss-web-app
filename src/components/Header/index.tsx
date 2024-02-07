@@ -1,5 +1,5 @@
 'use client'
-import { ActionIcon, Burger, Container, Flex, Group, Image, Title, useMantineTheme } from '@mantine/core'
+import { ActionIcon, Burger, Container, Flex, Group, Image, Title, useMantineColorScheme, useMantineTheme } from '@mantine/core'
 import { spotlight } from '@mantine/spotlight'
 import { IconSearch } from '@tabler/icons-react'
 import Link from 'next/link'
@@ -22,45 +22,52 @@ export type HeaderProps = {
 
 const Header: React.FC<HeaderProps> = ({ navOpened, toggleNav }) => {
   const pathname = usePathname()
-  const {primaryColor} = useMantineTheme();
+  const {primaryColor, colors, defaultRadius} = useMantineTheme();
+  const { colorScheme } = useMantineColorScheme();
+  const isDarkTheme = colorScheme === 'dark';
   
   return (
     <Container className={container}>
       <Group className={wrapper} justify="space-between" align="center">
         <Link href={ROUTE_PATHS.HOME} className={logoContainer}>
-          <Image src="/images/SeaTheMoss-Empty-Icon.png" alt="Logo" height={40} />
-          <Title c={primaryColor} order={2}>
+          <Image src="/images/SeaTheMoss-Empty-Icon.png" alt="Logo" height={40} visibleFrom="sm" />
+          <Title c={isDarkTheme ? colors.red[6] : colors.teal[9] } order={2}>
             SeaTheMoss
           </Title>
         </Link>
 
-        <Flex visibleFrom="sm" className={navLinkContainer} gap="md" align="center">
+        <Flex visibleFrom="md" className={navLinkContainer} gap="md" align="center">
           <NavLinkItem
             label="Home"
             href={ROUTE_PATHS.HOME}
             active={pathname === '' || pathname === '/'}
+            style={{borderRadius: defaultRadius}}
           />
           <NavLinkItem
             label="Products"
             href={ROUTE_PATHS.PRODUCT.INDEX}
             active={pathname.startsWith(ROUTE_PATHS.PRODUCT.INDEX)}
+            style={{borderRadius: defaultRadius}}
           />
           <NavLinkItem
             label="Support"
             href={ROUTE_PATHS.SUPPORT}
             active={pathname.startsWith(ROUTE_PATHS.SUPPORT)}
+            style={{borderRadius: defaultRadius}}
           />
           <NavLinkItem
             label="Blogs"
             href={ROUTE_PATHS.BLOG.INDEX}
             active={pathname.startsWith(ROUTE_PATHS.BLOG.INDEX)}
+            style={{borderRadius: defaultRadius}}
           />
           <NavLinkItem
             label="About us"
             href={ROUTE_PATHS.ABOUT}
             active={pathname.startsWith(ROUTE_PATHS.ABOUT)}
+            style={{borderRadius: defaultRadius}}
           />
-          <UserMenu />
+          <UserMenu isDarkTheme={isDarkTheme} />
           <ColorSchemeToggler />
           <ActionIcon variant="subtle" color="gray" onClick={spotlight.open}>
             <ToolTip title='Search SeaTheMoss.com \nby products, blogs, etc' width='240px'>
@@ -70,7 +77,7 @@ const Header: React.FC<HeaderProps> = ({ navOpened, toggleNav }) => {
           <CartDropdown />
         </Flex>
         {/* Hamburger Menu */}
-        <Flex hiddenFrom="sm" className={navLinkContainer} gap="md" align="center">
+        <Flex hiddenFrom="md" className={navLinkContainer} gap="md" align="center">
           <CartDropdown />
           <ToolTip title='Toggle navigation'>
             <Burger opened={navOpened} onClick={toggleNav} />

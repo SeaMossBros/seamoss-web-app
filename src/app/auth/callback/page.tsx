@@ -4,16 +4,15 @@ import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Container, Text } from '@mantine/core';
 import AuthService from '@/services/auth.service';
-import { User } from '@/types/User';
+import { UserType } from '@/types/User';
+import NavbarSegment from './NavbarSegment';
 
 const CallbackPage: React.FC = () => {
-  const [user, setUser] = useState({} as User || null);
+  const [user, setUser] = useState({} as UserType || null);
   const searchParams = useSearchParams();
   const authService = new AuthService();
 
   const accessToken = searchParams.get('access_token');
-
-  if (!accessToken) return null;
 
   useEffect(() => {
     const getUserInfo = async () => {
@@ -29,10 +28,11 @@ const CallbackPage: React.FC = () => {
     getUserInfo();
   }, [])
 
+  if (!user) return null;
+
   return (
-    <Container>
-      <img src={user && user.picture} width={'auto'} height={'auto'} alt='user-profile pic' style={{borderRadius: '15px'}} />
-      <Text>Your Email: {user.email}</Text>
+    <Container display='flex' pos={'relative'} w={'100vw'} style={{ justifyContent: 'end' }}>
+      <NavbarSegment user={user}/>
     </Container>
   );
 };

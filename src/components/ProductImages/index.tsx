@@ -69,12 +69,12 @@ const ProductImages: React.FC<ProductImagesProps> = ({ defaultImage, images, pro
             >
               <Image
                 src={getStrapiUploadUrl(
-                  image.attributes.formats.small?.url ?? image.attributes.url,
+                  image.attributes.formats?.small?.url ?? image.attributes.url,
                 )}
                 alt={image.attributes.alternativeText || productName}
                 width={100}
                 height={100}
-                radius={defaultRadius - 2}
+                radius={Number(defaultRadius) - 2}
               />
             </Box>
           })}

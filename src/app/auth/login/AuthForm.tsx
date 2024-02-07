@@ -1,5 +1,4 @@
 import { useToggle, upperFirst } from '@mantine/hooks';
-import { notifications } from '@mantine/notifications';
 import { useForm } from '@mantine/form';
 import {
   TextInput,
@@ -17,18 +16,12 @@ import {
 import GoogleButton from 'react-google-button';
 import { useService } from '@/hooks/useService';
 import AuthService from '@/services/auth.service';
-import { useMutation } from '@tanstack/react-query';
-import { useCallback } from 'react';
 
 import { submitButtonContainer } from './AuthForm.css'
 
 const AuthenticationForm = () => {
     const {primaryColor} = useMantineTheme();
     const authService = useService(AuthService)
-
-    // const { mutate: getGoogleLoginUrl, isPending } = useMutation({
-    //     mutationFn: () => authService.getGoogleLoginUrl(),
-    // })
 
     const onLoginClick = () => {
        authService.getGoogleLoginUrl();
@@ -65,13 +58,13 @@ const AuthenticationForm = () => {
                     <Text size="lg" c={primaryColor}>
                         {type[0].toUpperCase() + type.slice(1)} 
                     </Text>
-                    <Text size="lg">
+                    {/* <Text size="lg">
                         with your
-                    </Text>
+                    </Text> */}
                 </Group>
             </Stack>
 
-            <form onSubmit={form.onSubmit(() => {})}>
+            {/* <form onSubmit={form.onSubmit(() => {})}>
                 <Stack>
                     {type === 'register' && (
                         <TextInput
@@ -129,7 +122,7 @@ const AuthenticationForm = () => {
                 </Group>
             </form>
 
-            <Divider label="Or continue with provider" labelPosition="center" my="lg" />
+            <Divider label="Or continue with provider" labelPosition="center" my="lg" /> */}
 
             <Group grow mb="md" mt="md">
                 <Button type="dark" component={GoogleButton} px={0} onClick={onLoginClick} />

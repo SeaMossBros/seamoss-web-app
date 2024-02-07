@@ -92,7 +92,12 @@ export default class BlogService extends CMSService {
       cache: 'no-store',
     })
 
-    return res.json() as Promise<QueryResponse<Article>>
+    if (res.ok) {
+      return res.json() as Promise<QueryResponse<Article>>;
+    } else {
+      // Handle errors, e.g., by throwing an error or returning a default value
+      throw new Error(`Failed to fetch article by slug: ${slug}, status: ${res.status}`);
+    }
   }
 
   listAuthors = async (params?: QueryParams<Author_NoRelations>) => {

@@ -32,7 +32,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
   )
 
   const href = useMemo(() => ROUTE_PATHS.BLOG.SINGULAR.replaceAll('{slug}', slug ?? ''), [slug])
-
+  // TODO: Fix the link to a specific blog
   return (
     <Card className={card} component={Link} href={href} withBorder>
       <Card.Section>

@@ -25,7 +25,7 @@ const DefaultLayout: React.FC<PropsWithChildren> = ({ children }) => {
       }}
       navbar={{
         width: 200,
-        breakpoint: 'sm',
+        breakpoint: 'md',
         collapsed: {
           mobile: !navOpened,
           desktop: true,

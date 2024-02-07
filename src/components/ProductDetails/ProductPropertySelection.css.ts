@@ -11,7 +11,7 @@ export const propertyWrapper = style({
   padding: defaultThemeVars.spacing.sm,
   cursor: 'pointer',
   // boxShadow: defaultThemeVars.shadows.xs,
-  borderWidth: 2,
+  borderWidth: 1,
   borderStyle: 'solid',
   ':hover': {
     boxShadow: defaultThemeVars.shadows.md,

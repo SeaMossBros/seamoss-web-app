@@ -59,7 +59,7 @@ const HeroImage: React.FC = () => {
         plugins={[autoplay.current]}
         onSlideChange={resetAutoplay}
         controlSize={42}
-        speed={3}
+        speed={6}
         loop
       >
         {images.map((image) => (

@@ -25,7 +25,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
   const { colorScheme } = useMantineColorScheme();
   const isDarkTheme = colorScheme === 'dark';
   const getCorrectPrimaryColor = () => isDarkTheme ? colors.red[6] : colors.teal[7];
-  const getCorrectSecondaryColor = () => isDarkTheme ? colors.red[3] : colors.teal[6];
+  const getCorrectSecondaryColor = () => isDarkTheme ? colors.red[4] : colors.teal[6];
   const [isHovering, setIsHovering] = useState(false);
 
   const productUrl = useMemo(
@@ -44,14 +44,14 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
 
   const thumbnail = useMemo(() => {
     return (
-      product.attributes.thumbnail?.data?.attributes.formats.small
-      || product.attributes.thumbnail?.data?.attributes.formats.thumbnail
+      product.attributes.thumbnail?.data?.attributes.formats?.small
+      || product.attributes.thumbnail?.data?.attributes.formats?.thumbnail
       || product.attributes.images?.data?.[0]?.attributes
     )
   }, [
     product.attributes.images?.data,
-    product.attributes.thumbnail?.data?.attributes.formats.small,
-    product.attributes.thumbnail?.data?.attributes.formats.thumbnail,
+    product.attributes.thumbnail?.data?.attributes.formats?.small,
+    product.attributes.thumbnail?.data?.attributes.formats?.thumbnail,
   ])
 
   const lowestPrice = useMemo(() => {

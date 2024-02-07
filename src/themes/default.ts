@@ -64,7 +64,7 @@ export const defaultTheme = createTheme({
     to: 'teal',
     deg: 45
   },
-  defaultRadius: 9
+  defaultRadius: 9,
   // fontSizes: {
   //   xs: '9px',
   //   sm: '15px',
@@ -74,4 +74,7 @@ export const defaultTheme = createTheme({
   // },
 })
 
-export const defaultThemeVars = themeToVars(defaultTheme)
+export const defaultThemeVars = {
+  ...themeToVars(defaultTheme),
+  radiusDefault: 9
+}
