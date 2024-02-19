@@ -17,3 +17,16 @@ export const GET = async () => {
 
   return Response.json(user)
 }
+
+// export const SET = async (accessToken: string) => {
+//   const cookieStore = cookies();
+//   cookieStore.set('access_token', accessToken, {
+//     httpOnly: true,
+//     secure: process.env.NODE_ENV !== 'development', // Secure in production
+//     sameSite: 'strict',
+//     path: '/',
+//     maxAge: 60 * 60 * 24 * 3, // Example: 3 days (seconds * minutes * hours * days)
+//   });
+
+//   return GET();
+// }

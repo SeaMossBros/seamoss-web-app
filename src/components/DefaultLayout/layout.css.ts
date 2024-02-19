@@ -5,7 +5,8 @@ import { style } from '@vanilla-extract/css'
 export const main = style({
   // marginTop: defaultThemeVars.spacing.md,
   // marginBottom: 40,
-  paddingBottom: '99px'
+  paddingBottom: '99px',
+  fontFamily: 'Palantino'
 })
 
 export const footer = style({

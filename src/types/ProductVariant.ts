@@ -15,6 +15,7 @@ export interface ProductVariant {
     image?: { data: Media }
   }
 }
+
 export interface ProductVariant_Plain {
   id: number
   createdAt: string

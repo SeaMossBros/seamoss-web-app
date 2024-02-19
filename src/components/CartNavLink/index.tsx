@@ -34,7 +34,7 @@ const CartNavLink: React.FC = () => {
       label={itemsCount}
       disabled={!itemsCount}
     >
-      <ToolTip title='View Your Cart' width='130px'>
+      {/* <ToolTip title='View Your Cart' width='130px'> */}
         <NavLinkItem
           href={ROUTE_PATHS.CART}
           leftSection={<IconShoppingCart />}
@@ -43,7 +43,7 @@ const CartNavLink: React.FC = () => {
           }}
           active={pathname.startsWith(ROUTE_PATHS.CART)}
         />
-      </ToolTip>
+      {/* </ToolTip> */}
     </Indicator>
   )
 }

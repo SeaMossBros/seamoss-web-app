@@ -36,4 +36,5 @@ export const quantitySelectionInput = style({
 
 export const quantityControl = style({
   cursor: 'pointer',
+  margin: '0 6px'
 })

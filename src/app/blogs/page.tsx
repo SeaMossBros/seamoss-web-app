@@ -1,4 +1,4 @@
-import { Button, Container, Group, Text } from '@mantine/core'
+import { Button, Container, Group, Text, useMantineColorScheme } from '@mantine/core'
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
 import { Metadata } from 'next'
 import { headers } from 'next/headers'
@@ -46,6 +46,12 @@ const BlogsPage: React.FC = async () => {
     const user = auth[0]
     const pass = auth[1]
 
+    console.log('----- blogs -----'); 
+    console.log('user', user); 
+    console.log('AUTH_USER', AUTH_USER); 
+    console.log('pass', pass); 
+    console.log('AUTH_PASS', AUTH_PASS); 
+    console.log('----------'); 
     if (user == AUTH_USER && pass == AUTH_PASS) {
       return true
     } else {
@@ -55,7 +61,7 @@ const BlogsPage: React.FC = async () => {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <Container>
+      <Container display={'flex'} style={{flexDirection: 'column', alignItems: 'center'}}>
         <Text className={title}>Blogs</Text>
         {isAuthenticated ? (
           <Group justify="flex-end">

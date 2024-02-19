@@ -1,14 +1,17 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { Button, Flex, Image, Rating, Stack, Text, Textarea, TextInput } from '@mantine/core'
+import { Button, Flex, Image, Rating, Stack, Text, Textarea, TextInput, useMantineColorScheme, useMantineTheme } from '@mantine/core'
 import { notifications } from '@mantine/notifications'
-import React, { useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { array, number, object, ObjectSchema, string } from 'yup'
 
 import { useSubmitReview } from '@/mutations/useSubmitReview'
 import { Product } from '@/types/Product'
 import { ReviewFormData } from '@/types/ReviewForm'
+import { Media } from '@/types/Media'
 import { getStrapiUploadUrl } from '@/utils/cms'
+import { useDisclosure } from '@mantine/hooks'
+import MediaUploadModal from '@/components/MediaUploadModal'
 
 const DEFAULT_VALUES: Partial<ReviewFormData> = {
   rating: 5,
@@ -28,6 +31,11 @@ type ReviewFormProps = {
 }
 
 const ReviewForm: React.FC<ReviewFormProps> = ({ product, onSuccess }) => {
+  const { colors } = useMantineTheme();
+  const { colorScheme } = useMantineColorScheme();
+  const isDarkTheme = colorScheme === 'dark';
+  const getPrimaryColor = () => isDarkTheme ? colors.red[9] : colors.teal[9];
+
   const methods = useForm<ReviewFormData>({
     defaultValues: DEFAULT_VALUES,
     resolver: yupResolver(schema),
@@ -36,12 +44,14 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ product, onSuccess }) => {
 
   const { mutate: submit, isPending } = useSubmitReview(product.id)
 
+  // const [selectedMediaIds, setSelectedMediaIds] = useState<File[]>([]);
+  const [uploadModalOpened, uploadModal] = useDisclosure()
+
   const onSubmit = useCallback(
-    (data: ReviewFormData) => {
+    async (data: ReviewFormData) => {
       submit(
         {
           ...data,
-          attachments: data.attachments?.map((media) => media.id),
         },
         {
           onSettled: (data, error) => {
@@ -63,6 +73,67 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ product, onSuccess }) => {
     },
     [onSuccess, submit],
   )
+
+  const handleSaveMedia = async (selectedFiles: File[] | null) => {
+    if (!selectedFiles) return;
+
+    try {
+      const filesArray = Array.from(selectedFiles); // TODO: check to see if needed (already is past as array)
+      if (!filesArray.length) return;
+      // setSelectedMediaIds(filesArray);
+
+      const output = document.getElementById("review-files-output");
+      if (!output) return;
+      output.innerHTML = '';
+
+      for (let i = 0; i < filesArray.length; i++) {
+        if (filesArray[i].type.includes('video')) {
+          const vid = document.createElement("video");
+          const src = document.createElement("source");
+          vid.height = 60;
+          vid.controls = true;
+          src.src = URL.createObjectURL(filesArray[i]);
+          src.type = filesArray[i].type; 
+          src.onload = () => {
+            URL.revokeObjectURL(src.src);
+          };
+          vid.append(src);
+          output.append(vid);
+          continue;
+        }
+        const img = document.createElement("img");
+        img.src = URL.createObjectURL(filesArray[i]);
+        img.height = 60;
+        img.onload = () => {
+          URL.revokeObjectURL(img.src);
+        };
+        output.appendChild(img);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const onSave = useCallback(
+    (_type: 'video' | 'image', _media: any[]) => {
+      console.log('media on save', _media);
+      const media: number[] = _media  // we know for sure that user can only upload media by setting uploadMethods={['upload']}
+      uploadModal.close()
+      // methods.setValue(
+      //   'attachments', media,
+      //   {
+      //     shouldValidate: true,
+      //     shouldDirty: true,
+      //     shouldTouch: true,
+      //   },
+      // )
+    },
+    [methods, uploadModal],
+  )
+
+  const onFileClick = useCallback(() => {
+    uploadModal.open()
+  }, [uploadModal])
 
   return (
     <>
@@ -118,20 +189,28 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ product, onSuccess }) => {
               error={methods.formState.errors.comment?.message}
               autosize
             />
-            {/* <Stack className={attachmentUploadTrigger}>
-              <Stack>
-                <Center>
-                  <IconPlus color={defaultThemeVars.colors.gray[6]} size={40} />
-                </Center>
-                <Center>
-                  <Text fz="xs" component="p" c="gray.8">
-                    Add photos
-                  </Text>
-                </Center>
-              </Stack>
+            {/* <Stack 
+              className={attachmentUploadTrigger}
+            >
+              <input
+                id="review-files"
+                type="file"
+                multiple
+                title='Add Media'
+                onChange={(e: any) => handleSaveMedia(e.target.files)}
+              />
+              <pre id="review-files-output">Selected files:</pre>
             </Stack> */}
+            <Button onClick={onFileClick} variant='outline'>Add Media</Button>
+            <MediaUploadModal
+              uploadMethods={['upload']}
+              opened={uploadModalOpened}
+              onClose={uploadModal.close}
+              onSave={onSave}
+              multiple={true}
+            />
           </Stack>
-          <Button type="submit" loading={isPending} fullWidth>
+          <Button type="submit" loading={isPending} fullWidth bg={getPrimaryColor()}>
             Submit review
           </Button>
         </Stack>

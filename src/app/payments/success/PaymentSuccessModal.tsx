@@ -15,7 +15,7 @@ const PaymentSuccessModal: React.FC<{
   const [opened, { close }] = useDisclosure(defaultOpened)
 
   return (
-    <ToolTip title="Payment Success!">
+    // <ToolTip title="Payment Success!">
       <Modal
         opened={opened}
         onClose={close}
@@ -32,7 +32,7 @@ const PaymentSuccessModal: React.FC<{
           </Button>
         </Group>
       </Modal>
-    </ToolTip>
+    // </ToolTip>
   )
 }
 

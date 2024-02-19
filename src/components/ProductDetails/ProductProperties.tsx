@@ -25,9 +25,9 @@ const ProductProperties: React.FC<{
     keyName: 'key',
   })
 
-  if (!product) return null
+  if (!product) return null;
 
-  const { attributes } = product
+  const { attributes } = product;
 
   return (
     <Fieldset legend={attributes.unit_property_selection_text || 'Select Properties'}>

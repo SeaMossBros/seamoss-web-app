@@ -31,15 +31,14 @@ const AppProviders: React.FC<PropsWithChildren> = ({ children }) => {
   return (
     <QueryClientProvider client={queryClient}>
       <MantineProvider
-        theme={schemeManager.get('light') === 'dark' ? darkTheme : defaultTheme}
+        theme={schemeManager.get('auto') === 'dark' ? darkTheme : defaultTheme}
         defaultColorScheme={schemeManager.defaultScheme}
         colorSchemeManager={schemeManager}
       >
         <ProgressBar
           height="2px"
-          // color={schemeManager.get('light') === 'dark' ? darkThemeVars.colors.orange[9] : defaultThemeVars.colors.teal[9]} // not working
-          color={defaultThemeVars.colors.teal[6]}
-          options={{ showSpinner: false }}
+          color={schemeManager.get('light') === 'dark' ? darkThemeVars.colors.red[6] : defaultThemeVars.colors.teal[6]}
+          options={{ showSpinner: true }}
           shallowRouting
         />
         <ModalsProvider>

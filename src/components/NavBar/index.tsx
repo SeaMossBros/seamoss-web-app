@@ -13,13 +13,21 @@ export type NavBarProps = {
 }
 
 const NavBar: React.FC<NavBarProps> = ({ onClose }) => {
-  const pathname = usePathname()
+  const pathname = usePathname();
   const { colors, defaultRadius } = useMantineTheme();
   const { colorScheme } = useMantineColorScheme();
   const isDarkTheme = colorScheme === 'dark';
 
   return (
-    <Stack w="100%" h="100vh" pb={9} bg={isDarkTheme ? '#1a1b1e' : colors.teal[9]}>
+    <Stack 
+      w="100%" 
+      // h="100vh" 
+      pb={9} 
+      bg={isDarkTheme ? '#1a1b1e' : '#f5f5f5'} 
+      style={{ 
+        boxShadow: `-7px 9px 9px 0px ${isDarkTheme ? colors.red[9] : colors.teal[9]}`    
+      }}
+    >
       <NavLinkItem
         className={navLink}
         label="Home"

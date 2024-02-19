@@ -1,4 +1,4 @@
-import { Box, Card, Flex, Image, NumberInput, NumberInputHandlers, Text } from '@mantine/core'
+import { Box, Card, Flex, Image, NumberInput, NumberInputHandlers, Text, useMantineColorScheme, useMantineTheme } from '@mantine/core'
 import { IconMinus, IconPlus } from '@tabler/icons-react'
 import React, { useCallback, useEffect, useMemo, useRef } from 'react'
 import {
@@ -39,6 +39,10 @@ const ProductPropertySelection: React.FC<ProductPropertySelectionProps> = ({
   remove,
   showImage,
 }) => {
+  const { colors, defaultRadius } = useMantineTheme();
+  const { colorScheme } = useMantineColorScheme();
+  const isDarkTheme = colorScheme === 'dark';
+  const getPrimaryColor = () => isDarkTheme ? colors.red[9] : colors.teal[9];
   const { attributes } = property
 
   const quantityInput = useRef<NumberInputHandlers>(null)
@@ -108,7 +112,8 @@ const ProductPropertySelection: React.FC<ProductPropertySelectionProps> = ({
         data-selected={!!selected}
         data-disabled={!max}
         onClick={() => onSelect()}
-        data-withImage={showImage}
+        data-withimage={showImage}
+        style={{borderColor: !!selected ? getPrimaryColor() : 'lightgray'}}
         withBorder
       >
         {attributes.image?.data?.attributes.url && showImage ? (
@@ -132,6 +137,7 @@ const ProductPropertySelection: React.FC<ProductPropertySelectionProps> = ({
             hideControls
             handlersRef={quantityInput}
             size="xs"
+            style={{border: `1px solid ${getPrimaryColor()}`, borderRadius: defaultRadius}}
             classNames={{
               root: quantitySelection,
               input: quantitySelectionInput,
@@ -140,7 +146,7 @@ const ProductPropertySelection: React.FC<ProductPropertySelectionProps> = ({
             value={selected?.quantity}
             onChange={onChangeQuantity}
             step={1}
-            min={0}
+            min={1}
             max={max}
             defaultValue={1}
             allowNegative={false}

@@ -1,4 +1,5 @@
-import qs from 'qs'
+import qs from 'qs';
+import axios from 'axios';
 
 import { Article, Article_NoRelations, Article_Plain } from '@/types/Article'
 import { Author, Author_NoRelations, Author_Plain } from '@/types/Author'
@@ -83,20 +84,30 @@ export default class BlogService extends CMSService {
     return res.json()
   }
 
-  getBySlug = async (slug: string, params?: QueryParams<Article_NoRelations>) => {
-    const url = `${this.baseURL}/slugify/slugs/article/${slug}`
-    const search = qs.stringify(params)
+  getBySlug = async (slug: string, params?: QueryParams<Article_NoRelations>): Promise<QueryResponse<Article>> => {
+    const url = `${this.baseURL}/slugify/slugs/article/${slug}`;
+    const search = qs.stringify(params);
 
-    const res = await fetch(`${url}?${search}`, {
-      headers: this.headers,
-      cache: 'no-store',
-    })
-
-    if (res.ok) {
-      return res.json() as Promise<QueryResponse<Article>>;
-    } else {
-      // Handle errors, e.g., by throwing an error or returning a default value
-      throw new Error(`Failed to fetch article by slug: ${slug}, status: ${res.status}`);
+    try {
+      const res = await axios.get(`${url}?${search}`, {
+        headers: {
+          ...this.headers,
+          'Cache-Control': 'no-cache, no-store, must-revalidate', // Instructs the cache to not store the response
+          Pragma: 'no-cache', // Legacy HTTP/1.0 servers and proxies
+          Expires: '0', // Proxies
+        }
+      });
+      console.log('res:', res);
+      console.log('res data:', res.data);
+      return res.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error('Axios error:', error.response?.data);
+        throw new Error(`Failed to fetch article by slug: ${slug}, status: ${error.response?.status}`);
+      } else {
+        console.error('Unexpected error:', error);
+        throw new Error(`Unexpected error occurred while fetching article by slug: ${slug}`);
+      }
     }
   }
 

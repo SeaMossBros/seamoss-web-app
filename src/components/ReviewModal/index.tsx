@@ -13,7 +13,7 @@ export type ReviewModalProps = ModalProps & {
 
 const ReviewModal: React.FC<ReviewModalProps> = ({ product, onSuccess, ...props }) => {
   return (
-    <ToolTip title="Write a review">
+    // <ToolTip title="Write a review">
       <Modal
         {...props}
         padding={24}
@@ -23,7 +23,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({ product, onSuccess, ...props 
         >
         {props.opened ? <ReviewForm product={product} onSuccess={onSuccess} /> : null}
       </Modal>
-    </ToolTip>
+    // </ToolTip>
   )
 }
 

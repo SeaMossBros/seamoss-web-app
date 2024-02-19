@@ -117,8 +117,8 @@ const ToolTip = ({
                     width,
                     maxWidth: '300px',
                     marginTop: '9px',
-                    backgroundColor: isDarkTheme ? 'white' : 'black',
-                    color: isDarkTheme ? 'black' : 'white',
+                    backgroundColor: isDarkTheme ? '#f5f5f5' : 'black',
+                    color: isDarkTheme ? 'black' : '#f5f5f5',
                     borderRadius: defaultRadius,
                     opacity,
                 }}

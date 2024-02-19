@@ -1,27 +1,23 @@
-import { useToggle, upperFirst } from '@mantine/hooks';
+import { useToggle } from '@mantine/hooks';
 import { useForm } from '@mantine/form';
 import {
-  TextInput,
-  PasswordInput,
   Text,
   Paper,
   Group,
   Button,
-  Divider,
-  Checkbox,
-  Anchor,
   Stack,
   useMantineTheme,
+  useMantineColorScheme,
 } from '@mantine/core';
 import GoogleButton from 'react-google-button';
-import { useService } from '@/hooks/useService';
+// import { useService } from '@/hooks/useService';
 import AuthService from '@/services/auth.service';
 
-import { submitButtonContainer } from './AuthForm.css'
-
 const AuthenticationForm = () => {
-    const {primaryColor} = useMantineTheme();
-    const authService = useService(AuthService)
+    const { colors, defaultRadius } = useMantineTheme();
+    const { colorScheme } = useMantineColorScheme();
+    const isDarkTheme = colorScheme === 'dark';
+    const authService = new AuthService();
 
     const onLoginClick = () => {
        authService.getGoogleLoginUrl();
@@ -55,7 +51,7 @@ const AuthenticationForm = () => {
                     Welcome to SeaTheMoss! 
                 </Text>
                 <Group gap='sm'>
-                    <Text size="lg" c={primaryColor}>
+                    <Text size='xl' fw={600} c={isDarkTheme ? colors.red[9] : colors.teal[9]}>
                         {type[0].toUpperCase() + type.slice(1)} 
                     </Text>
                     {/* <Text size="lg">

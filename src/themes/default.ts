@@ -26,6 +26,18 @@ export const defaultTheme = createTheme({
     gray: generateColors('#212529'), // gray
     blue: generateColors('#1864AB'), // blue
     pink: generateColors('#A61E4D'), // pink
+    "black": [
+      '#1a1b1e',
+      '#1a1b1e',
+      '#1a1b1e',
+      '#1a1b1e',
+      '#1a1b1e',
+      '#1a1b1e',
+      '#1a1b1e',
+      '#1a1b1e',
+      '#1a1b1e',
+      '#1a1b1e',
+    ]
   },
   primaryColor: 'teal',
   primaryShade: {
@@ -58,9 +70,9 @@ export const defaultTheme = createTheme({
     lg: '15px',
     xl: '20px',
   },
-  fontFamily: 'Greycliff CF',
+  fontFamily: 'Palantino',
   defaultGradient: {
-    from: 'white',
+    from: '#f5f5f5',
     to: 'teal',
     deg: 45
   },

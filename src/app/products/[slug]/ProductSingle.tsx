@@ -1,6 +1,6 @@
 'use client'
 
-import { Accordion, Box, Button, Grid, Stack, Title } from '@mantine/core'
+import { Accordion, Box, Button, Grid, Stack, Title, useMantineColorScheme, useMantineTheme } from '@mantine/core'
 import uniqBy from 'lodash/uniqBy'
 import { useCallback, useMemo } from 'react'
 import { FormProvider } from 'react-hook-form'
@@ -21,6 +21,10 @@ export type ProductSingleProps = {
 }
 
 const ProductSingle: React.FC<ProductSingleProps> = ({ slug, queryParams }) => {
+  const { colors } = useMantineTheme();
+  const { colorScheme } = useMantineColorScheme();
+  const isDarkTheme = colorScheme === 'dark';
+  const getPrimaryColor = () => isDarkTheme ? colors.red[9] : colors.teal[9];
   const { addToCart, isAddingToCart } = useCart()
   const { product, methods, refetch } = useProductForm(slug, queryParams)
 
@@ -74,7 +78,7 @@ const ProductSingle: React.FC<ProductSingleProps> = ({ slug, queryParams }) => {
             >
               <Stack gap="lg">
                 <ProductDetails product={product} />
-                <Button type="submit" loading={isAddingToCart} fullWidth>
+                <Button type="submit" loading={isAddingToCart} fullWidth bg={getPrimaryColor()}>
                   ADD TO CART
                 </Button>
                 <Accordion>

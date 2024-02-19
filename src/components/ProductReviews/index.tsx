@@ -1,6 +1,6 @@
 'use client'
 
-import { Button, Center, Flex, Pagination, Rating, Stack, Text, Title } from '@mantine/core'
+import { Button, Center, Flex, Pagination, Rating, Stack, Text, Title, useMantineColorScheme, useMantineTheme } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import React, { useCallback, useMemo, useState } from 'react'
 
@@ -18,6 +18,10 @@ export type ProductReviewsProps = {
 }
 
 const ProductReviews: React.FC<ProductReviewsProps> = ({ product, onRefetch }) => {
+  const { colors } = useMantineTheme();
+  const { colorScheme } = useMantineColorScheme();
+  const isDarkTheme = colorScheme === 'dark';
+  const getPrimaryColor = () => isDarkTheme ? colors.red[9] : colors.teal[9];
   const [reviewModalOpened, reviewModal] = useDisclosure()
   const [pagination, setPagination] = useState<Pick<PaginationOptions, 'page' | 'pageSize'>>({
     page: 1,
@@ -84,7 +88,7 @@ const ProductReviews: React.FC<ProductReviewsProps> = ({ product, onRefetch }) =
           </Stack>
         </Stack>
         <Flex justify="flex-end">
-          <Button variant="outline" onClick={reviewModal.open}>
+          <Button variant="outline" onClick={reviewModal.open} c={getPrimaryColor()} style={{borderColor: getPrimaryColor()}}>
             Write a review
           </Button>
         </Flex>

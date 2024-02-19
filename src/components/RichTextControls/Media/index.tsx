@@ -40,13 +40,13 @@ const RichTextControlMedia: React.FC = () => {
 
   return (
     <>
-      <ToolTip title="Attach media">
+      {/* <ToolTip title="Attach media"> */}
         <RichTextEditor.Control
           onClick={uploadModal.open}
         >
           <IconPhoto stroke={1.5} size="1rem" />
         </RichTextEditor.Control>
-      </ToolTip>
+      {/* </ToolTip> */}
       <MediaUploadModal opened={uploadModalOpened} onClose={uploadModal.close} onSave={onSave} />
     </>
   )

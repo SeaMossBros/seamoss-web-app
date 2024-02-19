@@ -7,9 +7,9 @@ const LoginClientSide: React.FC = () => {
 
   return (
     <Stack justify="center" mt={64}>
-        <Center>
-            <AuthenticationForm />
-        </Center>
+      <Center>
+        <AuthenticationForm />
+      </Center>
     </Stack>
   )
 }

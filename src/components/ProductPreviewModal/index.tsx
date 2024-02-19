@@ -1,6 +1,6 @@
 'use client'
 
-import { Button, Grid, Modal, ModalProps, Stack } from '@mantine/core'
+import { Button, Grid, Modal, ModalProps, Stack, useMantineColorScheme, useMantineTheme } from '@mantine/core'
 import uniqBy from 'lodash/uniqBy'
 import React, { useCallback, useMemo } from 'react'
 import { FormProvider } from 'react-hook-form'
@@ -19,6 +19,10 @@ export type ProductPreviewModalProps = ModalProps & {
 
 const ProductPreviewModal: React.FC<ProductPreviewModalProps> = ({ product, ...modalProps }) => {
   const { addToCart, isAddingToCart } = useCart()
+  const { colors } = useMantineTheme();
+  const { colorScheme } = useMantineColorScheme();
+  const isDarkTheme = colorScheme === 'dark';
+  const getPrimaryColor = () => isDarkTheme ? colors.red[9] : colors.teal[9];
 
   const { product: productDetails, methods } = useProductForm(product?.attributes.slug, {
     populate: {
@@ -87,7 +91,7 @@ const ProductPreviewModal: React.FC<ProductPreviewModalProps> = ({ product, ...m
               >
                 <Stack gap="lg">
                   <ProductDetails product={productDetails} showOptionImages={false} />
-                  <Button type="submit" loading={isAddingToCart} fullWidth>
+                  <Button type="submit" loading={isAddingToCart} bg={getPrimaryColor()} fullWidth>
                     Add To Cart
                   </Button>
                 </Stack>

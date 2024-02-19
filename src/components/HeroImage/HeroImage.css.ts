@@ -23,7 +23,7 @@ export const container = style({
   left: 0,
   top: 0,
   width: '100%',
-  color: 'white',
+  color: '#f5f5f5',
 })
 
 export const slideImage = style({
@@ -73,6 +73,8 @@ export const title = style({
 
 export const description = style({
   color: defaultThemeVars.colors['white'][1],
+  fontFamily: defaultThemeVars.fontFamily,
+  fontSize: defaultThemeVars.fontSizes.lg,
   opacity: 0.75,
   maxWidth: 'rem(500px)',
 })

@@ -3,7 +3,13 @@ import { style } from '@vanilla-extract/css'
 import { defaultThemeVars } from '@/themes/default'
 
 export const productsContainer = style({
-  padding: '3vh 5vw',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  padding: '3vh 3vw',
+  width: '100%',
+  height: '100%',
+
   '@media': {
     [`(max-width: ${defaultThemeVars.breakpoints.md})`]: {
       paddingTop: '9vh',
@@ -13,7 +19,8 @@ export const productsContainer = style({
 
 export const filtersContainer = style({
   paddingTop: '3vh',
-  paddingLeft: '3vh'
+  marginLeft: '1vw',
+  marginRight: '1vw',
 })
 
 export const pagination = style({

@@ -10,11 +10,13 @@ import MediaFromLink from './MediaFromLink'
 export type MediaUploadModalContentProps = {
   uploadMethods?: Array<'upload' | 'link'>
   onSave: (type: 'video' | 'image', media: Media_Plain | string, alt?: string) => void
+  multiple?: boolean 
 }
 
 const MediaUploadModalContent: React.FC<MediaUploadModalContentProps> = ({
   onSave,
   uploadMethods,
+  multiple
 }) => {
   const iconStyle = { width: rem(24), height: rem(12) }
 
@@ -33,7 +35,7 @@ const MediaUploadModalContent: React.FC<MediaUploadModalContentProps> = ({
         ) : null}
       </Tabs.List>
       <Tabs.Panel value="upload">
-        <MediaUpload onSave={onSave} />
+        <MediaUpload onSave={onSave} multiple={multiple} />
       </Tabs.Panel>
       <Tabs.Panel value="link">
         <MediaFromLink onSave={onSave} />

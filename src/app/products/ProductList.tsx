@@ -1,6 +1,6 @@
 'use client'
 
-import { Grid, Pagination, Stack } from '@mantine/core'
+import { Grid, Pagination, Stack, Title, useMantineColorScheme, useMantineTheme } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import Link from 'next/link'
 import { usePathname, useSearchParams } from 'next/navigation'
@@ -19,9 +19,9 @@ const ProductCol: React.FC<PropsWithChildren> = ({ children }) => {
     <Grid.Col
       span={{
         base: 12,
-        xs: 6,
-        sm: 4,
-        md: 3,
+        xs: 3,
+        sm: 3,
+        md: 4,
       }}
     >
       {children}
@@ -35,6 +35,10 @@ export type ProductListProps = {
 }
 
 const ProductList: React.FC<ProductListProps> = ({ queryParams, onPage }) => {
+  const { colors } = useMantineTheme();
+  const { colorScheme } = useMantineColorScheme();
+  const isDarkTheme = colorScheme === 'dark';
+  const getCorrectPrimaryColor = () => isDarkTheme ? colors.red[9] : colors.teal[9];
   const searchParams = useSearchParams()
   const pathname = usePathname()
 
@@ -69,8 +73,9 @@ const ProductList: React.FC<ProductListProps> = ({ queryParams, onPage }) => {
   }
 
   return (
-    <Stack gap="lg" className={productsContainer}>
-      <Grid>
+    <Stack gap='xl' className={productsContainer}>
+      {onPage === 'Home' && <Title size={'h1'} c={isDarkTheme ? '#f5f5f5' : 'dark'}>Our Best Sellers 🔥🪸</Title>}
+      <Grid justify='space-evenly' w={'100%'}>
         {products?.data?.map((product) => (
           <ProductCol key={product.id}>
             <ProductCard product={product} onAddToCart={onAddToCart} />
@@ -78,6 +83,7 @@ const ProductList: React.FC<ProductListProps> = ({ queryParams, onPage }) => {
         ))}
       </Grid>
       {onPage !== 'Home' && <Pagination
+        color={getCorrectPrimaryColor()}
         className={pagination}
         total={totalPages}
         value={queryParams.pagination?.page}

@@ -32,7 +32,7 @@ export const title = style({
     color: 'var(--mantine-color-white)',
     marginBottom: 'var(--mantine-spacing-xs)',
     textAlign: 'center',
-    fontFamily: 'Greycliff CF, var(--mantine-font-family)',
+    fontFamily: 'Palantino',
 
     '@media': {
         [`(max-width: ${defaultThemeVars.breakpoints.xs})`]: {

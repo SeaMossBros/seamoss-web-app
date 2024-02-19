@@ -19,11 +19,11 @@ const PaymentCancelModal: React.FC<{
   })
 
   return (
-    <ToolTip title="Payment Cancelled">
+    // <ToolTip title="Payment Cancelled">
       <Modal opened={opened} onClose={close} centered>
         <Text>Your payment has been cancelled.</Text>
       </Modal>
-    </ToolTip>
+    // </ToolTip>
   )
 }
 

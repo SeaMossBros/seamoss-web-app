@@ -35,15 +35,15 @@ export const link = style({
             color: defaultThemeVars.colors.black, // Adjust for light-dark variation
         },
         '&[data-active]': {
-            backgroundColor: defaultThemeVars.colors.blue[1],
-            color: defaultThemeVars.colors.blue[1],
+            backgroundColor: defaultThemeVars.colors.red[1],
+            color: defaultThemeVars.colors.red[1],
         },
         '&[data-active]:hover': {
-            backgroundColor: defaultThemeVars.colors.blue[1],
-            color: defaultThemeVars.colors.blue[1],
+            backgroundColor: defaultThemeVars.colors.red[1],
+            color: defaultThemeVars.colors.red[1],
         },
         // '&:hover .linkIcon, &[data-active] .linkIcon, &[data-active]:hover .linkIcon': {
-        //     color: defaultThemeVars.colors.blue[1], // This combines the conditions for hover and active states
+        //     color: defaultThemeVars.colors.red[1], // This combines the conditions for hover and active states
         // },
     },
 });

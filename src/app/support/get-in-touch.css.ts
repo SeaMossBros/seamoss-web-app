@@ -83,7 +83,7 @@ export const contacts = style({
 
 export const title = style({
     marginBottom: 'calc(var(--mantine-spacing-xl) * 1.5)',
-    fontFamily: 'Greycliff CF, var(--mantine-font-family)',
+    fontFamily: 'Palantino',
     
     '@media': {
         [`(max-width: ${defaultThemeVars.breakpoints.sm})`]: {

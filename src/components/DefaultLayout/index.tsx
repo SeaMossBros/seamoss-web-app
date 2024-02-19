@@ -5,6 +5,8 @@ import {
   AppShellHeader,
   AppShellMain,
   AppShellNavbar,
+  useMantineColorScheme,
+  useMantineTheme,
 } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import React, { PropsWithChildren } from 'react'
@@ -17,6 +19,9 @@ import { footer, main } from './layout.css'
 
 const DefaultLayout: React.FC<PropsWithChildren> = ({ children }) => {
   const [navOpened, navbar] = useDisclosure(false)
+  const { colors } = useMantineTheme();
+  const { colorScheme } = useMantineColorScheme();
+  const isDarkTheme = colorScheme === 'dark';
 
   return (
     <AppShell
@@ -35,6 +40,7 @@ const DefaultLayout: React.FC<PropsWithChildren> = ({ children }) => {
       footer={{
         height: '54vh',
       }}
+      bg={isDarkTheme ? colors.black[9] : '#f5f5f5'}
     >
       <AppShellHeader>
         <Header navOpened={navOpened} toggleNav={navbar.toggle} />

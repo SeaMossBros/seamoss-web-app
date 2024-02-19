@@ -84,7 +84,7 @@ const HeroImage: React.FC = () => {
               component="span"
               inherit
               variant="gradient"
-              // gradient={{ from: 'blue', to: 'orange' }}
+              gradient={{ from: '#f5f5f5', to: isDarkTheme ? colors.red[9] : colors.teal[8] }}
             >
               SeaTheMoss
             </Text>{' '}
@@ -95,7 +95,7 @@ const HeroImage: React.FC = () => {
             className={description}
             mt={30} py={6}
             style={{backgroundColor: colors.white[1], textAlign: 'center', borderRadius: defaultRadius }}
-            c={isDarkTheme ? colors.orange[9] : colors.teal[9]}
+            c={isDarkTheme ? colors.red[9] : colors.teal[9]}
           >
             Discover our pure sea moss in gel, dried, and gummy form
             <br />
@@ -109,16 +109,20 @@ const HeroImage: React.FC = () => {
               className={actionButtons}
               mt={40}
               size="md"
+              bg={isDarkTheme ? colors.red[9] : colors.teal[9]}
             >
               Shop Products
             </Button>
             <Button
               component={Link}
               href={ROUTE_PATHS.ABOUT}
-              variant="outline"
+              variant='outline'
               className={actionButtons}
               mt={40}
               size="md"
+              gradient={{ from: 'transparent', to: colors.white[1] }}
+              c={'#f5f5f5'} // isDarkTheme ? colors.red[6] : colors.teal[6]
+              style={{ borderColor: '#f5f5f5' }}
             >
               Why Our Sea Moss?
             </Button>

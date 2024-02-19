@@ -26,7 +26,18 @@ export const darkTheme = createTheme({
         gray: generateColors('#212529'), // gray
         blue: generateColors('#1864AB'), // blue
         pink: generateColors('#A61E4D'), // pink
-        // dark: '#1a1b1e' // dark
+        "black": [
+            '#1a1b1e',
+            '#1a1b1e',
+            '#1a1b1e',
+            '#1a1b1e',
+            '#1a1b1e',
+            '#1a1b1e',
+            '#1a1b1e',
+            '#1a1b1e',
+            '#1a1b1e',
+            '#1a1b1e',
+        ]
     },
     primaryColor: 'red',
     primaryShade: {
@@ -59,9 +70,9 @@ export const darkTheme = createTheme({
         lg: '15px',
         xl: '20px',
     },
-    fontFamily: 'Greycliff CF',
+    fontFamily: 'Palantino',
     defaultGradient: {
-        from: 'white',
+        from: '#f5f5f5',
         to: 'orange',
         deg: 45
     },
@@ -73,6 +84,7 @@ export const darkTheme = createTheme({
     //   lg: '33px',
     //   xl: '42px',
     // },
+
 })
 
 export const darkThemeVars = themeToVars(darkTheme)

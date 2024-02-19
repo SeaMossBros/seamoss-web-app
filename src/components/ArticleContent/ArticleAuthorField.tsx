@@ -58,27 +58,27 @@ const ArticleAuthorField: React.FC<ArticleAuthorFieldProps> = ({ mode }) => {
         <Group>
           {author ? 
           (
-            <ToolTip title={`Avatar for ${author.attributes.name}`} width='180px'>
+            // <ToolTip title={`Avatar for ${author.attributes.name}`} width='180px'>
               <Avatar
                 src={getStrapiUploadUrl(
-                  author.attributes?.avatar.data?.attributes.formats.small?.url
-                  || author.attributes?.avatar.data?.attributes.formats.thumbnail?.url
-                  || author.attributes?.avatar.data?.attributes.url
+                  author.avatar.attributes.formats.small?.url
+                  || author.avatar.attributes.formats.thumbnail?.url
+                  || author.avatar.attributes.url
                   || ''
                   )}
                   alt={author.name}
                   size={27} // Set a size for the avatar
                   style={{ marginRight: '10px' }} // Add some spacing
               />
-            </ToolTip>
+            // </ToolTip>
           ) : (
-            <ToolTip title='No Author Selected' width='180px' opacity={0.72}>
+            // <ToolTip title='No Author Selected' width='180px' opacity={0.72}>
               <Avatar
                 src={''}
                 size={27} // Set a size for the avatar
                 style={{ marginRight: '10px' }} // Add some spacing
                 /> 
-            </ToolTip>
+            // </ToolTip>
           )}
           <Select
             placeholder="Select author"

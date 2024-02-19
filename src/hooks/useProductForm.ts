@@ -17,8 +17,7 @@ export default function useProductForm(
   formProps?: UseFormProps<ProductSelectionFormData>,
 ) {
   const productService = useService(ProductService)
-
-  const methods = useForm<ProductSelectionFormData>(formProps)
+  const methods = useForm<ProductSelectionFormData>(formProps);
 
   const variant = methods.watch('variant')
   const purchaseOption = methods.watch('purchaseOption')

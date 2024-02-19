@@ -15,15 +15,15 @@ export default class AuthService {
     ],
   }
 
-  loginAdmin = async (username: string, password: string) => {
+  loginAdmin = async (email: string, password: string) => {
     const response = await fetch(`${this.baseURL}/api/auth/local`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ identifier: username, password: password }),
+      body: JSON.stringify({ identifier: email, password }),
     });
     const data = await response.json();
-    return data.jwt; // Use this token in the Authorization header
-  }
+    return data;
+  };
 
   getGoogleLoginUrl = () => {
     const url = `${this.baseURL}/api/connect/google`;
@@ -48,7 +48,7 @@ export default class AuthService {
   }
 
   getSession = async () => {
-    const url = '/api/auth/google/session'
+    const url = '/api/auth/google' // session
     const res = await fetch(url)
     return res.json() as Promise<AuthUser | null>
   }

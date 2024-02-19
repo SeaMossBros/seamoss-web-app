@@ -24,8 +24,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
   const { colors } = useMantineTheme();
   const { colorScheme } = useMantineColorScheme();
   const isDarkTheme = colorScheme === 'dark';
-  const getCorrectPrimaryColor = () => isDarkTheme ? colors.red[6] : colors.teal[7];
-  const getCorrectSecondaryColor = () => isDarkTheme ? colors.red[4] : colors.teal[6];
+  const getCorrectPrimaryColor = () => isDarkTheme ? '#f5f5f5' : colors.teal[9];
+  const getCorrectSecondaryColor = () => isDarkTheme ? colors.red[9] : colors.teal[9];
   const [isHovering, setIsHovering] = useState(false);
 
   const productUrl = useMemo(
@@ -76,14 +76,15 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
     <Card
       className={card}
       withBorder
-      style={{borderColor: getCorrectPrimaryColor()}}
+      // style={{borderColor: getCorrectSecondaryColor()}}
       onMouseEnter={() => setIsHovering(true)}  
-      onMouseLeave={() => setIsHovering(false)}  
+      onMouseLeave={() => setIsHovering(false)}
+      style={{border: `1px solid ${getCorrectSecondaryColor()}`}}
     >
       <Card.Section
-        component={Link} 
+        component={Link}
         href={productUrl} 
-        style={{backgroundColor: getCorrectPrimaryColor(), paddingBottom: '1px'}}
+        style={{backgroundColor: getCorrectSecondaryColor(), paddingBottom: '2px'}}
       >
         <AspectRatio ratio={1}>
           <Image
@@ -100,31 +101,33 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
       </Card.Section>
       <Stack mt="sm" h={130}>
         <Stack gap={0}>
-          <ToolTip title={'Product Name:\n' + product.attributes.name}>
+          {/* <ToolTip title={'Product Name:\n' + product.attributes.name}> */}
             <Text
               className={productName}
               component={Link}
               href={productUrl}
               lineClamp={2}
-              c={getCorrectSecondaryColor()}
+              c={isDarkTheme ? '#f5f5f5' : 'dark'}
             >
               {product.attributes.name}
             </Text>
-          </ToolTip>
+          {/* </ToolTip> */}
           <Indicator
+            ml={6}
+            mt={3}
             position="middle-start"
             processing={isInStock}
-            color={isInStock ? 'teal' : 'red'}
+            color={isInStock ? colors.teal[9] : colors.red[9]}
           >
-            <Text fz="sm" ml="md" c={isDarkTheme ? 'white' : 'black'}>
+            <Text fz="sm" ml="md" c={isDarkTheme ? '#f5f5f5' : 'black'}>
               {isInStock ? 'In stock' : 'Out of stock'}
             </Text>
           </Indicator>
           <Group className={actionsContainer} justify="space-between" gap={0}>
-            <Text fz="sm" c={isDarkTheme ? 'white' : 'black'}>
+            <Text fz="sm" c={isDarkTheme ? '#f5f5f5' : 'black'}>
               From {formatPrice(lowestPrice)}
             </Text>
-            <Button onClick={(e) => onAddToCartClick(e)} loading={isAddingToCart} variant='outline'>
+            <Button onClick={(e) => onAddToCartClick(e)} loading={isAddingToCart} variant='outline' c={getCorrectPrimaryColor()} style={{borderColor: getCorrectSecondaryColor()}}>
               Quick View
             </Button>
           </Group>

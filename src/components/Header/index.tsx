@@ -22,7 +22,7 @@ export type HeaderProps = {
 
 const Header: React.FC<HeaderProps> = ({ navOpened, toggleNav }) => {
   const pathname = usePathname()
-  const {primaryColor, colors, defaultRadius} = useMantineTheme();
+  const { colors, defaultRadius} = useMantineTheme();
   const { colorScheme } = useMantineColorScheme();
   const isDarkTheme = colorScheme === 'dark';
   
@@ -31,7 +31,10 @@ const Header: React.FC<HeaderProps> = ({ navOpened, toggleNav }) => {
       <Group className={wrapper} justify="space-between" align="center">
         <Link href={ROUTE_PATHS.HOME} className={logoContainer}>
           <Image src="/images/SeaTheMoss-Empty-Icon.png" alt="Logo" height={40} visibleFrom="sm" />
-          <Title c={isDarkTheme ? colors.red[6] : colors.teal[9] } order={2}>
+          <Title 
+            c={isDarkTheme ? colors.red[6] : colors.teal[9] }
+            order={2}
+          >
             SeaTheMoss
           </Title>
         </Link>
@@ -67,21 +70,21 @@ const Header: React.FC<HeaderProps> = ({ navOpened, toggleNav }) => {
             active={pathname.startsWith(ROUTE_PATHS.ABOUT)}
             style={{borderRadius: defaultRadius}}
           />
-          <UserMenu isDarkTheme={isDarkTheme} />
+          <UserMenu isDarkTheme={isDarkTheme} /> {/* // TODO: Change `login` to `logout` when user is authenticated */}
           <ColorSchemeToggler />
-          <ActionIcon variant="subtle" color="gray" onClick={spotlight.open}>
-            <ToolTip title='Search SeaTheMoss.com \nby products, blogs, etc' width='240px'>
+          <ActionIcon variant="subtle" color={isDarkTheme ? '#f5f5f5' : 'dark' } onClick={spotlight.open}>
+            {/* <ToolTip title='Search SeaTheMoss.com \nby products, blogs, etc' width='240px'> */}
               <IconSearch />
-            </ToolTip>
+            {/* </ToolTip> */}
           </ActionIcon>
           <CartDropdown />
         </Flex>
         {/* Hamburger Menu */}
-        <Flex hiddenFrom="md" className={navLinkContainer} gap="md" align="center">
+        <Flex hiddenFrom="md" className={navLinkContainer} gap='sm' align="center">
           <CartDropdown />
-          <ToolTip title='Toggle navigation'>
+          {/* <ToolTip title='Toggle navigation'> */}
             <Burger opened={navOpened} onClick={toggleNav} />
-          </ToolTip>
+          {/* </ToolTip> */}
         </Flex>
       </Group>
     </Container>

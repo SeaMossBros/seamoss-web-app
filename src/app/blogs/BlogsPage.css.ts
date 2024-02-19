@@ -3,8 +3,10 @@ import { style } from '@vanilla-extract/css'
 
 export const title = style({
     display: 'flex',
-    fontSize: '6rem',
-    fontWeight: 'bold',
+    marginTop: '3vh',
+    marginBottom: '3vh',
+    fontSize: '4rem',
+    fontWeight: '300',
 
     '@media': {
         [`(max-width: ${defaultThemeVars.breakpoints.sm})`]: {

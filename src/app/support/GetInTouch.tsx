@@ -25,11 +25,11 @@ const GetInTouch = () => {
 
         <div className={fields}>
           <SimpleGrid cols={{ base: 1, sm: 2 }}>
-            <TextInput label="Your name" placeholder="Your name" className={fieldsLabels} style={{ color: isDarkTheme ? 'white' : colors.teal[9]}}/>
-            <TextInput label="Your email" placeholder="support@seathemoss.com" required className={fieldsLabels} style={{ color: isDarkTheme ? 'white' : colors.teal[9]}}/>
+            <TextInput label="Your name" placeholder="Your name" className={fieldsLabels} style={{ color: isDarkTheme ? '#f5f5f5' : colors.black[9]}}/>
+            <TextInput label="Your email" placeholder="support@seathemoss.com" required className={fieldsLabels} style={{ color: isDarkTheme ? '#f5f5f5' : colors.black[9]}}/>
           </SimpleGrid>
 
-          <TextInput mt="md" label="Subject" placeholder="Subject" required className={fieldsLabels} style={{ color: isDarkTheme ? 'white' : colors.teal[9]}}/>
+          <TextInput mt="md" label="Subject" placeholder="Subject" required className={fieldsLabels} style={{ color: isDarkTheme ? '#f5f5f5' : colors.black[9]}}/>
 
           <Textarea
             mt="md"
@@ -37,11 +37,11 @@ const GetInTouch = () => {
             placeholder="Please include all relevant information"
             minRows={3}
             className={fieldsLabels}
-            style={{ color: isDarkTheme ? 'white' : colors.teal[9]}}
+            style={{ color: isDarkTheme ? '#f5f5f5' : colors.black[9]}}
           />
 
           <Group justify="flex-end" mt="md">
-            <Button type="submit" className={control} style={{ color: isDarkTheme ? 'white' : colors.teal[9]}}>
+            <Button type="submit" className={control} style={{ color: isDarkTheme ? '#f5f5f5' : colors.black[9]}}>
               Send message
             </Button>
           </Group>

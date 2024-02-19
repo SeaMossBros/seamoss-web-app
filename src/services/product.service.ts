@@ -8,6 +8,7 @@ import { QueryParams } from '@/types/QueryParams'
 import { QueryResponse } from '@/types/QueryResponse'
 
 import CMSService from './core/cms.service'
+import { Media } from '@/types/Media'
 
 export default class ProductService extends CMSService {
   static queryKeys = {
@@ -41,9 +42,10 @@ export default class ProductService extends CMSService {
     // console.log('params in getBySlug', params);
     const url = `${this.baseURL}/slugify/slugs/product/${slug}`
     const search = qs.stringify(params)
-    console.log('url', url);
-    console.log('search', search);
-
+    // console.log('url', url);
+    // console.log('search', search);
+    // console.log('headers', this.headers);
+    
     return fetch(`${url}?${search}`, {
       headers: this.headers,
       cache: 'no-store',

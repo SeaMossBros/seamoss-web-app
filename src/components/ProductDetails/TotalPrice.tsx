@@ -11,9 +11,9 @@ const TotalPrice: React.FC = () => {
   const discountedPrice = useWatch<ProductSelectionFormData, 'discountedPrice'>({
     name: 'discountedPrice',
   })
+  console.log('discountedPrice', discountedPrice);
   console.log('totalPrice', totalPrice);
-  if (!totalPrice)
-    return (
+  if (!totalPrice) return (
       <Skeleton width={100} visible>
         <Text fz="xl" c="teal" fw={600}>
           --

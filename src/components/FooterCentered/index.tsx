@@ -11,18 +11,16 @@ const links = [
   { link: '/blogs', label: 'Blogs' },
   { link: '/products', label: 'Shop Products' },
   { link: '/about-us', label: 'About Us' },
-  { link: '/login', label: 'Admin login' },
+  { link: '/admin-login', label: 'Admin login' },
 ]
 
 const FooterCentered = () => {
-  // const [spinningButtonActionText, setSpinningButtonActionText] = useState('Stop')
   const items = links.map((link) => (
     <Anchor
       c="dimmed"
       key={link.label}
       href={link.link}
       lh={1}
-      // onClick={() => null}
       size="sm"
     >
       {link.label}
@@ -39,9 +37,9 @@ const FooterCentered = () => {
       <Group className={footerLinks}>{items}</Group>
 
       <Group className={externalFooterLinks} gap="xs" justify="flex-end" wrap="nowrap">
-        <ActionIcon size="lg" variant="default" radius="xl">
+        {/* <ActionIcon size="lg" variant="default" radius="xl">
           <IconBrandTwitter style={{ width: 18, height: 18 }} stroke={1.5} />
-        </ActionIcon>
+        </ActionIcon> */}
         <Anchor
           c="dimmed"
           href={'https://www.youtube.com/channel/UCdRAVki3AJLRUyi2sg-SliA'}
@@ -53,9 +51,9 @@ const FooterCentered = () => {
             <IconBrandYoutube style={{ width: 18, height: 18 }} stroke={1.5} />
           </ActionIcon>
         </Anchor>
-        <ActionIcon size="lg" variant="default" radius="xl">
+        {/* <ActionIcon size="lg" variant="default" radius="xl">
           <IconBrandInstagram style={{ width: 18, height: 18 }} stroke={1.5} />
-        </ActionIcon>
+        </ActionIcon> */}
       </Group>
     </div>
   )
