@@ -9,6 +9,7 @@ import { QueryResponse } from '@/types/QueryResponse'
 
 import CMSService from './core/cms.service'
 import { Media } from '@/types/Media'
+import axios from 'axios'
 
 export default class ProductService extends CMSService {
   static queryKeys = {
@@ -56,12 +57,11 @@ export default class ProductService extends CMSService {
     const url = `${this.baseURL}/product-variants/${id}`
     const search = qs.stringify(params)
 
-    const res = await fetch(`${url}?${search}`, {
+    const res = await axios.get(`${url}${search.length ? '?' + search : ''}`, {
       headers: this.headers,
-      cache: 'no-store',
     })
 
-    return res.json() as Promise<QueryResponse<ProductVariant>>
+    return res.data as Promise<QueryResponse<ProductVariant>>
   }
 
   getPurchaseOptionById = async (id: number, params?: QueryParams<PurchaseOption_Plain>) => {
@@ -80,7 +80,7 @@ export default class ProductService extends CMSService {
     productId: number,
     data: Omit<
       ProductReview_NoRelations,
-      'product' | 'id' | 'createdAt' | 'updatedAt' | 'publishedAt'
+      'product' | 'id' | 'createdAt' | 'updatedAt' | 'publishedAt' | 'attributes'
     >,
   ) => {
     const url = `${this.baseURL}/product-reviews`
@@ -92,7 +92,7 @@ export default class ProductService extends CMSService {
     }
 
     const body = JSON.stringify(payload)
-
+    console.log('body', body);
     const res = await fetch(url, {
       method: 'post',
       headers: {
@@ -108,7 +108,7 @@ export default class ProductService extends CMSService {
 
   getProductReviews = async (params: QueryParams<ProductReview_NoRelations>) => {
     const url = `${this.baseURL}/product-reviews?${qs.stringify(params)}`
-
+    console.log('url', url);
     const res = await fetch(url, {
       headers: this.headers,
     })

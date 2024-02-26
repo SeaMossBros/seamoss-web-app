@@ -16,9 +16,6 @@ export type ProductImagesProps = {
 
 const ProductImages: React.FC<ProductImagesProps> = ({ defaultImage, images, productName }) => {
   const { colors, defaultRadius } = useMantineTheme();
-  const { colorScheme } = useMantineColorScheme();
-  const isDarkTheme = colorScheme === 'dark';
-  const getCorrectPrimaryColor = () => isDarkTheme ? colors.red[6] : colors.teal[7];
   const [currentImage, setCurrentImage] = useState<Media>(defaultImage ?? images[0])
 
   const onSelectImage = useCallback(function onSelectImageImpl(
@@ -62,7 +59,7 @@ const ProductImages: React.FC<ProductImagesProps> = ({ defaultImage, images, pro
               onClick={onSelectImage.bind(image)}
               data-active={currentImage.id === image.id}
               style={{
-                borderColor: (currentImage.id === image.id && getCorrectPrimaryColor()) || colors.gray[1],
+                borderColor: currentImage.id === image.id ? colors.teal[9] : 'lightgray',
                 opacity: currentImage.id !== image.id && 0.72 || 1,
                 borderRadius: defaultRadius
               }}

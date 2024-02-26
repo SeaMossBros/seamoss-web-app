@@ -12,7 +12,6 @@ export type ReviewItemProps = {
 
 const ReviewItem: React.FC<ReviewItemProps> = ({ review }) => {
   const files = useMemo(() => {
-    console.log('review.attributes.attachments?.data', review.attributes.attachments?.data);
     return review.attributes.attachments?.data || [];
   }, [review.attributes.attachments?.data])
 
@@ -27,7 +26,7 @@ const ReviewItem: React.FC<ReviewItemProps> = ({ review }) => {
 
     return <img src={file.attributes.url} height={120} alt={file.attributes.alternativeText} />
   }
-
+  // console.log('review', review);
   return (
     <Stack className={reviewItem} gap="xs">
       <Box>

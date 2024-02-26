@@ -30,7 +30,7 @@ const AdminLoginPage = () => {
   const handleAdminLogin = async (email: string, password: string) => {
     // Directly call the Next.js API route for admin login
     try {
-      console.log('in handle login', {email, password});
+      // console.log('in handle login', {email, password});
       const response = await fetch('/api/auth/local', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -39,7 +39,7 @@ const AdminLoginPage = () => {
 
       if (response.ok) {
         const data = await response.json();
-        console.log('data', data);
+        // console.log('data', data);
         // Handle successful login here, e.g., redirect or store token
         showNotification({ message: 'Login successful!', color: 'green' });
         redirect('/admin'); // Redirect to admin dashboard
@@ -87,11 +87,3 @@ const AdminLoginPage = () => {
 };
 
 export default AdminLoginPage;
-
-// import { Metadata } from 'next';
-// import dynamic from 'next/dynamic';
-// const AdminLoginClientSide = dynamic(() => import('./AdminLoginClientSide'), { ssr: false });
-
-// export const metadata: Metadata = {
-//   title: 'Admin Login | SeaTheMoss',
-// };

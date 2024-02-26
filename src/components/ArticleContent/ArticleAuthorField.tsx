@@ -30,7 +30,7 @@ const ArticleAuthorField: React.FC<ArticleAuthorFieldProps> = ({ mode }) => {
   if (mode === 'view') {
     if (!author) return null
     return (
-      <Flex gap="md" align="center" justify="flex-start">
+      <Flex gap="md" align="center" justify="flex-start" mt={21}>
         {author.avatar ? (
           <Avatar
             src={getStrapiUploadUrl(

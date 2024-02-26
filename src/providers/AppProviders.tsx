@@ -9,7 +9,7 @@ import React, { PropsWithChildren, useState } from 'react'
 
 import { useSchemeManager } from '@/hooks/useSchemeManager'
 import { defaultTheme, defaultThemeVars } from '@/themes/default'
-import { darkTheme, darkThemeVars } from '@/themes/dark'
+import { darkTheme } from '@/themes/dark'
 
 import CartProvider from './CartProvider'
 
@@ -35,9 +35,9 @@ const AppProviders: React.FC<PropsWithChildren> = ({ children }) => {
         defaultColorScheme={schemeManager.defaultScheme}
         colorSchemeManager={schemeManager}
       >
-        <ProgressBar
-          height="2px"
-          color={schemeManager.get('light') === 'dark' ? darkThemeVars.colors.red[6] : defaultThemeVars.colors.teal[6]}
+        <ProgressBar // TODO: progress bar is only changing color after a refresh (should change as soon as color toggle is pressed)
+          height="3px"
+          color={defaultThemeVars.colors.teal[9]}
           options={{ showSpinner: true }}
           shallowRouting
         />

@@ -97,8 +97,7 @@ export default class BlogService extends CMSService {
           Expires: '0', // Proxies
         }
       });
-      console.log('res:', res);
-      console.log('res data:', res.data);
+      // console.log('res:', res);
       return res.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {

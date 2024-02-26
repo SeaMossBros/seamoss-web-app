@@ -28,6 +28,7 @@ export type ProductPropertySelectionProps = {
   remove: UseFieldArrayRemove
   variant: ProductSelectionFormData['variant']
   showImage?: boolean
+  updateQuantitySum: (num: number, id: number) => void
 }
 
 const ProductPropertySelection: React.FC<ProductPropertySelectionProps> = ({
@@ -38,11 +39,9 @@ const ProductPropertySelection: React.FC<ProductPropertySelectionProps> = ({
   update,
   remove,
   showImage,
+  updateQuantitySum
 }) => {
-  const { colors, defaultRadius } = useMantineTheme();
-  const { colorScheme } = useMantineColorScheme();
-  const isDarkTheme = colorScheme === 'dark';
-  const getPrimaryColor = () => isDarkTheme ? colors.red[9] : colors.teal[9];
+  const { colors } = useMantineTheme();
   const { attributes } = property
 
   const quantityInput = useRef<NumberInputHandlers>(null)
@@ -51,6 +50,7 @@ const ProductPropertySelection: React.FC<ProductPropertySelectionProps> = ({
     () => selectedProperties.findIndex((p) => p.id === property.id),
     [property.id, selectedProperties],
   )
+
   const selected = useMemo(
     () => selectedProperties[selectedIndex],
     [selectedIndex, selectedProperties],
@@ -87,6 +87,7 @@ const ProductPropertySelection: React.FC<ProductPropertySelectionProps> = ({
       ...property,
       quantity: 1,
     })
+    updateQuantitySum(1, property.id);
   }, [append, property, selected])
 
   const onChangeQuantity = useCallback(
@@ -94,9 +95,11 @@ const ProductPropertySelection: React.FC<ProductPropertySelectionProps> = ({
       if (!selected || selectedIndex < 0) return
       const num = parseInt(`${value}`)
       if (!num) {
+        updateQuantitySum(0, property.id);
         remove(selectedIndex)
         return
       }
+      updateQuantitySum(num, property.id);
       update(selectedIndex, {
         ...selected,
         quantity: num,
@@ -113,7 +116,7 @@ const ProductPropertySelection: React.FC<ProductPropertySelectionProps> = ({
         data-disabled={!max}
         onClick={() => onSelect()}
         data-withimage={showImage}
-        style={{borderColor: !!selected ? getPrimaryColor() : 'lightgray'}}
+        style={{borderColor: !!selected ? colors.teal[9] : 'lightgray', userSelect: 'none'}}
         withBorder
       >
         {attributes.image?.data?.attributes.url && showImage ? (
@@ -137,7 +140,6 @@ const ProductPropertySelection: React.FC<ProductPropertySelectionProps> = ({
             hideControls
             handlersRef={quantityInput}
             size="xs"
-            style={{border: `1px solid ${getPrimaryColor()}`, borderRadius: defaultRadius}}
             classNames={{
               root: quantitySelection,
               input: quantitySelectionInput,
@@ -146,7 +148,7 @@ const ProductPropertySelection: React.FC<ProductPropertySelectionProps> = ({
             value={selected?.quantity}
             onChange={onChangeQuantity}
             step={1}
-            min={1}
+            min={0}
             max={max}
             defaultValue={1}
             allowNegative={false}

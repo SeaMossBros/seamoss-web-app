@@ -6,10 +6,6 @@ import { ProductSelectionFormData } from '@/types/ProductForm'
 import { PurchaseType } from '@/types/PurchaseOption'
 
 const PurchaseOptions: React.FC = () => {
-  const { colors } = useMantineTheme();
-  const { colorScheme } = useMantineColorScheme();
-  const isDarkTheme = colorScheme === 'dark';
-  const getPrimaryColor = () => isDarkTheme ? colors.red[9] : colors.teal[9];
   const methods = useFormContext<ProductSelectionFormData>()
 
   const purchaseOptions = methods.watch('product.attributes.purchase_options')
@@ -39,7 +35,7 @@ const PurchaseOptions: React.FC = () => {
     <Fieldset legend="Purchase Options" style={{userSelect: 'none'}}>
       <Stack gap="md">
         <SegmentedControl
-          color={getPrimaryColor()}
+          // color={getPrimaryColor()}
           value={selectedOption?.attributes.type}
           onChange={onChangeType}
           data={[
@@ -61,7 +57,7 @@ const PurchaseOptions: React.FC = () => {
                   .filter((option) => option.attributes.type === PurchaseType.Recurring)
                   .map((option) => (
                     <Radio
-                      color={getPrimaryColor()}
+                      // color={getPrimaryColor()}
                       key={option.id}
                       value={option.id.toString()}
                       label={option.attributes.name}

@@ -4,35 +4,29 @@ import { Media_Plain } from '@/types/Media';
 import axios from 'axios';
 
 import CMSService from './core/cms.service'
-import { APP_CONFIG } from '@/config/app';
 
 export default class FileService extends CMSService {
-  newBaseUrl = APP_CONFIG.STRAPI.MEDIA_URL;
-  newHeaders = {
-    Authorization: `Bearer ${process.env.STRAPI_TOKEN}`,
-  }
-  upload = async (files: File[]) => {
-    const url = `${this.newBaseUrl}/upload`
+  upload = async (files: File[]) => { // TODO: Review comment file upload flow is not working
+    const url = `${this.baseURL}/upload`
 
     const data = new FormData()
-    console.log('data before', data);
     
     files.forEach((file) => data.append('files', file))
-    console.log('data after', data);
-    console.log('newHeaders', this.newHeaders);
 
-    const res = await fetch(url, {
-      headers: this.newHeaders,
+    const res = await axios(url, {
+      headers: { // ! WARNING // TODO: this auth token can not be here
+        Authorization: 'Bearer 17c0a7d8cbc3a31567fb11dd2997648d4857e80e5b1dfb6553f3897ad28883a1f72dd1fbf37ca5046fcaa551188b0352c2651ba50f156bdb3bb306ff0d3053b321fdeb68bd9d7af7b5cf907375647246f5f13645f36c8b869fc7e6a3ee8fca194d9ccc61950804e20781b79bd938083c54ac41eeea3240e7f907c95721186cd0'
+      },
       method: 'post',
-      body: data,
+      data: data,
     })
-
+    
     console.log('res', res);
-    return res.json() as Promise<Media_Plain[]>
+    return res.data as Promise<Media_Plain[]>
   }
 
   uploadFileInfo = async (id: number, info: Pick<Media_Plain, 'alternativeText'>) => {
-    const url = `${this.newBaseUrl}/upload${QueryString.stringify(
+    const url = `${this.baseURL}/upload${QueryString.stringify(
       {
         id,
       },
@@ -45,13 +39,13 @@ export default class FileService extends CMSService {
 
     data.append('fileInfo', JSON.stringify(info))
 
-    const res = await fetch(url, {
-      headers: this.newHeaders,
+    const res = await axios(url, {
+      headers: this.headers,
       method: 'post',
-      body: data,
+      data: data,
     })
 
-    return res.json() as Promise<Media_Plain>
+    return res.data as Promise<Media_Plain>
   }
 }
 

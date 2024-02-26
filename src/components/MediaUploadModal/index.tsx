@@ -7,7 +7,7 @@ import ToolTip from '../ToolTip'
 
 export type MediaUploadModalProps = ModalProps & {
   uploadMethods?: Array<'upload' | 'link'>
-  onSave: (type: 'video' | 'image', media: Media_Plain | string, alt?: string) => void
+  onSave: (type: 'video' | 'image', media: Media_Plain[], alt?: string) => void
   multiple?: boolean
 }
 
@@ -18,7 +18,7 @@ const MediaUploadModal: React.FC<MediaUploadModalProps> = ({
   ...modalProps
 }) => {
   return (
-    // <ToolTip title="Upload media">
+    // <ToolTip title="Upload media"> // TODO: ToolTip is not going away on mobile, and is not staying within screen borders
       <Modal {...modalProps} size="lg">
         <MediaUploadModalContent uploadMethods={uploadMethods} onSave={onSave} multiple={multiple} />
       </Modal>

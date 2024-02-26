@@ -41,9 +41,9 @@ const CartClientSide: React.FC = () => {
   }, [cartId, checkout])
 
   return (
-    <Container>
-      <Stack gap="lg">
-        <Title order={3} ta="center" c="gray">
+    <Container mt={60}>
+      <Stack gap="xl">
+        <Title order={3} ta="center" c="gray" mb={15}>
           Your Shopping Cart
         </Title>
         <Grid>

@@ -9,7 +9,7 @@ import MediaFromLink from './MediaFromLink'
 
 export type MediaUploadModalContentProps = {
   uploadMethods?: Array<'upload' | 'link'>
-  onSave: (type: 'video' | 'image', media: Media_Plain | string, alt?: string) => void
+  onSave: (type: 'video' | 'image', media: Media_Plain[], alt?: string) => void
   multiple?: boolean 
 }
 
@@ -24,22 +24,22 @@ const MediaUploadModalContent: React.FC<MediaUploadModalContentProps> = ({
     <Tabs defaultValue="upload">
       <Tabs.List>
         {uploadMethods?.includes('upload') ? (
-          <Tabs.Tab value="upload" leftSection={<IconPhotoUp style={iconStyle} />} py="sm" w="50%">
+          <Tabs.Tab value="upload" leftSection={<IconPhotoUp style={iconStyle} />} py="md" w="100%">
             Upload
           </Tabs.Tab>
         ) : null}
-        {uploadMethods?.includes('link') ? (
+        {/* {uploadMethods?.includes('link') ? (
           <Tabs.Tab value="link" leftSection={<IconLink style={iconStyle} />} py="sm" w="50%">
             Get from link
           </Tabs.Tab>
-        ) : null}
+        ) : null} */}
       </Tabs.List>
       <Tabs.Panel value="upload">
         <MediaUpload onSave={onSave} multiple={multiple} />
       </Tabs.Panel>
-      <Tabs.Panel value="link">
+      {/* <Tabs.Panel value="link">
         <MediaFromLink onSave={onSave} />
-      </Tabs.Panel>
+      </Tabs.Panel> */}
     </Tabs>
   )
 }

@@ -3,10 +3,10 @@ import { style } from '@vanilla-extract/css'
 
 export const wrapper = style({
     display: 'flex',
-    backgroundColor: 'light-dark(var(--mantine-color-white), var(--mantine-color-dark-8))',
-    borderRadius: 'var(--mantine-radius-lg)',
+    // backgroundColor: 'light-dark(var(--mantine-color-white), var(--mantine-color-dark-8))',
+    // borderRadius: 'var(--mantine-radius-lg)',
     padding: 'rem(12px)',
-    border: 'rem(1px) solid light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-8))',
+    // border: 'rem(1px) solid light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-8))',
 
     '@media': {
         [`(max-width: ${defaultThemeVars.breakpoints.sm})`]: {
@@ -30,10 +30,6 @@ export const form = style({
             // minWidth: '1px'
         },
     },
-})
-
-export const fieldsLabels = style({
-    color: defaultThemeVars.colors.teal[9]
 })
 
 

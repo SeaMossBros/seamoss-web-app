@@ -38,7 +38,7 @@ export default class SingleTypeService extends CMSService {
       addQueryPrefix: true,
     })
 
-    console.log(`${url}${search}`);
+    // console.log(`${url}${search}`);
     const res = await fetch(`${url}${search}`, {
       cache: 'no-cache',
     })

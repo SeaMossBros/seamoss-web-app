@@ -11,9 +11,15 @@ import ToolTip from '@/components/ToolTip'
 const PaymentSuccessModal: React.FC<{
   defaultOpened?: boolean
   order: Order_NoRelations
-}> = ({ defaultOpened }) => {
+}> = ({ defaultOpened, order }) => {
   const [opened, { close }] = useDisclosure(defaultOpened)
 
+  const getProfileUrl = () => {
+    if (!order.user_email) return ROUTE_PATHS.LOGIN;
+    return ROUTE_PATHS.PROFILE.ORDERS.replaceAll('[username]', order.user_email.split('@')[0]);
+  }
+
+  console.log('order', order);
   return (
     // <ToolTip title="Payment Success!">
       <Modal
@@ -27,7 +33,7 @@ const PaymentSuccessModal: React.FC<{
         <Text>Your payment has been received. Thank you for your purchase!</Text>
 
         <Group justify="flex-end" mt={15}>
-          <Button variant="filled" component={Link} href={ROUTE_PATHS.PRODUCT.INDEX}>
+          <Button variant="filled" component={Link} href={getProfileUrl()}>
             Continue shopping
           </Button>
         </Group>

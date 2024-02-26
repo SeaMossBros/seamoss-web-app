@@ -4,10 +4,7 @@ import { generateColors } from '@mantine/colors-generator'
 import { createTheme, rem } from '@mantine/core'
 import { themeToVars } from '@mantine/vanilla-extract'
 
-// import { interFont } from '@/fonts/inter'
-
 export const defaultTheme = createTheme({
-  // fontFamily: interFont.style.fontFamily,
   radius: {
     lg: rem(0),
     md: rem(0),
@@ -16,7 +13,19 @@ export const defaultTheme = createTheme({
     xs: rem(0),
   },
   colors: {
-    white: generateColors('#fff'),
+    // white: generateColors('#fff'),
+    white: [
+      '#f5f5f5',
+      '#f5f5f5',
+      '#f5f5f5',
+      '#f5f5f5',
+      '#f5f5f5',
+      '#f5f5f5',
+      '#f5f5f5',
+      '#f5f5f5',
+      '#f5f5f5',
+      '#f5f5f5',
+    ],
     teal: generateColors('#087F5B'), // teal
     cyan: generateColors('#0B7285'), // cyan
     lime: generateColors('#5C940D'), // lime
@@ -26,7 +35,7 @@ export const defaultTheme = createTheme({
     gray: generateColors('#212529'), // gray
     blue: generateColors('#1864AB'), // blue
     pink: generateColors('#A61E4D'), // pink
-    "black": [
+    black: [
       '#1a1b1e',
       '#1a1b1e',
       '#1a1b1e',
@@ -41,7 +50,7 @@ export const defaultTheme = createTheme({
   },
   primaryColor: 'teal',
   primaryShade: {
-    light: 6,
+    light: 8,
     dark: 9,
   },
   components: {

@@ -7,7 +7,8 @@ export interface Order {
     updatedAt: string
     publishedAt?: string
     total: number
-    stripe_session_id: string
+    // stripe_session_id: string
+    payment_session_id: string
     user_email?: string
     items: { data: CartItem[] }
   }
@@ -18,7 +19,8 @@ export interface Order_Plain {
   updatedAt: string
   publishedAt?: string
   total: number
-  stripe_session_id: string
+  // stripe_session_id: string
+  payment_session_id: string
   user_email?: string
   items: CartItem_Plain[]
 }
@@ -29,7 +31,8 @@ export interface Order_NoRelations {
   updatedAt: string
   publishedAt?: string
   total: number
-  stripe_session_id: string
+  // stripe_session_id: string
+  payment_session_id: string
   user_email?: string
   items: number[]
 }

@@ -3,7 +3,6 @@ import { style } from '@vanilla-extract/css'
 export const wrapper = style({
     display: 'flex',
     alignItems: 'center',
-    color: 'var(--mantine-color-white)',
 })
 
 export const icon = style({
@@ -18,5 +17,14 @@ export const titleStyle = style({
 export const descriptionStyle = style({
     display: 'flex',
     alignItems: 'center',
-    color: 'var(--mantine-color-white)',
+})
+
+export const linkStyle = style({
+    display: 'flex',
+    alignItems: 'center',
+    color: 'var(--mantine-color-blue-5)',
+
+    ':hover': {
+        color: 'var(--mantine-color-blue-9)',
+    }
 })

@@ -10,7 +10,6 @@ export const propertyWrapper = style({
   position: 'relative',
   padding: defaultThemeVars.spacing.sm,
   cursor: 'pointer',
-  // boxShadow: defaultThemeVars.shadows.xs,
   borderWidth: 1,
   borderStyle: 'solid',
   ':hover': {
@@ -34,6 +33,12 @@ export const propertyWrapper = style({
 export const quantitySelection = style({
   flexGrow: 1,
   width: 0,
+  borderRadius: defaultThemeVars.radiusDefault,
+  minWidth: '60px',
+
+  ':hover': {
+    boxShadow: defaultThemeVars.shadows.md,
+  },
 })
 
 export const quantitySelectionInput = style({
@@ -43,5 +48,5 @@ export const quantitySelectionInput = style({
 
 export const quantityControl = style({
   cursor: 'pointer',
-  margin: '0 4px'
+  margin: '0 4px',
 })

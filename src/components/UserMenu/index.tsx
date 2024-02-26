@@ -1,53 +1,61 @@
-'use client'
-
-import { Button, Menu } from '@mantine/core'
-import { IconChevronDown } from '@tabler/icons-react'
+import { Center, useMantineTheme } from '@mantine/core'
 import { usePathname } from 'next/navigation'
-import { useCallback } from 'react'
 
 import { ROUTE_PATHS } from '@/consts/route-paths'
-import { useProfile } from '@/queries/useProfile'
-import { logout } from '@/server-actions/logout'
 
 import NavLinkItem from '../NavLinkItem'
+import { useEffect, useState } from 'react'
+import { getUser } from '@/lib/auth'
+import { AuthUser } from '@/types/Auth'
 
-interface UserMenuProps {
-  isDarkTheme: boolean
-}
+const UserMenu = () => {
+  // const [user, setUser] = useState<AuthUser | null>(null);
+  const { defaultRadius} = useMantineTheme();
+  const pathname = usePathname();
 
-const UserMenu = ({isDarkTheme}: UserMenuProps) => {
-  const pathname = usePathname()
-  const { data: user, refetch: refreshSession } = useProfile()
+  // const onLogout = async () => {
+  //   await fetch('/api/auth/logout', { method: 'POST' }); 
+  // }
 
-  const onLogout = useCallback(async () => {
-    await logout()
-    refreshSession()
-  }, [refreshSession])
+  // console.log('on usermenu');
 
-  if (!user)
-    return (
-      <NavLinkItem
-        label="Login"
-        href={ROUTE_PATHS.LOGIN}
-        active={pathname.startsWith(ROUTE_PATHS.LOGIN)}
-        style={{borderRadius: isDarkTheme ? 3 : 9}}
-      />
-    )
+  // useEffect(() => {
+  //   const runGetUserFromSession = async () => {
+  //     console.log('in runGetUserFromSession')
+  //     const user: AuthUser | null = await getUser();
+  //     console.log('user on usermenu', user);
+  //     if (user && user.id) setUser(user);
+  //   }
 
-  return (
-    <Menu shadow="md" width={200} position="bottom-end">
-      <Menu.Target>
-        <Button variant="subtle" rightSection={<IconChevronDown size={14} />}>
-          {user.username}
-        </Button>
-      </Menu.Target>
-      <Menu.Dropdown>
-        <Menu.Item fz="md" onClick={onLogout}>
-          Logout
-        </Menu.Item>
-      </Menu.Dropdown>
-    </Menu>
-  )
+  //   runGetUserFromSession();
+  // }, []) 
+
+  // if (!user) return (
+  return <NavLinkItem
+    label="Profile"
+    href={ROUTE_PATHS.PROFILE.INDEX}
+    active={pathname.startsWith(ROUTE_PATHS.PROFILE.INDEX)}
+    style={{borderRadius: defaultRadius}}
+  />
+  // )
+
+  // return (
+  //   <Center>
+  //     <NavLinkItem
+  //       label="Profile"
+  //       href={ROUTE_PATHS.PROFILE.INDEX}
+  //       active={pathname.startsWith(ROUTE_PATHS.PROFILE.INDEX)}
+  //       style={{borderRadius: defaultRadius}}
+  //     />
+  //     <NavLinkItem
+  //       label="Logout"
+  //       href={ROUTE_PATHS.HOME}
+  //       active={false}
+  //       style={{borderRadius: defaultRadius}}
+  //       onClick={onLogout}
+  //     /> 
+  //   </Center> 
+  // )
 }
 
 export default UserMenu

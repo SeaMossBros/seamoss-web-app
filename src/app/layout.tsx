@@ -9,6 +9,7 @@ import { ColorSchemeScript } from '@mantine/core'
 import { Notifications } from '@mantine/notifications'
 import type { Metadata } from 'next'
 import { CookiesProvider } from 'next-client-cookies/server'
+// import { SessionProvider } from "next-auth/react"
 import React from 'react'
 
 import DefaultLayout from '@/components/DefaultLayout'
@@ -21,7 +22,7 @@ export const metadata: Metadata = {
   description: 'Shop High Quality Sea Moss Products',
 }
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({ session, children }: { session: any, children: React.ReactNode }) {
   return (
     <html lang="en">
       <head>
@@ -33,15 +34,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="manifest" href="/site.webmanifest" />
       </head>
       <body className={interFont.className}>
-        <CookiesProvider>
-          <AppProviders>
-            <DefaultLayout>
-              <Notifications />
-              <SpotlightController />
-              {children}
-            </DefaultLayout>
-          </AppProviders>
-        </CookiesProvider>
+        {/* <SessionProvider session={session}> */}
+          <CookiesProvider>
+            <AppProviders>
+              <DefaultLayout>
+                <Notifications />
+                <SpotlightController />
+                {children}
+              </DefaultLayout>
+            </AppProviders>
+          </CookiesProvider>
+        {/* </SessionProvider> */}
       </body>
     </html>
   )

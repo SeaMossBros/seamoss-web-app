@@ -24,10 +24,7 @@ const ProductVariantSelection: React.FC<ProductVariantSelectionProps> = ({
   variant,
   showImage,
 }) => {
-  const { colors, defaultRadius } = useMantineTheme();
-  const { colorScheme } = useMantineColorScheme();
-  const isDarkTheme = colorScheme === 'dark';
-  const getPrimaryColor = () => isDarkTheme ? colors.red[9] : colors.teal[9];
+  const { colors } = useMantineTheme();
   const { attributes } = variant
 
   const methods = useFormContext<ProductSelectionFormData>()
@@ -54,7 +51,7 @@ const ProductVariantSelection: React.FC<ProductVariantSelectionProps> = ({
 
   return (
     <Box className={variantSelectionContainer}>
-      <Card className={variantWrapper} data-selected={isSelected} onClick={onSelect} withBorder style={{borderColor: isSelected ? getPrimaryColor() : 'lightgray' }}>
+      <Card className={variantWrapper} data-selected={isSelected} onClick={onSelect} withBorder style={{borderColor: isSelected ? colors.teal[9] : 'lightgray' }}>
         {attributes.image?.data?.attributes.url && showImage ? (
           <Box>
             <Image
@@ -80,12 +77,6 @@ const ProductVariantSelection: React.FC<ProductVariantSelectionProps> = ({
               root: quantitySelection,
               input: quantitySelectionInput,
               section: quantityControl,
-            }}
-            style={{
-              borderSize: '1px',
-              borderStyle: 'solid',
-              borderColor: getPrimaryColor(),
-              borderRadius: defaultRadius,
             }}
             value={selectedVariant?.quantity}
             onChange={onChangeQuantity}

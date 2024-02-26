@@ -1,9 +1,9 @@
 import { UnstyledButton, Group, Text  } from '@mantine/core';
 import { userStyles } from './user-button.css';
-import { UserType } from '@/types/User';
+import { AuthUser } from '@/types/Auth';
 
 interface UserButtonProps {
-    user: UserType
+    user: AuthUser
 }
 
 const UserButton = ({ user }: UserButtonProps) => {
@@ -34,10 +34,9 @@ const UserButton = ({ user }: UserButtonProps) => {
         <UnstyledButton className={userStyles}>
             <Group>
                 <img
-                    src={user.picture}
+                    src={'/images/icons8-account.gif'}
                     onError={(e) => e.currentTarget.src = '/images/icons8-account.gif'}
                     width={60}
-                    // height={200}
                     alt='user profile pic'
                     style={{borderRadius: '15px'}} 
                 />

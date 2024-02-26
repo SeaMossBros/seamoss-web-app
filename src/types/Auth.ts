@@ -18,14 +18,16 @@ export interface AuthUser {
   }
 }
 
-export interface GetLoginUrlResponse {
-  url: string
+export type LoginAuthUser = {
+  jwt: string
+  user: AuthUser
 }
 
 export interface ExchangeTokenResponse {
-  data: {
-    token: string
-    user: AuthUser
-  }
+  data: LoginAuthUser
   error?: unknown
+}
+
+export interface GetLoginUrlResponse {
+  url: string
 }

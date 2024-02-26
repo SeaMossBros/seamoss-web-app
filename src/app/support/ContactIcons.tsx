@@ -1,6 +1,6 @@
 import { Text, Box, Stack } from '@mantine/core';
 import { IconSun, IconPhone, IconMapPin, IconAt } from '@tabler/icons-react';
-import { wrapper, descriptionStyle } from './contact-icons.css';
+import { wrapper, descriptionStyle, linkStyle } from './contact-icons.css';
 
 interface ContactIconProps extends Omit<React.ComponentPropsWithoutRef<'div'>, 'title'> {
   icon: typeof IconSun;
@@ -14,14 +14,14 @@ function ContactIcon({ icon: Icon, title, description, inputMode, ...others }: C
   const renderDescription = () => {
     switch (inputMode) {
       case 'email':
-        return <a href={`mailto:${description}`} className={descriptionStyle}>{description}</a>;
+        return <a href={`mailto:${description}`} className={linkStyle}>{description}</a>;
       case 'tel':
-        return <a href={`tel:${description.replace(/\s/g, '')}`} className={descriptionStyle}>{description}</a>;
+        return <a href={`tel:${description.replace(/\s/g, '')}`} className={linkStyle}>{description}</a>;
       case 'text':
         // Assuming 'Address' uses 'text' inputMode. Customize as needed.
         if (title.toLowerCase() === 'address') {
           const query = encodeURIComponent(description);
-          return <a href={`https://www.google.com/maps/search/?api=1&query=${query}`} target="_blank" rel="noopener noreferrer" className={descriptionStyle}>{description}</a>;
+          return <a href={`https://www.google.com/maps/search/?api=1&query=${query}`} target="_blank" rel="noopener noreferrer" className={linkStyle}>{description}</a>;
         }
         return <span className={descriptionStyle}>{description}</span>;
       default:

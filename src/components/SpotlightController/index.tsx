@@ -12,10 +12,7 @@ import { useSearch } from '@/queries/useSearch'
 import { getStrapiUploadUrl } from '@/utils/cms'
 
 const SpotlightController: React.FC = () => {
-  const { colors } = useMantineTheme();
-  const { colorScheme } = useMantineColorScheme();
-  const isDarkTheme = colorScheme === 'dark';
-  const getCorrectPrimaryColor = () => isDarkTheme ? colors.red[9] : colors.teal[9];
+  const { colors } = useMantineTheme(); 
   const [query, setQuery] = useState<string>('')
   const [debouncedQuery] = useDebouncedValue(query, 400)
 
@@ -105,8 +102,8 @@ const SpotlightController: React.FC = () => {
       inputMode="search"
       filter={(_, a) => a}
       searchProps={{
-        leftSection: <IconSearch style={{ width: rem(20), height: rem(20), color: getCorrectPrimaryColor() }} stroke={1.5} />,
-        placeholder: 'Search...',
+        leftSection: <IconSearch style={{ width: rem(20), height: rem(20), color: colors.teal[9] }} stroke={1.5} />,
+        placeholder: 'Search for products and blogs...',
       }}
       query={query}
       onQueryChange={setQuery}

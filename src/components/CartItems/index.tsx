@@ -1,4 +1,4 @@
-import { Skeleton, Stack, Text } from '@mantine/core'
+import { Center, Skeleton, Stack, Text } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { useCallback, useState } from 'react'
 
@@ -44,7 +44,11 @@ const CartItems: React.FC<CartItemsProps> = ({
     [updateModal],
   )
 
-  if (isFetched && !items?.length) return <Text>There is no items in your cart</Text>
+  if (isFetched && !items?.length) return (
+    <Center>
+      <Text>There is no items in your cart</Text>
+    </Center>
+  )
 
   return (
     <Stack gap="sm">

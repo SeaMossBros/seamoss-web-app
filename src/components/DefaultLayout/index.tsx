@@ -13,7 +13,6 @@ import React, { PropsWithChildren } from 'react'
 
 import FooterCentered from '@/components/FooterCentered'
 import Header from '@/components/Header'
-
 import NavBar from '../NavBar'
 import { footer, main } from './layout.css'
 

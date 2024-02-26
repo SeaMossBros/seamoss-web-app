@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { Button, Flex, Image, Rating, Stack, Text, Textarea, TextInput, useMantineColorScheme, useMantineTheme } from '@mantine/core'
+import { Box, Button, Flex, Image, Rating, Stack, Text, Textarea, TextInput, useMantineColorScheme, useMantineTheme } from '@mantine/core'
 import { notifications } from '@mantine/notifications'
 import React, { useCallback, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
@@ -8,7 +8,7 @@ import { array, number, object, ObjectSchema, string } from 'yup'
 import { useSubmitReview } from '@/mutations/useSubmitReview'
 import { Product } from '@/types/Product'
 import { ReviewFormData } from '@/types/ReviewForm'
-import { Media } from '@/types/Media'
+import { Media, Media_Plain } from '@/types/Media'
 import { getStrapiUploadUrl } from '@/utils/cms'
 import { useDisclosure } from '@mantine/hooks'
 import MediaUploadModal from '@/components/MediaUploadModal'
@@ -31,11 +31,6 @@ type ReviewFormProps = {
 }
 
 const ReviewForm: React.FC<ReviewFormProps> = ({ product, onSuccess }) => {
-  const { colors } = useMantineTheme();
-  const { colorScheme } = useMantineColorScheme();
-  const isDarkTheme = colorScheme === 'dark';
-  const getPrimaryColor = () => isDarkTheme ? colors.red[9] : colors.teal[9];
-
   const methods = useForm<ReviewFormData>({
     defaultValues: DEFAULT_VALUES,
     resolver: yupResolver(schema),
@@ -44,13 +39,15 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ product, onSuccess }) => {
 
   const { mutate: submit, isPending } = useSubmitReview(product.id)
 
-  // const [selectedMediaIds, setSelectedMediaIds] = useState<File[]>([]);
+  const [mediaFiles, setMediaFiles] = useState<Media[]>([]);
+  const [selectedMediaIds, setSelectedMediaIds] = useState<number[]>([]);
   const [uploadModalOpened, uploadModal] = useDisclosure()
 
   const onSubmit = useCallback(
     async (data: ReviewFormData) => {
+
       submit(
-        {
+        { // TODO: reviews can't handle files
           ...data,
         },
         {
@@ -74,59 +71,25 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ product, onSuccess }) => {
     [onSuccess, submit],
   )
 
-  const handleSaveMedia = async (selectedFiles: File[] | null) => {
-    if (!selectedFiles) return;
+  const onImageSave = useCallback(
+    (_type: 'video' | 'image', _media: Media_Plain[]) => {
+      const media: Media[] = _media.map((mediaFile, i) => ({ id: mediaFile.id, attributes: mediaFile })); // we know for sure that user can only upload media by setting uploadMethods={['upload']}
+      console.log('media', media);
+      setMediaFiles(media);
 
-    try {
-      const filesArray = Array.from(selectedFiles); // TODO: check to see if needed (already is past as array)
-      if (!filesArray.length) return;
-      // setSelectedMediaIds(filesArray);
+      const mediaIds: number[] = media.map((file) => file.id);
+      setSelectedMediaIds(mediaIds);
 
-      const output = document.getElementById("review-files-output");
-      if (!output) return;
-      output.innerHTML = '';
-
-      for (let i = 0; i < filesArray.length; i++) {
-        if (filesArray[i].type.includes('video')) {
-          const vid = document.createElement("video");
-          const src = document.createElement("source");
-          vid.height = 60;
-          vid.controls = true;
-          src.src = URL.createObjectURL(filesArray[i]);
-          src.type = filesArray[i].type; 
-          src.onload = () => {
-            URL.revokeObjectURL(src.src);
-          };
-          vid.append(src);
-          output.append(vid);
-          continue;
-        }
-        const img = document.createElement("img");
-        img.src = URL.createObjectURL(filesArray[i]);
-        img.height = 60;
-        img.onload = () => {
-          URL.revokeObjectURL(img.src);
-        };
-        output.appendChild(img);
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const onSave = useCallback(
-    (_type: 'video' | 'image', _media: any[]) => {
-      console.log('media on save', _media);
-      const media: number[] = _media  // we know for sure that user can only upload media by setting uploadMethods={['upload']}
       uploadModal.close()
-      // methods.setValue(
-      //   'attachments', media,
-      //   {
-      //     shouldValidate: true,
-      //     shouldDirty: true,
-      //     shouldTouch: true,
-      //   },
-      // )
+
+      methods.setValue(
+        'attachments', media,
+        {
+          shouldValidate: true,
+          shouldDirty: true,
+          shouldTouch: true,
+        },
+      )
     },
     [methods, uploadModal],
   )
@@ -134,6 +97,23 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ product, onSuccess }) => {
   const onFileClick = useCallback(() => {
     uploadModal.open()
   }, [uploadModal])
+
+  const previews = () => mediaFiles.map((mediaFile, i) => {
+    const url = getStrapiUploadUrl(mediaFile.attributes.url);
+
+    return (
+      <Box key={i} h={90} mb={30}>
+        {mediaFile.attributes.mime.includes('image') ? (
+          <Image src={url} alt={mediaFile.attributes.name} w={108} mr={30} />
+        ) : (
+          <video key={url} src={url} width='108px' controls />
+        )}
+        <Text fz="sm" lineClamp={1}>
+          {mediaFile.attributes.name.slice(0, 14)}...
+        </Text>
+      </Box>
+    )
+  })
 
   return (
     <>
@@ -189,28 +169,19 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ product, onSuccess }) => {
               error={methods.formState.errors.comment?.message}
               autosize
             />
-            {/* <Stack 
-              className={attachmentUploadTrigger}
-            >
-              <input
-                id="review-files"
-                type="file"
-                multiple
-                title='Add Media'
-                onChange={(e: any) => handleSaveMedia(e.target.files)}
-              />
-              <pre id="review-files-output">Selected files:</pre>
-            </Stack> */}
-            <Button onClick={onFileClick} variant='outline'>Add Media</Button>
+            <Box display={'flex'}>
+              {previews()}
+            </Box>
+            <Button onClick={onFileClick} variant='outline'>{mediaFiles.length ? 'Replace' : 'Add'} Media</Button>
             <MediaUploadModal
               uploadMethods={['upload']}
               opened={uploadModalOpened}
               onClose={uploadModal.close}
-              onSave={onSave}
+              onSave={onImageSave}
               multiple={true}
             />
           </Stack>
-          <Button type="submit" loading={isPending} fullWidth bg={getPrimaryColor()}>
+          <Button type="submit" loading={isPending} fullWidth>
             Submit review
           </Button>
         </Stack>

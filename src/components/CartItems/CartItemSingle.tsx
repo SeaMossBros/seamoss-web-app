@@ -14,7 +14,7 @@ import {
 import { useDisclosure } from '@mantine/hooks'
 import { modals } from '@mantine/modals'
 import { IconChevronDown, IconChevronUp, IconTrash } from '@tabler/icons-react'
-import { useCallback } from 'react'
+import { useCallback, useEffect } from 'react'
 import { Pencil } from 'tabler-icons-react'
 
 import { useRemoveCartItem } from '@/mutations/useRemoveCartItem'
@@ -91,7 +91,7 @@ const CartItemSingle: React.FC<CartItemSingleProps> = ({
 
   return (
     <Card withBorder>
-      <Flex gap="sm" w="100%">
+      <Flex gap="md" w="100%">
         <Image 
           className={productImg}
           src={
@@ -106,9 +106,9 @@ const CartItemSingle: React.FC<CartItemSingleProps> = ({
           alt={productName}
         />
         <Stack className={itemInfoWrapper} gap={0}>
-          <Text fw={600}>{productName}</Text>
+          <Text fw={600} id='product-name'>{productName}</Text>
           <Text fz="sm">
-            {purchaseType === PurchaseType.Recurring ? purchaseOptionName : 'One-time purchase'}
+            {purchaseType === PurchaseType.Recurring ? purchaseOptionName : 'one-time purchase'}
           </Text>
           <Flex align="center">
             <Badge color="gray" size="sm" component="span">
@@ -121,20 +121,21 @@ const CartItemSingle: React.FC<CartItemSingleProps> = ({
               {options?.quantity ?? 1}
             </Text>
             <ActionIcon
-              my="auto"
-              variant="transparent"
+              mx="md"
+              ml='lg'
+              variant='light'
+              p={2}
               size="sm"
               type="button"
-              ml="sm"
               onClick={onEditClick}
             >
               <Pencil />
             </ActionIcon>
             <ActionIcon
               type="button"
-              variant="transparent"
+              variant='transparent'
               c="red"
-              ml="sm"
+              mx="md"
               size="sm"
               onClick={onRemove}
             >

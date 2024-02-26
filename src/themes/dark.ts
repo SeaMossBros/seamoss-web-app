@@ -4,10 +4,8 @@ import { generateColors } from '@mantine/colors-generator'
 import { createTheme, rem } from '@mantine/core'
 import { themeToVars } from '@mantine/vanilla-extract'
 
-// import { interFont } from '@/fonts/inter'
-
 export const darkTheme = createTheme({
-    // fontFamily: interFont.style.fontFamily,
+    fontFamily: 'Palantino',
     radius: {
         lg: rem(0),
         md: rem(0),
@@ -39,10 +37,10 @@ export const darkTheme = createTheme({
             '#1a1b1e',
         ]
     },
-    primaryColor: 'red',
+    primaryColor: 'teal',
     primaryShade: {
         light: 9,
-        dark: 4,
+        dark: 8,
     },
     components: {
         Container: {
@@ -70,10 +68,9 @@ export const darkTheme = createTheme({
         lg: '15px',
         xl: '20px',
     },
-    fontFamily: 'Palantino',
     defaultGradient: {
         from: '#f5f5f5',
-        to: 'orange',
+        to: 'teal',
         deg: 45
     },
     defaultRadius: 3

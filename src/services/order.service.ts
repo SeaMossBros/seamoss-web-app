@@ -3,6 +3,7 @@ import qs from 'qs'
 import { Order_NoRelations } from '@/types/Order'
 
 import CMSService from './core/cms.service'
+import axios from 'axios'
 
 export default class OrderService extends CMSService {
   static queryKeys = {
@@ -16,17 +17,17 @@ export default class OrderService extends CMSService {
       data,
     }
 
-    const res = await fetch(url, {
+    const res = await axios(url, {
       headers: {
         ...this.headers,
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
       method: 'post',
-      body: JSON.stringify(payload),
+      data: JSON.stringify(payload),
     })
 
-    return res.json() as Promise<{
+    return res.data as Promise<{
       data: Order_NoRelations
       paymentUrl: string
     }>

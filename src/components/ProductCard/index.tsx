@@ -16,16 +16,15 @@ import ToolTip from '../ToolTip'
 
 export type ProductCardProps = {
   product: Product
-  onAddToCart: (product: Product) => void
+  onQuickViewClick: (product: Product) => void
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
+const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickViewClick }) => {
   const { isAddingToCart } = useCart();
   const { colors } = useMantineTheme();
   const { colorScheme } = useMantineColorScheme();
   const isDarkTheme = colorScheme === 'dark';
   const getCorrectPrimaryColor = () => isDarkTheme ? '#f5f5f5' : colors.teal[9];
-  const getCorrectSecondaryColor = () => isDarkTheme ? colors.red[9] : colors.teal[9];
   const [isHovering, setIsHovering] = useState(false);
 
   const productUrl = useMemo(
@@ -33,13 +32,13 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
     [product.attributes.slug],
   )
 
-  const onAddToCartClick = useCallback(
+  const clickedQuickView = useCallback(
     (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
       e.stopPropagation()
       e.preventDefault()
-      onAddToCart(product)
+      onQuickViewClick(product)
     },
-    [onAddToCart, product],
+    [onQuickViewClick, product],
   )
 
   const thumbnail = useMemo(() => {
@@ -76,15 +75,14 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
     <Card
       className={card}
       withBorder
-      // style={{borderColor: getCorrectSecondaryColor()}}
       onMouseEnter={() => setIsHovering(true)}  
       onMouseLeave={() => setIsHovering(false)}
-      style={{border: `1px solid ${getCorrectSecondaryColor()}`}}
+      style={{border: `1px solid ${colors.teal[9]}`}}
     >
       <Card.Section
         component={Link}
         href={productUrl} 
-        style={{backgroundColor: getCorrectSecondaryColor(), paddingBottom: '2px'}}
+        style={{backgroundColor: colors.teal[9], paddingBottom: '2px'}}
       >
         <AspectRatio ratio={1}>
           <Image
@@ -127,7 +125,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
             <Text fz="sm" c={isDarkTheme ? '#f5f5f5' : 'black'}>
               From {formatPrice(lowestPrice)}
             </Text>
-            <Button onClick={(e) => onAddToCartClick(e)} loading={isAddingToCart} variant='outline' c={getCorrectPrimaryColor()} style={{borderColor: getCorrectSecondaryColor()}}>
+            <Button onClick={(e) => clickedQuickView(e)} loading={isAddingToCart} variant='outline' c={getCorrectPrimaryColor()} style={{borderColor: colors.teal[9]}}>
               Quick View
             </Button>
           </Group>

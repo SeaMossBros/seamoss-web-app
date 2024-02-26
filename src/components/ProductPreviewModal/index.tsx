@@ -2,8 +2,8 @@
 
 import { Button, Grid, Modal, ModalProps, Stack, useMantineColorScheme, useMantineTheme } from '@mantine/core'
 import uniqBy from 'lodash/uniqBy'
-import React, { useCallback, useMemo } from 'react'
-import { FormProvider } from 'react-hook-form'
+import React, { useCallback, useMemo, useState } from 'react'
+import { FormProvider, useWatch } from 'react-hook-form'
 
 import { useCart } from '@/hooks/useCart'
 import useProductForm from '@/hooks/useProductForm'
@@ -18,11 +18,8 @@ export type ProductPreviewModalProps = ModalProps & {
 }
 
 const ProductPreviewModal: React.FC<ProductPreviewModalProps> = ({ product, ...modalProps }) => {
+  const [propertyIsSelected, setPropertyIsSelected] = useState(false);
   const { addToCart, isAddingToCart } = useCart()
-  const { colors } = useMantineTheme();
-  const { colorScheme } = useMantineColorScheme();
-  const isDarkTheme = colorScheme === 'dark';
-  const getPrimaryColor = () => isDarkTheme ? colors.red[9] : colors.teal[9];
 
   const { product: productDetails, methods } = useProductForm(product?.attributes.slug, {
     populate: {
@@ -63,6 +60,10 @@ const ProductPreviewModal: React.FC<ProductPreviewModalProps> = ({ product, ...m
     [addToCart, modalProps],
   )
 
+  const handleSetPropertyIsSelected = (value: boolean) => {
+    setPropertyIsSelected(value);
+  }
+
   if (!product) return null
 
   return (
@@ -90,8 +91,9 @@ const ProductPreviewModal: React.FC<ProductPreviewModalProps> = ({ product, ...m
                 }}
               >
                 <Stack gap="lg">
-                  <ProductDetails product={productDetails} showOptionImages={false} />
-                  <Button type="submit" loading={isAddingToCart} bg={getPrimaryColor()} fullWidth>
+                  <ProductDetails product={productDetails} showOptionImages={false} setPropertyIsSelected={handleSetPropertyIsSelected} />
+                  {/* // TODO: disabled when no property is selected */}
+                  <Button type="submit" loading={isAddingToCart} fullWidth disabled={propertyIsSelected}>
                     Add To Cart
                   </Button>
                 </Stack>

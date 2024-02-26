@@ -35,10 +35,6 @@ export type ProductListProps = {
 }
 
 const ProductList: React.FC<ProductListProps> = ({ queryParams, onPage }) => {
-  const { colors } = useMantineTheme();
-  const { colorScheme } = useMantineColorScheme();
-  const isDarkTheme = colorScheme === 'dark';
-  const getCorrectPrimaryColor = () => isDarkTheme ? colors.red[9] : colors.teal[9];
   const searchParams = useSearchParams()
   const pathname = usePathname()
 
@@ -57,7 +53,7 @@ const ProductList: React.FC<ProductListProps> = ({ queryParams, onPage }) => {
     [products?.meta?.pagination.total, queryParams.pagination?.pageSize],
   )
 
-  const onAddToCart = useCallback(
+  const onQuickViewClick = useCallback(
     async (product: Product) => {
       setSelectedProduct(product)
       productPreview.open()
@@ -74,16 +70,15 @@ const ProductList: React.FC<ProductListProps> = ({ queryParams, onPage }) => {
 
   return (
     <Stack gap='xl' className={productsContainer}>
-      {onPage === 'Home' && <Title size={'h1'} c={isDarkTheme ? '#f5f5f5' : 'dark'}>Our Best Sellers 🔥🪸</Title>}
+      {onPage === 'Home' && <Title size={'h1'}>Our Best Sellers 🔥🪸</Title>}
       <Grid justify='space-evenly' w={'100%'}>
         {products?.data?.map((product) => (
           <ProductCol key={product.id}>
-            <ProductCard product={product} onAddToCart={onAddToCart} />
+            <ProductCard product={product} onQuickViewClick={onQuickViewClick} />
           </ProductCol>
         ))}
       </Grid>
       {onPage !== 'Home' && <Pagination
-        color={getCorrectPrimaryColor()}
         className={pagination}
         total={totalPages}
         value={queryParams.pagination?.page}

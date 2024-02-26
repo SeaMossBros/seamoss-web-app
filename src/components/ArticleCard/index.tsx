@@ -17,9 +17,6 @@ export type ArticleCardProps = {
 }
 
 const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
-  const { colors } = useMantineTheme();
-  const { colorScheme } = useMantineColorScheme();
-  const isDarkTheme = colorScheme === 'dark';
   const {
     attributes: { cover, title, slug, introduction },
   } = article
@@ -35,7 +32,6 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
   )
 
   const href = useMemo(() => ROUTE_PATHS.BLOG.SINGULAR.replaceAll('{slug}', slug ?? ''), [slug])
-  // TODO: Fix the link to a specific blog
   return (
     <Card className={card} component={Link} href={href} withBorder>
       <Card.Section>

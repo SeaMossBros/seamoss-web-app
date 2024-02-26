@@ -22,7 +22,7 @@ export type HeaderProps = {
 
 const Header: React.FC<HeaderProps> = ({ navOpened, toggleNav }) => {
   const pathname = usePathname()
-  const { colors, defaultRadius} = useMantineTheme();
+  const { primaryColor} = useMantineTheme();
   const { colorScheme } = useMantineColorScheme();
   const isDarkTheme = colorScheme === 'dark';
   
@@ -32,7 +32,7 @@ const Header: React.FC<HeaderProps> = ({ navOpened, toggleNav }) => {
         <Link href={ROUTE_PATHS.HOME} className={logoContainer}>
           <Image src="/images/SeaTheMoss-Empty-Icon.png" alt="Logo" height={40} visibleFrom="sm" />
           <Title 
-            c={isDarkTheme ? colors.red[6] : colors.teal[9] }
+            c={primaryColor}
             order={2}
           >
             SeaTheMoss
@@ -44,33 +44,33 @@ const Header: React.FC<HeaderProps> = ({ navOpened, toggleNav }) => {
             label="Home"
             href={ROUTE_PATHS.HOME}
             active={pathname === '' || pathname === '/'}
-            style={{borderRadius: defaultRadius}}
+            // style={{borderRadius: defaultRadius}}
           />
           <NavLinkItem
             label="Products"
             href={ROUTE_PATHS.PRODUCT.INDEX}
             active={pathname.startsWith(ROUTE_PATHS.PRODUCT.INDEX)}
-            style={{borderRadius: defaultRadius}}
+            // style={{borderRadius: defaultRadius}}
           />
           <NavLinkItem
             label="Support"
             href={ROUTE_PATHS.SUPPORT}
             active={pathname.startsWith(ROUTE_PATHS.SUPPORT)}
-            style={{borderRadius: defaultRadius}}
+            // style={{borderRadius: defaultRadius}}
           />
           <NavLinkItem
             label="Blogs"
             href={ROUTE_PATHS.BLOG.INDEX}
             active={pathname.startsWith(ROUTE_PATHS.BLOG.INDEX)}
-            style={{borderRadius: defaultRadius}}
+            // style={{borderRadius: defaultRadius}}
           />
           <NavLinkItem
             label="About us"
             href={ROUTE_PATHS.ABOUT}
             active={pathname.startsWith(ROUTE_PATHS.ABOUT)}
-            style={{borderRadius: defaultRadius}}
+            // style={{borderRadius: defaultRadius}}
           />
-          <UserMenu isDarkTheme={isDarkTheme} /> {/* // TODO: Change `login` to `logout` when user is authenticated */}
+          <UserMenu /> 
           <ColorSchemeToggler />
           <ActionIcon variant="subtle" color={isDarkTheme ? '#f5f5f5' : 'dark' } onClick={spotlight.open}>
             {/* <ToolTip title='Search SeaTheMoss.com \nby products, blogs, etc' width='240px'> */}

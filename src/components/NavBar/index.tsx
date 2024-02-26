@@ -7,6 +7,7 @@ import { ROUTE_PATHS } from '@/consts/route-paths'
 import ColorSchemeToggler from '../ColorSchemeToggler'
 import NavLinkItem from '../NavLinkItem'
 import { navLink } from './NavBar.css'
+import UserMenu from '../UserMenu'
 
 export type NavBarProps = {
   onClose: () => void
@@ -20,13 +21,9 @@ const NavBar: React.FC<NavBarProps> = ({ onClose }) => {
 
   return (
     <Stack 
-      w="100%" 
-      // h="100vh" 
+      w="100%"
       pb={9} 
-      bg={isDarkTheme ? '#1a1b1e' : '#f5f5f5'} 
-      style={{ 
-        boxShadow: `-7px 9px 9px 0px ${isDarkTheme ? colors.red[9] : colors.teal[9]}`    
-      }}
+      bg={isDarkTheme ? colors.black[9] : '#f5f5f5'} 
     >
       <NavLinkItem
         className={navLink}
@@ -68,6 +65,7 @@ const NavBar: React.FC<NavBarProps> = ({ onClose }) => {
         onClick={onClose}
         style={{borderRadius: defaultRadius}}
       />
+      <UserMenu/> 
       <ColorSchemeToggler />
     </Stack>
   )
