@@ -3,7 +3,7 @@ import { ActionIcon, Burger, Container, Flex, Group, Image, Title, useMantineCol
 import { spotlight } from '@mantine/spotlight'
 import { IconSearch } from '@tabler/icons-react'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import React from 'react'
 
 import { ROUTE_PATHS } from '@/consts/route-paths'
@@ -21,8 +21,9 @@ export type HeaderProps = {
 }
 
 const Header: React.FC<HeaderProps> = ({ navOpened, toggleNav }) => {
+  const router = useRouter();
   const pathname = usePathname()
-  const { primaryColor} = useMantineTheme();
+  const { primaryColor, defaultRadius } = useMantineTheme();
   const { colorScheme } = useMantineColorScheme();
   const isDarkTheme = colorScheme === 'dark';
   
@@ -42,33 +43,38 @@ const Header: React.FC<HeaderProps> = ({ navOpened, toggleNav }) => {
         <Flex visibleFrom="md" className={navLinkContainer} gap="md" align="center">
           <NavLinkItem
             label="Home"
+            title="Home"
             href={ROUTE_PATHS.HOME}
             active={pathname === '' || pathname === '/'}
-            // style={{borderRadius: defaultRadius}}
+            style={{borderRadius: defaultRadius}}
           />
           <NavLinkItem
             label="Products"
+            title="Products"
             href={ROUTE_PATHS.PRODUCT.INDEX}
             active={pathname.startsWith(ROUTE_PATHS.PRODUCT.INDEX)}
-            // style={{borderRadius: defaultRadius}}
+            style={{borderRadius: defaultRadius}}
           />
           <NavLinkItem
             label="Support"
+            title="Support"
             href={ROUTE_PATHS.SUPPORT}
             active={pathname.startsWith(ROUTE_PATHS.SUPPORT)}
-            // style={{borderRadius: defaultRadius}}
+            style={{borderRadius: defaultRadius}}
           />
           <NavLinkItem
             label="Blogs"
+            title="Blogs"
             href={ROUTE_PATHS.BLOG.INDEX}
             active={pathname.startsWith(ROUTE_PATHS.BLOG.INDEX)}
-            // style={{borderRadius: defaultRadius}}
+            style={{borderRadius: defaultRadius}}
           />
           <NavLinkItem
             label="About us"
             href={ROUTE_PATHS.ABOUT}
             active={pathname.startsWith(ROUTE_PATHS.ABOUT)}
-            // style={{borderRadius: defaultRadius}}
+            title='About us'
+            style={{borderRadius: defaultRadius}}
           />
           <UserMenu /> 
           <ColorSchemeToggler />

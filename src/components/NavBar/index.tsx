@@ -28,6 +28,7 @@ const NavBar: React.FC<NavBarProps> = ({ onClose }) => {
       <NavLinkItem
         className={navLink}
         label="Home"
+        title="Home"
         href={ROUTE_PATHS.HOME}
         active={pathname === '' || pathname === '/'}
         onClick={onClose}
@@ -36,6 +37,7 @@ const NavBar: React.FC<NavBarProps> = ({ onClose }) => {
       <NavLinkItem
         className={navLink}
         label="Products"
+        title="Products"
         href={ROUTE_PATHS.PRODUCT.INDEX}
         active={pathname.startsWith(ROUTE_PATHS.PRODUCT.INDEX)}
         onClick={onClose}
@@ -44,6 +46,7 @@ const NavBar: React.FC<NavBarProps> = ({ onClose }) => {
       <NavLinkItem
         className={navLink}
         label="Support"
+        title="Support"
         href={ROUTE_PATHS.SUPPORT}
         active={pathname.startsWith(ROUTE_PATHS.SUPPORT)}
         onClick={onClose}
@@ -52,6 +55,7 @@ const NavBar: React.FC<NavBarProps> = ({ onClose }) => {
       <NavLinkItem
         className={navLink}
         label="Blogs"
+        title="Blogs"
         href={ROUTE_PATHS.BLOG.INDEX}
         active={pathname.startsWith(ROUTE_PATHS.BLOG.INDEX)}
         onClick={onClose}
@@ -60,6 +64,7 @@ const NavBar: React.FC<NavBarProps> = ({ onClose }) => {
       <NavLinkItem
         className={navLink}
         label="About us"
+        title="About us"
         href={ROUTE_PATHS.ABOUT}
         active={pathname.startsWith(ROUTE_PATHS.ABOUT)}
         onClick={onClose}

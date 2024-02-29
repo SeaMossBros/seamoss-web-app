@@ -26,17 +26,15 @@ export type AddToCartData = {
 
 export default class CartService extends CMSService {
   static queryKeys = {
-    getById: (cartId: number) => ['/carts', cartId],
-    getCartItems: (cartId: number) => ['/cart-items', cartId],
+    getById: (cartId: number, is_checked_out: boolean = false) => ['/carts', cartId],
+    getCartItems: (cartId: number, is_checked_out: boolean = false) => ['/cart-items', cartId],
   }
 
-  getById = async (cartId: number) => {
+  getById = async (cartId: number, is_checked_out: boolean = false) => {
     const url = `${this.baseURL}/carts/${cartId}`
     const search = qs.stringify({
       populate: ['cart_items'],
-      filters: {
-        is_checked_out: false,
-      },
+      filters: { is_checked_out },
     })
 
     const res = await fetch(`${url}?${search}`, {
@@ -256,14 +254,14 @@ export default class CartService extends CMSService {
     return this.updateCartItemQuantity(existingCartItem, data)
   }
 
-  getCartItems = async (cartId: number) => {
+  getCartItems = async (cartId: number, is_checked_out: boolean = false) => {
     const url = `${this.baseURL}/cart-items`
 
     const query = {
       filters: {
         cart: {
           id: cartId,
-          is_checked_out: false,
+          is_checked_out,
         },
       },
       populate: {

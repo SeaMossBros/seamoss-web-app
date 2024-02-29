@@ -1,4 +1,4 @@
-import { Center, useMantineTheme } from '@mantine/core'
+import { Center, Text, useMantineTheme } from '@mantine/core'
 import { usePathname } from 'next/navigation'
 
 import { ROUTE_PATHS } from '@/consts/route-paths'
@@ -12,6 +12,7 @@ const UserMenu = () => {
   // const [user, setUser] = useState<AuthUser | null>(null);
   const { defaultRadius} = useMantineTheme();
   const pathname = usePathname();
+  const onLoginPage = pathname.endsWith('/login')
 
   // const onLogout = async () => {
   //   await fetch('/api/auth/logout', { method: 'POST' }); 
@@ -31,12 +32,26 @@ const UserMenu = () => {
   // }, []) 
 
   // if (!user) return (
-  return <NavLinkItem
-    label="Profile"
-    href={ROUTE_PATHS.PROFILE.INDEX}
-    active={pathname.startsWith(ROUTE_PATHS.PROFILE.INDEX)}
-    style={{borderRadius: defaultRadius}}
-  />
+  return onLoginPage ? (
+    <Text title='Please Login First'>
+      <NavLinkItem
+        label="Profile"
+        disabled
+        title=''
+        href={ROUTE_PATHS.PROFILE.INDEX}
+        active={pathname.startsWith(ROUTE_PATHS.PROFILE.INDEX)}
+        style={{ borderRadius: defaultRadius }}
+      />
+    </Text>
+  ) : (
+    <NavLinkItem
+      label="Profile"
+      title={'Profile'}
+      href={ROUTE_PATHS.PROFILE.INDEX}
+      active={pathname.startsWith(ROUTE_PATHS.PROFILE.INDEX)}
+      style={{ borderRadius: defaultRadius }}
+    />
+  )
   // )
 
   // return (

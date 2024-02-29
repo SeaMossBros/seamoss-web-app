@@ -12,7 +12,7 @@ export interface AuthUser {
     id: number
     name: string
     description: string
-    type: string
+    type: 'authenticated' | 'admin' | 'public'
     createdAt: string
     updatedAt: string
   }

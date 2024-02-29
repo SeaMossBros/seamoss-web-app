@@ -22,7 +22,7 @@ export const contentEditorToolbar = style({
 })
 
 export const contentEditorContent = style({
-  minHeight: 250,
+  minHeight: 90,
 })
 
 export const coverImageField = style({

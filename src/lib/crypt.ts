@@ -1,26 +1,26 @@
-import { LoginAuthUser } from '@/types/Auth';
+import { AuthUser } from '@/types/Auth';
 import { cookies } from 'next/headers';
 import CryptoJS from 'crypto-js';
 
 const key = `${process.env.JWT_SECRET}` || 'secret';
 const cookieStore = cookies;
 
-export const encryptSession = async (payload: LoginAuthUser) => {
+export const encryptSession = async (payload: AuthUser) => {
     return CryptoJS.AES.encrypt(JSON.stringify(payload), key).toString();
 }
 
-export const decryptSession = async (sessionValue: string): Promise<LoginAuthUser> => {
+export const decryptSession = async (sessionValue: string): Promise<AuthUser> => {
     const bytes = CryptoJS.AES.decrypt(sessionValue, key);
     return JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
 }
 
-export const getSessionFromCookies = async (): Promise<LoginAuthUser | null> => {
+export const getSessionFromCookies = async (): Promise<AuthUser | null> => {
     const session = cookieStore().get('session');
     if (!session?.value) return null;
     return decryptSession(session.value);
 }
 
-export const setSeesionCookie = async (user: LoginAuthUser) => {
+export const setSessionCookie = async (user: AuthUser) => {
     const expires = new Date(Date.now() + 60 * 60 * 24 * 7 * 1000); // expires in 7 days
     const session = await encryptSession(user);
  

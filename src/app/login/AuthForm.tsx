@@ -64,7 +64,8 @@ const AuthenticationForm = () => {
                     },
                     data: JSON.stringify({ email, password })
                 })
-                // console.log('data on AuthForm', data);
+                console.log('data on AuthForm', data);
+                router.prefetch('/profile');
                 router.push('/profile');
             } else if (type === 'register') {
                 const data = await axios('/api/auth/register', {
@@ -76,6 +77,7 @@ const AuthenticationForm = () => {
                     data: JSON.stringify({ username, email, password })
                 })
                 console.log('data on AuthForm', data);
+                router.prefetch('/profile');
                 router.push('/profile')
             }
         } catch (err) {
@@ -151,12 +153,27 @@ const AuthenticationForm = () => {
                     />
 
                     {type === 'register' && (
-                        <Checkbox
-                            label="I accept terms and conditions"
-                            checked={form.values.terms}
-                            onChange={(event) => form.setFieldValue('terms', event.currentTarget.checked)}
-                            disabled={submittedForm}
-                        />
+                        <Text display={'flex'} style={{ alignItems: 'center'}}>
+                            <Checkbox
+                                label="I accept the"
+                                checked={form.values.terms}
+                                onChange={(event) => form.setFieldValue('terms', event.currentTarget.checked)}
+                                disabled={submittedForm}
+                                size='sm'
+                                c='gray'
+                                mr={4}
+                            />
+                            <Anchor
+                                c='teal'
+                                key={'terms and conditions'}
+                                href={'/terms-of-service'}
+                                lh={1}
+                                size='sm'
+                                inline
+                                px={0}
+                                mx={0}    
+                            >terms and conditions</Anchor>
+                        </Text>
                     )}
                 </Stack>
 

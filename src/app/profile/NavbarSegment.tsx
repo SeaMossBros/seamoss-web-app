@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
-import { AppShell, AppShellAside, Button, SegmentedControl, useMantineColorScheme, useMantineTheme } from '@mantine/core';
+import { useEffect, useState } from 'react';
+import { AppShell, AppShellAside, Button, SegmentedControl, useMantineTheme } from '@mantine/core';
 import {
     IconLicense,
     IconMessage2,
@@ -15,8 +15,7 @@ import { AuthUser } from '@/types/Auth';
 import UserButton from './UserButton';
 import { useDisclosure } from '@mantine/hooks';
 import axios from 'axios';
-import { useRouter } from 'next/navigation';
-import { signOut } from 'next-auth/react';
+import { usePathname, useRouter } from 'next/navigation';
 
 interface NavbarSegmentProps {
     user: AuthUser
@@ -36,11 +35,45 @@ const tabs = {
 };
 
 const NavbarSegment = ({ user }: NavbarSegmentProps) => {
+
     const router = useRouter();
     const { defaultRadius } = useMantineTheme();
     const [asideOpened, aside] = useDisclosure(false)
     const [section, setSection] = useState<'account' | 'general'>('general');
-    const [active, setActive] = useState('Billing');
+
+    const pathname = usePathname();
+    const currentPath = pathname.split('/')[2];
+    let activeLabel = '';
+    switch (currentPath) {
+        case 'orders':
+            activeLabel = 'Orders';
+            break;
+    
+        case 'reviews':
+            activeLabel = 'Your Reviews'; 
+            break;
+    
+        case 'notifications':
+            activeLabel = 'Notifications';
+            break;
+    
+        case 'change-password':
+            activeLabel = 'Change Password';
+            break;
+    
+        case 'settings':
+            activeLabel = 'Other Settings';
+            break;
+    
+        default:
+            break;
+    }
+    const [active, setActive] = useState(activeLabel);
+
+    useEffect(() => {
+        const isOnGeneralSection = !currentPath || pathname.includes('orders') || pathname.includes('reviews')
+        setSection(isOnGeneralSection ? 'general' : 'account')
+    }, [])
 
     const handleLogout = async () => {
         try {
@@ -53,27 +86,33 @@ const NavbarSegment = ({ user }: NavbarSegmentProps) => {
             })
 
             console.log('data on logout', data);
-            router.push('/'); 
+
+            router.prefetch('/products');
+            router.push('/products');
         } catch (err) {
             console.log(err);
         }
     }
 
     const links = tabs[section].map((item) => (
-        <a
+        <Button 
+            key={item.link}
+            variant="outline"
+            size="md"
+            mt="xl"
             className={link}
             data-active={item.label === active || undefined}
-            href={`/profile/${user.username}${item.link}`}
-            key={item.label}
+            style={{ borderRadius: defaultRadius }} 
+            c='gray'
             onClick={(event) => {
                 event.preventDefault();
                 setActive(item.label);
+                router.push(`/profile${item.link}`)
             }}
-            style={{ borderRadius: defaultRadius }}
         >
             <item.icon className={linkIcon} stroke={1.5} />
-            <span>{item.label}</span>
-        </a>
+            {item.label}
+        </Button>
     ));
 
     return (

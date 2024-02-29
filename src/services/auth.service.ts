@@ -1,9 +1,10 @@
 import { APP_CONFIG } from '@/config/app'
 import { AuthUser, ExchangeTokenResponse, LoginAuthUser } from '@/types/Auth'
 import axios from 'axios';
+import CMSService from './core/cms.service';
 
-export default class AuthService {
-  baseURL = APP_CONFIG.STRAPI.URL
+export default class AuthService extends CMSService {
+  baseUrl = APP_CONFIG.STRAPI.URL
   static queryKeys = {
     getUserInfo: (...params: Parameters<AuthService['getUserInfo']>) => [
       'https://www.googleapis.com/oauth2/v3/userinfo',
@@ -20,43 +21,76 @@ export default class AuthService {
   }
 
   registerUser = async (username: string, email: string, password: string): Promise<LoginAuthUser | null> => {
-    const response = await axios(`${this.baseURL}/api/auth/local/register`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      data: JSON.stringify({
-        username,
-        email,
-        password,
-      }),
-    });
+    try {
+      const response = await axios(`${this.baseUrl}/api/auth/local/register`, {
+        method: 'POST',
+        headers: { 
+          ...this.headers,
+          'Content-Type': 'application/json' 
+        },
+        data: JSON.stringify({
+          username,
+          email,
+          password,
+        }),
+      });
 
-    return await response.data;
+      // console.log('response in registerUser::', response);
+
+      // console.log('data in registerUser', response.data);
+      // const emailConfirmationLinkRes = await this.sendEmailConfirmationLink(email);
+      // console.log('emailConfirmationLinkRes::', emailConfirmationLinkRes);
+      
+      return response.data;
+    } catch (err) {
+      console.log('err', err);
+      throw new Error(JSON.stringify({message: err}));
+    }
   };
 
-  loginUser = async (identifier: string, password: string): Promise<LoginAuthUser | null> => {
+  loginUser = async (identifier: string, password: string): Promise<AuthUser | null> => {
     if (!identifier || !password) return null;
-    const response = await axios(`${this.baseURL}/api/auth/local`, {
+    try {
+      const response = await axios(`${this.baseUrl}/api/auth/local`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        data: JSON.stringify({ identifier, password }),
+      });
+      
+      if (!response.data?.jwt) return null;
+
+      // console.log('response.data', response.data);
+      const userRes = await axios(`${this.baseUrl}/api/users/me?populate=role`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${response.data.jwt}`
+        }
+      })
+      // console.log('userRes data', userRes.data);
+      return userRes.data;
+    } catch (err) {
+      console.log('err', err);
+      throw new Error(JSON.stringify({ message: err }));
+    }
+  };
+
+  sendEmailConfirmationLink = async (email: string): Promise<string | null> => {
+    const response = await axios(`${this.baseUrl}/api/auth/send-email-confirmation`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      data: JSON.stringify({ identifier, password }),
+      data: JSON.stringify({ email }),
     });
 
     return await response.data;
   };
-
-  // logoutUser = (): boolean => {
-  //   const cookieStore = cookies();
-  //   cookieStore.set('access_token', '', { expires: new Date(0) });
-  //   return true;
-  // }
 
   getGoogleLoginUrl = () => {
-    const url = `${this.baseURL}/api/connect/google`;
+    const url = `${this.baseUrl}/api/connect/google`;
     window.location.href = url;  // Redirect the browser
   }
 
   exchangeCodeForAccessToken = async (code: string) => {
-    const url = `${this.baseURL}/strapi-google-auth/user-profile`
+    const url = `${this.baseUrl}/strapi-google-auth/user-profile`
 
     const res = await fetch(url, {
       method: 'post',
@@ -83,7 +117,7 @@ export default class AuthService {
 
     // Use the access_token to fetch user info from Google's UserInfo endpoint
     // const response = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
-    const response = await fetch(`${this.baseURL}/auth/google/callback?access_token=${accessToken}`, {
+    const response = await fetch(`${this.baseUrl}/auth/google/callback?access_token=${accessToken}`, {
       headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',

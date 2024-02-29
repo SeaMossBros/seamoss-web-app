@@ -21,9 +21,9 @@ const ArticleSingle: React.FC<ArticleSingleProps> = ({ slug, queryParams, isAuth
   const { data: article } = useArticle(slug, queryParams)
   const [mode, setMode] = useState<'view' | 'form'>('view')
 
-  console.log('on page');
-  console.log('article:', article);
-  console.log('article data:', article?.data);
+  // console.log('on page');
+  // console.log('article:', article);
+  // console.log('article data:', article?.data);
 
   const articleFormValues = useMemo<ArticleFormData | undefined>(
     () =>

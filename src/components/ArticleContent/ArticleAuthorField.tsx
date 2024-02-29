@@ -14,7 +14,7 @@ export type ArticleAuthorFieldProps = ArticleComponentCommonProps
 const ArticleAuthorField: React.FC<ArticleAuthorFieldProps> = ({ mode }) => {
   const methods = useFormContext<ArticleFormData>()
 
-  const { data: authors, isFetching } = useAuthors(
+  const { data: authors, isFetching } = useAuthors( // populates avatar by default
     {
       pagination: {
         pageSize: 100,
@@ -28,9 +28,9 @@ const ArticleAuthorField: React.FC<ArticleAuthorFieldProps> = ({ mode }) => {
   const author = methods.watch('author')
 
   if (mode === 'view') {
-    if (!author) return null
+    if (!author || !author.avatar || !author.avatar.attributes) return null
     return (
-      <Flex gap="md" align="center" justify="flex-start" mt={21}>
+      <Flex gap="md" align="center" justify="flex-start">
         {author.avatar ? (
           <Avatar
             src={getStrapiUploadUrl(
@@ -50,7 +50,9 @@ const ArticleAuthorField: React.FC<ArticleAuthorFieldProps> = ({ mode }) => {
       </Flex>
     )
   }
-  
+
+  // if (!author || !author.avatar || !author.avatar.attributes) return null
+  console.log('author.avatar', author?.avatar);
   return (
     <Controller<ArticleFormData, 'author'>
       name="author"
@@ -61,9 +63,9 @@ const ArticleAuthorField: React.FC<ArticleAuthorFieldProps> = ({ mode }) => {
             // <ToolTip title={`Avatar for ${author.attributes.name}`} width='180px'>
               <Avatar
                 src={getStrapiUploadUrl(
-                  author.avatar.attributes.formats.small?.url
-                  || author.avatar.attributes.formats.thumbnail?.url
-                  || author.avatar.attributes.url
+                  author.avatar?.attributes.formats.small?.url
+                  || author.avatar?.attributes.formats.thumbnail?.url
+                  || author.avatar?.attributes.url
                   || ''
                   )}
                   alt={author.name}
@@ -77,7 +79,7 @@ const ArticleAuthorField: React.FC<ArticleAuthorFieldProps> = ({ mode }) => {
                 src={''}
                 size={27} // Set a size for the avatar
                 style={{ marginRight: '10px' }} // Add some spacing
-                /> 
+              /> 
             // </ToolTip>
           )}
           <Select
@@ -88,12 +90,12 @@ const ArticleAuthorField: React.FC<ArticleAuthorFieldProps> = ({ mode }) => {
 
               onChange(selected)
             }}
-          data={authors?.data?.map((author) => ({
-            value: author.id.toString(),
-            label: author.attributes.name,
-          }))}
-          rightSection={isFetching && <Loader size="xs" />}
-        />
+            data={authors?.data?.map((author) => ({
+              value: author.id.toString(),
+              label: author.attributes.name,
+            }))}
+            rightSection={isFetching && <Loader size="xs" />}
+          />
         </Group>
       )}
     />

@@ -4,8 +4,30 @@ import { Text, TextInput, Textarea, Button, Group, SimpleGrid, useMantineTheme, 
 import { contacts, fields, form, control, title, wrapper } from './get-in-touch.css'
 import { ContactIconsList } from './ContactIcons';
 import { useState } from 'react';
-import { SupportMessage_Plain } from '@/types/SupportMessage';
 import APIService from '@/services/api.service';
+
+const _INITIAL_MESSAGE = {
+  body: {
+    value: '',
+    isValid: false,
+    isAfterChange: false,
+  },
+  subject: {
+    value: '',
+    isValid: false,
+    isAfterChange: false,
+  },
+  name: {
+    value: '',
+    isValid: false,
+    isAfterChange: false,
+  },
+  email: {
+    value: '',
+    isValid: false,
+    isAfterChange: false,
+  }
+};
 
 const GetInTouch = () => {
   const { defaultRadius } = useMantineTheme();
@@ -13,42 +35,75 @@ const GetInTouch = () => {
   const [disabled, setDisabled] = useState(true);
   const [errors, setErrors] = useState([]);
   const [status, setStatus] = useState<'' | 'SUCCESS' | 'ERROR'>('');
-  const [data, setData] = useState<SupportMessage_Plain>({
-    body: '',
-    subject: '',
-    name: '',
-    email: ''
-  })
+  const [data, setData] = useState({..._INITIAL_MESSAGE})
 
-  const onChange = (field: string, value: string) => {
-    setData((prev) => ({ ...prev, [field]: value}));
-    if (data.body.length
-      && data.subject.length
-      && data.name.length
-      && data.email.length
-      && ((field === 'email' && value.includes('@'))
-        || data.email.includes('@'))
+  const validateEmail = (email: string) => {
+    if (!email || !email.includes('@') || !email.includes('.')) return false;
+    return true; // not sure what this does.... !!(() => /^\S+@\S+$/.test(email))
+  }
+
+  const onChange = (field: 'body' | 'subject' | 'name' | 'email', value: string) => {
+    if ((field === 'body' && !value.length)
+      || (field === 'subject' && !value.length)
+      || (field === 'name' && !value.length)
+      || (field === 'email' && !validateEmail(value))
     ) {
-      setStatus('');
-      setDisabled(false);
-    }
+      setData(prev => ({
+        ...prev,
+        [field]: {
+          value,
+          isValid: false,
+          isAfterChange: true
+        }
+      }))
+      setDisabled(true);
+      return;
+    };
+
+    if ((field === 'body' && value.length)
+      || (field === 'subject' && value.length)
+      || (field === 'name' && value.length)
+      || (field === 'email' && validateEmail(value))
+    ) {
+      setData(prev => {
+        const updatedData = {
+          ...prev,
+          [field]: {
+            value,
+            isValid: true,
+            isAfterChange: true
+          }
+        }
+
+        if (updatedData.body.isValid
+          && updatedData.subject.isValid
+          && updatedData.name.isValid
+          && updatedData.email.isValid
+        ) {
+          setStatus('');
+          setDisabled(false);
+        }
+
+        return updatedData;
+      })
+    };
   }
 
   const onSubmit = async (e: any) => {
     e.preventDefault();
     setDisabled(true);
     try {
-      const res = await apiService.submitSupportMessage(data);
-      // console.log('res on get in touch page', res);
+      const res = await apiService.submitSupportMessage({
+        body: data.body.value,
+        name: data.name.value,
+        subject: data.subject.value,
+        email: data.email.value,
+      });
+
       if (res.data && res.data.id > 0) {
         setStatus('SUCCESS');
         setTimeout(() => {
-          setData({
-            body: '',
-            subject: '',
-            name: '',
-            email: ''
-          });
+          setData({..._INITIAL_MESSAGE});
           setStatus('');
           setDisabled(false);
         }, 6666);
@@ -82,17 +137,19 @@ const GetInTouch = () => {
               label="Your name" 
               placeholder="Your name" 
               onChange={(e: any) => onChange('name', e.target.value)}
-              value={data.name} 
+              value={data.name.value} 
               p={3}
-              required 
+              required
+              style={{ borderColor: data.name.isAfterChange && data.name.isValid ? '' : 'red' }}
             />
-            <TextInput 
+            <TextInput
               label="Your email" 
               placeholder="support@seathemoss.com" 
               onChange={(e: any) => onChange('email', e.target.value)} 
-              value={data.email} 
+              value={data.email.value} 
               p={3}
               required
+              style={{ borderColor: data.email.isAfterChange && data.email.isValid ? '' : 'red' }}
             />
           </SimpleGrid>
 
@@ -101,9 +158,10 @@ const GetInTouch = () => {
             label="Subject" 
             placeholder="Subject" 
             onChange={(e: any) => onChange('subject', e.target.value)} 
-            value={data.subject} 
+            value={data.subject.value} 
             p={3}
             required 
+            style={{ borderColor: data.subject.isAfterChange && data.subject.isValid ? '' : 'red' }}
           />
 
           <Textarea
@@ -112,12 +170,13 @@ const GetInTouch = () => {
             placeholder="Please include all relevant information"
             minRows={3}
             onChange={(e: any) => onChange('body', e.target.value)}
-            value={data.body} 
+            value={data.body.value} 
             p={3}
             autosize={true}
             minLength={3}
             maxLength={777}
             required
+            style={{ borderColor: data.body.isAfterChange && data.body.isValid ? '' : 'red' }}
           />
 
           {status.length > 0 && 
@@ -135,7 +194,7 @@ const GetInTouch = () => {
                 ? 'FAILED to send: Please try again. Make sure to enter correct values for every field.'
                 : 'SUCCESS! Sent message to support. We will try to get back in 2-3 business days. Thank you for being a customer!'
               }
-              {status === 'ERROR' && (
+              {status === 'ERROR' && errors.length > 0 && (
                 <List ml={21}>
                   {errors.map((error: any, i) => (
                     <ListItem key={i}>{error.message}</ListItem>
@@ -146,7 +205,7 @@ const GetInTouch = () => {
           }
 
           <Group justify="flex-end" mt="md">
-            <Button type="submit" className={control} disabled={disabled}>
+            <Button type="submit" className={control} disabled={disabled} title={disabled ? 'Please Fill Out Required Fields' : 'Send message to support'}>
               Send message
             </Button>
           </Group>

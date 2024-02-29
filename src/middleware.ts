@@ -1,31 +1,17 @@
 import type { NextRequest } from 'next/server'
 import { NextResponse } from 'next/server'
-
 import { APP_CONFIG } from './config/app'
-import { LoginAuthUser } from './types/Auth'
+import { AuthUser } from './types/Auth'
 import { getSessionFromCookies } from './lib/crypt'
-// import { cookies } from 'next/headers';
-// import { auth } from './lib/auth';
-// import { decryptJWT } from '@/lib/crypt'
 
 export const config = {
-  matcher: ['/blogs/new', '/api/cms/:path*', '/profile'],
+  matcher: ['/blogs/new', '/api/cms/:path*', '/profile/:path*'],
 }
 
-async function isAuthenticated(req: NextRequest) {
-  const data: LoginAuthUser | null = await getSessionFromCookies();
-  // console.log('data', data);
-  if (!data || !data.user.id) {
-    return false;
-  }
-
-  // console.log('cookie', cookie);
-  // let decoded = await decryptJWT(token);
-  // if (decoded?.exp && decoded.exp < Date.now() / 1000) {
-  //   return false;
-  // }
-  // console.log('in isAuthenticated:::', token);
-  return true;
+async function isAuthenticated() {
+  const data: AuthUser | null = await getSessionFromCookies();
+  // console.log('data in middleware:::', data);
+  return !(!data || !data.id);
 }
 
 const handleCMSProxy = (request: NextRequest) => {
@@ -46,40 +32,42 @@ const handleCMSProxy = (request: NextRequest) => {
 }
 
 const handlePrivatePages = async (request: NextRequest) => {
-  // console.log('is in handlePrivatePages');
-  const isAuthenticatedBool = await isAuthenticated(request);
+  const isAuthenticatedBool = await isAuthenticated();
+  console.log('isAuthenticatedBool', isAuthenticatedBool);
   if (!isAuthenticatedBool) {
     return NextResponse.redirect(request.nextUrl.origin + '/login');
   }
 
+  console.log('request', request.nextUrl.href);
+  // console.log('request.nextUrl.origin + request.nextUrl.pathname:::', request.nextUrl.origin + request.nextUrl.pathname); // http://localhost:3000/profile
+  // return NextResponse.redirect(request.nextUrl.origin + request.nextUrl.pathname)
   return NextResponse.next()
 }
 
-const handleLogin = (request: NextRequest) => {
-  if (!isAuthenticated(request)) {
+const handleLogin = async (request: NextRequest) => {
+  const isAuthenticatedBool = await isAuthenticated();
+  if (!isAuthenticatedBool) {
     return new NextResponse('Authentication required', {
       status: 401,
       headers: { 'WWW-Authenticate': 'Basic' },
     })
   }
 
-  const requestHeaders = new Headers(request.headers)
-  const ref = requestHeaders.get('referer')
+  // const requestHeaders = new Headers(request.headers)
+  // const ref = requestHeaders.get('referer')
 
-  return NextResponse.redirect(ref || '/')
+  return NextResponse.next();
 }
 
 export default async (request: NextRequest) => {
-  // console.log('in middleware url:::', request.url); => http://localhost:3000/profile
-  // console.log('--------');
-  // console.log('--------');
-  // console.log('--------');
-  // console.log('in middleware nexturl:::', request.nextUrl);
+  console.log('--------');
+  // console.log('in middleware url:::', request.url); // => http://localhost:3000/profile
+  console.log('in middleware nextUrl pathname:::', request.nextUrl.pathname);
   if (request.nextUrl.pathname.startsWith('/api/cms')) {
     return handleCMSProxy(request)
   }
   if (request.nextUrl.pathname.startsWith('/blogs/new')
-    || request.nextUrl.pathname.startsWith('/profile')) {
+    || request.nextUrl.pathname.includes('/profile')) {
     return handlePrivatePages(request)
   }
   if (request.nextUrl.pathname === '/login') {

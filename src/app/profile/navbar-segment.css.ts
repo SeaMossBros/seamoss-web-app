@@ -27,20 +27,21 @@ export const link = style({
     fontSize: defaultThemeVars.fontSizes.sm,
     color: defaultThemeVars.colors.gray[7], // Adjust for light-dark variation
     padding: `${defaultThemeVars.spacing.xs} ${defaultThemeVars.spacing.sm}`,
+    width: '100%',
     fontWeight: 500,
 
     selectors: {
         '&:hover': {
             backgroundColor: defaultThemeVars.colors.gray[0], // Adjust for light-dark variation
-            color: defaultThemeVars.colors.black, // Adjust for light-dark variation
+            // color: defaultThemeVars.colors.black, // Adjust for light-dark variation
         },
         '&[data-active]': {
-            backgroundColor: defaultThemeVars.colors.red[1],
-            color: defaultThemeVars.colors.red[1],
+            backgroundColor: defaultThemeVars.colors.teal[1],
+            // color: defaultThemeVars.colors.red[1],
         },
         '&[data-active]:hover': {
-            backgroundColor: defaultThemeVars.colors.red[1],
-            color: defaultThemeVars.colors.red[1],
+            backgroundColor: defaultThemeVars.colors.teal[6],
+            // color: defaultThemeVars.colors.red[1],
         },
         // '&:hover .linkIcon, &[data-active] .linkIcon, &[data-active]:hover .linkIcon': {
         //     color: defaultThemeVars.colors.red[1], // This combines the conditions for hover and active states

@@ -1,7 +1,7 @@
 import { Center, Container } from '@mantine/core';
 import { Metadata } from 'next';
 import dynamic from 'next/dynamic';
-import { LoginAuthUser } from '@/types/Auth';
+import { AuthUser } from '@/types/Auth';
 import { getSessionFromCookies } from '@/lib/crypt';
 
 const NavbarClientSide = dynamic(() => import('./NavbarSegment'), { ssr: false });
@@ -11,10 +11,9 @@ export const metadata: Metadata = {
 };
 
 const ProfilePage: React.FC = async () => {
-  const data: LoginAuthUser | null = await getSessionFromCookies();
-  // console.log('data', data);
-  if (!data || !data.user) return <div>No User Info</div>;
-  const { user } = data;
+  const user: AuthUser | null = await getSessionFromCookies();
+  // console.log('data on ProfilePage', data);
+  if (!user || !user) return <div>No User Info</div>;
   
   return (
     <Container display='flex' pos={'relative'} w={'100vw'} h={'100vh'} style={{ justifyContent: 'end' }}>
@@ -38,7 +37,7 @@ const ProfilePage: React.FC = async () => {
           <p key={i}>stripeSessionId: {stripeSessionId}</p>
         ))} */}
       </Center>
-      <NavbarClientSide user={user}/>
+      <NavbarClientSide user={user} key={1}/>
     </Container>
   );
 };

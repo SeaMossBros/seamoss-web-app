@@ -3,7 +3,7 @@
 import '@mantine/tiptap/styles.css'
 
 import { yupResolver } from '@hookform/resolvers/yup'
-import { Button, Flex, Group, Stack, Text } from '@mantine/core'
+import { Button, Center, Flex, Group, Stack, Text } from '@mantine/core'
 import { modals } from '@mantine/modals'
 import { useCallback } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -113,43 +113,45 @@ const ArticleContent: React.FC<ArticleContentProps> = ({
   )
 
   return (
-    <FormProvider {...methods}>
-      <form onSubmit={methods.handleSubmit(onSubmit)}>
-        <Stack>
-          {isAuthenticated ? (
-            <Group justify="flex-end">
-              {mode === 'view' ? (
-                <>
-                  <Button variant="outline" onClick={onEdit}>
-                    Edit
+    <div style={{ width: '100%', height: '100%', margin: 0, padding: 0}}>
+      <FormProvider {...methods} >
+        <form onSubmit={methods.handleSubmit(onSubmit)} style={{ width: '100%', height: '100%', maxWidth: '900px'}}>
+          <Stack mt={60}>
+            {isAuthenticated ? (
+              <Group justify="flex-end">
+                {mode === 'view' ? (
+                  <>
+                    <Button variant="outline" onClick={onEdit}>
+                      Edit
+                    </Button>
+                  </>
+                ) : null}
+                {id ? (
+                  <Button color="red" onClick={onDelete}>
+                    Delete
                   </Button>
-                </>
-              ) : null}
-              {id ? (
-                <Button color="red" onClick={onDelete}>
-                  Delete
+                ) : null}
+              </Group>
+            ) : null}
+            <ArticleCoverField mode={mode} />
+            <ArticleTitleField mode={mode} />
+            <ArticleAuthorField mode={mode} />
+            <ArticleIntroField mode={mode} />
+            <ArticleContentField mode={mode} />
+            {mode === 'form' ? (
+              <Flex justify="flex-end" gap="sm">
+                <Button type="button" variant="default" onClick={onCancel}>
+                  Cancel
                 </Button>
-              ) : null}
-            </Group>
-          ) : null}
-          <ArticleCoverField mode={mode} />
-          <ArticleTitleField mode={mode} />
-          <ArticleAuthorField mode={mode} />
-          <ArticleIntroField mode={mode} />
-          <ArticleContentField mode={mode} />
-          {mode === 'form' ? (
-            <Flex justify="flex-end" gap="sm">
-              <Button type="button" variant="default" onClick={onCancel}>
-                Cancel
-              </Button>
-              <Button type="submit" loading={isCreating || isUpdating}>
-                Save
-              </Button>
-            </Flex>
-          ) : null}
-        </Stack>
-      </form>
-    </FormProvider>
+                <Button type="submit" loading={isCreating || isUpdating}>
+                  Save
+                </Button>
+              </Flex>
+            ) : null}
+          </Stack>
+        </form>
+      </FormProvider>
+    </div>
   )
 }
 

@@ -1,5 +1,3 @@
-import { UserType } from "./User"
-
 export interface SupportMessage {
     id: number
     attributes: {
