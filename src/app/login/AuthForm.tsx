@@ -64,7 +64,7 @@ const AuthenticationForm = () => {
                     },
                     data: JSON.stringify({ email, password })
                 })
-                console.log('data on AuthForm', data);
+                // console.log('data on AuthForm', data);
                 router.prefetch('/profile');
                 router.push('/profile');
             } else if (type === 'register') {

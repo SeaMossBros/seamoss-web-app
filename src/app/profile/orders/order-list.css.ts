@@ -12,14 +12,16 @@ export const orderWrapper = style({
 })
 
 export const orderStyle = style({
+    position: 'relative',
     marginBottom: '30px',
     width: '60vw',
-    minHeight: '48px',
+    minHeight: '57px',
+    maxHeight: '360px',
     cursor: 'pointer',
+    overflow: 'hidden',
 
     selectors: {
         '&:hover': {
-            backgroundColor: defaultThemeVars.colors.gray[0],
             borderColor: defaultThemeVars.colors.teal[9],
         },
     }

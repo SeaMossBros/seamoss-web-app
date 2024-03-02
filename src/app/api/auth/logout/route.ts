@@ -1,11 +1,13 @@
 import { NextRequest } from 'next/server';
-import { clearSessionCookie } from '@/lib/crypt';
+import { clearCookie } from '@/lib/crypt';
 
 export const revalidate = 0; // No cache
 
 export const POST = async (req: NextRequest) => {
     try {
-        await clearSessionCookie();
+        await clearCookie('session');
+        await clearCookie('jwt');
+        await clearCookie('tp');
         // Redirect or return success response
         return new Response(JSON.stringify({ message: 'Logout successful' }), { status: 200 });
         //  new Response(JSON.stringify({ data: loginRes?.user}), { status: 200 });

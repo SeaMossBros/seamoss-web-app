@@ -8,12 +8,14 @@ import ColorSchemeToggler from '../ColorSchemeToggler'
 import NavLinkItem from '../NavLinkItem'
 import { navLink } from './NavBar.css'
 import UserMenu from '../UserMenu'
+import { AuthUser } from '@/types/Auth'
 
 export type NavBarProps = {
   onClose: () => void
+  user: AuthUser | null
 }
 
-const NavBar: React.FC<NavBarProps> = ({ onClose }) => {
+const NavBar: React.FC<NavBarProps> = ({ user, onClose }) => {
   const pathname = usePathname();
   const { colors, defaultRadius } = useMantineTheme();
   const { colorScheme } = useMantineColorScheme();
@@ -70,7 +72,7 @@ const NavBar: React.FC<NavBarProps> = ({ onClose }) => {
         onClick={onClose}
         style={{borderRadius: defaultRadius}}
       />
-      <UserMenu/> 
+      <UserMenu user={user}/> 
       <ColorSchemeToggler />
     </Stack>
   )

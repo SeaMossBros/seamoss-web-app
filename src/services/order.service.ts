@@ -51,8 +51,10 @@ export default class OrderService extends CMSService {
         Accept: 'application/json',
       },
     })
-
-    return res.json() as Promise<{
+    const data = await res.json();
+    
+    return data as Promise<{
+      user?: any
       order?: Order_NoRelations
       status: 'open' | 'complete' | 'expired'
     }>

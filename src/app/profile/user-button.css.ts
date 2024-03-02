@@ -6,6 +6,7 @@ export const userStyles = style({
     width: '100%', // Adjust according to your project's rem function utility
     padding: defaultThemeVars.spacing.md,
     color: `light-dark(var(${defaultThemeVars.colors.black[0]}), var(${defaultThemeVars.colors.black[0]}))`,
+    marginBottom: '12px',
 
     selectors: {
         '&:hover': {

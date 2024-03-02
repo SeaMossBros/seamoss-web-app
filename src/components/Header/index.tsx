@@ -3,7 +3,7 @@ import { ActionIcon, Burger, Container, Flex, Group, Image, Title, useMantineCol
 import { spotlight } from '@mantine/spotlight'
 import { IconSearch } from '@tabler/icons-react'
 import Link from 'next/link'
-import { usePathname, useRouter } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 import React from 'react'
 
 import { ROUTE_PATHS } from '@/consts/route-paths'
@@ -14,14 +14,15 @@ import NavLinkItem from '../NavLinkItem'
 import UserMenu from '../UserMenu'
 import { container, logoContainer, navLinkContainer, wrapper } from './Header.css'
 import ToolTip from '../ToolTip'
+import { AuthUser } from '@/types/Auth'
 
 export type HeaderProps = {
   navOpened: boolean
   toggleNav: () => void
+  user: AuthUser | null
 }
 
-const Header: React.FC<HeaderProps> = ({ navOpened, toggleNav }) => {
-  const router = useRouter();
+const Header: React.FC<HeaderProps> = ({ navOpened, toggleNav, user }) => { 
   const pathname = usePathname()
   const { primaryColor, defaultRadius } = useMantineTheme();
   const { colorScheme } = useMantineColorScheme();
@@ -76,7 +77,7 @@ const Header: React.FC<HeaderProps> = ({ navOpened, toggleNav }) => {
             title='About us'
             style={{borderRadius: defaultRadius}}
           />
-          <UserMenu /> 
+          <UserMenu user={user}/> 
           <ColorSchemeToggler />
           <ActionIcon variant="subtle" color={isDarkTheme ? '#f5f5f5' : 'dark' } onClick={spotlight.open}>
             {/* <ToolTip title='Search SeaTheMoss.com \nby products, blogs, etc' width='240px'> */}

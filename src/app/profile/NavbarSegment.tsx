@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { AppShell, AppShellAside, Button, SegmentedControl, useMantineTheme } from '@mantine/core';
+import { Button, Group, SegmentedControl, useMantineTheme } from '@mantine/core';
 import {
     IconLicense,
     IconMessage2,
@@ -13,7 +13,6 @@ import {
 import { link, linkIcon, navbarStyles, navbarMain, footer } from './navbar-segment.css';
 import { AuthUser } from '@/types/Auth';
 import UserButton from './UserButton';
-import { useDisclosure } from '@mantine/hooks';
 import axios from 'axios';
 import { usePathname, useRouter } from 'next/navigation';
 
@@ -35,10 +34,9 @@ const tabs = {
 };
 
 const NavbarSegment = ({ user }: NavbarSegmentProps) => {
-
     const router = useRouter();
-    const { defaultRadius } = useMantineTheme();
-    const [asideOpened, aside] = useDisclosure(false)
+    const { defaultRadius, spacing } = useMantineTheme();
+    const [sideNavbarOpen, setSideNavbarOpen] = useState(true)
     const [section, setSection] = useState<'account' | 'general'>('general');
 
     const pathname = usePathname();
@@ -77,15 +75,13 @@ const NavbarSegment = ({ user }: NavbarSegmentProps) => {
 
     const handleLogout = async () => {
         try {
-            const data = await axios('/api/auth/logout', {
+            await axios('/api/auth/logout', {
                 method: 'POST',
                 headers: {
                     Accept: 'application/json',
                     'Content-Type': 'application/json',
                 },
             })
-
-            console.log('data on logout', data);
 
             router.prefetch('/products');
             router.push('/products');
@@ -115,51 +111,45 @@ const NavbarSegment = ({ user }: NavbarSegmentProps) => {
         </Button>
     ));
 
+    // <>
+        {/* {!sideNavbarOpen && (
+            <Button onClick={() => setSideNavbarOpen(true)} className={openButton}>
+                {'<-'} Open Sidebar
+            </Button>
+        )} */}
     return (
-        <AppShell
-            aside={{
-                width: 1,
-                breakpoint: 'md',
-            }}
-        >
-            <div>
-                {!asideOpened && (
-                    <Button onClick={aside.open} mt={21} pos={'fixed'} top={51} right={30}>
-                        {'<-'} Open Sidebar
-                    </Button>
-                )}
-                {asideOpened && <AppShellAside withBorder className={navbarStyles} h={'94%'}>
-                    <Button onClick={aside.close}>
-                        CLOSE {'->'}
-                    </Button>
-                    <br/>
-                    <SegmentedControl
-                        value={section}
-                        onChange={(value: any) => setSection(value)}
-                        transitionTimingFunction="ease"
-                        fullWidth
-                        data={[
-                        { label: 'General', value: 'general' },
-                        { label: 'Account', value: 'account' },
-                        ]}
-                    />
+        <Group className={navbarStyles} w={sideNavbarOpen ? '300px' : '0'} px={sideNavbarOpen ? spacing.md : 0} pt={spacing.md}>
+            {/* <Button onClick={() => setSideNavbarOpen(false)} className={closeButton}>
+                CLOSE {'->'}
+            </Button> */}
+            <br/>
+            <SegmentedControl
+                value={section}
+                onChange={(value: any) => setSection(value)}
+                transitionTimingFunction="ease"
+                fullWidth
+                data={[
+                    { label: 'General', value: 'general' },
+                    { label: 'Account', value: 'account' },
+                ]}
+                w={'100%'}
+            />
 
-                    <div className={navbarMain}>{links}</div>
-                    <div className={footer}>
-                        <a 
-                            href="#" 
-                            className={link} 
-                            onClick={(event) => {event.preventDefault();handleLogout();}}
-                        >
-                            <IconLogout className={linkIcon} stroke={1.5} />
-                            <span>Logout</span>
-                        </a>
-                    </div>
-                    <UserButton user={user} />
-                </AppShellAside>}
+            <div className={navbarMain}>{links}</div>
+            <div className={footer}>
+                <Button 
+                    className={link} 
+                    onClick={(event) => {event.preventDefault();handleLogout();}}
+                    variant='subtle'
+                >
+                    <IconLogout className={linkIcon} stroke={0.9} />
+                    <span>Logout</span>
+                </Button>
             </div>
-        </AppShell>
+            <UserButton user={user} />
+        </Group>
     );
 }
+{/* </> */}
 
 export default NavbarSegment;

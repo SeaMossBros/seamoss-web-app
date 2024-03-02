@@ -48,7 +48,7 @@ export default class AuthService extends CMSService {
     }
   };
 
-  loginUser = async (identifier: string, password: string): Promise<AuthUser | null> => {
+  loginUser = async (identifier: string, password: string): Promise<LoginAuthUser | null> => {
     if (!identifier || !password) return null;
     try {
       const response = await axios(`${this.baseUrl}/api/auth/local`, {
@@ -59,15 +59,40 @@ export default class AuthService extends CMSService {
       
       if (!response.data?.jwt) return null;
 
-      // console.log('response.data', response.data);
       const userRes = await axios(`${this.baseUrl}/api/users/me?populate=role`, {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${response.data.jwt}`
         }
       })
-      // console.log('userRes data', userRes.data);
-      return userRes.data;
+
+      return { user: userRes.data, jwt: response.data.jwt };
+    } catch (err) {
+      console.log('err', err);
+      throw new Error(JSON.stringify({ message: err }));
+    }
+  };
+
+  changePassword = async (password: string, newPassword: string, confirmNewPassword: string, jwt: string) => {
+    console.log('----- ----- -----');
+    console.log('password', password);
+    console.log('newPassword', newPassword);
+    console.log('confirmNewPassword', confirmNewPassword);
+    console.log('jwt', jwt);
+    if (!newPassword || !confirmNewPassword || !password) return null;
+
+    try {
+      const response = await axios(`${this.baseUrl}/api/auth/change-password`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${jwt}`,
+        },
+        data: JSON.stringify({ password, newPassword, confirmNewPassword }),
+      });
+      
+      console.log('response', response);
+      
+      return;
     } catch (err) {
       console.log('err', err);
       throw new Error(JSON.stringify({ message: err }));

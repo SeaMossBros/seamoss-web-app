@@ -9,20 +9,23 @@ import { ColorSchemeScript } from '@mantine/core'
 import { Notifications } from '@mantine/notifications'
 import type { Metadata } from 'next'
 import { CookiesProvider } from 'next-client-cookies/server'
-// import { SessionProvider } from "next-auth/react"
 import React from 'react'
 
 import DefaultLayout from '@/components/DefaultLayout'
 import SpotlightController from '@/components/SpotlightController'
 import { interFont } from '@/fonts/inter'
 import AppProviders from '@/providers/AppProviders'
+import { getSessionFromCookies } from '@/lib/crypt'
 
 export const metadata: Metadata = {
   title: 'SeaTheMoss',
   description: 'Shop High Quality Sea Moss Products',
 }
 
-export default function RootLayout({ session, children }: { session: any, children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const userData = await getSessionFromCookies();
+  // console.log('userData', userData);
+
   return (
     <html lang="en">
       <head>
@@ -34,17 +37,15 @@ export default function RootLayout({ session, children }: { session: any, childr
         <link rel="manifest" href="/site.webmanifest" />
       </head>
       <body className={interFont.className}>
-        {/* <SessionProvider session={session}> */}
           <CookiesProvider>
             <AppProviders>
-              <DefaultLayout>
+              <DefaultLayout user={userData}>
                 <Notifications />
                 <SpotlightController />
                 {children}
               </DefaultLayout>
             </AppProviders>
           </CookiesProvider>
-        {/* </SessionProvider> */}
       </body>
     </html>
   )

@@ -3,16 +3,28 @@ import { defaultThemeVars } from '@/themes/default';
 
 export const navbarStyles = style({
     backgroundColor: defaultThemeVars.colors.body,
-    height: '840px', // Adjust according to your project's rem function utility
-    width: '300px', // Adjust according to your project's rem function utility
-    padding: defaultThemeVars.spacing.md,
+    height: '100%', // Adjust according to your project's rem function utility
+    minHeight: '84vh',
+    maxHeight: '90vh',
+    maxWidth: '90vw',
     display: 'flex',
     flexDirection: 'column',
+    alignItems: 'flex-start',
+    borderLeft: '1px solid',
+
+    '@media': {
+        [`(max-width: ${defaultThemeVars.breakpoints.sm})`]: {
+            minHeight: 'fit-content',
+            borderLeft: 'none',
+            borderBottom: '1px solid',
+        },
+    },
 });
 
 export const navbarMain = style({
+    width: '100%',
     flex: 1,
-    marginTop: defaultThemeVars.spacing.xl,
+    marginTop: defaultThemeVars.spacing.xs,
 });
 
 export const title = style({
@@ -50,7 +62,7 @@ export const link = style({
 });
 
 export const linkIcon = style({
-    color: defaultThemeVars.colors.gray[6], // Adjust for light-dark variation
+    color: defaultThemeVars.colors.white[3], // Adjust for light-dark variation
     marginRight: defaultThemeVars.spacing.sm,
     width: '25px', // Adjust according to your project's rem function utility
     height: '25px', // Adjust according to your project's rem function utility
@@ -59,4 +71,25 @@ export const linkIcon = style({
 export const footer = style({
     borderTop: `1px solid ${defaultThemeVars.colors.gray3}`, // Adjust for light-dark variation
     paddingTop: defaultThemeVars.spacing.md,
+    width: '100%'
 });
+
+// export const closeButton = style({
+//     display: 'none',
+//     width: '100%',
+
+//     '@media': {
+//         [`(max-width: ${defaultThemeVars.breakpoints.sm})`]: {
+//             display: 'block',
+//         },
+//     },
+// });
+
+// export const openButton = style({
+//     display: 'flex', 
+//     justifyContent: 'center',
+//     marginTop: 15, 
+//     marginRight: 12, 
+//     width: '222px',
+//     maxWidth: '90vw',
+// });
