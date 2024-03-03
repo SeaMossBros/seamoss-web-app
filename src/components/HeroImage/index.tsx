@@ -1,7 +1,7 @@
 'use client'
 
 import { Carousel } from '@mantine/carousel'
-import { Box, Button, Image, Text, Title, useMantineColorScheme, useMantineTheme } from '@mantine/core'
+import { Box, Button, Image, Text, Title, useMantineTheme } from '@mantine/core'
 import Autoplay from 'embla-carousel-autoplay'
 import Link from 'next/link'
 import { useMemo, useRef, useState } from 'react'
@@ -12,8 +12,8 @@ import { getStrapiUploadUrl } from '@/utils/cms'
 
 import {
   actionButtons,
-  content,
   container,
+  content,
   description,
   heroButtonContainer,
   inner,
@@ -23,32 +23,30 @@ import {
 } from './HeroImage.css'
 
 const HeroImage: React.FC = () => {
-  const { colors, defaultRadius } = useMantineTheme();
-  const { colorScheme } = useMantineColorScheme();
-  const isDarkTheme = colorScheme === 'dark';
-  const [isHovering, setIsHovering] = useState(false);
+  const { colors, defaultRadius } = useMantineTheme()
+  const [isHovering, setIsHovering] = useState(false)
 
   const { data } = useHomePage()
-  
+
   const images = useMemo(() => {
     return data?.attributes.hero_images?.data ?? []
   }, [data?.attributes.hero_images?.data])
-  
+
   const autoplay = useRef(
     Autoplay({ delay: 6000, stopOnInteraction: false, stopOnMouseEnter: false }),
   )
 
   const resetAutoplay = () => {
     if (autoplay.current) {
-      autoplay.current.stop(); // Stop current autoplay
-      autoplay.current.play(); // Start autoplay again
+      autoplay.current.stop() // Stop current autoplay
+      autoplay.current.play() // Start autoplay again
     }
-  };
+  }
 
   return (
-    <Box 
+    <Box
       className={root}
-      onMouseEnter={() => setIsHovering(true)}  
+      onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
     >
       <Carousel
@@ -80,11 +78,7 @@ const HeroImage: React.FC = () => {
         <Box className={content}>
           <Title className={title}>
             Explore Earth&apos;s Oceanic Wonders with{' '}
-            <Text
-              component="span"
-              inherit
-              variant="gradient"
-            >
+            <Text component="span" inherit variant="gradient">
               SeaTheMoss
             </Text>{' '}
             Products
@@ -92,8 +86,13 @@ const HeroImage: React.FC = () => {
 
           <Text
             className={description}
-            mt={30} py={6}
-            style={{backgroundColor: colors.white[1], textAlign: 'center', borderRadius: defaultRadius }}
+            mt={30}
+            py={6}
+            style={{
+              backgroundColor: colors.white[1],
+              textAlign: 'center',
+              borderRadius: defaultRadius,
+            }}
             c={colors.teal[9]}
           >
             Discover our pure sea moss in gel, dried, and gummy form
@@ -114,7 +113,7 @@ const HeroImage: React.FC = () => {
             <Button
               component={Link}
               href={ROUTE_PATHS.ABOUT}
-              variant='outline'
+              variant="outline"
               className={actionButtons}
               mt={40}
               size="md"

@@ -1,6 +1,6 @@
 'use client'
 
-import { Button, Center, Flex, Pagination, Rating, Stack, Text, Title, useMantineColorScheme, useMantineTheme } from '@mantine/core'
+import { Button, Center, Flex, Pagination, Rating, Stack, Text, Title } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import React, { useCallback, useMemo, useState } from 'react'
 
@@ -54,12 +54,15 @@ const ProductReviews: React.FC<ProductReviewsProps> = ({ product, onRefetch }) =
     }
   }, [pagination.pageSize, reviews?.meta.pagination.total])
 
-  const onChangePage = useCallback((_page: number = 1) => {
-    setPagination((prev) => ({
-      ...prev,
-      page: _page,
-    }))
-  }, [pagination, setPagination])
+  const onChangePage = useCallback(
+    (_page: number = 1) => {
+      setPagination((prev) => ({
+        ...prev,
+        page: _page,
+      }))
+    },
+    [setPagination],
+  )
 
   const onReviewSubmitted = useCallback(() => {
     reviewModal.close()

@@ -44,11 +44,12 @@ const CartItems: React.FC<CartItemsProps> = ({
     [updateModal],
   )
 
-  if (isFetched && !items?.length) return (
-    <Center>
-      <Text>There is no items in your cart</Text>
-    </Center>
-  )
+  if (isFetched && !items?.length)
+    return (
+      <Center>
+        <Text>There is no items in your cart</Text>
+      </Center>
+    )
 
   return (
     <Stack gap="sm">

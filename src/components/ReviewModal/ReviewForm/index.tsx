@@ -1,17 +1,19 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { Box, Button, Flex, Image, Rating, Stack, Text, Textarea, TextInput, useMantineColorScheme, useMantineTheme } from '@mantine/core'
+import { Box, Button, Flex, Image, Rating, Stack, Text, Textarea, TextInput } from '@mantine/core'
+import { useDisclosure } from '@mantine/hooks'
 import { notifications } from '@mantine/notifications'
 import React, { useCallback, useState } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { array, number, object, ObjectSchema, string } from 'yup'
 
+import MediaUploadModal from '@/components/MediaUploadModal'
+import { getSessionFromCookies } from '@/lib/crypt'
 import { useSubmitReview } from '@/mutations/useSubmitReview'
+import { AuthUser } from '@/types/Auth'
+import { Media, Media_Plain } from '@/types/Media'
 import { Product } from '@/types/Product'
 import { ReviewFormData } from '@/types/ReviewForm'
-import { Media, Media_Plain } from '@/types/Media'
 import { getStrapiUploadUrl } from '@/utils/cms'
-import { useDisclosure } from '@mantine/hooks'
-import MediaUploadModal from '@/components/MediaUploadModal'
 
 const DEFAULT_VALUES: Partial<ReviewFormData> = {
   rating: 5,
@@ -30,7 +32,8 @@ type ReviewFormProps = {
   onSuccess: () => void
 }
 
-const ReviewForm: React.FC<ReviewFormProps> = ({ product, onSuccess }) => {
+const ReviewForm: React.FC<ReviewFormProps> = async ({ product, onSuccess }) => {
+  const user: AuthUser | null = await getSessionFromCookies()
   const methods = useForm<ReviewFormData>({
     defaultValues: DEFAULT_VALUES,
     resolver: yupResolver(schema),
@@ -39,17 +42,20 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ product, onSuccess }) => {
 
   const { mutate: submit, isPending } = useSubmitReview(product.id)
 
-  const [mediaFiles, setMediaFiles] = useState<Media[]>([]);
-  const [selectedMediaIds, setSelectedMediaIds] = useState<number[]>([]);
+  const [mediaFiles, setMediaFiles] = useState<Media[]>([])
+  const [selectedMediaIds, setSelectedMediaIds] = useState<number[]>([])
   const [uploadModalOpened, uploadModal] = useDisclosure()
 
   const onSubmit = useCallback(
     async (data: ReviewFormData) => {
-
       // TODO: reviews can't handle files
       submit(
         {
-          ...data,
+          rating: data.rating,
+          comment: data.comment,
+          user_email: user && user.email ? user.email : data.user_email,
+          user_name: data.user_name,
+          attachments: selectedMediaIds,
         },
         {
           onSettled: (data, error) => {
@@ -69,28 +75,28 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ product, onSuccess }) => {
         },
       )
     },
-    [onSuccess, submit],
+    [onSuccess, submit, selectedMediaIds, user],
   )
 
   const onImageSave = useCallback(
     (_type: 'video' | 'image', _media: Media_Plain[]) => {
-      const media: Media[] = _media.map((mediaFile, i) => ({ id: mediaFile.id, attributes: mediaFile })); // we know for sure that user can only upload media by setting uploadMethods={['upload']}
-      console.log('media', media);
-      setMediaFiles(media);
+      const media: Media[] = _media.map((mediaFile) => ({
+        id: mediaFile.id,
+        attributes: mediaFile,
+      })) // we know for sure that user can only upload media by setting uploadMethods={['upload']}
+      // console.log('media', media)
+      setMediaFiles(media)
 
-      const mediaIds: number[] = media.map((file) => file.id);
-      setSelectedMediaIds(mediaIds);
+      const mediaIds: number[] = media.map((file) => file.id)
+      setSelectedMediaIds(mediaIds)
 
       uploadModal.close()
 
-      methods.setValue(
-        'attachments', media,
-        {
-          shouldValidate: true,
-          shouldDirty: true,
-          shouldTouch: true,
-        },
-      )
+      methods.setValue('attachments', media, {
+        shouldValidate: true,
+        shouldDirty: true,
+        shouldTouch: true,
+      })
     },
     [methods, uploadModal],
   )
@@ -99,22 +105,23 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ product, onSuccess }) => {
     uploadModal.open()
   }, [uploadModal])
 
-  const previews = () => mediaFiles.map((mediaFile, i) => {
-    const url = getStrapiUploadUrl(mediaFile.attributes.url);
+  const previews = () =>
+    mediaFiles.map((mediaFile, i) => {
+      const url = getStrapiUploadUrl(mediaFile.attributes.url)
 
-    return (
-      <Box key={i} h={90} mb={30}>
-        {mediaFile.attributes.mime.includes('image') ? (
-          <Image src={url} alt={mediaFile.attributes.name} w={108} mr={30} />
-        ) : (
-          <video key={url} src={url} width='108px' controls />
-        )}
-        <Text fz="sm" lineClamp={1}>
-          {mediaFile.attributes.name.slice(0, 14)}...
-        </Text>
-      </Box>
-    )
-  })
+      return (
+        <Box key={i} h={90} mb={30}>
+          {mediaFile.attributes.mime.includes('image') ? (
+            <Image src={url} alt={mediaFile.attributes.name} w={108} mr={30} />
+          ) : (
+            <video key={url} src={url} width="108px" controls />
+          )}
+          <Text fz="sm" lineClamp={1}>
+            {mediaFile.attributes.name.slice(0, 14)}...
+          </Text>
+        </Box>
+      )
+    })
 
   return (
     <>
@@ -170,10 +177,10 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ product, onSuccess }) => {
               error={methods.formState.errors.comment?.message}
               autosize
             />
-            <Box display={'flex'}>
-              {previews()}
-            </Box>
-            <Button onClick={onFileClick} variant='outline'>{mediaFiles.length ? 'Replace' : 'Add'} Media</Button>
+            <Box display={'flex'}>{previews()}</Box>
+            <Button onClick={onFileClick} variant="outline">
+              {mediaFiles.length ? 'Replace' : 'Add'} Media
+            </Button>
             <MediaUploadModal
               uploadMethods={['upload']}
               opened={uploadModalOpened}

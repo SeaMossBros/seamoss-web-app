@@ -3,11 +3,15 @@ import { UndefinedInitialDataOptions, useQuery } from '@tanstack/react-query'
 import { useService } from '@/hooks/useService'
 import APIService from '@/services/api.service'
 
-type QueryOptions = Omit<UndefinedInitialDataOptions<
-    { data: { totalPrice: number, discountedPrice: number | null }},
-    Error, { totalPrice: number, discountedPrice: number | null },
+type QueryOptions = Omit<
+  UndefinedInitialDataOptions<
+    { data: { totalPrice: number; discountedPrice: number | null } },
+    Error,
+    { totalPrice: number; discountedPrice: number | null },
     (string | [variantId: number, quantity: number, purchaseOptionId: number])[]
-  >, 'queryKey' | 'queryFn'>
+  >,
+  'queryKey' | 'queryFn'
+>
 
 export const usePriceCalculation = (
   data: {
@@ -18,7 +22,7 @@ export const usePriceCalculation = (
   options?: QueryOptions,
 ) => {
   const apiService = useService(APIService)
-  
+
   return useQuery({
     queryKey: APIService.queryKeys.getPriceEstimation(
       data.variantId!,

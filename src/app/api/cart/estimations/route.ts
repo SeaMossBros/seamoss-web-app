@@ -22,25 +22,27 @@ export const GET = async (req: NextRequest) => {
     const variantRes = await productService.getVariantById(parseInt(_variantId))
 
     if (!variantRes.data) throw new Error('Variant not found')
-    
+
     const { attributes: variant } = variantRes.data
-    
+
     const { unit_price, units_per_stock = 1 } = variant
 
     if (!unit_price) throw new Error('Variant unit price not defined')
-    
+
     const totalPrice = unit_price * units_per_stock * quantity
-    
-    const purchaseOptionRes = await productService.getPurchaseOptionById(parseInt(_purchaseOptionId))
+
+    const purchaseOptionRes = await productService.getPurchaseOptionById(
+      parseInt(_purchaseOptionId),
+    )
 
     if (!purchaseOptionRes.data) throw new Error('Purchase option not found')
-    
+
     const { attributes: purchaseOption } = purchaseOptionRes.data
-    
+
     const discountedPrice = (() => {
       if (!purchaseOption.has_discount) return null
       const { discount_unit, discount_value = 0 } = purchaseOption
-      
+
       switch (discount_unit) {
         case DiscountUnit.Fiat:
           return totalPrice - discount_value
@@ -51,7 +53,7 @@ export const GET = async (req: NextRequest) => {
           return null
       }
     })()
-          
+
     return Response.json({
       data: {
         totalPrice,
@@ -59,7 +61,7 @@ export const GET = async (req: NextRequest) => {
       },
     })
   } catch (err) {
-    console.log('error:', err);
-    return Response.json({err})
+    console.log('error:', err)
+    return Response.json({ err })
   }
 }

@@ -14,7 +14,7 @@ export const productsContainer = style({
     [`(max-width: ${defaultThemeVars.breakpoints.md})`]: {
       paddingTop: '9vh',
     },
-  }, 
+  },
 })
 
 export const filtersContainer = style({

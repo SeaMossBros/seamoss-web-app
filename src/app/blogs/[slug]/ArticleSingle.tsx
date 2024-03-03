@@ -61,7 +61,7 @@ const ArticleSingle: React.FC<ArticleSingleProps> = ({ slug, queryParams, isAuth
     setMode('view')
   }, [])
 
-  if (!article) return null;
+  if (!article) return null
 
   return (
     <ArticleContent

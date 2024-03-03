@@ -1,97 +1,97 @@
-import { defaultThemeVars } from '@/themes/default'
 import { style } from '@vanilla-extract/css'
 
-export const wrapper = style({
-    display: 'flex',
-    // backgroundColor: 'light-dark(var(--mantine-color-white), var(--mantine-color-dark-8))',
-    // borderRadius: 'var(--mantine-radius-lg)',
-    padding: 'rem(12px)',
-    // border: 'rem(1px) solid light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-8))',
+import { defaultThemeVars } from '@/themes/default'
 
-    '@media': {
-        [`(max-width: ${defaultThemeVars.breakpoints.sm})`]: {
-            flexDirection: 'column',
-        },
+export const wrapper = style({
+  display: 'flex',
+  // backgroundColor: 'light-dark(var(--mantine-color-white), var(--mantine-color-dark-8))',
+  // borderRadius: 'var(--mantine-radius-lg)',
+  padding: 'rem(12px)',
+  // border: 'rem(1px) solid light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-8))',
+
+  '@media': {
+    [`(max-width: ${defaultThemeVars.breakpoints.sm})`]: {
+      flexDirection: 'column',
     },
+  },
 })
 
 export const form = style({
-    flex: '1',
-    padding: 'var(--mantine-spacing-xl)',
-    paddingLeft:' calc(var(--mantine-spacing-xl) * 2)',
-    borderLeft: 0,
-    marginLeft: '15px',
-    minWidth: '50vw',
-    
-    '@media': {
-        [`(max-width: ${defaultThemeVars.breakpoints.md})`]: {
-            padding: 'var(--mantine- spacing-md)',
-            paddingLeft: 'var(--mantine-spacing-md)',
-            // minWidth: '1px'
-        },
+  flex: '1',
+  padding: 'var(--mantine-spacing-xl)',
+  paddingLeft: ' calc(var(--mantine-spacing-xl) * 2)',
+  borderLeft: 0,
+  marginLeft: '15px',
+  minWidth: '50vw',
+
+  '@media': {
+    [`(max-width: ${defaultThemeVars.breakpoints.md})`]: {
+      padding: 'var(--mantine- spacing-md)',
+      paddingLeft: 'var(--mantine-spacing-md)',
+      // minWidth: '1px'
     },
+  },
 })
 
-
 export const fields = style({
-    marginTop: 'rem(-12px)',
+  marginTop: 'rem(-12px)',
 })
 
 export const fieldInput = style({
-    flex: '1',
-    marginLeft: 'var(--mantine-spacing-md)',
-    
-    '@media': {
-        [`(max-width: ${defaultThemeVars.breakpoints.sm})`]: {
-            marginLeft: '0',
-            marginTop: 'var(--mantine-spacing-md)',
-        },
+  flex: '1',
+  marginLeft: 'var(--mantine-spacing-md)',
+
+  '@media': {
+    [`(max-width: ${defaultThemeVars.breakpoints.sm})`]: {
+      marginLeft: '0',
+      marginTop: 'var(--mantine-spacing-md)',
     },
+  },
 })
 
 export const fieldsGroup = style({
-    display: 'flex',
-    
-    '@media': {
-        [`(max-width: ${defaultThemeVars.breakpoints.sm})`]: {
-            flexDirection: 'column',
-        },
+  display: 'flex',
+
+  '@media': {
+    [`(max-width: ${defaultThemeVars.breakpoints.sm})`]: {
+      flexDirection: 'column',
     },
+  },
 })
 
 export const contacts = style({
-    boxSizing: 'border-box',
-    position: 'relative',
-    borderRadius: 'var(--mantine-radius-lg)',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    border: 'rem(1px) solid transparent',
-    padding: 'var(--mantine-spacing-xl)',
-    flex: '0 0 rem(280px)',
-    
-    '@media': {
-        [`(max-width: ${defaultThemeVars.breakpoints.sm})`]: {
-            marginBottom: 'var(--mantine-spacing-sm)',
-            paddingLeft: 'var(--mantine-spacing-md)',
-        },
+  boxSizing: 'border-box',
+  position: 'relative',
+  borderRadius: 'var(--mantine-radius-lg)',
+  backgroundSize: 'cover',
+  backgroundPosition: 'center',
+  border: 'rem(1px) solid transparent',
+  padding: 'var(--mantine-spacing-xl)',
+  flex: '0 0 rem(280px)',
+
+  '@media': {
+    [`(max-width: ${defaultThemeVars.breakpoints.sm})`]: {
+      marginBottom: 'var(--mantine-spacing-sm)',
+      paddingLeft: 'var(--mantine-spacing-md)',
     },
+  },
 })
 
 export const title = style({
-    marginBottom: 'calc(var(--mantine-spacing-xl) * 1.5)',
-    fontFamily: 'Palantino',
-    
-    '@media': {
-        [`(max-width: ${defaultThemeVars.breakpoints.sm})`]: {
-            marginBottom: 'var(--mantine-spacing-xl)',
-        },
+  marginBottom: 'calc(var(--mantine-spacing-xl) * 1.5)',
+  fontFamily: 'Palantino',
+
+  '@media': {
+    [`(max-width: ${defaultThemeVars.breakpoints.sm})`]: {
+      marginBottom: 'var(--mantine-spacing-xl)',
     },
+  },
 })
 
 export const control = style({
-    '@media': {
-        [`(max-width: ${defaultThemeVars.breakpoints.sm})`]: {
-            flex: '1'
-        },
+  '@media': {
+    [`(max-width: ${defaultThemeVars.breakpoints.sm})`]: {
+      flex: '1',
     },
+  },
 })

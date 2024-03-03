@@ -3,8 +3,8 @@ import React from 'react'
 
 import { Product } from '@/types/Product'
 
+// import ToolTip from '../ToolTip'
 import ReviewForm from './ReviewForm'
-import ToolTip from '../ToolTip'
 
 export type ReviewModalProps = ModalProps & {
   product: Product
@@ -14,15 +14,9 @@ export type ReviewModalProps = ModalProps & {
 const ReviewModal: React.FC<ReviewModalProps> = ({ product, onSuccess, ...props }) => {
   return (
     // <ToolTip title="Write a review">
-      <Modal
-        {...props}
-        padding={24}
-        closeOnClickOutside={false}
-        closeOnEscape={false}
-        centered
-        >
-        {props.opened ? <ReviewForm product={product} onSuccess={onSuccess} /> : null}
-      </Modal>
+    <Modal {...props} padding={24} closeOnClickOutside={false} closeOnEscape={false} centered>
+      {props.opened ? <ReviewForm product={product} onSuccess={onSuccess} /> : null}
+    </Modal>
     // </ToolTip>
   )
 }

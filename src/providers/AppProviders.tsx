@@ -8,13 +8,13 @@ import { AppProgressBar as ProgressBar } from 'next-nprogress-bar'
 import React, { PropsWithChildren, useState } from 'react'
 
 import { useSchemeManager } from '@/hooks/useSchemeManager'
-import { defaultTheme, defaultThemeVars } from '@/themes/default'
 import { darkTheme } from '@/themes/dark'
+import { defaultTheme, defaultThemeVars } from '@/themes/default'
 
 import CartProvider from './CartProvider'
 
 const AppProviders: React.FC<PropsWithChildren> = ({ children }) => {
-  const schemeManager = useSchemeManager();
+  const schemeManager = useSchemeManager()
   const [queryClient] = useState(
     () =>
       new QueryClient({

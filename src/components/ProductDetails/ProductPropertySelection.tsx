@@ -1,4 +1,13 @@
-import { Box, Card, Flex, Image, NumberInput, NumberInputHandlers, Text, useMantineColorScheme, useMantineTheme } from '@mantine/core'
+import {
+  Box,
+  Card,
+  Flex,
+  Image,
+  NumberInput,
+  NumberInputHandlers,
+  Text,
+  useMantineTheme,
+} from '@mantine/core'
 import { IconMinus, IconPlus } from '@tabler/icons-react'
 import React, { useCallback, useEffect, useMemo, useRef } from 'react'
 import {
@@ -39,9 +48,9 @@ const ProductPropertySelection: React.FC<ProductPropertySelectionProps> = ({
   update,
   remove,
   showImage,
-  updateQuantitySum
+  updateQuantitySum,
 }) => {
-  const { colors } = useMantineTheme();
+  const { colors } = useMantineTheme()
   const { attributes } = property
 
   const quantityInput = useRef<NumberInputHandlers>(null)
@@ -87,25 +96,25 @@ const ProductPropertySelection: React.FC<ProductPropertySelectionProps> = ({
       ...property,
       quantity: 1,
     })
-    updateQuantitySum(1, property.id);
-  }, [append, property, selected])
+    updateQuantitySum(1, property.id)
+  }, [append, property, selected, updateQuantitySum])
 
   const onChangeQuantity = useCallback(
     (value: number | string) => {
       if (!selected || selectedIndex < 0) return
       const num = parseInt(`${value}`)
       if (!num) {
-        updateQuantitySum(0, property.id);
+        updateQuantitySum(0, property.id)
         remove(selectedIndex)
         return
       }
-      updateQuantitySum(num, property.id);
+      updateQuantitySum(num, property.id)
       update(selectedIndex, {
         ...selected,
         quantity: num,
       })
     },
-    [remove, selected, selectedIndex, update],
+    [remove, selected, selectedIndex, update, property.id, updateQuantitySum],
   )
 
   return (
@@ -116,7 +125,7 @@ const ProductPropertySelection: React.FC<ProductPropertySelectionProps> = ({
         data-disabled={!max}
         onClick={() => onSelect()}
         data-withimage={showImage}
-        style={{borderColor: !!selected ? colors.teal[9] : 'lightgray', userSelect: 'none'}}
+        style={{ borderColor: !!selected ? colors.teal[9] : 'lightgray', userSelect: 'none' }}
         withBorder
       >
         {attributes.image?.data?.attributes.url && showImage ? (

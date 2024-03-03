@@ -9,7 +9,7 @@ export const inner = style({
   padding: defaultThemeVars.spacing.sm,
   position: 'relative',
   width: '100%',
-  
+
   '@media': {
     [`(max-width: ${defaultThemeVars.breakpoints.sm})`]: {
       flexDirection: 'column',
@@ -73,7 +73,7 @@ export const externalFooterLinks = style({
     [`(max-width: ${defaultThemeVars.breakpoints.sm})`]: {
       marginBottom: defaultThemeVars.spacing.xl,
       justifyContent: 'center',
-      marginTop: '21px'
+      marginTop: '21px',
     },
   },
 })

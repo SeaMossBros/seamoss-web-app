@@ -26,8 +26,16 @@ export type AddToCartData = {
 
 export default class CartService extends CMSService {
   static queryKeys = {
-    getById: (cartId: number, is_checked_out: boolean = false) => ['/carts', cartId],
-    getCartItems: (cartId: number, is_checked_out: boolean = false) => ['/cart-items', cartId],
+    getById: (cartId: number, is_checked_out: boolean = false) => [
+      '/carts',
+      cartId,
+      is_checked_out,
+    ],
+    getCartItems: (cartId: number, is_checked_out: boolean = false) => [
+      '/cart-items',
+      cartId,
+      is_checked_out,
+    ],
   }
 
   getById = async (cartId: number, is_checked_out: boolean = false) => {

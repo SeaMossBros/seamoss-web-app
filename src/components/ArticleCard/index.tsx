@@ -1,6 +1,6 @@
 'use client'
 
-import { AspectRatio, Card, Image, Stack, Text, useMantineColorScheme, useMantineTheme } from '@mantine/core'
+import { AspectRatio, Card, Image, Stack, Text } from '@mantine/core'
 import Link from 'next/link'
 import { useMemo } from 'react'
 
@@ -9,8 +9,8 @@ import { Article } from '@/types/Article'
 import { getStrapiUploadUrl } from '@/utils/cms'
 import { isImage } from '@/utils/common'
 
+// import ToolTip from '../ToolTip'
 import { card } from './ArticleCard.css'
-import ToolTip from '../ToolTip'
 
 export type ArticleCardProps = {
   article: Omit<Article, 'content'>
@@ -45,9 +45,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
       </Card.Section>
       <Stack mt="sm">
         {/* <ToolTip title={title}> */}
-          <Text lineClamp={2}>
-            {title}
-          </Text>
+        <Text lineClamp={2}>{title}</Text>
         {/* </ToolTip> */}
         <Text lineClamp={3} fz="sm" c="gray">
           {introduction}

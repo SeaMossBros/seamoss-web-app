@@ -50,14 +50,14 @@ const BlogShowPage: React.FC<Props> = async ({ params }) => {
     queryKey: BlogService.queryKeys.getBySlug(params.slug, query),
     queryFn: () => blogService.getBySlug(params.slug, query),
   })
-  const headerList = headers();
+  const headerList = headers()
   const isAuthenticated = (() => {
     const [AUTH_USER, AUTH_PASS] = (process.env.HTTP_BASIC_AUTH || ':').split(':')
 
     const authheader = headerList.get('authorization') || headerList.get('Authorization')
 
     if (!authheader) {
-      return false;
+      return false
     }
 
     const auth = Buffer.from(authheader.split(' ')[1], 'base64').toString().split(':')

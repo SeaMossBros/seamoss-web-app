@@ -84,7 +84,7 @@ const NavbarSegment = ({ user }: NavbarSegmentProps) => {
     const isOnGeneralSection =
       !currentPath || pathname.includes('orders') || pathname.includes('reviews')
     setSection(isOnGeneralSection ? 'general' : 'account')
-  }, [])
+  }, [currentPath, pathname, router, shouldRedirectToOrders])
 
   const handleLogout = async () => {
     try {

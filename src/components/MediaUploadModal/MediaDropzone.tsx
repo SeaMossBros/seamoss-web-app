@@ -30,13 +30,13 @@ export type MediaUploadProps = {
 
 const MediaUpload: React.FC<MediaUploadProps> = ({ onSave, multiple }) => {
   const [files, setFiles] = useState<FileWithPath[]>([])
-  const maxFiles = 3;
+  const maxFiles = 3
 
   const methods = useForm<FormData>()
 
   const { mutateAsync: uploadAsync, isPending: isUploading } = useUploadFile()
   const { mutateAsync: uploadFileInfoAsync, isPending: isUpdatingInfo } = useUploadFileInfo()
-  
+
   const previews = files.map((file, index) => {
     const url = URL.createObjectURL(file)
 
@@ -55,7 +55,7 @@ const MediaUpload: React.FC<MediaUploadProps> = ({ onSave, multiple }) => {
   })
 
   const onDrop = useCallback((files: FileWithPath[]) => {
-    setFiles([...files]);
+    setFiles([...files])
   }, [])
 
   const onSubmit = useCallback(
@@ -73,15 +73,19 @@ const MediaUpload: React.FC<MediaUploadProps> = ({ onSave, multiple }) => {
             alternativeText: data.alt,
           },
         })
-        
-        uploadedMedia = res;
+
+        uploadedMedia = res
       }
 
-      console.log('uploadedMedia:::', uploadedMedia);
+      console.log('uploadedMedia:::', uploadedMedia)
 
-      onSave(uploadedMedia.mime.startsWith('image') ? 'image' : 'video', multiple ? uploadRes : [uploadedMedia], data.alt)
+      onSave(
+        uploadedMedia.mime.startsWith('image') ? 'image' : 'video',
+        multiple ? uploadRes : [uploadedMedia],
+        data.alt,
+      )
     },
-    [files, onSave, uploadAsync, uploadFileInfoAsync],
+    [files, onSave, uploadAsync, uploadFileInfoAsync, multiple],
   )
 
   return (

@@ -14,7 +14,7 @@ import {
 import { useDisclosure } from '@mantine/hooks'
 import { modals } from '@mantine/modals'
 import { IconChevronDown, IconChevronUp, IconTrash } from '@tabler/icons-react'
-import { useCallback, useEffect } from 'react'
+import { useCallback } from 'react'
 import { Pencil } from 'tabler-icons-react'
 
 import { useRemoveCartItem } from '@/mutations/useRemoveCartItem'
@@ -92,7 +92,7 @@ const CartItemSingle: React.FC<CartItemSingleProps> = ({
   return (
     <Card withBorder>
       <Flex gap="md" w="100%">
-        <Image 
+        <Image
           className={productImg}
           src={
             thumbnail?.data?.attributes?.formats?.small?.url
@@ -106,7 +106,9 @@ const CartItemSingle: React.FC<CartItemSingleProps> = ({
           alt={productName}
         />
         <Stack className={itemInfoWrapper} gap={0}>
-          <Text fw={600} id='product-name'>{productName}</Text>
+          <Text fw={600} id="product-name">
+            {productName}
+          </Text>
           <Text fz="sm">
             {purchaseType === PurchaseType.Recurring ? purchaseOptionName : 'one-time purchase'}
           </Text>
@@ -122,8 +124,8 @@ const CartItemSingle: React.FC<CartItemSingleProps> = ({
             </Text>
             <ActionIcon
               mx="md"
-              ml='lg'
-              variant='light'
+              ml="lg"
+              variant="light"
               p={2}
               size="sm"
               type="button"
@@ -133,7 +135,7 @@ const CartItemSingle: React.FC<CartItemSingleProps> = ({
             </ActionIcon>
             <ActionIcon
               type="button"
-              variant='transparent'
+              variant="transparent"
               c="red"
               mx="md"
               size="sm"

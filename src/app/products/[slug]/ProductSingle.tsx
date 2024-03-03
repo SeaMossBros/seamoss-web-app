@@ -1,6 +1,6 @@
 'use client'
 
-import { Accordion, Box, Button, Grid, Stack, Title, useMantineColorScheme, useMantineTheme } from '@mantine/core'
+import { Accordion, Box, Button, Grid, Stack, Title } from '@mantine/core'
 import uniqBy from 'lodash/uniqBy'
 import { useCallback, useMemo, useState } from 'react'
 import { FormProvider } from 'react-hook-form'
@@ -21,7 +21,7 @@ export type ProductSingleProps = {
 }
 
 const ProductSingle: React.FC<ProductSingleProps> = ({ slug, queryParams }) => {
-  const [propertyIsSelected, setPropertyIsSelected] = useState(false);
+  const [propertyIsSelected, setPropertyIsSelected] = useState(false)
   const { addToCart, isAddingToCart } = useCart()
   const { product, methods, refetch } = useProductForm(slug, queryParams)
 
@@ -49,7 +49,7 @@ const ProductSingle: React.FC<ProductSingleProps> = ({ slug, queryParams }) => {
   }, [refetch])
 
   const handleSetPropertyIsSelected = (value: boolean) => {
-    setPropertyIsSelected(value);
+    setPropertyIsSelected(value)
   }
 
   if (!product) return null
@@ -78,8 +78,16 @@ const ProductSingle: React.FC<ProductSingleProps> = ({ slug, queryParams }) => {
               }}
             >
               <Stack gap="lg">
-                <ProductDetails product={product} setPropertyIsSelected={handleSetPropertyIsSelected} />
-                <Button type="submit" loading={isAddingToCart} fullWidth disabled={propertyIsSelected}>
+                <ProductDetails
+                  product={product}
+                  setPropertyIsSelected={handleSetPropertyIsSelected}
+                />
+                <Button
+                  type="submit"
+                  loading={isAddingToCart}
+                  fullWidth
+                  disabled={propertyIsSelected}
+                >
                   ADD TO CART
                 </Button>
                 <Accordion>

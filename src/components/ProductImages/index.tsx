@@ -1,6 +1,6 @@
 'use client'
 
-import { Box, Flex, Image, ScrollArea, Stack, useMantineColorScheme, useMantineTheme } from '@mantine/core'
+import { Box, Flex, Image, ScrollArea, Stack, useMantineTheme } from '@mantine/core'
 import { useCallback, useState } from 'react'
 
 import { Media } from '@/types/Media'
@@ -15,7 +15,7 @@ export type ProductImagesProps = {
 }
 
 const ProductImages: React.FC<ProductImagesProps> = ({ defaultImage, images, productName }) => {
-  const { colors, defaultRadius } = useMantineTheme();
+  const { colors, defaultRadius } = useMantineTheme()
   const [currentImage, setCurrentImage] = useState<Media>(defaultImage ?? images[0])
 
   const onSelectImage = useCallback(function onSelectImageImpl(
@@ -44,36 +44,38 @@ const ProductImages: React.FC<ProductImagesProps> = ({ defaultImage, images, pro
         maw={1000}
         height={'42vh'}
         mah={'42vh'}
-        fit='contain'
-        loading='eager'
+        fit="contain"
+        loading="eager"
       />
       <ScrollArea maw="100%" mx="auto">
         <Flex gap="md">
           {images.map((image) => {
             // console.log('currentImage.id === image.id', currentImage.id === image.id);
 
-            return <Box
-              key={image.id}
-              w={100}
-              className={previewImage}
-              onClick={onSelectImage.bind(image)}
-              data-active={currentImage.id === image.id}
-              style={{
-                borderColor: currentImage.id === image.id ? colors.teal[9] : 'lightgray',
-                opacity: currentImage.id !== image.id && 0.72 || 1,
-                borderRadius: defaultRadius
-              }}
-            >
-              <Image
-                src={getStrapiUploadUrl(
-                  image.attributes.formats?.small?.url ?? image.attributes.url,
-                )}
-                alt={image.attributes.alternativeText || productName}
-                width={100}
-                height={100}
-                radius={Number(defaultRadius) - 2}
-              />
-            </Box>
+            return (
+              <Box
+                key={image.id}
+                w={100}
+                className={previewImage}
+                onClick={onSelectImage.bind(image)}
+                data-active={currentImage.id === image.id}
+                style={{
+                  borderColor: currentImage.id === image.id ? colors.teal[9] : 'lightgray',
+                  opacity: (currentImage.id !== image.id && 0.72) || 1,
+                  borderRadius: defaultRadius,
+                }}
+              >
+                <Image
+                  src={getStrapiUploadUrl(
+                    image.attributes.formats?.small?.url ?? image.attributes.url,
+                  )}
+                  alt={image.attributes.alternativeText || productName}
+                  width={100}
+                  height={100}
+                  radius={Number(defaultRadius) - 2}
+                />
+              </Box>
+            )
           })}
         </Flex>
       </ScrollArea>

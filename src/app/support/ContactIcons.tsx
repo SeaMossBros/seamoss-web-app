@@ -1,12 +1,13 @@
-import { Text, Box, Stack } from '@mantine/core';
-import { IconSun, IconPhone, IconMapPin, IconAt } from '@tabler/icons-react';
-import { wrapper, descriptionStyle, linkStyle } from './contact-icons.css';
+import { Box, Stack, Text } from '@mantine/core'
+import { IconAt, IconMapPin, IconPhone, IconSun } from '@tabler/icons-react'
+
+import { descriptionStyle, linkStyle, wrapper } from './contact-icons.css'
 
 interface ContactIconProps extends Omit<React.ComponentPropsWithoutRef<'div'>, 'title'> {
-  icon: typeof IconSun;
-  title: string;
-  description: string;
-  inputMode: 'search' | 'text' | 'email' | 'tel' | 'none' | 'url' | 'numeric' | 'decimal';
+  icon: typeof IconSun
+  title: string
+  description: string
+  inputMode: 'search' | 'text' | 'email' | 'tel' | 'none' | 'url' | 'numeric' | 'decimal'
 }
 
 function ContactIcon({ icon: Icon, title, description, inputMode, ...others }: ContactIconProps) {
@@ -14,20 +15,37 @@ function ContactIcon({ icon: Icon, title, description, inputMode, ...others }: C
   const renderDescription = () => {
     switch (inputMode) {
       case 'email':
-        return <a href={`mailto:${description}`} className={linkStyle}>{description}</a>;
+        return (
+          <a href={`mailto:${description}`} className={linkStyle}>
+            {description}
+          </a>
+        )
       case 'tel':
-        return <a href={`tel:${description.replace(/\s/g, '')}`} className={linkStyle}>{description}</a>;
+        return (
+          <a href={`tel:${description.replace(/\s/g, '')}`} className={linkStyle}>
+            {description}
+          </a>
+        )
       case 'text':
         // Assuming 'Address' uses 'text' inputMode. Customize as needed.
         if (title.toLowerCase() === 'address') {
-          const query = encodeURIComponent(description);
-          return <a href={`https://www.google.com/maps/search/?api=1&query=${query}`} target="_blank" rel="noopener noreferrer" className={linkStyle}>{description}</a>;
+          const query = encodeURIComponent(description)
+          return (
+            <a
+              href={`https://www.google.com/maps/search/?api=1&query=${query}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={linkStyle}
+            >
+              {description}
+            </a>
+          )
         }
-        return <span className={descriptionStyle}>{description}</span>;
+        return <span className={descriptionStyle}>{description}</span>
       default:
-        return <span className={descriptionStyle}>{description}</span>;
+        return <span className={descriptionStyle}>{description}</span>
     }
-  };
+  }
 
   return (
     <div className={wrapper} {...others}>
@@ -35,23 +53,26 @@ function ContactIcon({ icon: Icon, title, description, inputMode, ...others }: C
         <Icon style={{ width: 24, height: 24 }} />
       </Box>
       <div>
-        <Text size="xs">
-          {title}
-        </Text>
+        <Text size="xs">{title}</Text>
         {renderDescription()}
       </div>
     </div>
-  );
+  )
 }
 
 const MOCKDATA: Array<Omit<ContactIconProps, 'icon'> & { icon: typeof IconSun }> = [
   { title: 'Email', description: 'support@seathemoss.com', icon: IconAt, inputMode: 'email' },
   { title: 'Phone', description: '+1 (240) 273-5088', icon: IconPhone, inputMode: 'tel' },
-  { title: 'Address', description: '68 White St, 224, Red Bank, NJ', icon: IconMapPin, inputMode: 'text' },
-  { title: 'Working hours', description: '8 a.m. – 9 p.m. EST', icon: IconSun, inputMode: 'text'  },
-];
+  {
+    title: 'Address',
+    description: '68 White St, 224, Red Bank, NJ',
+    icon: IconMapPin,
+    inputMode: 'text',
+  },
+  { title: 'Working hours', description: '8 a.m. – 9 p.m. EST', icon: IconSun, inputMode: 'text' },
+]
 
 export function ContactIconsList() {
-  const items = MOCKDATA.map((item, index) => <ContactIcon key={index} {...item} />);
-  return <Stack>{items}</Stack>;
+  const items = MOCKDATA.map((item, index) => <ContactIcon key={index} {...item} />)
+  return <Stack>{items}</Stack>
 }

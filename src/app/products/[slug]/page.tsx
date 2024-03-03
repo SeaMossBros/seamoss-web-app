@@ -18,7 +18,7 @@ export const generateMetadata = async ({ params: { slug } }: Props): Promise<Met
   // const productService = new ProductService()
 
   // console.log(`Fetching product by slug: ${slug}...`);
-  
+
   // const product = await productService.getBySlug(slug)
 
   return {

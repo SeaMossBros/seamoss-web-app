@@ -1,4 +1,4 @@
-import { Flex, Input, RangeSlider, Stack, Text, useMantineColorScheme, useMantineTheme } from '@mantine/core'
+import { Flex, Input, RangeSlider, Stack, Text } from '@mantine/core'
 import debounce from 'lodash/debounce'
 import isNaN from 'lodash/isNaN'
 import isNumber from 'lodash/isNumber'

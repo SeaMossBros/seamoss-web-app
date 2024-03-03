@@ -1,4 +1,4 @@
-import { Fieldset, Paper, Radio, SegmentedControl, Stack, useMantineColorScheme, useMantineTheme } from '@mantine/core'
+import { Fieldset, Paper, Radio, SegmentedControl, Stack } from '@mantine/core'
 import { useCallback } from 'react'
 import { useFormContext } from 'react-hook-form'
 
@@ -32,7 +32,7 @@ const PurchaseOptions: React.FC = () => {
   if (!purchaseOptions?.data?.length) return null
 
   return (
-    <Fieldset legend="Purchase Options" style={{userSelect: 'none'}}>
+    <Fieldset legend="Purchase Options" style={{ userSelect: 'none' }}>
       <Stack gap="md">
         <SegmentedControl
           // color={getPrimaryColor()}

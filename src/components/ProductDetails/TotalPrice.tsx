@@ -12,7 +12,8 @@ const TotalPrice: React.FC = () => {
     name: 'discountedPrice',
   })
 
-  if (!totalPrice) return (
+  if (!totalPrice)
+    return (
       <Skeleton width={100} visible>
         <Text fz="xl" c="teal" fw={600}>
           --

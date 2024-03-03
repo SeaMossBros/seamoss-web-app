@@ -1,6 +1,6 @@
 'use client'
 
-import { Grid, Pagination, Stack, Title, useMantineColorScheme, useMantineTheme } from '@mantine/core'
+import { Grid, Pagination, Stack, Title } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import Link from 'next/link'
 import { usePathname, useSearchParams } from 'next/navigation'
@@ -69,59 +69,61 @@ const ProductList: React.FC<ProductListProps> = ({ queryParams, onPage }) => {
   }
 
   return (
-    <Stack gap='xl' className={productsContainer}>
+    <Stack gap="xl" className={productsContainer}>
       {onPage === 'Home' && <Title size={'h1'}>Our Best Sellers 🔥🪸</Title>}
-      <Grid justify='space-evenly' w={'100%'}>
+      <Grid justify="space-evenly" w={'100%'}>
         {products?.data?.map((product) => (
           <ProductCol key={product.id}>
             <ProductCard product={product} onQuickViewClick={onQuickViewClick} />
           </ProductCol>
         ))}
       </Grid>
-      {onPage !== 'Home' && <Pagination
-        className={pagination}
-        total={totalPages}
-        value={queryParams.pagination?.page}
-        getItemProps={(page) => ({
-          component: Link,
-          href: buildPageHref(page),
-        })}
-        getControlProps={(control) => {
-          if (control === 'next') {
-            const disabled = queryParams.pagination?.page === totalPages
-            return {
-              component: Link,
-              href: buildPageHref((queryParams.pagination?.page ?? 0) + 1),
-              disabled,
-              ...(disabled
-                ? {
-                    style: {
-                      pointerEvents: 'none',
-                    },
-                  }
-                : {}),
+      {onPage !== 'Home' && (
+        <Pagination
+          className={pagination}
+          total={totalPages}
+          value={queryParams.pagination?.page}
+          getItemProps={(page) => ({
+            component: Link,
+            href: buildPageHref(page),
+          })}
+          getControlProps={(control) => {
+            if (control === 'next') {
+              const disabled = queryParams.pagination?.page === totalPages
+              return {
+                component: Link,
+                href: buildPageHref((queryParams.pagination?.page ?? 0) + 1),
+                disabled,
+                ...(disabled
+                  ? {
+                      style: {
+                        pointerEvents: 'none',
+                      },
+                    }
+                  : {}),
+              }
             }
-          }
 
-          if (control === 'previous') {
-            const disabled = (queryParams.pagination?.page || 1) === 1
-            return {
-              component: Link,
-              href: buildPageHref((queryParams.pagination?.page ?? 2) - 1),
-              disabled,
-              ...(disabled
-                ? {
-                    style: {
-                      pointerEvents: 'none',
-                    },
-                  }
-                : {}),
+            if (control === 'previous') {
+              const disabled = (queryParams.pagination?.page || 1) === 1
+              return {
+                component: Link,
+                href: buildPageHref((queryParams.pagination?.page ?? 2) - 1),
+                disabled,
+                ...(disabled
+                  ? {
+                      style: {
+                        pointerEvents: 'none',
+                      },
+                    }
+                  : {}),
+              }
             }
-          }
 
-          return {}
-        }}
-      />}
+            return {}
+          }}
+        />
+      )}
       <ProductPreviewModal
         opened={productPreviewOpened}
         onClose={productPreview.close}

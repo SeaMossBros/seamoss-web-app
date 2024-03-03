@@ -2,12 +2,12 @@ import { useMantineTheme } from '@mantine/core'
 import { usePathname } from 'next/navigation'
 
 import { ROUTE_PATHS } from '@/consts/route-paths'
-import NavLinkItem from '../NavLinkItem'
-import { AuthUser } from '@/types/Auth'
 
-const UserMenu = ({ user }: { user: AuthUser | null }) => {
-  const { defaultRadius} = useMantineTheme();
-  const pathname = usePathname();
+import NavLinkItem from '../NavLinkItem'
+
+const UserMenu = () => {
+  const { defaultRadius } = useMantineTheme()
+  const pathname = usePathname()
 
   // console.log('user in usermenu', user);
   return (

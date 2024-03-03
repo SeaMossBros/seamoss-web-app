@@ -3,7 +3,7 @@
 import '@mantine/tiptap/styles.css'
 
 import { yupResolver } from '@hookform/resolvers/yup'
-import { Button, Center, Flex, Group, Stack, Text } from '@mantine/core'
+import { Button, Flex, Group, Stack, Text } from '@mantine/core'
 import { modals } from '@mantine/modals'
 import { useCallback } from 'react'
 import { FormProvider, useForm } from 'react-hook-form'
@@ -113,9 +113,12 @@ const ArticleContent: React.FC<ArticleContentProps> = ({
   )
 
   return (
-    <div style={{ width: '100%', height: '100%', margin: 0, padding: 0}}>
-      <FormProvider {...methods} >
-        <form onSubmit={methods.handleSubmit(onSubmit)} style={{ width: '100%', height: '100%', maxWidth: '900px'}}>
+    <div style={{ width: '100%', height: '100%', margin: 0, padding: 0 }}>
+      <FormProvider {...methods}>
+        <form
+          onSubmit={methods.handleSubmit(onSubmit)}
+          style={{ width: '100%', height: '100%', maxWidth: '900px' }}
+        >
           <Stack mt={60}>
             {isAuthenticated ? (
               <Group justify="flex-end">

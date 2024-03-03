@@ -18,7 +18,7 @@ export type CartItemUpdateModalProps = ModalProps & {
 }
 
 const CartItemUpdateModal: React.FC<CartItemUpdateModalProps> = ({ item, ...modalProps }) => {
-    const [propertyIsSelected, setPropertyIsSelected] = useState(false);
+  const [propertyIsSelected, setPropertyIsSelected] = useState(false)
   const { updateItem, isUpdatingItem } = useCart()
 
   const { product: productDetails, methods } = useProductForm(
@@ -96,7 +96,7 @@ const CartItemUpdateModal: React.FC<CartItemUpdateModalProps> = ({ item, ...moda
   )
 
   const handleSetPropertyIsSelected = (value: boolean) => {
-    setPropertyIsSelected(value);
+    setPropertyIsSelected(value)
   }
 
   return (
@@ -124,7 +124,12 @@ const CartItemUpdateModal: React.FC<CartItemUpdateModalProps> = ({ item, ...moda
                 }}
               >
                 <Stack gap="lg">
-                  <ProductDetails product={productDetails} showOptionImages={false} isFromCartModal={true} setPropertyIsSelected={handleSetPropertyIsSelected}/>
+                  <ProductDetails
+                    product={productDetails}
+                    showOptionImages={false}
+                    isFromCartModal={true}
+                    setPropertyIsSelected={handleSetPropertyIsSelected}
+                  />
                   <Flex gap="sm">
                     <Button
                       variant="default"
@@ -134,7 +139,12 @@ const CartItemUpdateModal: React.FC<CartItemUpdateModalProps> = ({ item, ...moda
                     >
                       Cancel
                     </Button>
-                    <Button type="submit" loading={isUpdatingItem} fullWidth disabled={propertyIsSelected}>
+                    <Button
+                      type="submit"
+                      loading={isUpdatingItem}
+                      fullWidth
+                      disabled={propertyIsSelected}
+                    >
                       Update
                     </Button>
                   </Flex>

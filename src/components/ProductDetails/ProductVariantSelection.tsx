@@ -1,4 +1,13 @@
-import { Box, Card, Flex, Image, NumberInput, NumberInputHandlers, Text, useMantineTheme, useMantineColorScheme } from '@mantine/core'
+import {
+  Box,
+  Card,
+  Flex,
+  Image,
+  NumberInput,
+  NumberInputHandlers,
+  Text,
+  useMantineTheme,
+} from '@mantine/core'
 import { IconMinus, IconPlus } from '@tabler/icons-react'
 import { useCallback, useRef } from 'react'
 import { useFormContext } from 'react-hook-form'
@@ -24,7 +33,7 @@ const ProductVariantSelection: React.FC<ProductVariantSelectionProps> = ({
   variant,
   showImage,
 }) => {
-  const { colors } = useMantineTheme();
+  const { colors } = useMantineTheme()
   const { attributes } = variant
 
   const methods = useFormContext<ProductSelectionFormData>()
@@ -51,7 +60,13 @@ const ProductVariantSelection: React.FC<ProductVariantSelectionProps> = ({
 
   return (
     <Box className={variantSelectionContainer}>
-      <Card className={variantWrapper} data-selected={isSelected} onClick={onSelect} withBorder style={{borderColor: isSelected ? colors.teal[9] : 'lightgray' }}>
+      <Card
+        className={variantWrapper}
+        data-selected={isSelected}
+        onClick={onSelect}
+        withBorder
+        style={{ borderColor: isSelected ? colors.teal[9] : 'lightgray' }}
+      >
         {attributes.image?.data?.attributes.url && showImage ? (
           <Box>
             <Image
@@ -68,7 +83,7 @@ const ProductVariantSelection: React.FC<ProductVariantSelectionProps> = ({
         </Text>
       </Card>
       {isSelected ? (
-        <Flex justify="center" mt="xs" style={{border: 'none'}}>
+        <Flex justify="center" mt="xs" style={{ border: 'none' }}>
           <NumberInput
             hideControls
             handlersRef={quantityInput}

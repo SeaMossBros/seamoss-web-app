@@ -1,4 +1,4 @@
-import { Checkbox, Stack, useMantineColorScheme, useMantineTheme } from '@mantine/core'
+import { Checkbox, Stack } from '@mantine/core'
 import React from 'react'
 
 import { Category } from '@/types/Product'
@@ -9,7 +9,6 @@ export type CategoryFilterProps = {
 }
 
 const CategoryFilter: React.FC<CategoryFilterProps> = ({ categoryFilters, onChange }) => {
-
   return (
     <Stack>
       {Object.values(Category).map((category) => (

@@ -21,8 +21,6 @@ import { GoogleLoginButton } from 'react-social-login-buttons'
 import { ROUTE_PATHS } from '@/consts/route-paths'
 import AuthService from '@/services/auth.service'
 
-import { submitButtonContainer } from './AuthForm.css'
-
 const AuthenticationForm = () => {
   const [submittedForm, setSubmittedForm] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
@@ -226,7 +224,7 @@ const AuthenticationForm = () => {
           </Text>
         )}
 
-        <Group className={submitButtonContainer} justify="space-between" mt="xl">
+        <Group justify="space-between" mt="xl">
           <Button
             type="submit"
             radius="xl"

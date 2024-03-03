@@ -13,9 +13,9 @@ const PaymentSuccessPage: React.FC<{
   const orderService = new OrderService()
   const searchParamsData = searchParams
 
-  if (!searchParamsData.session_id) notFound();
+  if (!searchParamsData.session_id) notFound()
 
-  const { session_id } = searchParamsData;
+  const { session_id } = searchParamsData
 
   const res = await queryClient.fetchQuery({
     queryKey: OrderService.queryKeys.confirmPayment(session_id as string),

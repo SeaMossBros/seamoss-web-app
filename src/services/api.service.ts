@@ -1,10 +1,12 @@
 import axios from 'axios'
 import qs from 'qs'
-import CMSService from './core/cms.service'
-import { SupportMessage, SupportMessage_Plain } from '@/types/SupportMessage'
-import { QueryResponse } from '@/types/QueryResponse'
 
-export default class APIService extends CMSService{
+import { QueryResponse } from '@/types/QueryResponse'
+import { SupportMessage, SupportMessage_Plain } from '@/types/SupportMessage'
+
+import CMSService from './core/cms.service'
+
+export default class APIService extends CMSService {
   static queryKeys = {
     getPriceEstimation: (...params: Parameters<APIService['getPriceEstimation']>) => [
       '/api/cart/estimations',
@@ -18,7 +20,7 @@ export default class APIService extends CMSService{
 
   getSupportMessages = async () => {
     const url = `${this.baseURL}/support-messages`
-    console.log('url', url);
+    console.log('url', url)
     const res = await axios(url, {
       method: 'get',
       headers: {
@@ -27,7 +29,7 @@ export default class APIService extends CMSService{
         'Content-Type': 'application/json',
       },
     })
-    console.log('res', res);
+    console.log('res', res)
 
     return res.data as Promise<QueryResponse<SupportMessage[]>>
   }
@@ -42,7 +44,7 @@ export default class APIService extends CMSService{
         Accept: 'application/json',
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({data}),
+      body: JSON.stringify({ data }),
     })
 
     return res.json() as Promise<QueryResponse<SupportMessage>>
@@ -54,7 +56,7 @@ export default class APIService extends CMSService{
       purchaseOption: purchaseOptionId,
       quantity,
     })
-    
+
     const res = await axios(`/api/cart/estimations?${search}`, {
       method: 'GET',
     })

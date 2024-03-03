@@ -14,8 +14,8 @@ import React from 'react'
 import DefaultLayout from '@/components/DefaultLayout'
 import SpotlightController from '@/components/SpotlightController'
 import { interFont } from '@/fonts/inter'
-import AppProviders from '@/providers/AppProviders'
 import { getSessionFromCookies } from '@/lib/crypt'
+import AppProviders from '@/providers/AppProviders'
 
 export const metadata: Metadata = {
   title: 'SeaTheMoss',
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
 }
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const userData = await getSessionFromCookies();
+  const userData = await getSessionFromCookies()
   // console.log('userData', userData);
 
   return (
@@ -32,20 +32,25 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <ColorSchemeScript />
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
         {/* <link rel="icon" type="image/png" sizes="32x32" href="/images/SeaTheMoss-Empty-Icon.png" /> */}
-        <link rel="icon" type="image/svg" sizes="16x16" href="/images/SeaTheMoss-Empty-Icon-30px.svg" />
+        <link
+          rel="icon"
+          type="image/svg"
+          sizes="16x16"
+          href="/images/SeaTheMoss-Empty-Icon-30px.svg"
+        />
         <link rel="icon" href="/images/SeaTheMoss-Empty-Icon.png" />
         <link rel="manifest" href="/site.webmanifest" />
       </head>
       <body className={interFont.className}>
-          <CookiesProvider>
-            <AppProviders>
-              <DefaultLayout user={userData}>
-                <Notifications />
-                <SpotlightController />
-                {children}
-              </DefaultLayout>
-            </AppProviders>
-          </CookiesProvider>
+        <CookiesProvider>
+          <AppProviders>
+            <DefaultLayout user={userData}>
+              <Notifications />
+              <SpotlightController />
+              {children}
+            </DefaultLayout>
+          </AppProviders>
+        </CookiesProvider>
       </body>
     </html>
   )

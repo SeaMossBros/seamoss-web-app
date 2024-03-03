@@ -6,9 +6,9 @@ import { IconPhoto } from '@tabler/icons-react'
 import { useCallback } from 'react'
 
 import MediaUploadModal from '@/components/MediaUploadModal'
+// import ToolTip from '@/components/ToolTip'
 import { Media_Plain } from '@/types/Media'
 import { getStrapiUploadUrl } from '@/utils/cms'
-import ToolTip from '@/components/ToolTip'
 
 const RichTextControlMedia: React.FC = () => {
   const [uploadModalOpened, uploadModal] = useDisclosure()
@@ -41,11 +41,9 @@ const RichTextControlMedia: React.FC = () => {
   return (
     <>
       {/* <ToolTip title="Attach media"> */}
-        <RichTextEditor.Control
-          onClick={uploadModal.open}
-        >
-          <IconPhoto stroke={1.5} size="1rem" />
-        </RichTextEditor.Control>
+      <RichTextEditor.Control onClick={uploadModal.open}>
+        <IconPhoto stroke={1.5} size="1rem" />
+      </RichTextEditor.Control>
       {/* </ToolTip> */}
       <MediaUploadModal opened={uploadModalOpened} onClose={uploadModal.close} onSave={onSave} />
     </>

@@ -46,7 +46,7 @@ export const defaultTheme = createTheme({
       '#1a1b1e',
       '#1a1b1e',
       '#1a1b1e',
-    ]
+    ],
   },
   primaryColor: 'teal',
   primaryShade: {
@@ -83,7 +83,7 @@ export const defaultTheme = createTheme({
   defaultGradient: {
     from: '#f5f5f5',
     to: 'teal',
-    deg: 45
+    deg: 45,
   },
   defaultRadius: 9,
   // fontSizes: {
@@ -97,5 +97,5 @@ export const defaultTheme = createTheme({
 
 export const defaultThemeVars = {
   ...themeToVars(defaultTheme),
-  radiusDefault: 9
+  radiusDefault: 9,
 }

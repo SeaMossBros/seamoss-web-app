@@ -1,9 +1,9 @@
 import qs from 'qs'
 
 import { HomePage, HomePage_Plain } from '@/types/HomePage'
-import { SupportPage, SupportPage_Plain } from '@/types/SupportPage'
 import { QueryParams } from '@/types/QueryParams'
 import { QueryResponse } from '@/types/QueryResponse'
+import { SupportPage, SupportPage_Plain } from '@/types/SupportPage'
 
 import CMSService from './core/cms.service'
 
@@ -45,6 +45,4 @@ export default class SingleTypeService extends CMSService {
 
     return res.json() as Promise<QueryResponse<SupportPage>>
   }
-
-
 }

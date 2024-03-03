@@ -1,4 +1,4 @@
-'use client';
+'use client'
 
 import { Button, Container, Image, SimpleGrid, Text, Title } from '@mantine/core'
 import Link from 'next/link'
@@ -47,7 +47,7 @@ const NotFoundImage = () => {
         <Image
           src={'/videos/SeaTheMoss-Spinner-With-Wildcrafted-Raw-Extended.mp4'}
           className={notFoundVideo}
-          onError={(e) => e.currentTarget.src ='/images/SeaTheMoss-StillSpinner.png'}
+          onError={(e) => (e.currentTarget.src = '/images/SeaTheMoss-StillSpinner.png')}
           alt="animated logo spinning"
         />
       </SimpleGrid>

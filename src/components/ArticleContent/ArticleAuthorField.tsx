@@ -6,15 +6,16 @@ import { useAuthors } from '@/queries/useAuthors'
 import { ArticleFormData } from '@/types/ArticleForm'
 import { getStrapiUploadUrl } from '@/utils/cms'
 
+// import ToolTip from '../ToolTip'
 import { ArticleComponentCommonProps } from './common'
-import ToolTip from '../ToolTip'
 
 export type ArticleAuthorFieldProps = ArticleComponentCommonProps
 
 const ArticleAuthorField: React.FC<ArticleAuthorFieldProps> = ({ mode }) => {
   const methods = useFormContext<ArticleFormData>()
 
-  const { data: authors, isFetching } = useAuthors( // populates avatar by default
+  const { data: authors, isFetching } = useAuthors(
+    // populates avatar by default
     {
       pagination: {
         pageSize: 100,
@@ -34,9 +35,7 @@ const ArticleAuthorField: React.FC<ArticleAuthorFieldProps> = ({ mode }) => {
         {author.avatar ? (
           <Avatar
             src={getStrapiUploadUrl(
-              author.avatar.attributes.formats?.small?.url
-              || author.avatar.attributes.url
-              || ''
+              author.avatar.attributes.formats?.small?.url || author.avatar.attributes.url || '',
             )}
             alt={author.name}
           />
@@ -52,34 +51,33 @@ const ArticleAuthorField: React.FC<ArticleAuthorFieldProps> = ({ mode }) => {
   }
 
   // if (!author || !author.avatar || !author.avatar.attributes) return null
-  console.log('author.avatar', author?.avatar);
+  console.log('author.avatar', author?.avatar)
   return (
     <Controller<ArticleFormData, 'author'>
       name="author"
       render={({ field: { value, onChange } }) => (
         <Group>
-          {author ? 
-          (
+          {author ? (
             // <ToolTip title={`Avatar for ${author.attributes.name}`} width='180px'>
-              <Avatar
-                src={getStrapiUploadUrl(
-                  author.avatar?.attributes.formats.small?.url
-                  || author.avatar?.attributes.formats.thumbnail?.url
-                  || author.avatar?.attributes.url
-                  || ''
-                  )}
-                  alt={author.name}
-                  size={27} // Set a size for the avatar
-                  style={{ marginRight: '10px' }} // Add some spacing
-              />
-            // </ToolTip>
+            <Avatar
+              src={getStrapiUploadUrl(
+                author.avatar?.attributes.formats.small?.url ||
+                  author.avatar?.attributes.formats.thumbnail?.url ||
+                  author.avatar?.attributes.url ||
+                  '',
+              )}
+              alt={author.name}
+              size={27} // Set a size for the avatar
+              style={{ marginRight: '10px' }} // Add some spacing
+            />
           ) : (
+            // </ToolTip>
             // <ToolTip title='No Author Selected' width='180px' opacity={0.72}>
-              <Avatar
-                src={''}
-                size={27} // Set a size for the avatar
-                style={{ marginRight: '10px' }} // Add some spacing
-              /> 
+            <Avatar
+              src={''}
+              size={27} // Set a size for the avatar
+              style={{ marginRight: '10px' }} // Add some spacing
+            />
             // </ToolTip>
           )}
           <Select

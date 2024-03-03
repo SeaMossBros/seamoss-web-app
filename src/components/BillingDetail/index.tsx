@@ -19,7 +19,9 @@ const BillingDetail: React.FC<BillingDetailProps> = ({ total, onCheckout, isChec
     <Card withBorder>
       <Stack gap="lg">
         <Box display={'flex'} style={{ alignItems: 'center', justifyContent: 'center' }}>
-          <Text c="gray" mr={9}>Subtotal:</Text>
+          <Text c="gray" mr={9}>
+            Subtotal:
+          </Text>
           <Skeleton visible={isNil(total)}>
             <Text fz="xl" fw={700} c="teal">
               {formatPrice(total)}

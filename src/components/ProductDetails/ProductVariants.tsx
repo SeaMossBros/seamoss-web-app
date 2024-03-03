@@ -21,7 +21,7 @@ const ProductVariants: React.FC<{
   })
 
   return (
-    <Fieldset legend={fieldsetLegend || 'Select Variant'} style={{userSelect: 'none'}}>
+    <Fieldset legend={fieldsetLegend || 'Select Variant'} style={{ userSelect: 'none' }}>
       <Flex gap="sm" wrap="wrap">
         {variants?.map((productVariant) => (
           <ProductVariantSelection

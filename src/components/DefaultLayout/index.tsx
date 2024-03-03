@@ -13,15 +13,16 @@ import React from 'react'
 
 import FooterCentered from '@/components/FooterCentered'
 import Header from '@/components/Header'
-import NavBar from '../NavBar'
-import { footer, main } from './layout.css'
 import { AuthUser } from '@/types/Auth'
 
-const DefaultLayout: React.FC<{user: AuthUser | null, children: any}> = ({ user, children }) => {
+import NavBar from '../NavBar'
+import { footer, main } from './layout.css'
+
+const DefaultLayout: React.FC<{ user: AuthUser | null; children: any }> = ({ user, children }) => {
   const [navOpened, navbar] = useDisclosure(false)
-  const { colors } = useMantineTheme();
-  const { colorScheme } = useMantineColorScheme();
-  const isDarkTheme = colorScheme === 'dark';
+  const { colors } = useMantineTheme()
+  const { colorScheme } = useMantineColorScheme()
+  const isDarkTheme = colorScheme === 'dark'
 
   return (
     <AppShell
@@ -43,10 +44,10 @@ const DefaultLayout: React.FC<{user: AuthUser | null, children: any}> = ({ user,
       bg={isDarkTheme ? colors.black[9] : '#f5f5f5'}
     >
       <AppShellHeader>
-        <Header navOpened={navOpened} toggleNav={navbar.toggle} user={user}/>
+        <Header navOpened={navOpened} toggleNav={navbar.toggle} user={user} />
       </AppShellHeader>
       <AppShellNavbar withBorder>
-        <NavBar onClose={navbar.close} user={user}/>
+        <NavBar onClose={navbar.close} user={user} />
       </AppShellNavbar>
       <AppShellMain className={main}>{children}</AppShellMain>
       <AppShellFooter className={footer}>

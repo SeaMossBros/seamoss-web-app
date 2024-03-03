@@ -1,22 +1,21 @@
 'use client'
 import { rem, Tabs } from '@mantine/core'
-import { IconLink, IconPhotoUp } from '@tabler/icons-react'
+import { IconPhotoUp } from '@tabler/icons-react'
 
 import { Media_Plain } from '@/types/Media'
 
 import MediaUpload from './MediaDropzone'
-import MediaFromLink from './MediaFromLink'
 
 export type MediaUploadModalContentProps = {
   uploadMethods?: Array<'upload' | 'link'>
   onSave: (type: 'video' | 'image', media: Media_Plain[], alt?: string) => void
-  multiple?: boolean 
+  multiple?: boolean
 }
 
 const MediaUploadModalContent: React.FC<MediaUploadModalContentProps> = ({
   onSave,
   uploadMethods,
-  multiple
+  multiple,
 }) => {
   const iconStyle = { width: rem(24), height: rem(12) }
 
