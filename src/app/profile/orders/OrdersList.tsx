@@ -1,101 +1,189 @@
-'use client';
+'use client'
 
-import OrderService from "@/services/order.service";
-import { AuthUser } from "@/types/Auth";
-import { CartItem } from "@/types/CartItem";
-import { Button, Card, Container, Flex, Group, Image, Stack, Text, Title, useMantineTheme } from "@mantine/core";
-import { useEffect, useState } from 'react';
-import { orderStyle, orderWrapper } from "./order-list.css";
-import { getStrapiUploadUrl } from "@/utils/cms";
-import { Cart } from "@/types/Cart";
+import {
+  Anchor,
+  Card,
+  Container,
+  Divider,
+  Flex,
+  Group,
+  Image,
+  Stack,
+  Text,
+  useMantineColorScheme,
+  useMantineTheme,
+} from '@mantine/core'
+import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
+
+import OrderService from '@/services/order.service'
+import { AuthUser } from '@/types/Auth'
+import { getStrapiUploadUrl } from '@/utils/cms'
+import { formatDescription } from '@/utils/common'
+
+import { cartItemCard, description, orderStyle, orderWrapper } from './order-list.css'
 
 interface OrdersListProps {
-    user: AuthUser
+  user: AuthUser
 }
 
 const OrdersList = ({ user }: OrdersListProps) => {
-    const { defaultRadius } = useMantineTheme();
-    const orderService = new OrderService();
-    const [carts, setCarts] = useState<Cart[]>([]);
-    const [cartItems, setCartItems] = useState<CartItem[][]>([[]]);
-    const [expandedOrder, setExpandedOrder] = useState<number>(-1);
+    const { defaultRadius } = useMantineTheme()
+    const { colorScheme } = useMantineColorScheme()
+    const isDarkTheme = colorScheme === 'dark'
+    const orderService = new OrderService()
+    const [carts, setCarts] = useState<any[]>([])
+    const [cartItems, setCartItems] = useState<any[][]>([[]])
+    const redirect = useRouter()
+
+    useEffect(() => {
+        if (!user.email) return
+
+        const fetchOrders = async () => {
+            const { carts, cartItems } = await orderService.getOrdersByEmail(user.email)
+            setCarts(carts)
+            setCartItems(cartItems)
+        }
+
+        fetchOrders()
+    }, [orderService, user.email])
 
     if (!user.id) return <div>no user</div>
 
-    useEffect(() => {
-        if (!user.email) return;
-
-        const fetchOrders = async () => {
-            const { carts, cartItems } = await orderService.getOrdersByEmail(user.email);
-            setCarts(carts);
-            setCartItems(cartItems);
-        }
-
-        fetchOrders();
-    }, [])
-
     return (
-        <Container className={orderWrapper}>
-            <Title fw={600} mb={21}>Your Orders</Title>
-            {[...carts, ...carts, ...carts].map((cart, i) => { // TODO: include pagination with 5 orders per page
-                console.log('order:::', cart);
+        <Container
+            className={orderWrapper}
+            style={{ borderBottomLeftRadius: defaultRadius, borderBottomRightRadius: defaultRadius }}
+        >
+            {carts.map((cart, i) => {
+            // console.log('order:::', cart);
 
-                return (
-                    <Card 
-                        key={i}
-                        className={orderStyle}
-                        withBorder 
+            return (
+                <Group key={i} className={orderStyle} style={{ borderRadius: defaultRadius }}>
+                {cart && (
+                    <Flex
+                    gap="md"
+                    w="100%"
+                    px={9}
+                    display={'flex'}
+                    justify={'space-between'}
+                    style={{ alignItems: 'center', borderRadius: defaultRadius }}
                     >
-                        {cart && (
-                            <Flex
-                                gap="md" 
-                                w="100%" 
-                                mb={expandedOrder === i ? 21 : 0} 
-                                display={'flex'} 
-                                justify={'space-between'}
-                                style={{ alignItems: 'center', borderRadius: defaultRadius, border: `${expandedOrder === i ? '1px' : '0px'} solid lightgray` }}
-                                onClick={() => setExpandedOrder(expandedOrder === i ? -1 : i)}
+                    {/* // * this is fine! leave it! Just had to mix order type and cart[] type in getOrdersByEmail() */}
+                    <Text ml={12}>Order #{cart.orderId}</Text>
+                    <Group>
+                        <Text>
+                        {new Date(cart.attributes.createdAt).toLocaleDateString(undefined, {
+                            month: 'long',
+                            day: 'numeric',
+                            year: 'numeric',
+                        })}
+                        </Text>
+                        <Divider labelPosition="center" my="xs" variant="dotted" orientation="vertical" />
+                        {/* // * this is fine! leave it! Just had to mix order type and cart[] type in getOrdersByEmail() */}
+                        <Text c={'teal'} fz={'xl'} fw={900}>
+                        ${cart.orderTotal.toFixed(2)}
+                        </Text>
+                    </Group>
+                    </Flex>
+                )}
+                {cartItems[i] && cart.attributes.cart_items.data.length && (
+                    <Stack h={'fit-content'}>
+                    {cartItems[i].map((cartItem, num) => {
+                        const slug = cartItem.attributes.product?.data.attributes.slug || ''
+                        // console.log('cartItem:::', cartItem)
+                        return (
+                        <Card key={num} className={cartItemCard} mih={'240px'}>
+                            <Group
+                            display={'flex'}
+                            style={{ flexDirection: 'column' }}
+                            w={'21%'}
+                            miw={'100px'}
                             >
-                                <Text ml={12}>Order {i + 1}</Text>
-                                <Group>
-                                    <Text>
-                                        {new Date(cart.attributes.createdAt).toLocaleDateString(undefined, {month: 'long', day: 'numeric', year: 'numeric'})}
-                                    </Text>
-                                    {expandedOrder === i ? (
-                                        <Button bg={'red'}>Close</Button>
-                                    ) : (
-                                        <Button variant='outline'>Details</Button>
-                                    )}
-                                </Group>
-                            </Flex>
-                        )}  
-                        {expandedOrder === i && cart.attributes.cart_items.data.length && (
-                            <Stack h={'fit-content'} style={{ overflowY: 'auto' }}>
-                                {cartItems[i].map((cartItem, i) => {
-                                    // console.log('cartItem', cartItem)
-                                    return <Card key={i} mih={'240px'}>
-                                        <img 
-                                            src={getStrapiUploadUrl(cartItem.attributes.product?.data.attributes.thumbnail?.data.attributes.url || '')
-                                                || '/images/img-placeholder.webp'}
-                                            alt="product-image"
-                                            width='21%'
-                                            height='auto'
-                                        />
-                                        <Text>
-                                            {cartItem.attributes.product?.data.attributes.name}
-                                        </Text>
-                                        {/* <Text>
-                                            
-                                        </Text> */}
-                                    </Card>
-                                })}
-                            </Stack>
-                        )}
-                    </Card>
-                )
+                            <Image
+                                src={
+                                getStrapiUploadUrl(
+                                    cartItem.attributes.product?.data.attributes.thumbnail?.data
+                                    .attributes.url || '',
+                                ) || '/images/img-placeholder.webp'
+                                }
+                                alt="product-image"
+                                w="100%"
+                                h="auto"
+                                onClick={() => redirect.push(`/products/${slug}`)}
+                                style={{ cursor: 'pointer', borderRadius: defaultRadius }}
+                            />
+                            <Anchor
+                                fz={'sm'}
+                                w={'100%'}
+                                href={`/products/${slug}`}
+                                c={isDarkTheme ? 'lightgray' : 'gray'}
+                            >
+                                {cartItem.attributes.product?.data.attributes.name}
+                            </Anchor>
+                            </Group>
+                            <Group display={'flex'} style={{ flexDirection: 'column' }} w={'100%'}>
+                            <Divider
+                                label="Ingredients"
+                                labelPosition="center"
+                                my="xs"
+                                w={'90%'}
+                                variant="dashed"
+                            />
+                            <Text fz={'sm'}>
+                                {cartItem.attributes.product?.data.attributes.ingredients || ''}
+                            </Text>
+                            <Divider
+                                label="Tips For Storage"
+                                labelPosition="center"
+                                my="xs"
+                                w={'90%'}
+                                variant="dotted"
+                            />
+                            <Text fz={'sm'}>
+                                {cartItem.attributes.product?.data.attributes.tipsForStorage || ''}
+                            </Text>
+                            <Divider
+                                label="Weight"
+                                labelPosition="center"
+                                my="xs"
+                                w={'90%'}
+                                variant="dashed"
+                            />
+                            <Text fz={'sm'}>
+                                {`${cartItem.attributes.product?.data.attributes.weight} ${cartItem.attributes.product?.data.attributes.units}` ||
+                                ''}
+                            </Text>
+                            <Divider
+                                label="for more info"
+                                labelPosition="center"
+                                my="xs"
+                                variant="dotted"
+                                w={'90%'}
+                            />
+                            <Anchor fz={'sm'} href={`/products/${slug}`} c={'teal'} ml={5}>
+                                Visit Product Page
+                            </Anchor>
+                            </Group>
+                            <Group style={{ flexDirection: 'column' }} w={'100%'} className={description}>
+                            <Text fz={'md'}>Description</Text>
+                            <Text fz={'sm'}>
+                                {formatDescription(
+                                cartItem.attributes.product?.data.attributes.description || '',
+                                555,
+                                ) || ''}
+                            </Text>
+                            </Group>
+                        </Card>
+                        )
+                    })}
+                    </Stack>
+                )}
+                </Group>
+            )
             })}
         </Container>
     )
 }
 
-export default OrdersList;
+export default OrdersList

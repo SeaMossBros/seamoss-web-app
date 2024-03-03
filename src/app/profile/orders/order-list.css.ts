@@ -1,28 +1,57 @@
-import { style } from '@vanilla-extract/css';
-import { defaultThemeVars } from '@/themes/default';
+import { style } from '@vanilla-extract/css'
+
+import { defaultThemeVars } from '@/themes/default'
 
 export const orderWrapper = style({
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'flex-start',
-    paddingTop: defaultThemeVars.spacing.xl,
-    width: '100vw',
-    height: '100vh',
-    minHeight: 'fit-content',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'flex-start',
+  paddingTop: defaultThemeVars.spacing.xl,
+  paddingLeft: defaultThemeVars.spacing.sm,
+  paddingRight: defaultThemeVars.spacing.md,
+  width: 'fit-content',
+  height: 'fit-content',
+  minHeight: 'fit-content',
+  maxHeight: '90vh',
+  overflowY: 'auto',
+  position: 'relative',
+  boxShadow: '0px -12px 9px -12px inset teal',
 })
 
 export const orderStyle = style({
-    position: 'relative',
-    marginBottom: '30px',
-    width: '60vw',
-    minHeight: '57px',
-    maxHeight: '360px',
-    cursor: 'pointer',
-    overflow: 'hidden',
+  position: 'relative',
+  marginBottom: '30px',
+  width: '60vw',
+  height: '100%',
+  border: '1.5px solid gray',
+  padding: 12,
 
-    selectors: {
-        '&:hover': {
-            borderColor: defaultThemeVars.colors.teal[9],
-        },
-    }
+  selectors: {
+    '&:hover': {
+      borderColor: defaultThemeVars.colors.teal[9],
+    },
+  },
+})
+
+export const description = style({
+  display: 'flex',
+
+  '@media': {
+    [`(max-width: ${defaultThemeVars.breakpoints.lg})`]: {
+      display: 'none',
+    },
+  },
+})
+
+export const cartItemCard = style({
+  display: 'flex',
+  width: '100%',
+  flexDirection: 'column',
+
+  '@media': {
+    [`(min-width: ${defaultThemeVars.breakpoints.sm})`]: {
+      flexDirection: 'row',
+    },
+  },
 })

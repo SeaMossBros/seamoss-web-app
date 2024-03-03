@@ -42,6 +42,7 @@ const CartNavLink: React.FC = () => {
             section: cartIcon,
           }}
           active={pathname.startsWith(ROUTE_PATHS.CART)}
+          title='Your Cart'
         />
       {/* </ToolTip> */}
     </Indicator>

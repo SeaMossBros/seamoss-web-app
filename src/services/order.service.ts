@@ -1,11 +1,12 @@
-import qs from 'qs'
 import axios from 'axios'
-import CMSService from './core/cms.service'
-import CartService from './cart.service'
-import { QueryResponse } from '@/types/QueryResponse'
+import qs from 'qs'
+
 import { CartItem } from '@/types/CartItem'
 import { Order_NoRelations } from '@/types/Order'
-import { Cart } from '@/types/Cart'
+import { QueryResponse } from '@/types/QueryResponse'
+
+import CartService from './cart.service'
+import CMSService from './core/cms.service'
 
 export default class OrderService extends CMSService {
   static queryKeys = {
@@ -51,8 +52,8 @@ export default class OrderService extends CMSService {
         Accept: 'application/json',
       },
     })
-    const data = await res.json();
-    
+    const data = await res.json()
+
     return data as Promise<{
       user?: any
       order?: Order_NoRelations
@@ -61,14 +62,14 @@ export default class OrderService extends CMSService {
   }
 
   getOrdersByEmail = async (email: string) => {
-    const url = `${this.baseURL}/orders`;
+    const url = `${this.baseURL}/orders`
 
     const query = {
       filters: {
         user_email: email,
       },
       populate: {
-        cart: true
+        cart: true,
       },
     }
 
@@ -86,44 +87,45 @@ export default class OrderService extends CMSService {
       cache: 'no-store',
     })
 
-    const data = await res.json();
+    const { data } = await res.json()
 
     const fetchCarts = async (orders: any[]) => {
-      const cartService = new CartService();
-      const carts: Cart[] = [];
-      const cartItems: CartItem[][] = [];
+      const cartService = new CartService()
+      const carts: any[] = []
+      const cartItems: CartItem[][] = []
 
       for (let i = 0; i < orders.length; i++) {
-        const order = orders[i];
-        const cartId = order.attributes.cart.data.id;
-        const cartItemsRes: QueryResponse<CartItem[]> = await cartService.getCartItems(cartId, true);
-        const cart = await cartService.getById(cartId, true);
-        if (!cartItemsRes || !cartItemsRes.data || !cart || !cart.data) continue;
-        // console.log('cartItems', cartItems.data);
-        cartItems.push(cartItemsRes.data);
-        carts.push(cart.data);
+        const cartId = orders[i].attributes.cart.data.id
+        const cartItemsRes: QueryResponse<CartItem[]> = await cartService.getCartItems(cartId, true) // get cart items
+        const { data } = await cartService.getById(cartId, true) // get cart data (like created date)
+        // TODO: Get billing for each line item // NOT WORKING
+        // const billingRes = await fetch(`/api/cart/${cartId}/billing`, { // get cart billing details
+        //   method: 'GET',
+        //   headers: {
+        //     ...this.headers,
+        //     Accept: 'application/json',
+        //     'Content-Type': 'application/json',
+        //   },
+        //   cache: 'no-store',
+        // })
+        // const billingData = await billingRes.json();
+        // console.log('billing', billingData);
+        const cart = {
+          ...data,
+          orderTotal: orders[i].attributes.total,
+          orderId: orders[i].id,
+        }
 
-        // const cartItems = cart.data.attributes.cart_items.data;
-        // for (let j = 0; j < cartItems.length; j++) {
-        //   const cartItemId = cartItems[j].id;
-        //   if (!cartItemIds.includes(cartItemId)) {
-        //     cartItemIds.push(cartItemId);
-        //   }
-        // }
+        if (!cartItemsRes || !cartItemsRes.data || !cart) continue
+        cartItems.push(cartItemsRes.data)
+        carts.push(cart)
       }
 
-      // for (let i = 0; i < cartItemIds.length; i++) {
-      //   const cartItem: CartItem = await cartService.getCartItems(cartItemIds[i])
-      // }
-      return { carts, cartItems };
+      return { carts, cartItems }
     }
 
-    const cartsData = await fetchCarts(data.data);
+    const cartsData = await fetchCarts(data)
 
-    // console.log('carts in getOrdersByEmail', carts);
-
-    // console.log('res from getOrdersByEmail', data);
-
-    return cartsData as { cartItems: CartItem[][], carts: Cart[] }
+    return cartsData
   }
 }

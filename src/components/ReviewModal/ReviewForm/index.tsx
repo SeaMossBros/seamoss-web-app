@@ -46,8 +46,9 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ product, onSuccess }) => {
   const onSubmit = useCallback(
     async (data: ReviewFormData) => {
 
+      // TODO: reviews can't handle files
       submit(
-        { // TODO: reviews can't handle files
+        {
           ...data,
         },
         {
