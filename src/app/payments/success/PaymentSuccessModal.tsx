@@ -23,7 +23,7 @@ const PaymentSuccessModal: React.FC<{
     const loginUserWithTempPassword = async () => {
       if (user && user.id) {
         // login user
-        console.log('user in success modal', user)
+        // console.log('user in success modal', user)
         await axios('/api/auth/login', {
           method: 'POST',
           headers: {

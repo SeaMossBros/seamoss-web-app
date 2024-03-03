@@ -9,7 +9,7 @@ export const POST = async (req: NextRequest) => {
   const { password, newPassword, confirmNewPassword } = await req.json()
   const authService = new AuthService()
   const jwt = await getFromCookies('jwt')
-  console.log('jwt', jwt)
+  // console.log('jwt', jwt)
 
   if (jwt) {
     await authService.changePassword(password, newPassword, confirmNewPassword, jwt)

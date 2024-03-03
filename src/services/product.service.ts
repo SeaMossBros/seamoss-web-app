@@ -91,7 +91,7 @@ export default class ProductService extends CMSService {
     }
 
     const body = JSON.stringify(payload)
-    console.log('body', body)
+    // console.log('body', body)
     const res = await fetch(url, {
       method: 'post',
       headers: {
@@ -107,7 +107,7 @@ export default class ProductService extends CMSService {
 
   getProductReviews = async (params: QueryParams<ProductReview_NoRelations>) => {
     const url = `${this.baseURL}/product-reviews?${qs.stringify(params)}`
-    console.log('url', url)
+    // console.log('url', url)
     const res = await fetch(url, {
       headers: this.headers,
     })

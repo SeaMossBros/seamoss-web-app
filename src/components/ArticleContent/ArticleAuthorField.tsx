@@ -51,7 +51,7 @@ const ArticleAuthorField: React.FC<ArticleAuthorFieldProps> = ({ mode }) => {
   }
 
   // if (!author || !author.avatar || !author.avatar.attributes) return null
-  console.log('author.avatar', author?.avatar)
+  // console.log('author.avatar', author?.avatar)
   return (
     <Controller<ArticleFormData, 'author'>
       name="author"

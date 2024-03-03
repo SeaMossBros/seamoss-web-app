@@ -37,7 +37,7 @@ const UpdatePassword = ({ password }: UpdatePasswordProps) => {
     setSubmittedForm(true)
     const { password, newPassword, confirmNewPassword } = form.values
     try {
-      console.log(`${JSON.stringify({ password, newPassword, confirmNewPassword })}`)
+      // console.log(`${JSON.stringify({ password, newPassword, confirmNewPassword })}`)
       await axios('/api/auth/update-password', {
         method: 'POST',
         headers: {

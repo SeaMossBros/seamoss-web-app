@@ -24,7 +24,7 @@ const handleCMSProxy = (request: NextRequest) => {
   request.nextUrl.href = `${APP_CONFIG.STRAPI.API_URL}${reqUrl.pathname.replace('/api/cms', '')}${
     reqUrl.search
   }`
-  console.log('request.nextUrl', request.nextUrl)
+  // console.log('request.nextUrl', request.nextUrl)
   return NextResponse.rewrite(request.nextUrl, {
     request: {
       headers: requestHeaders,
@@ -34,12 +34,12 @@ const handleCMSProxy = (request: NextRequest) => {
 
 const handlePrivatePages = async (request: NextRequest) => {
   const isAuthenticatedBool = await isAuthenticated()
-  console.log('isAuthenticatedBool', isAuthenticatedBool)
+  // console.log('isAuthenticatedBool', isAuthenticatedBool)
   if (!isAuthenticatedBool) {
     return NextResponse.redirect(request.nextUrl.origin + '/login')
   }
 
-  console.log('request', request.nextUrl.href)
+  // console.log('request', request.nextUrl.href)
   // console.log('request.nextUrl.origin + request.nextUrl.pathname:::', request.nextUrl.origin + request.nextUrl.pathname); // http://localhost:3000/profile
   // return NextResponse.redirect(request.nextUrl.origin + request.nextUrl.pathname)
   return NextResponse.next()

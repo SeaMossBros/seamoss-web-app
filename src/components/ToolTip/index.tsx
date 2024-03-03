@@ -44,8 +44,8 @@ const ToolTip = ({ children, title, width = 'auto', opacity = 0.9, delay = 900 }
           top = childRect.top - tooltipRect.height - offsetY
         }
 
-        console.log('left', left)
-        console.log('top', top)
+        // console.log('left', left)
+        // console.log('top', top)
         tooltipRef.current.style.top = `${top}px`
         tooltipRef.current.style.left = `${left}px`
       }

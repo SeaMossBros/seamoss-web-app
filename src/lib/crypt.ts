@@ -1,4 +1,4 @@
-'use client'
+'use server'
 
 import CryptoJS from 'crypto-js'
 import { cookies } from 'next/headers'

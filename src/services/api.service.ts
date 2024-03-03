@@ -20,7 +20,7 @@ export default class APIService extends CMSService {
 
   getSupportMessages = async () => {
     const url = `${this.baseURL}/support-messages`
-    console.log('url', url)
+    // console.log('url', url)
     const res = await axios(url, {
       method: 'get',
       headers: {
@@ -29,7 +29,7 @@ export default class APIService extends CMSService {
         'Content-Type': 'application/json',
       },
     })
-    console.log('res', res)
+    // console.log('res', res)
 
     return res.data as Promise<QueryResponse<SupportMessage[]>>
   }

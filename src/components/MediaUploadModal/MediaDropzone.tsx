@@ -77,7 +77,7 @@ const MediaUpload: React.FC<MediaUploadProps> = ({ onSave, multiple }) => {
         uploadedMedia = res
       }
 
-      console.log('uploadedMedia:::', uploadedMedia)
+      // console.log('uploadedMedia:::', uploadedMedia)
 
       onSave(
         uploadedMedia.mime.startsWith('image') ? 'image' : 'video',

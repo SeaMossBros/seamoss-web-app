@@ -96,7 +96,7 @@ export default class AuthService extends CMSService {
         data: JSON.stringify({ password, newPassword, confirmNewPassword }),
       })
 
-      console.log('response', response)
+      // console.log('response', response)
 
       return
     } catch (err) {

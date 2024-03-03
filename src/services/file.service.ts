@@ -24,7 +24,7 @@ export default class FileService extends CMSService {
       data: data,
     })
 
-    console.log('res', res)
+    // console.log('res', res)
     return res.data as Promise<Media_Plain[]>
   }
 
