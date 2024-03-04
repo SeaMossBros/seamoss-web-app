@@ -13,11 +13,11 @@ export default class AuthService extends CMSService {
       JSON.stringify(params),
     ],
     loginUser: (...params: Parameters<AuthService['loginUser']>) => [
-      'http://localhost:1337/api/auth/local',
+      `${APP_CONFIG.STRAPI.URL}/api/auth/local`,
       JSON.stringify(params),
     ],
     registerUser: (...params: Parameters<AuthService['registerUser']>) => [
-      'http://localhost:1337/api/auth/local/register',
+      `${APP_CONFIG.STRAPI.URL}/api/auth/local/register`,
       JSON.stringify(params),
     ],
   }
