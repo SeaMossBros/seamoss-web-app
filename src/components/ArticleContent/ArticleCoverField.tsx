@@ -1,15 +1,15 @@
 import { AspectRatio, Image, Input, Overlay, Text, useMantineTheme } from '@mantine/core'
 import { useDisclosure, useHover } from '@mantine/hooks'
 import classNames from 'classnames'
-import omit from 'lodash/omit'
+// import omit from 'lodash/omit'
 import { useCallback, useEffect, useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 
 import { ArticleFormData } from '@/types/ArticleForm'
-import { Media_Plain } from '@/types/Media'
+// import { Media_Plain } from '@/types/Media'
 import { getStrapiUploadUrl } from '@/utils/cms'
 
-import MediaUploadModal from '../MediaUploadModal'
+// import MediaUploadModal from '../MediaUploadModal'
 import { ArticleComponentCommonProps } from './common'
 import { coverImageError, coverImageField } from './styles.css'
 
@@ -24,32 +24,32 @@ const ArticleCoverField: React.FC<ArticleCoverFieldProps> = ({ mode }) => {
   const cover = methods.watch('cover')
 
   const { ref, hovered } = useHover()
-  const [uploadModalOpened, uploadModal] = useDisclosure()
+  const [_, uploadModal] = useDisclosure()
 
   const onCoverClick = useCallback(() => {
     if (mode !== 'form') return
     uploadModal.open()
   }, [mode, uploadModal])
 
-  const onSave = useCallback(
-    (_type: 'video' | 'image', _media: string | Media_Plain) => {
-      const media = _media as Media_Plain // we know for sure that user can only upload media by setting uploadMethods={['upload']}
-      uploadModal.close()
-      methods.setValue(
-        'cover',
-        {
-          id: media.id,
-          attributes: omit(media, 'id'),
-        },
-        {
-          shouldValidate: true,
-          shouldDirty: true,
-          shouldTouch: true,
-        },
-      )
-    },
-    [methods, uploadModal],
-  )
+  // const onSave = useCallback(
+  //   (_type: 'video' | 'image', _media: string | Media_Plain) => {
+  //     const media = _media as Media_Plain // we know for sure that user can only upload media by setting uploadMethods={['upload']}
+  //     uploadModal.close()
+  //     methods.setValue(
+  //       'cover',
+  //       {
+  //         id: media.id,
+  //         attributes: omit(media, 'id'),
+  //       },
+  //       {
+  //         shouldValidate: true,
+  //         shouldDirty: true,
+  //         shouldTouch: true,
+  //       },
+  //     )
+  //   },
+  //   [methods, uploadModal],
+  // )
 
   useEffect(() => {
     if (!cover?.attributes.mime.startsWith('image') || !cover?.attributes?.url) return
@@ -173,12 +173,12 @@ const ArticleCoverField: React.FC<ArticleCoverFieldProps> = ({ mode }) => {
       {methods.formState.errors.cover?.message ? (
         <Input.Error>{methods.formState.errors.cover.message}</Input.Error>
       ) : null}
-      <MediaUploadModal
+      {/* <MediaUploadModal
         uploadMethods={['upload']}
         opened={uploadModalOpened}
         onClose={uploadModal.close}
         onSave={onSave}
-      />
+      /> */}
     </>
   )
 }

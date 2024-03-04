@@ -1,16 +1,15 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import { Box, Button, Flex, Image, Rating, Stack, Text, Textarea, TextInput } from '@mantine/core'
-import { useDisclosure } from '@mantine/hooks'
+import { Button, Flex, Image, Rating, Stack, Text, Textarea, TextInput } from '@mantine/core'
+// import { useDisclosure } from '@mantine/hooks'
 import { notifications } from '@mantine/notifications'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { array, number, object, ObjectSchema, string } from 'yup'
 
-import MediaUploadModal from '@/components/MediaUploadModal'
+// import MediaUploadModal from '@/components/MediaUploadModal'
 import { getSessionFromCookies } from '@/lib/crypt'
 import { useSubmitReview } from '@/mutations/useSubmitReview'
 import { AuthUser } from '@/types/Auth'
-import { Media, Media_Plain } from '@/types/Media'
 import { Product } from '@/types/Product'
 import { ReviewFormData } from '@/types/ReviewForm'
 import { getStrapiUploadUrl } from '@/utils/cms'
@@ -42,9 +41,9 @@ const ReviewForm: React.FC<ReviewFormProps> = async ({ product, onSuccess }) => 
 
   const { mutate: submit, isPending } = useSubmitReview(product.id)
 
-  const [mediaFiles, setMediaFiles] = useState<Media[]>([])
-  const [selectedMediaIds, setSelectedMediaIds] = useState<number[]>([])
-  const [uploadModalOpened, uploadModal] = useDisclosure()
+  // const [mediaFiles, setMediaFiles] = useState<Media[]>([])
+  // const [selectedMediaIds, setSelectedMediaIds] = useState<number[]>([])
+  // const [uploadModalOpened, uploadModal] = useDisclosure()
 
   const onSubmit = useCallback(
     async (data: ReviewFormData) => {
@@ -55,7 +54,7 @@ const ReviewForm: React.FC<ReviewFormProps> = async ({ product, onSuccess }) => 
           comment: data.comment,
           user_email: user && user.email ? user.email : data.user_email,
           user_name: data.user_name,
-          attachments: selectedMediaIds,
+          // attachments: selectedMediaIds,
         },
         {
           onSettled: (data, error) => {
@@ -75,53 +74,52 @@ const ReviewForm: React.FC<ReviewFormProps> = async ({ product, onSuccess }) => 
         },
       )
     },
-    [onSuccess, submit, selectedMediaIds, user],
+    [onSuccess, submit, user],
   )
 
-  const onImageSave = useCallback(
-    (_type: 'video' | 'image', _media: Media_Plain[]) => {
-      const media: Media[] = _media.map((mediaFile) => ({
-        id: mediaFile.id,
-        attributes: mediaFile,
-      })) // we know for sure that user can only upload media by setting uploadMethods={['upload']}
-      // console.log('media', media)
-      setMediaFiles(media)
+  // const onImageSave = useCallback(
+  //   (_type: 'video' | 'image', _media: Media_Plain[]) => {
+  //     const media: Media[] = _media.map((mediaFile) => ({
+  //       id: mediaFile.id,
+  //       attributes: mediaFile,
+  //     })) // we know for sure that user can only upload media by setting uploadMethods={['upload']}
+  //     // console.log('media', media)
+  //     setMediaFiles(media)
 
-      const mediaIds: number[] = media.map((file) => file.id)
-      setSelectedMediaIds(mediaIds)
+  //     const mediaIds: number[] = media.map((file) => file.id)
+  //     setSelectedMediaIds(mediaIds)
 
-      uploadModal.close()
+  //     uploadModal.close()
 
-      methods.setValue('attachments', media, {
-        shouldValidate: true,
-        shouldDirty: true,
-        shouldTouch: true,
-      })
-    },
-    [methods, uploadModal],
-  )
+  //     methods.setValue('attachments', media, {
+  //       shouldValidate: true,
+  //       shouldDirty: true,
+  //       shouldTouch: true,
+  //     })
+  //   },
+  //   [methods, uploadModal],
+  // )
 
-  const onFileClick = useCallback(() => {
-    uploadModal.open()
-  }, [uploadModal])
+  // const onFileClick = useCallback(() => {
+  //   uploadModal.open()
+  // }, [uploadModal])
 
-  const previews = () =>
-    mediaFiles.map((mediaFile, i) => {
-      const url = getStrapiUploadUrl(mediaFile.attributes.url)
+  // const previews = () => mediaFiles.map((mediaFile, i) => {
+  //   const url = getStrapiUploadUrl(mediaFile.attributes.url)
 
-      return (
-        <Box key={i} h={90} mb={30}>
-          {mediaFile.attributes.mime.includes('image') ? (
-            <Image src={url} alt={mediaFile.attributes.name} w={108} mr={30} />
-          ) : (
-            <video key={url} src={url} width="108px" controls />
-          )}
-          <Text fz="sm" lineClamp={1}>
-            {mediaFile.attributes.name.slice(0, 14)}...
-          </Text>
-        </Box>
-      )
-    })
+  //   return (
+  //     <Box key={i} h={90} mb={30}>
+  //       {mediaFile.attributes.mime.includes('image') ? (
+  //         <Image src={url} alt={mediaFile.attributes.name} w={108} mr={30} />
+  //       ) : (
+  //         <video key={url} src={url} width="108px" controls />
+  //       )}
+  //       <Text fz="sm" lineClamp={1}>
+  //         {mediaFile.attributes.name.slice(0, 14)}...
+  //       </Text>
+  //     </Box>
+  //   )
+  // })
 
   return (
     <>
@@ -177,17 +175,17 @@ const ReviewForm: React.FC<ReviewFormProps> = async ({ product, onSuccess }) => 
               error={methods.formState.errors.comment?.message}
               autosize
             />
-            <Box display={'flex'}>{previews()}</Box>
-            <Button onClick={onFileClick} variant="outline">
+            {/* <Box display={'flex'}>{previews()}</Box> */}
+            {/* <Button onClick={onFileClick} variant="outline">
               {mediaFiles.length ? 'Replace' : 'Add'} Media
-            </Button>
-            <MediaUploadModal
+            </Button> */}
+            {/* <MediaUploadModal
               uploadMethods={['upload']}
               opened={uploadModalOpened}
               onClose={uploadModal.close}
               onSave={onImageSave}
               multiple={true}
-            />
+            /> */}
           </Stack>
           <Button type="submit" loading={isPending} fullWidth>
             Submit review
