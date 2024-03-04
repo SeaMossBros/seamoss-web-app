@@ -88,7 +88,7 @@ export default class AuthService extends CMSService {
     if (!newPassword || !confirmNewPassword || !password) return null
 
     try {
-      const response = await axios(`${this.baseUrl}/api/auth/change-password`, {
+      await axios(`${this.baseUrl}/api/auth/change-password`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${jwt}`,
