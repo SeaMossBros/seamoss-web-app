@@ -17,18 +17,20 @@ import { useForm } from 'react-hook-form'
 
 import { useUploadFile } from '@/mutations/useUploadFile'
 import { useUploadFileInfo } from '@/mutations/useUploadFileInfo'
-import { Media_Plain } from '@/types/Media'
+// import { Media_Plain } from '@/types/Media'
 
 type FormData = {
   alt: string
 }
 
 export type MediaUploadProps = {
-  onSave: (type: 'video' | 'image', media: Media_Plain, alt?: string) => void
+  // onSave: (type: 'video' | 'image', media: Media_Plain[], alt?: string) => void
+  multiple?: boolean
 }
 
-const MediaUpload: React.FC<MediaUploadProps> = ({ onSave }) => {
+const MediaUpload: React.FC<MediaUploadProps> = ({ multiple }) => {
   const [files, setFiles] = useState<FileWithPath[]>([])
+  const maxFiles = 3
 
   const methods = useForm<FormData>()
 
@@ -39,9 +41,9 @@ const MediaUpload: React.FC<MediaUploadProps> = ({ onSave }) => {
     const url = URL.createObjectURL(file)
 
     return (
-      <Box key={index}>
+      <Box key={index} h={90}>
         {file.type.startsWith('image') ? (
-          <Image src={url} alt="" onLoad={() => URL.revokeObjectURL(url)} />
+          <Image src={url} alt="" onLoad={() => URL.revokeObjectURL(url)} h={90} />
         ) : (
           <video key={url} src={url} width="100%" controls />
         )}
@@ -53,8 +55,7 @@ const MediaUpload: React.FC<MediaUploadProps> = ({ onSave }) => {
   })
 
   const onDrop = useCallback((files: FileWithPath[]) => {
-    const image = files[0]
-    setFiles([image])
+    setFiles([...files])
   }, [])
 
   const onSubmit = useCallback(
@@ -64,6 +65,7 @@ const MediaUpload: React.FC<MediaUploadProps> = ({ onSave }) => {
       const uploadRes = await uploadAsync(files)
       let uploadedMedia = uploadRes[0]
       if (!uploadedMedia) return
+
       if (data.alt) {
         const res = await uploadFileInfoAsync({
           id: uploadedMedia.id,
@@ -74,16 +76,24 @@ const MediaUpload: React.FC<MediaUploadProps> = ({ onSave }) => {
 
         uploadedMedia = res
       }
-      onSave(uploadedMedia.mime.startsWith('image') ? 'image' : 'video', uploadedMedia, data.alt)
+
+      // console.log('uploadedMedia:::', uploadedMedia)
+
+      // onSave(
+      //   uploadedMedia.mime.startsWith('image') ? 'image' : 'video',
+      //   multiple ? uploadRes : [uploadedMedia],
+      //   data.alt,
+      // )
     },
-    [files, onSave, uploadAsync, uploadFileInfoAsync],
+    [files, uploadAsync, uploadFileInfoAsync, multiple],
   )
 
   return (
     <Stack mt="lg">
       <Dropzone
-        multiple={false}
-        maxSize={26214400}
+        multiple={!!multiple}
+        maxFiles={!!multiple ? maxFiles : 1}
+        // maxSize={26214400}
         accept={['image/*', 'video/*']}
         onDrop={onDrop}
         loading={isUploading || isUpdatingInfo}
@@ -109,20 +119,24 @@ const MediaUpload: React.FC<MediaUploadProps> = ({ onSave }) => {
           </Dropzone.Idle>
 
           <div>
-            <Text inline>Drag image/video here or click to select file</Text>
+            <Text inline>Click to select file(s) or drag image/video here</Text>
             <Text size="sm" c="dimmed" inline mt={7}>
               Each file should not exceed 25mb
+            </Text>
+            <Text size="sm" c="dimmed" inline mt={7}>
+              *{maxFiles} files max
             </Text>
           </div>
         </Group>
       </Dropzone>
 
-      <SimpleGrid cols={{ base: 1, sm: 4 }} mt={previews.length > 0 ? 'xl' : 0}>
+      <SimpleGrid cols={{ base: 3, sm: 4 }} mt={previews.length > 0 ? 'xl' : 0}>
         {previews}
       </SimpleGrid>
 
       <TextInput
         {...methods.register('alt')}
+        mt={30}
         label="Alternative text"
         type="text"
         placeholder="Media alternative text..."

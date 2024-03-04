@@ -35,7 +35,7 @@ const RatingFilter: React.FC<RatingFilterProps> = ({ rating, onChange }) => {
   return (
     <Flex justify="space-between" align="center">
       <Rating name="rating" size="md" value={value} onChange={_onChange} />
-      <Button type="button" variant="subtle" color="primary-gray" size="xs" onClick={onClear}>
+      <Button type="button" variant="subtle" color="gray" size="xs" onClick={onClear}>
         Clear
       </Button>
     </Flex>

@@ -1,6 +1,6 @@
 'use client'
 
-import { Image, rem } from '@mantine/core'
+import { Image, rem, useMantineTheme } from '@mantine/core'
 import { useDebouncedValue } from '@mantine/hooks'
 import { Spotlight, SpotlightActionGroupData } from '@mantine/spotlight'
 import { IconSearch } from '@tabler/icons-react'
@@ -12,6 +12,7 @@ import { useSearch } from '@/queries/useSearch'
 import { getStrapiUploadUrl } from '@/utils/cms'
 
 const SpotlightController: React.FC = () => {
+  const { colors } = useMantineTheme()
   const [query, setQuery] = useState<string>('')
   const [debouncedQuery] = useDebouncedValue(query, 400)
 
@@ -101,8 +102,13 @@ const SpotlightController: React.FC = () => {
       inputMode="search"
       filter={(_, a) => a}
       searchProps={{
-        leftSection: <IconSearch style={{ width: rem(20), height: rem(20) }} stroke={1.5} />,
-        placeholder: 'Search...',
+        leftSection: (
+          <IconSearch
+            style={{ width: rem(20), height: rem(20), color: colors.teal[9] }}
+            stroke={1.5}
+          />
+        ),
+        placeholder: 'Search for products and blogs...',
       }}
       query={query}
       onQueryChange={setQuery}

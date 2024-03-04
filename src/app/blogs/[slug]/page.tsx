@@ -11,19 +11,20 @@ import { Article_NoRelations } from '@/types/Article'
 import { QueryParams } from '@/types/QueryParams'
 
 import ArticleSingle from './ArticleSingle'
+// import { useService } from '@/hooks/useService'
 
 type Props = {
   params: { slug: string }
 }
 
 export const generateMetadata = async ({ params: { slug } }: Props): Promise<Metadata> => {
-  const blogService = new BlogService()
+  // const blogService = new BlogService()
 
-  const article = await blogService.getBySlug(slug)
+  // const article = await blogService.getBySlug(slug)
 
   return {
-    title: `${article.data?.attributes.title ?? slug} | SeaTheMoss`,
-    description: article.data?.attributes.introduction,
+    title: `${slug.replaceAll('-', ' ') || 'Blog | Article'} | SeaTheMoss`,
+    // description: article.data?.attributes.introduction,
   }
 }
 
@@ -49,7 +50,6 @@ const BlogShowPage: React.FC<Props> = async ({ params }) => {
     queryKey: BlogService.queryKeys.getBySlug(params.slug, query),
     queryFn: () => blogService.getBySlug(params.slug, query),
   })
-
   const headerList = headers()
   const isAuthenticated = (() => {
     const [AUTH_USER, AUTH_PASS] = (process.env.HTTP_BASIC_AUTH || ':').split(':')
@@ -73,12 +73,18 @@ const BlogShowPage: React.FC<Props> = async ({ params }) => {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <Container>
+      <Container mt={90}>
         <Grid>
+          <GridCol
+            visibleFrom="md"
+            span={{
+              md: 2,
+            }}
+          ></GridCol>
           <GridCol
             span={{
               base: 12,
-              md: 9,
+              md: 8,
             }}
           >
             <ArticleSingle
@@ -90,7 +96,7 @@ const BlogShowPage: React.FC<Props> = async ({ params }) => {
           <GridCol
             visibleFrom="md"
             span={{
-              md: 3,
+              md: 2,
             }}
           ></GridCol>
         </Grid>

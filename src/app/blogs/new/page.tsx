@@ -1,47 +1,50 @@
-'use client'
+import { Button, Container, Text } from '@mantine/core'
+import { Metadata } from 'next'
+import dynamic from 'next/dynamic'
+import { Link } from 'tabler-icons-react'
 
-import { Container, Grid } from '@mantine/core'
-import { useRouter } from 'next/navigation'
-import { useCallback } from 'react'
+import { getSessionFromCookies } from '@/lib/crypt'
+import { AuthUser } from '@/types/Auth'
 
-import ArticleContent from '@/components/ArticleContent'
-import { ROUTE_PATHS } from '@/consts/route-paths'
-import { Article } from '@/types/Article'
+const CreateBlogPostPageClientSide = dynamic(() => import('./CreateBlogPostPageClientSide'), {
+  ssr: false,
+})
 
-const CreateBlogPostPage: React.FC = () => {
-  const router = useRouter()
+export const metadata: Metadata = {
+  title: 'Profile | SeaTheMoss',
+}
 
-  const onSaved = useCallback(
-    (data: Article) => {
-      const {
-        attributes: { slug },
-      } = data
-      if (!slug) return
-      router.push(ROUTE_PATHS.BLOG.SINGULAR.replaceAll('{slug}', slug))
-    },
-    [router],
-  )
+const ProfilePage: React.FC = async () => {
+  const user: AuthUser | null = await getSessionFromCookies()
+  if (user?.role?.type !== 'admin') {
+    return (
+      <Container>
+        <Text c="dimmed" size="lg">
+          The page you are trying to access is reserved for admin use only. If you are a admin,
+          please contact your rep.
+        </Text>
+        <Text c="dimmed" size="lg">
+          If this was an accident, sorry for the interruption. Get back to browsing!
+        </Text>
+        <Link href="/blogs">
+          <Button variant="outline" size="md" mt="xl">
+            Go to blogs page
+          </Button>
+        </Link>
+        <Link href="/products">
+          <Button size="md" mt="xl">
+            Go to products page
+          </Button>
+        </Link>
+      </Container>
+    )
+  }
 
   return (
     <Container>
-      <Grid>
-        <Grid.Col
-          span={{
-            base: 12,
-            md: 9,
-          }}
-        >
-          <ArticleContent mode="form" onSaved={onSaved} />
-        </Grid.Col>
-        <Grid.Col
-          visibleFrom="md"
-          span={{
-            md: 3,
-          }}
-        ></Grid.Col>
-      </Grid>
+      <CreateBlogPostPageClientSide />
     </Container>
   )
 }
 
-export default CreateBlogPostPage
+export default ProfilePage

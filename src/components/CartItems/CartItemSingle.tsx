@@ -14,7 +14,6 @@ import {
 import { useDisclosure } from '@mantine/hooks'
 import { modals } from '@mantine/modals'
 import { IconChevronDown, IconChevronUp, IconTrash } from '@tabler/icons-react'
-import { default as NextImage } from 'next/image'
 import { useCallback } from 'react'
 import { Pencil } from 'tabler-icons-react'
 
@@ -92,9 +91,8 @@ const CartItemSingle: React.FC<CartItemSingleProps> = ({
 
   return (
     <Card withBorder>
-      <Flex gap="sm" w="100%">
+      <Flex gap="md" w="100%">
         <Image
-          component={NextImage}
           className={productImg}
           src={
             thumbnail?.data?.attributes?.formats?.small?.url
@@ -108,12 +106,14 @@ const CartItemSingle: React.FC<CartItemSingleProps> = ({
           alt={productName}
         />
         <Stack className={itemInfoWrapper} gap={0}>
-          <Text fw={600}>{productName}</Text>
+          <Text fw={600} id="product-name">
+            {productName}
+          </Text>
           <Text fz="sm">
-            {purchaseType === PurchaseType.Recurring ? purchaseOptionName : 'One-time purchase'}
+            {purchaseType === PurchaseType.Recurring ? purchaseOptionName : 'one-time purchase'}
           </Text>
           <Flex align="center">
-            <Badge color="primary-gray" size="sm" component="span">
+            <Badge color="gray" size="sm" component="span">
               {options?.product_variant?.data?.attributes.name ?? ''}
             </Badge>{' '}
             <Text component="span" mx="xs">
@@ -123,11 +123,12 @@ const CartItemSingle: React.FC<CartItemSingleProps> = ({
               {options?.quantity ?? 1}
             </Text>
             <ActionIcon
-              my="auto"
-              variant="transparent"
+              mx="md"
+              ml="lg"
+              variant="light"
+              p={2}
               size="sm"
               type="button"
-              ml="sm"
               onClick={onEditClick}
             >
               <Pencil />
@@ -136,7 +137,7 @@ const CartItemSingle: React.FC<CartItemSingleProps> = ({
               type="button"
               variant="transparent"
               c="red"
-              ml="sm"
+              mx="md"
               size="sm"
               onClick={onRemove}
             >
@@ -147,7 +148,7 @@ const CartItemSingle: React.FC<CartItemSingleProps> = ({
             <Box>
               <Button
                 variant="transparent"
-                c="primary-gray"
+                c="gray"
                 p={0}
                 size="sm"
                 rightSection={
@@ -177,10 +178,10 @@ const CartItemSingle: React.FC<CartItemSingleProps> = ({
         </Stack>
         <Box className={priceInfoWrapper}>
           <Skeleton visible={!discountedPrice && !total} w="100%" ta="right">
-            <Text c="primary-green" fw={600} ta="right" component="div">
+            <Text c="teal" fw={600} ta="right" component="div">
               {formatPrice(discountedPrice ?? total)}
               {discountedPrice && total ? (
-                <Text c="primary-gray" td="line-through" fz="xs">
+                <Text c="gray" td="line-through" fz="xs">
                   {formatPrice(total)}
                 </Text>
               ) : null}

@@ -1,7 +1,8 @@
+import axios from 'axios'
 import qs from 'qs'
 
 import { Article, Article_NoRelations, Article_Plain } from '@/types/Article'
-import { Author, Author_NoRelations } from '@/types/Author'
+import { Author, Author_NoRelations, Author_Plain } from '@/types/Author'
 import { QueryParams } from '@/types/QueryParams'
 import { QueryResponse } from '@/types/QueryResponse'
 
@@ -16,6 +17,10 @@ export default class BlogService extends CMSService {
       JSON.stringify(params),
     ],
     listAuthors: (params?: QueryParams<Author_NoRelations>) => ['/authors', JSON.stringify(params)],
+    listAuthorsWithAvatar: (params?: QueryParams<Author_NoRelations>) => [
+      '/authors',
+      JSON.stringify(params),
+    ],
   }
 
   list = async (params: QueryParams<Article_Plain>) => {
@@ -82,16 +87,35 @@ export default class BlogService extends CMSService {
     return res.json()
   }
 
-  getBySlug = async (slug: string, params?: QueryParams<Article_NoRelations>) => {
+  getBySlug = async (
+    slug: string,
+    params?: QueryParams<Article_NoRelations>,
+  ): Promise<QueryResponse<Article>> => {
     const url = `${this.baseURL}/slugify/slugs/article/${slug}`
     const search = qs.stringify(params)
 
-    const res = await fetch(`${url}?${search}`, {
-      headers: this.headers,
-      cache: 'no-store',
-    })
-
-    return res.json() as Promise<QueryResponse<Article>>
+    try {
+      const res = await axios.get(`${url}?${search}`, {
+        headers: {
+          ...this.headers,
+          'Cache-Control': 'no-cache, no-store, must-revalidate', // Instructs the cache to not store the response
+          Pragma: 'no-cache', // Legacy HTTP/1.0 servers and proxies
+          Expires: '0', // Proxies
+        },
+      })
+      // console.log('res:', res);
+      return res.data
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error('Axios error:', error.response?.data)
+        throw new Error(
+          `Failed to fetch article by slug: ${slug}, status: ${error.response?.status}`,
+        )
+      } else {
+        console.error('Unexpected error:', error)
+        throw new Error(`Unexpected error occurred while fetching article by slug: ${slug}`)
+      }
+    }
   }
 
   listAuthors = async (params?: QueryParams<Author_NoRelations>) => {
@@ -105,5 +129,24 @@ export default class BlogService extends CMSService {
     })
 
     return res.json() as Promise<QueryResponse<Author[]>>
+  }
+
+  listAuthorsWithAvatar = async (params?: QueryParams<Author_Plain>) => {
+    const url = `${this.baseURL}/authors${qs.stringify(
+      {
+        ...params,
+        populate: ['avatar'],
+      },
+      {
+        addQueryPrefix: true,
+      },
+    )}`
+
+    const res = await fetch(`${url}`, {
+      headers: this.headers,
+      cache: 'no-store',
+    })
+
+    return res.json() as Promise<QueryResponse<Author_Plain[]>>
   }
 }

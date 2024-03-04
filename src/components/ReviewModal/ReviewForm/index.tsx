@@ -1,12 +1,15 @@
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Button, Flex, Image, Rating, Stack, Text, Textarea, TextInput } from '@mantine/core'
+// import { useDisclosure } from '@mantine/hooks'
 import { notifications } from '@mantine/notifications'
-import NextImage from 'next/image'
 import React, { useCallback } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { array, number, object, ObjectSchema, string } from 'yup'
 
+// import MediaUploadModal from '@/components/MediaUploadModal'
+import { getSessionFromCookies } from '@/lib/crypt'
 import { useSubmitReview } from '@/mutations/useSubmitReview'
+import { AuthUser } from '@/types/Auth'
 import { Product } from '@/types/Product'
 import { ReviewFormData } from '@/types/ReviewForm'
 import { getStrapiUploadUrl } from '@/utils/cms'
@@ -28,7 +31,8 @@ type ReviewFormProps = {
   onSuccess: () => void
 }
 
-const ReviewForm: React.FC<ReviewFormProps> = ({ product, onSuccess }) => {
+const ReviewForm: React.FC<ReviewFormProps> = async ({ product, onSuccess }) => {
+  const user: AuthUser | null = await getSessionFromCookies()
   const methods = useForm<ReviewFormData>({
     defaultValues: DEFAULT_VALUES,
     resolver: yupResolver(schema),
@@ -37,12 +41,20 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ product, onSuccess }) => {
 
   const { mutate: submit, isPending } = useSubmitReview(product.id)
 
+  // const [mediaFiles, setMediaFiles] = useState<Media[]>([])
+  // const [selectedMediaIds, setSelectedMediaIds] = useState<number[]>([])
+  // const [uploadModalOpened, uploadModal] = useDisclosure()
+
   const onSubmit = useCallback(
-    (data: ReviewFormData) => {
+    async (data: ReviewFormData) => {
+      // TODO: reviews can't handle files
       submit(
         {
-          ...data,
-          attachments: data.attachments?.map((media) => media.id),
+          rating: data.rating,
+          comment: data.comment,
+          user_email: user && user.email ? user.email : data.user_email,
+          user_name: data.user_name,
+          // attachments: selectedMediaIds,
         },
         {
           onSettled: (data, error) => {
@@ -62,8 +74,52 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ product, onSuccess }) => {
         },
       )
     },
-    [onSuccess, submit],
+    [onSuccess, submit, user],
   )
+
+  // const onImageSave = useCallback(
+  //   (_type: 'video' | 'image', _media: Media_Plain[]) => {
+  //     const media: Media[] = _media.map((mediaFile) => ({
+  //       id: mediaFile.id,
+  //       attributes: mediaFile,
+  //     })) // we know for sure that user can only upload media by setting uploadMethods={['upload']}
+  //     // console.log('media', media)
+  //     setMediaFiles(media)
+
+  //     const mediaIds: number[] = media.map((file) => file.id)
+  //     setSelectedMediaIds(mediaIds)
+
+  //     uploadModal.close()
+
+  //     methods.setValue('attachments', media, {
+  //       shouldValidate: true,
+  //       shouldDirty: true,
+  //       shouldTouch: true,
+  //     })
+  //   },
+  //   [methods, uploadModal],
+  // )
+
+  // const onFileClick = useCallback(() => {
+  //   uploadModal.open()
+  // }, [uploadModal])
+
+  // const previews = () => mediaFiles.map((mediaFile, i) => {
+  //   const url = getStrapiUploadUrl(mediaFile.attributes.url)
+
+  //   return (
+  //     <Box key={i} h={90} mb={30}>
+  //       {mediaFile.attributes.mime.includes('image') ? (
+  //         <Image src={url} alt={mediaFile.attributes.name} w={108} mr={30} />
+  //       ) : (
+  //         <video key={url} src={url} width="108px" controls />
+  //       )}
+  //       <Text fz="sm" lineClamp={1}>
+  //         {mediaFile.attributes.name.slice(0, 14)}...
+  //       </Text>
+  //     </Box>
+  //   )
+  // })
 
   return (
     <>
@@ -71,7 +127,6 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ product, onSuccess }) => {
         <Stack gap={40}>
           <Flex gap="md">
             <Image
-              component={NextImage}
               src={
                 product.attributes.thumbnail?.data.attributes.url
                   ? getStrapiUploadUrl(product.attributes.thumbnail?.data.attributes.url)
@@ -120,18 +175,17 @@ const ReviewForm: React.FC<ReviewFormProps> = ({ product, onSuccess }) => {
               error={methods.formState.errors.comment?.message}
               autosize
             />
-            {/* <Stack className={attachmentUploadTrigger}>
-              <Stack>
-                <Center>
-                  <IconPlus color={defaultThemeVars.colors.gray[6]} size={40} />
-                </Center>
-                <Center>
-                  <Text fz="xs" component="p" c="gray.8">
-                    Add photos
-                  </Text>
-                </Center>
-              </Stack>
-            </Stack> */}
+            {/* <Box display={'flex'}>{previews()}</Box> */}
+            {/* <Button onClick={onFileClick} variant="outline">
+              {mediaFiles.length ? 'Replace' : 'Add'} Media
+            </Button> */}
+            {/* <MediaUploadModal
+              uploadMethods={['upload']}
+              opened={uploadModalOpened}
+              onClose={uploadModal.close}
+              onSave={onImageSave}
+              multiple={true}
+            /> */}
           </Stack>
           <Button type="submit" loading={isPending} fullWidth>
             Submit review

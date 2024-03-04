@@ -16,6 +16,7 @@ export const navLinkContainer = style({
 export const logoContainer = style({
   flex: 1,
   display: 'flex',
+  alignItems: 'center',
   gap: 10,
 })
 

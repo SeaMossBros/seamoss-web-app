@@ -8,6 +8,7 @@ import { AppProgressBar as ProgressBar } from 'next-nprogress-bar'
 import React, { PropsWithChildren, useState } from 'react'
 
 import { useSchemeManager } from '@/hooks/useSchemeManager'
+import { darkTheme } from '@/themes/dark'
 import { defaultTheme, defaultThemeVars } from '@/themes/default'
 
 import CartProvider from './CartProvider'
@@ -29,17 +30,17 @@ const AppProviders: React.FC<PropsWithChildren> = ({ children }) => {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ProgressBar
-        height="2px"
-        color={defaultThemeVars.colors['primary-green'][9]}
-        options={{ showSpinner: false }}
-        shallowRouting
-      />
       <MantineProvider
-        theme={defaultTheme}
+        theme={schemeManager.get('auto') === 'dark' ? darkTheme : defaultTheme}
         defaultColorScheme={schemeManager.defaultScheme}
         colorSchemeManager={schemeManager}
       >
+        <ProgressBar // TODO: progress bar is only changing color after a refresh (should change as soon as color toggle is pressed)
+          height="3px"
+          color={defaultThemeVars.colors.teal[9]}
+          options={{ showSpinner: true }}
+          shallowRouting
+        />
         <ModalsProvider>
           <CartProvider>{children}</CartProvider>
         </ModalsProvider>

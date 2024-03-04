@@ -1,3 +1,4 @@
+import axios from 'axios'
 import qs from 'qs'
 
 import { Product, Product_NoRelations_WithMinPrice, Product_Plain } from '@/types/Product'
@@ -37,8 +38,13 @@ export default class ProductService extends CMSService {
   }
 
   getBySlug = (slug: string, params?: QueryParams<Product_Plain>) => {
+    // console.log('slug', slug);
+    // console.log('params in getBySlug', params);
     const url = `${this.baseURL}/slugify/slugs/product/${slug}`
     const search = qs.stringify(params)
+    // console.log('url', url);
+    // console.log('search', search);
+    // console.log('headers', this.headers);
 
     return fetch(`${url}?${search}`, {
       headers: this.headers,
@@ -50,12 +56,11 @@ export default class ProductService extends CMSService {
     const url = `${this.baseURL}/product-variants/${id}`
     const search = qs.stringify(params)
 
-    const res = await fetch(`${url}?${search}`, {
+    const res = await axios.get(`${url}${search.length ? '?' + search : ''}`, {
       headers: this.headers,
-      cache: 'no-store',
     })
 
-    return res.json() as Promise<QueryResponse<ProductVariant>>
+    return res.data as Promise<QueryResponse<ProductVariant>>
   }
 
   getPurchaseOptionById = async (id: number, params?: QueryParams<PurchaseOption_Plain>) => {
@@ -74,7 +79,7 @@ export default class ProductService extends CMSService {
     productId: number,
     data: Omit<
       ProductReview_NoRelations,
-      'product' | 'id' | 'createdAt' | 'updatedAt' | 'publishedAt'
+      'product' | 'id' | 'createdAt' | 'updatedAt' | 'publishedAt' | 'attributes'
     >,
   ) => {
     const url = `${this.baseURL}/product-reviews`
@@ -86,7 +91,7 @@ export default class ProductService extends CMSService {
     }
 
     const body = JSON.stringify(payload)
-
+    // console.log('body', body)
     const res = await fetch(url, {
       method: 'post',
       headers: {
@@ -102,7 +107,7 @@ export default class ProductService extends CMSService {
 
   getProductReviews = async (params: QueryParams<ProductReview_NoRelations>) => {
     const url = `${this.baseURL}/product-reviews?${qs.stringify(params)}`
-
+    // console.log('url', url)
     const res = await fetch(url, {
       headers: this.headers,
     })

@@ -10,10 +10,10 @@ export enum Units {
 }
 export enum Category {
   Gel = 'Gel',
-  Dry = 'Dry',
+  Dried = 'Dried',
+  Gummies = 'Gummies',
   Clothing = 'Clothing',
   Accessory = 'Accessory',
-  Dummy = 'Dummy',
 }
 
 export interface Product {

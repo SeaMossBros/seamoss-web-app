@@ -1,3 +1,4 @@
+'use client'
 import { useQuery } from '@tanstack/react-query'
 import { useEffect } from 'react'
 import { useForm, UseFormProps } from 'react-hook-form'
@@ -17,10 +18,10 @@ export default function useProductForm(
   formProps?: UseFormProps<ProductSelectionFormData>,
 ) {
   const productService = useService(ProductService)
-
   const methods = useForm<ProductSelectionFormData>(formProps)
 
   const variant = methods.watch('variant')
+  // const properties = methods.watch('properties')
   const purchaseOption = methods.watch('purchaseOption')
 
   const {

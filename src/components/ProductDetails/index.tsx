@@ -12,9 +12,16 @@ import TotalPrice from './TotalPrice'
 export type ProductDetailsProps = {
   product: Product
   showOptionImages?: boolean
+  isFromCartModal?: boolean
+  setPropertyIsSelected: (bool: boolean) => void
 }
 
-const ProductDetails: React.FC<ProductDetailsProps> = ({ product, showOptionImages = true }) => {
+const ProductDetails: React.FC<ProductDetailsProps> = ({
+  product,
+  showOptionImages = true,
+  isFromCartModal = false,
+  setPropertyIsSelected,
+}) => {
   const { attributes } = product
 
   return (
@@ -26,7 +33,11 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product, showOptionImag
         <ProductVariants showImages={showOptionImages} />
       ) : null}
       {attributes.product_properties?.data?.length ? (
-        <ProductProperties showImages={showOptionImages} />
+        <ProductProperties
+          showImages={showOptionImages}
+          isFromCartModal={isFromCartModal}
+          setPropertyIsSelected={setPropertyIsSelected}
+        />
       ) : null}
       {attributes.purchase_options?.data?.length ? <PurchaseOptions /> : null}
     </Stack>

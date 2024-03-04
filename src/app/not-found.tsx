@@ -1,3 +1,5 @@
+'use client'
+
 import { Button, Container, Image, SimpleGrid, Text, Title } from '@mantine/core'
 import Link from 'next/link'
 import React from 'react'
@@ -16,7 +18,7 @@ const NotFoundImage = () => {
     <Container className={notFoundRoot}>
       <SimpleGrid spacing={{ base: 40, sm: 80 }} cols={{ base: 1, sm: 2 }}>
         <div>
-          <Title c="primary-gray" className={notFoundTitle}>
+          <Title c="gray" className={notFoundTitle}>
             Something is not right...
           </Title>
           <Text className={notFoundDescription} c="dimmed" size="lg">
@@ -45,6 +47,7 @@ const NotFoundImage = () => {
         <Image
           src={'/videos/SeaTheMoss-Spinner-With-Wildcrafted-Raw-Extended.mp4'}
           className={notFoundVideo}
+          onError={(e) => (e.currentTarget.src = '/images/SeaTheMoss-StillSpinner.png')}
           alt="animated logo spinning"
         />
       </SimpleGrid>

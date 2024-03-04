@@ -8,7 +8,8 @@ export const inner = style({
   alignItems: 'center',
   padding: defaultThemeVars.spacing.sm,
   position: 'relative',
-  margin: '0 3%',
+  width: '100%',
+
   '@media': {
     [`(max-width: ${defaultThemeVars.breakpoints.sm})`]: {
       flexDirection: 'column',
@@ -17,9 +18,8 @@ export const inner = style({
 })
 
 export const footerImage = style({
-  width: '42%',
-  maxWidth: '350px',
-  maxHeight: '150px',
+  display: 'flex',
+  width: '24%',
 })
 
 export const hideVideo = style({
@@ -65,14 +65,23 @@ export const footerLinks = style({
 
 export const externalFooterLinks = style({
   display: 'flex',
-  justifyContent: 'space-between',
+  justifyContent: 'center',
   alignItems: 'center',
-  width: '9%',
-  minWidth: '120px',
-  maxWidth: '130px',
+  width: '24%',
+
   '@media': {
     [`(max-width: ${defaultThemeVars.breakpoints.sm})`]: {
       marginBottom: defaultThemeVars.spacing.xl,
+      justifyContent: 'center',
+      marginTop: '21px',
     },
   },
+})
+
+export const rightsReserved = style({
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  width: '100%',
+  margin: '42px 0',
 })

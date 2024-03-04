@@ -30,6 +30,8 @@ const ArticleIntroField: React.FC<ArticleIntroFieldProps> = ({ mode }) => {
       size="md"
       placeholder="A short introduction about the article..."
       autosize
+      mt={12}
+      mb={12}
     />
   )
 }

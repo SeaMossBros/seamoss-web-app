@@ -15,7 +15,7 @@ const TotalPrice: React.FC = () => {
   if (!totalPrice)
     return (
       <Skeleton width={100} visible>
-        <Text fz="xl" c="primary-green" fw={600}>
+        <Text fz="xl" c="teal" fw={600}>
           --
         </Text>
       </Skeleton>
@@ -27,7 +27,7 @@ const TotalPrice: React.FC = () => {
         <Text component="span" td="line-through">
           {formatPrice(totalPrice)}
         </Text>
-        <Text component="span" c="primary-green" ml="sm" fz="xl" fw={600}>
+        <Text component="span" c="teal" ml="sm" fz="xl" fw={600}>
           {formatPrice(discountedPrice)}
         </Text>
       </Text>
@@ -35,7 +35,7 @@ const TotalPrice: React.FC = () => {
   }
 
   return (
-    <Text fz="xl" c="primary-green" fw={600}>
+    <Text fz="xl" c="teal" fw={600}>
       {formatPrice(totalPrice)}
     </Text>
   )

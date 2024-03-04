@@ -4,6 +4,7 @@ import { Modal, Text } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { useRouter } from 'next/navigation'
 
+// import ToolTip from '@/components/ToolTip'
 import { ROUTE_PATHS } from '@/consts/route-paths'
 
 const PaymentCancelModal: React.FC<{
@@ -18,9 +19,11 @@ const PaymentCancelModal: React.FC<{
   })
 
   return (
-    <Modal title="Payment Cancelled" opened={opened} onClose={close} centered>
+    // <ToolTip title="Payment Cancelled">
+    <Modal opened={opened} onClose={close} centered>
       <Text>Your payment has been cancelled.</Text>
     </Modal>
+    // </ToolTip>
   )
 }
 

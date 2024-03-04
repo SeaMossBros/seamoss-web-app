@@ -4,10 +4,7 @@ import { generateColors } from '@mantine/colors-generator'
 import { createTheme, rem } from '@mantine/core'
 import { themeToVars } from '@mantine/vanilla-extract'
 
-// import { interFont } from '@/fonts/inter'
-
 export const defaultTheme = createTheme({
-  // fontFamily: interFont.style.fontFamily,
   radius: {
     lg: rem(0),
     md: rem(0),
@@ -16,18 +13,45 @@ export const defaultTheme = createTheme({
     xs: rem(0),
   },
   colors: {
-    white: generateColors('#fff'),
-    'primary-green': generateColors('#026055'),
-    'primary-gray': generateColors('#778490'),
-    'secondary-blue': generateColors('#20BFDB'),
-    'secondary-pink': generateColors('#E5BDAC'),
-    'secondary-gray': generateColors('#A2ADA6'),
-    'coral-red': generateColors('#a9391e'),
+    // white: generateColors('#fff'),
+    white: [
+      '#f5f5f5',
+      '#f5f5f5',
+      '#f5f5f5',
+      '#f5f5f5',
+      '#f5f5f5',
+      '#f5f5f5',
+      '#f5f5f5',
+      '#f5f5f5',
+      '#f5f5f5',
+      '#f5f5f5',
+    ],
+    teal: generateColors('#087F5B'), // teal
+    cyan: generateColors('#0B7285'), // cyan
+    lime: generateColors('#5C940D'), // lime
+    orange: generateColors('#D9480F'), // orange
+    grape: generateColors('#862E9C'), // grape
+    red: generateColors('#C92A2A'), // red
+    gray: generateColors('#212529'), // gray
+    blue: generateColors('#1864AB'), // blue
+    pink: generateColors('#A61E4D'), // pink
+    black: [
+      '#1a1b1e',
+      '#1a1b1e',
+      '#1a1b1e',
+      '#1a1b1e',
+      '#1a1b1e',
+      '#1a1b1e',
+      '#1a1b1e',
+      '#1a1b1e',
+      '#1a1b1e',
+      '#1a1b1e',
+    ],
   },
-  primaryColor: 'primary-green',
+  primaryColor: 'teal',
   primaryShade: {
-    light: 9,
-    dark: 4,
+    light: 8,
+    dark: 9,
   },
   components: {
     Container: {
@@ -55,7 +79,13 @@ export const defaultTheme = createTheme({
     lg: '15px',
     xl: '20px',
   },
-  fontFamily: 'Greycliff CF',
+  fontFamily: 'Palantino',
+  defaultGradient: {
+    from: '#f5f5f5',
+    to: 'teal',
+    deg: 45,
+  },
+  defaultRadius: 9,
   // fontSizes: {
   //   xs: '9px',
   //   sm: '15px',
@@ -65,4 +95,7 @@ export const defaultTheme = createTheme({
   // },
 })
 
-export const defaultThemeVars = themeToVars(defaultTheme)
+export const defaultThemeVars = {
+  ...themeToVars(defaultTheme),
+  radiusDefault: 9,
+}

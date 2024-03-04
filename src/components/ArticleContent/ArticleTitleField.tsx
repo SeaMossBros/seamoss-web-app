@@ -31,6 +31,8 @@ const ArticleTitleField: React.FC<ArticleTitleFieldProps> = ({ mode }) => {
       classNames={{
         input: classNames(articleInputField, articleTitle),
       }}
+      mt={12}
+      mb={12}
     />
   )
 }

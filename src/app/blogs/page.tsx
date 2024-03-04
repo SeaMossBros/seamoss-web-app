@@ -1,23 +1,26 @@
-import { Button, Container, Group } from '@mantine/core'
+import { Button, Container, Group, Text } from '@mantine/core'
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
 import { Metadata } from 'next'
-import { headers } from 'next/headers'
 import Link from 'next/link'
 import React from 'react'
 
 import { ROUTE_PATHS } from '@/consts/route-paths'
+import { getSessionFromCookies } from '@/lib/crypt'
 import getQueryClient from '@/react-query/getQueryClient'
 import BlogService from '@/services/blog.service'
 import { Article_Plain } from '@/types/Article'
+import { AuthUser } from '@/types/Auth'
 import { QueryParams } from '@/types/QueryParams'
 
 import BlogsList from './BlogsList'
+import { title } from './BlogsPage.css'
 
 export const metadata: Metadata = {
   title: 'Blogs | Sea the Moss',
 }
 
 const BlogsPage: React.FC = async () => {
+  const user: AuthUser | null = await getSessionFromCookies()
   const queryClient = getQueryClient()
   const blogService = new BlogService()
 
@@ -31,32 +34,12 @@ const BlogsPage: React.FC = async () => {
     queryFn: () => blogService.list(params),
   })
 
-  const headerList = headers()
-  const isAuthenticated = (() => {
-    const [AUTH_USER, AUTH_PASS] = (process.env.HTTP_BASIC_AUTH || ':').split(':')
-
-    const authheader = headerList.get('authorization') || headerList.get('Authorization')
-
-    if (!authheader) {
-      return false
-    }
-
-    const auth = Buffer.from(authheader.split(' ')[1], 'base64').toString().split(':')
-    const user = auth[0]
-    const pass = auth[1]
-
-    if (user == AUTH_USER && pass == AUTH_PASS) {
-      return true
-    } else {
-      return false
-    }
-  })()
-
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <Container>
-        {isAuthenticated ? (
-          <Group justify="flex-end">
+      <Container display={'flex'} style={{ flexDirection: 'column', alignItems: 'center' }}>
+        <Text className={title}>Blogs</Text>
+        {user && user.id && user.role?.type === 'admin' ? (
+          <Group justify="flex-end" mb={60}>
             <Button component={Link} href={ROUTE_PATHS.BLOG.CREATE}>
               Create new article
             </Button>

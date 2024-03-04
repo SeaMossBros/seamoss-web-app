@@ -11,6 +11,7 @@ export interface ProductProperty {
     image?: { data: Media }
   }
 }
+
 export interface ProductProperty_Plain {
   id: number
   createdAt: string

@@ -10,6 +10,7 @@ import { CartContext } from '@/providers/CartProvider'
 import { useCartData } from '@/queries/useCartData'
 
 import NavLinkItem from '../NavLinkItem'
+// import ToolTip from '../ToolTip'
 import { cartIcon, indicator } from './CartNavLink.css'
 
 const CartNavLink: React.FC = () => {
@@ -29,10 +30,11 @@ const CartNavLink: React.FC = () => {
         indicator: indicator,
       }}
       offset={6}
-      color="primary-green"
+      color="teal"
       label={itemsCount}
       disabled={!itemsCount}
     >
+      {/* <ToolTip title='View Your Cart' width='130px'> */}
       <NavLinkItem
         href={ROUTE_PATHS.CART}
         leftSection={<IconShoppingCart />}
@@ -40,7 +42,9 @@ const CartNavLink: React.FC = () => {
           section: cartIcon,
         }}
         active={pathname.startsWith(ROUTE_PATHS.CART)}
+        title="Your Cart"
       />
+      {/* </ToolTip> */}
     </Indicator>
   )
 }

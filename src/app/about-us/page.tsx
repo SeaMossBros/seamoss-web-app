@@ -1,10 +1,21 @@
-import { Container, Text } from '@mantine/core'
+import { Overlay, Title } from '@mantine/core'
+import { Metadata } from 'next'
+
+import { inner, title, wrapper } from './hero-image-background.css'
+
+export const metadata: Metadata = {
+  title: 'About Us | SeaTheMoss',
+}
 
 const AboutUsPage: React.FC = () => {
   return (
-    <Container>
-      <Text>About Us Page</Text>
-    </Container>
+    <div className={wrapper}>
+      <Overlay color="#1a1b1e" opacity={0.65} zIndex={1} />
+
+      <div className={inner}>
+        <Title className={title}>About Us</Title>
+      </div>
+    </div>
   )
 }
 

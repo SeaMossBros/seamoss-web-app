@@ -12,20 +12,22 @@ export interface AuthUser {
     id: number
     name: string
     description: string
-    type: string
+    type: 'authenticated' | 'admin' | 'public'
     createdAt: string
     updatedAt: string
   }
 }
 
-export interface GetLoginUrlResponse {
-  url: string
+export type LoginAuthUser = {
+  jwt: string
+  user: AuthUser
 }
 
 export interface ExchangeTokenResponse {
-  data: {
-    token: string
-    user: AuthUser
-  }
+  data: LoginAuthUser
   error?: unknown
+}
+
+export interface GetLoginUrlResponse {
+  url: string
 }

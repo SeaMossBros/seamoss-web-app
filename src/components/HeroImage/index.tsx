@@ -1,20 +1,19 @@
 'use client'
 
 import { Carousel } from '@mantine/carousel'
-import { Box, Button, Image, Text, Title } from '@mantine/core'
+import { Box, Button, Image, Text, Title, useMantineTheme } from '@mantine/core'
 import Autoplay from 'embla-carousel-autoplay'
-import NextImage from 'next/image'
 import Link from 'next/link'
-import { useMemo, useRef } from 'react'
+import { useMemo, useRef, useState } from 'react'
 
 import { ROUTE_PATHS } from '@/consts/route-paths'
 import { useHomePage } from '@/queries/useHomePage'
 import { getStrapiUploadUrl } from '@/utils/cms'
 
 import {
-  carouselRoot,
+  actionButtons,
+  container,
   content,
-  control,
   description,
   heroButtonContainer,
   inner,
@@ -24,29 +23,46 @@ import {
 } from './HeroImage.css'
 
 const HeroImage: React.FC = () => {
-  const autoplay = useRef(
-    Autoplay({ delay: 4000, stopOnInteraction: false, stopOnMouseEnter: false }),
-  )
+  const { colors, defaultRadius } = useMantineTheme()
+  const [isHovering, setIsHovering] = useState(false)
+
   const { data } = useHomePage()
 
   const images = useMemo(() => {
     return data?.attributes.hero_images?.data ?? []
   }, [data?.attributes.hero_images?.data])
 
+  const autoplay = useRef(
+    Autoplay({ delay: 6000, stopOnInteraction: false, stopOnMouseEnter: false }),
+  )
+
+  const resetAutoplay = () => {
+    if (autoplay.current) {
+      autoplay.current.stop() // Stop current autoplay
+      autoplay.current.play() // Start autoplay again
+    }
+  }
+
   return (
-    <Box className={root}>
+    <Box
+      className={root}
+      onMouseEnter={() => setIsHovering(true)}
+      onMouseLeave={() => setIsHovering(false)}
+    >
       <Carousel
-        className={carouselRoot}
+        className={container}
         height={560}
-        withControls={false}
+        withControls={isHovering}
+        withIndicators={true}
         plugins={[autoplay.current]}
-        speed={20}
+        onSlideChange={resetAutoplay}
+        controlSize={42}
+        speed={6}
         loop
       >
         {images.map((image) => (
           <Carousel.Slide key={image.id}>
             <Image
-              component={NextImage}
               className={slideImage}
               src={getStrapiUploadUrl(image.attributes.url)}
               alt={image.attributes.alternativeText ?? ''}
@@ -54,7 +70,6 @@ const HeroImage: React.FC = () => {
               height={560}
               fit="cover"
               loading="eager"
-              priority
             />
           </Carousel.Slide>
         ))}
@@ -63,18 +78,23 @@ const HeroImage: React.FC = () => {
         <Box className={content}>
           <Title className={title}>
             Explore Earth&apos;s Oceanic Wonders with{' '}
-            <Text
-              component="span"
-              inherit
-              variant="gradient"
-              gradient={{ from: 'blue', to: 'orange' }}
-            >
+            <Text component="span" inherit variant="gradient">
               SeaTheMoss
             </Text>{' '}
             Products
           </Title>
 
-          <Text className={description} mt={30}>
+          <Text
+            className={description}
+            mt={30}
+            py={6}
+            style={{
+              backgroundColor: colors.white[1],
+              textAlign: 'center',
+              borderRadius: defaultRadius,
+            }}
+            c={colors.teal[9]}
+          >
             Discover our pure sea moss in gel, dried, and gummy form
             <br />
             Grown in the clean ocean waters of Belize
@@ -84,7 +104,7 @@ const HeroImage: React.FC = () => {
             <Button
               component={Link}
               href={ROUTE_PATHS.PRODUCT.INDEX}
-              className={control}
+              className={actionButtons}
               mt={40}
               size="md"
             >
@@ -94,9 +114,11 @@ const HeroImage: React.FC = () => {
               component={Link}
               href={ROUTE_PATHS.ABOUT}
               variant="outline"
-              className={control}
+              className={actionButtons}
               mt={40}
               size="md"
+              c={'#f5f5f5'}
+              style={{ borderColor: '#f5f5f5' }}
             >
               Why Our Sea Moss?
             </Button>

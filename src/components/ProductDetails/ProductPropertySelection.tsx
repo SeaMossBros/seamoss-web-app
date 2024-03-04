@@ -1,6 +1,14 @@
-import { Box, Card, Flex, Image, NumberInput, NumberInputHandlers, Text } from '@mantine/core'
+import {
+  Box,
+  Card,
+  Flex,
+  Image,
+  NumberInput,
+  NumberInputHandlers,
+  Text,
+  useMantineTheme,
+} from '@mantine/core'
 import { IconMinus, IconPlus } from '@tabler/icons-react'
-import { default as NextImage } from 'next/image'
 import React, { useCallback, useEffect, useMemo, useRef } from 'react'
 import {
   FieldArrayWithId,
@@ -29,6 +37,7 @@ export type ProductPropertySelectionProps = {
   remove: UseFieldArrayRemove
   variant: ProductSelectionFormData['variant']
   showImage?: boolean
+  updateQuantitySum: (num: number, id: number) => void
 }
 
 const ProductPropertySelection: React.FC<ProductPropertySelectionProps> = ({
@@ -39,7 +48,9 @@ const ProductPropertySelection: React.FC<ProductPropertySelectionProps> = ({
   update,
   remove,
   showImage,
+  updateQuantitySum,
 }) => {
+  const { colors } = useMantineTheme()
   const { attributes } = property
 
   const quantityInput = useRef<NumberInputHandlers>(null)
@@ -48,6 +59,7 @@ const ProductPropertySelection: React.FC<ProductPropertySelectionProps> = ({
     () => selectedProperties.findIndex((p) => p.id === property.id),
     [property.id, selectedProperties],
   )
+
   const selected = useMemo(
     () => selectedProperties[selectedIndex],
     [selectedIndex, selectedProperties],
@@ -84,22 +96,25 @@ const ProductPropertySelection: React.FC<ProductPropertySelectionProps> = ({
       ...property,
       quantity: 1,
     })
-  }, [append, property, selected])
+    updateQuantitySum(1, property.id)
+  }, [append, property, selected, updateQuantitySum])
 
   const onChangeQuantity = useCallback(
     (value: number | string) => {
       if (!selected || selectedIndex < 0) return
       const num = parseInt(`${value}`)
       if (!num) {
+        updateQuantitySum(0, property.id)
         remove(selectedIndex)
         return
       }
+      updateQuantitySum(num, property.id)
       update(selectedIndex, {
         ...selected,
         quantity: num,
       })
     },
-    [remove, selected, selectedIndex, update],
+    [remove, selected, selectedIndex, update, property.id, updateQuantitySum],
   )
 
   return (
@@ -109,13 +124,13 @@ const ProductPropertySelection: React.FC<ProductPropertySelectionProps> = ({
         data-selected={!!selected}
         data-disabled={!max}
         onClick={() => onSelect()}
-        data-withImage={showImage}
+        data-withimage={showImage}
+        style={{ borderColor: !!selected ? colors.teal[9] : 'lightgray', userSelect: 'none' }}
         withBorder
       >
         {attributes.image?.data?.attributes.url && showImage ? (
           <Box>
             <Image
-              component={NextImage}
               src={getStrapiUploadUrl(attributes.image.data.attributes.url)}
               alt={attributes.name}
               width={60}

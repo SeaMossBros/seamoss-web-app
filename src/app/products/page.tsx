@@ -90,8 +90,8 @@ const ProductsPage: React.FC<ProductsPageProps> = async ({ searchParams }) => {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <Container>
-        <Grid gutter="xl">
+      <Container ml="xl" mt={30}>
+        <Grid gutter="xs">
           <GridCol
             span={{
               base: 12,
@@ -106,7 +106,7 @@ const ProductsPage: React.FC<ProductsPageProps> = async ({ searchParams }) => {
               md: 9,
             }}
           >
-            <ProductList queryParams={params} />
+            <ProductList queryParams={params} onPage="Products" />
           </GridCol>
         </Grid>
       </Container>

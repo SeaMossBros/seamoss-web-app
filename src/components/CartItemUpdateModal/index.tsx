@@ -2,7 +2,7 @@
 
 import { Button, Flex, Grid, Modal, ModalProps, Stack } from '@mantine/core'
 import uniqBy from 'lodash/uniqBy'
-import { useCallback, useMemo } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { FormProvider } from 'react-hook-form'
 
 import { useCart } from '@/hooks/useCart'
@@ -18,6 +18,7 @@ export type CartItemUpdateModalProps = ModalProps & {
 }
 
 const CartItemUpdateModal: React.FC<CartItemUpdateModalProps> = ({ item, ...modalProps }) => {
+  const [propertyIsSelected, setPropertyIsSelected] = useState(false)
   const { updateItem, isUpdatingItem } = useCart()
 
   const { product: productDetails, methods } = useProductForm(
@@ -94,6 +95,10 @@ const CartItemUpdateModal: React.FC<CartItemUpdateModalProps> = ({ item, ...moda
     [item, modalProps, updateItem],
   )
 
+  const handleSetPropertyIsSelected = (value: boolean) => {
+    setPropertyIsSelected(value)
+  }
+
   return (
     <Modal {...modalProps} size="90%" closeOnClickOutside centered>
       {productDetails ? (
@@ -119,7 +124,12 @@ const CartItemUpdateModal: React.FC<CartItemUpdateModalProps> = ({ item, ...moda
                 }}
               >
                 <Stack gap="lg">
-                  <ProductDetails product={productDetails} showOptionImages={false} />
+                  <ProductDetails
+                    product={productDetails}
+                    showOptionImages={false}
+                    isFromCartModal={true}
+                    setPropertyIsSelected={handleSetPropertyIsSelected}
+                  />
                   <Flex gap="sm">
                     <Button
                       variant="default"
@@ -129,7 +139,12 @@ const CartItemUpdateModal: React.FC<CartItemUpdateModalProps> = ({ item, ...moda
                     >
                       Cancel
                     </Button>
-                    <Button type="submit" loading={isUpdatingItem} fullWidth>
+                    <Button
+                      type="submit"
+                      loading={isUpdatingItem}
+                      fullWidth
+                      disabled={propertyIsSelected}
+                    >
                       Update
                     </Button>
                   </Flex>

@@ -21,7 +21,7 @@ const ProductReviews: React.FC<ProductReviewsProps> = ({ product, onRefetch }) =
   const [reviewModalOpened, reviewModal] = useDisclosure()
   const [pagination, setPagination] = useState<Pick<PaginationOptions, 'page' | 'pageSize'>>({
     page: 1,
-    pageSize: 10,
+    pageSize: 5,
   })
 
   const { data: reviews, refetch: refetchReviews } = useProductReviews(
@@ -29,7 +29,7 @@ const ProductReviews: React.FC<ProductReviewsProps> = ({ product, onRefetch }) =
       filters: {
         product: product.id,
       },
-      fields: ['id', 'rating', 'user_name', 'comment'],
+      // fields: [],
       pagination: {
         withCount: true,
         ...pagination,
@@ -40,8 +40,11 @@ const ProductReviews: React.FC<ProductReviewsProps> = ({ product, onRefetch }) =
     },
   )
 
+  // if (!reviews || !reviews.meta) return null;
+  // console.log('reviews', reviews);
+
   const { total, totalPages } = useMemo(() => {
-    const _total = reviews?.meta.pagination.total ?? 0
+    const _total = reviews?.meta.pagination.total ?? 1
 
     const _totalPages = Math.ceil(_total / (pagination.pageSize ?? 10))
 
@@ -51,12 +54,15 @@ const ProductReviews: React.FC<ProductReviewsProps> = ({ product, onRefetch }) =
     }
   }, [pagination.pageSize, reviews?.meta.pagination.total])
 
-  const onChangePage = useCallback((_page: number) => {
-    setPagination((prev) => ({
-      ...prev,
-      page: _page,
-    }))
-  }, [])
+  const onChangePage = useCallback(
+    (_page: number = 1) => {
+      setPagination((prev) => ({
+        ...prev,
+        page: _page,
+      }))
+    },
+    [setPagination],
+  )
 
   const onReviewSubmitted = useCallback(() => {
     reviewModal.close()
@@ -72,7 +78,7 @@ const ProductReviews: React.FC<ProductReviewsProps> = ({ product, onRefetch }) =
       <Flex className={reviewSummary} align="center" justify="space-between">
         <Stack w={120}>
           <Text component="p" fz={32} fw="bold" ta="center">
-            {product.attributes.rating ?? 0}
+            {product.attributes.rating?.toFixed(2) ?? 0}
           </Text>
           <Stack gap="xs">
             <Center>

@@ -5,17 +5,9 @@ import APIService from '@/services/api.service'
 
 type QueryOptions = Omit<
   UndefinedInitialDataOptions<
-    {
-      data: {
-        totalPrice: number
-        discountedPrice: number | null
-      }
-    },
+    { data: { totalPrice: number; discountedPrice: number | null } },
     Error,
-    {
-      totalPrice: number
-      discountedPrice: number | null
-    },
+    { totalPrice: number; discountedPrice: number | null },
     (string | [variantId: number, quantity: number, purchaseOptionId: number])[]
   >,
   'queryKey' | 'queryFn'

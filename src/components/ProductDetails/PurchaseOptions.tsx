@@ -32,9 +32,10 @@ const PurchaseOptions: React.FC = () => {
   if (!purchaseOptions?.data?.length) return null
 
   return (
-    <Fieldset legend="Purchase Options">
+    <Fieldset legend="Purchase Options" style={{ userSelect: 'none' }}>
       <Stack gap="md">
         <SegmentedControl
+          // color={getPrimaryColor()}
           value={selectedOption?.attributes.type}
           onChange={onChangeType}
           data={[
@@ -56,6 +57,7 @@ const PurchaseOptions: React.FC = () => {
                   .filter((option) => option.attributes.type === PurchaseType.Recurring)
                   .map((option) => (
                     <Radio
+                      // color={getPrimaryColor()}
                       key={option.id}
                       value={option.id.toString()}
                       label={option.attributes.name}

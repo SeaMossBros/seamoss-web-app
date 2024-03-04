@@ -15,13 +15,15 @@ type Props = {
 }
 
 export const generateMetadata = async ({ params: { slug } }: Props): Promise<Metadata> => {
-  const productService = new ProductService()
+  // const productService = new ProductService()
 
-  const product = await productService.getBySlug(slug)
+  // console.log(`Fetching product by slug: ${slug}...`);
+
+  // const product = await productService.getBySlug(slug)
 
   return {
-    title: `${product.data?.attributes.name ?? slug} | SeaTheMoss`,
-    description: product.data?.attributes.description,
+    title: `${slug.replaceAll('-', ' ')} | Product | SeaTheMoss`,
+    // description: product.data?.attributes.description,
   }
 }
 
@@ -55,7 +57,7 @@ const ProductDetailPage: React.FC<Props> = async ({ params }: Props) => {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <Container>
+      <Container mt={90}>
         <ProductSingle slug={params.slug} queryParams={queryParams} />
       </Container>
     </HydrationBoundary>

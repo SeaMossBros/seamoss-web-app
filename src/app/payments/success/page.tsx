@@ -11,12 +11,11 @@ const PaymentSuccessPage: React.FC<{
 }> = async ({ searchParams }) => {
   const queryClient = getQueryClient()
   const orderService = new OrderService()
+  const searchParamsData = searchParams
 
-  const { session_id } = searchParams
+  if (!searchParamsData.session_id) notFound()
 
-  if (!session_id) {
-    notFound()
-  }
+  const { session_id } = searchParamsData
 
   const res = await queryClient.fetchQuery({
     queryKey: OrderService.queryKeys.confirmPayment(session_id as string),
@@ -41,7 +40,7 @@ const PaymentSuccessPage: React.FC<{
     redirect('/error')
   }
 
-  return <PaymentSuccessModal order={res.order!} defaultOpened />
+  return <PaymentSuccessModal order={res.order!} user={res.user!} defaultOpened />
 }
 
 export default PaymentSuccessPage
