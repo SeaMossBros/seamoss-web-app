@@ -9,16 +9,15 @@ import {
   useMantineTheme,
 } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
-import React from 'react'
+import React, { PropsWithChildren } from 'react'
 
 import FooterCentered from '@/components/FooterCentered'
 import Header from '@/components/Header'
-import { AuthUser } from '@/types/Auth'
 
 import NavBar from '../NavBar'
 import { footer, main } from './layout.css'
 
-const DefaultLayout: React.FC<{ user: AuthUser | null; children: any }> = ({ user, children }) => {
+const DefaultLayout: React.FC<PropsWithChildren> = ({ children }) => {
   const [navOpened, navbar] = useDisclosure(false)
   const { colors } = useMantineTheme()
   const { colorScheme } = useMantineColorScheme()
@@ -44,10 +43,10 @@ const DefaultLayout: React.FC<{ user: AuthUser | null; children: any }> = ({ use
       bg={isDarkTheme ? colors.black[9] : '#f5f5f5'}
     >
       <AppShellHeader>
-        <Header navOpened={navOpened} toggleNav={navbar.toggle} user={user} />
+        <Header navOpened={navOpened} toggleNav={navbar.toggle} />
       </AppShellHeader>
       <AppShellNavbar withBorder>
-        <NavBar onClose={navbar.close} user={user} />
+        <NavBar onClose={navbar.close} />
       </AppShellNavbar>
       <AppShellMain className={main}>{children}</AppShellMain>
       <AppShellFooter className={footer}>

@@ -31,11 +31,7 @@ export default class CartService extends CMSService {
       cartId,
       is_checked_out,
     ],
-    getCartItems: (cartId: number, is_checked_out: boolean = false) => [
-      '/cart-items',
-      cartId,
-      is_checked_out,
-    ],
+    getCartItems: (cartId: number) => ['/cart-items', cartId],
   }
 
   getById = async (cartId: number, is_checked_out: boolean = false) => {

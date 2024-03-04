@@ -17,18 +17,18 @@ import { useForm } from 'react-hook-form'
 
 import { useUploadFile } from '@/mutations/useUploadFile'
 import { useUploadFileInfo } from '@/mutations/useUploadFileInfo'
-import { Media_Plain } from '@/types/Media'
+// import { Media_Plain } from '@/types/Media'
 
 type FormData = {
   alt: string
 }
 
 export type MediaUploadProps = {
-  onSave: (type: 'video' | 'image', media: Media_Plain[], alt?: string) => void
+  // onSave: (type: 'video' | 'image', media: Media_Plain[], alt?: string) => void
   multiple?: boolean
 }
 
-const MediaUpload: React.FC<MediaUploadProps> = ({ onSave, multiple }) => {
+const MediaUpload: React.FC<MediaUploadProps> = ({ multiple }) => {
   const [files, setFiles] = useState<FileWithPath[]>([])
   const maxFiles = 3
 
@@ -79,13 +79,13 @@ const MediaUpload: React.FC<MediaUploadProps> = ({ onSave, multiple }) => {
 
       // console.log('uploadedMedia:::', uploadedMedia)
 
-      onSave(
-        uploadedMedia.mime.startsWith('image') ? 'image' : 'video',
-        multiple ? uploadRes : [uploadedMedia],
-        data.alt,
-      )
+      // onSave(
+      //   uploadedMedia.mime.startsWith('image') ? 'image' : 'video',
+      //   multiple ? uploadRes : [uploadedMedia],
+      //   data.alt,
+      // )
     },
-    [files, onSave, uploadAsync, uploadFileInfoAsync, multiple],
+    [files, uploadAsync, uploadFileInfoAsync, multiple],
   )
 
   return (

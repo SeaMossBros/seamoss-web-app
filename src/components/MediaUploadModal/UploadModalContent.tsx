@@ -2,18 +2,16 @@
 import { rem, Tabs } from '@mantine/core'
 import { IconPhotoUp } from '@tabler/icons-react'
 
-import { Media_Plain } from '@/types/Media'
-
+// import { Media_Plain } from '@/types/Media'
 import MediaUpload from './MediaDropzone'
 
 export type MediaUploadModalContentProps = {
   uploadMethods?: Array<'upload' | 'link'>
-  onSave: (type: 'video' | 'image', media: Media_Plain[], alt?: string) => void
+  // onSave: (type: 'video' | 'image', media: Media_Plain[], alt?: string) => void
   multiple?: boolean
 }
 
 const MediaUploadModalContent: React.FC<MediaUploadModalContentProps> = ({
-  onSave,
   uploadMethods,
   multiple,
 }) => {
@@ -34,7 +32,7 @@ const MediaUploadModalContent: React.FC<MediaUploadModalContentProps> = ({
         ) : null} */}
       </Tabs.List>
       <Tabs.Panel value="upload">
-        <MediaUpload onSave={onSave} multiple={multiple} />
+        <MediaUpload multiple={multiple} />
       </Tabs.Panel>
       {/* <Tabs.Panel value="link">
         <MediaFromLink onSave={onSave} />
