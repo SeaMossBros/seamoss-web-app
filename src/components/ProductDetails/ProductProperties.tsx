@@ -1,5 +1,5 @@
 import { Fieldset, Flex, Text } from '@mantine/core'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useFieldArray, useWatch } from 'react-hook-form'
 
 import { ProductSelectionFormData } from '@/types/ProductForm'
@@ -32,16 +32,15 @@ const ProductProperties: React.FC<{
   const [sumArray, setSumArray] = useState<number[]>([])
   const [sum, setSum] = useState<number>(0)
 
-  // TODO: Remove Use Callbacks and revert to pre-commit (go crazy, can always get back this version from github)
-  const getIsFromCartModal = useCallback(() => {
+  const getIsFromCartModal = () => {
     return isFromCartModal && quantityHasNotChanged
-  }, [isFromCartModal, quantityHasNotChanged])
+  }
 
-  const variantCountIsFilled = useCallback((): boolean => {
-    const selectedMaxAmount = () => {
-      return sum !== variant?.quantity
-    }
+  const selectedMaxAmount = () => {
+    return sum !== variant?.quantity
+  }
 
+  const variantCountIsFilled = (): boolean => {
     return !!(
       !getIsFromCartModal() &&
       sum !== null &&
@@ -50,7 +49,7 @@ const ProductProperties: React.FC<{
       sumArray.length &&
       sumArray.some((num) => num + 1 > 0)
     )
-  }, [getIsFromCartModal, sum, sumArray, variant?.quantity])
+  }
 
   useMemo(() => {
     let summedQuantities = 0
@@ -61,16 +60,16 @@ const ProductProperties: React.FC<{
   useMemo(() => {
     selectedProperties.map((property) => remove(property.id))
     setSumArray(Array(sumArray.length).fill(0))
-  }, [variant?.id, remove, selectedProperties, sumArray.length])
+  }, [variant?.id, remove])
 
   useEffect(() => {
     setSumArray(Array(product?.attributes.product_properties?.data?.length).fill(0))
-  }, [product?.attributes.product_properties?.data, variant?.quantity])
+  }, [product?.attributes.product_properties?.data])
 
   useEffect(() => {
     sumArray.length && setQuantityHasNotChanged(false)
     setPropertyIsSelected(variantCountIsFilled())
-  }, [variant, sumArray, setPropertyIsSelected, variantCountIsFilled])
+  }, [variant?.id, sumArray, setPropertyIsSelected])
 
   if (!product || !variant) return null
 
@@ -85,7 +84,8 @@ const ProductProperties: React.FC<{
       newArraySum[index] = num
       return newArraySum
     })
-    setPropertyIsSelected(variantCountIsFilled())
+    const countIsFilled = variantCountIsFilled()
+    setPropertyIsSelected(countIsFilled)
   }
 
   return (
