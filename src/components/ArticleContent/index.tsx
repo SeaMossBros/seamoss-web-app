@@ -21,6 +21,7 @@ import ArticleCoverField from './ArticleCoverField'
 import ArticleIntroField from './ArticleIntroField'
 import ArticleTitleField from './ArticleTitleField'
 import { ArticleComponentCommonProps } from './common'
+import { blogWrapper } from './styles.css'
 
 const schema = object({
   title: string().required('Please input article title'),
@@ -119,7 +120,7 @@ const ArticleContent: React.FC<ArticleContentProps> = ({
           onSubmit={methods.handleSubmit(onSubmit)}
           style={{ width: '100%', height: '100%', maxWidth: '900px' }}
         >
-          <Stack mt={60}>
+          <Stack className={blogWrapper}>
             {isAuthenticated ? (
               <Group justify="flex-end">
                 {mode === 'view' ? (
@@ -136,8 +137,8 @@ const ArticleContent: React.FC<ArticleContentProps> = ({
                 ) : null}
               </Group>
             ) : null}
-            <ArticleCoverField mode={mode} />
             <ArticleTitleField mode={mode} />
+            <ArticleCoverField mode={mode} />
             <ArticleAuthorField mode={mode} />
             <ArticleIntroField mode={mode} />
             <ArticleContentField mode={mode} />

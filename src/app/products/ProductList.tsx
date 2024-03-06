@@ -18,10 +18,10 @@ const ProductCol: React.FC<PropsWithChildren> = ({ children }) => {
   return (
     <Grid.Col
       span={{
-        base: 12,
+        base: 6,
         xs: 3,
-        sm: 3,
-        md: 4,
+        sm: 4,
+        md: 6,
       }}
     >
       {children}
@@ -71,7 +71,8 @@ const ProductList: React.FC<ProductListProps> = ({ queryParams, onPage }) => {
   return (
     <Stack gap="xl" className={productsContainer}>
       {onPage === 'Home' && <Title size={'h1'}>Our Best Sellers 🔥🪸</Title>}
-      <Grid justify="space-evenly" w={'100%'}>
+
+      <Grid w={'100%'}>
         {products?.data?.map((product) => (
           <ProductCol key={product.id}>
             <ProductCard product={product} onQuickViewClick={onQuickViewClick} />

@@ -23,7 +23,7 @@ import {
 } from './HeroImage.css'
 
 const HeroImage: React.FC = () => {
-  const { colors, defaultRadius } = useMantineTheme()
+  const { defaultRadius } = useMantineTheme()
   const [isHovering, setIsHovering] = useState(false)
 
   const { data } = useHomePage()
@@ -89,11 +89,9 @@ const HeroImage: React.FC = () => {
             mt={30}
             py={6}
             style={{
-              backgroundColor: colors.white[1],
               textAlign: 'center',
               borderRadius: defaultRadius,
             }}
-            c={colors.teal[9]}
           >
             Discover our pure sea moss in gel, dried, and gummy form
             <br />

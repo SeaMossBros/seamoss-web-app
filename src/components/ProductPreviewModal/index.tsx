@@ -12,6 +12,7 @@ import { ProductSelectionFormData } from '@/types/ProductForm'
 
 import ProductDetails from '../ProductDetails'
 import ProductImages from '../ProductImages'
+import { addToCartButton } from './ProductPreviewModal.css'
 
 export type ProductPreviewModalProps = ModalProps & {
   product: Product | null
@@ -102,6 +103,7 @@ const ProductPreviewModal: React.FC<ProductPreviewModalProps> = ({ product, ...m
                     loading={isAddingToCart}
                     fullWidth
                     disabled={propertyIsSelected}
+                    className={addToCartButton}
                   >
                     Add To Cart
                   </Button>

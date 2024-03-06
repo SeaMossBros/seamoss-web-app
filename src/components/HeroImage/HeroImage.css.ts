@@ -72,11 +72,19 @@ export const title = style({
 })
 
 export const description = style({
-  color: defaultThemeVars.colors['white'][1],
+  backgroundColor: defaultThemeVars.colors['white'][1],
+  color: defaultThemeVars.colors['teal'][9],
   fontFamily: defaultThemeVars.fontFamily,
   fontSize: defaultThemeVars.fontSizes.lg,
   opacity: 0.75,
   maxWidth: 'rem(500px)',
+
+  '@media': {
+    [`(max-width: ${defaultThemeVars.breakpoints.md})`]: {
+      backgroundColor: 'transparent',
+      color: 'transparent',
+    },
+  },
 })
 
 export const heroButtonContainer = style({

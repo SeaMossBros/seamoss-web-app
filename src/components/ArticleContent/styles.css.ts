@@ -2,6 +2,17 @@ import { globalStyle, style } from '@vanilla-extract/css'
 
 import { defaultThemeVars } from '@/themes/default'
 
+export const blogWrapper = style({
+  marginTop: 60,
+
+  '@media': {
+    [`(max-height: ${defaultThemeVars.breakpoints.md})`]: {
+      marginTop: 0,
+      paddingTop: 0,
+    },
+  },
+})
+
 export const articleInputField = style({
   padding: 0,
   border: 0,
@@ -14,6 +25,8 @@ export const articleTitle = style({
 export const articleIntro = style({
   fontSize: defaultThemeVars.fontSizes.md,
   fontWeight: 600,
+  marginTop: 51,
+  marginBottom: 12,
 })
 
 export const contentEditorToolbar = style({

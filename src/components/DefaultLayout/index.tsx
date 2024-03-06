@@ -46,7 +46,7 @@ const DefaultLayout: React.FC<PropsWithChildren> = ({ children }) => {
         <Header navOpened={navOpened} toggleNav={navbar.toggle} />
       </AppShellHeader>
       <AppShellNavbar withBorder>
-        <NavBar onClose={navbar.close} />
+        <NavBar onClose={navbar.close} navOpened={navOpened} />
       </AppShellNavbar>
       <AppShellMain className={main}>{children}</AppShellMain>
       <AppShellFooter className={footer}>

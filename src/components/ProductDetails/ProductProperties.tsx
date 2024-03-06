@@ -32,6 +32,7 @@ const ProductProperties: React.FC<{
   const [sumArray, setSumArray] = useState<number[]>([])
   const [sum, setSum] = useState<number>(0)
 
+  // TODO: Remove Use Callbacks and revert to pre-commit (go crazy, can always get back this version from github)
   const getIsFromCartModal = useCallback(() => {
     return isFromCartModal && quantityHasNotChanged
   }, [isFromCartModal, quantityHasNotChanged])
