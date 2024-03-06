@@ -9,5 +9,3 @@ export const addToCartButton = style({
     },
   },
 })
-
-// TODO: Fix the image shift of the product modal

@@ -68,11 +68,11 @@ const ProductPreviewModal: React.FC<ProductPreviewModalProps> = ({ product, ...m
   if (!product) return null
 
   return (
-    <Modal {...modalProps} size="90%" centered>
+    <Modal {...modalProps} size="90%" centered xOffset={'2vw'} yOffset={'2vh'}>
       {productDetails ? (
         <FormProvider {...methods}>
           <form onSubmit={methods.handleSubmit(onSubmit)}>
-            <Grid gutter="xl">
+            <Grid gutter="xl" px={9}>
               <Grid.Col
                 span={{
                   base: 12,
@@ -97,7 +97,6 @@ const ProductPreviewModal: React.FC<ProductPreviewModalProps> = ({ product, ...m
                     showOptionImages={false}
                     setPropertyIsSelected={handleSetPropertyIsSelected}
                   />
-                  {/* // TODO: disabled when no property is selected */}
                   <Button
                     type="submit"
                     loading={isAddingToCart}
