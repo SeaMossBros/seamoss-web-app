@@ -1,11 +1,13 @@
-import { Center, Skeleton, Stack, Text } from '@mantine/core'
+import { Anchor, Button, Center, Divider, Flex, Skeleton, Stack, Text } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
+import Link from 'next/link'
 import { useCallback, useState } from 'react'
 
 import { CartItem } from '@/types/CartItem'
 
 import CartItemUpdateModal from '../CartItemUpdateModal'
 import CartItemSingle from './CartItemSingle'
+import { bottomCheckoutButton } from './CartItemSingle.css'
 
 export type CartItemsProps = {
   isLoading: boolean
@@ -19,6 +21,8 @@ export type CartItemsProps = {
     }
   >
   onRefetch: () => void
+  onCheckout: () => void
+  isCheckingOut: boolean
 }
 
 const CartItems: React.FC<CartItemsProps> = ({
@@ -27,7 +31,13 @@ const CartItems: React.FC<CartItemsProps> = ({
   items,
   billingInfo,
   onRefetch,
+  onCheckout,
+  isCheckingOut,
 }) => {
+  const onCheckoutClick = useCallback(() => {
+    onCheckout()
+  }, [onCheckout])
+
   const [itemToUpdate, setItemToUpdate] = useState<CartItem | null>(null)
   const [updateModalOpened, updateModal] = useDisclosure(false, {
     onClose: () => {
@@ -47,7 +57,12 @@ const CartItems: React.FC<CartItemsProps> = ({
   if (isFetched && !items?.length)
     return (
       <Center>
-        <Text>There is no items in your cart</Text>
+        <Text>
+          There are no items in your cart.
+          <Anchor href="/products" pt={12}>
+            Continue Shopping
+          </Anchor>
+        </Text>
       </Center>
     )
 
@@ -74,6 +89,22 @@ const CartItems: React.FC<CartItemsProps> = ({
           onClose={updateModal.close}
         />
       ) : null}
+      <Flex direction={'column'} align={'center'} pt={33}>
+        <Button
+          loading={isCheckingOut}
+          onClick={onCheckoutClick}
+          w={'60%'}
+          className={bottomCheckoutButton}
+        >
+          CHECKOUT
+        </Button>
+        <Divider label="or" variant="solid" w={120} py={21} />
+        <Link href="/products" passHref style={{ width: '60%' }}>
+          <Button variant="outline" w={'100%'}>
+            Continue Shopping
+          </Button>
+        </Link>
+      </Flex>
     </Stack>
   )
 }

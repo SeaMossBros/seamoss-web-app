@@ -5,13 +5,7 @@ import Link from 'next/link'
 import React from 'react'
 
 import TextLink from '../components/TextLink'
-import {
-  notFoundControl,
-  notFoundDescription,
-  notFoundRoot,
-  notFoundTitle,
-  notFoundVideo,
-} from './not-found.css'
+import { notFoundControl, notFoundDescription, notFoundRoot, notFoundTitle } from './not-found.css'
 
 const NotFoundImage = () => {
   return (
@@ -44,12 +38,7 @@ const NotFoundImage = () => {
             </Button>
           </Link>
         </div>
-        <Image
-          src={'/videos/SeaTheMoss-Spinner-With-Wildcrafted-Raw-Extended.mp4'}
-          className={notFoundVideo}
-          onError={(e) => (e.currentTarget.src = '/images/SeaTheMoss-StillSpinner.png')}
-          alt="animated logo spinning"
-        />
+        <Image src={'/images/SeaTheMoss-StillSpinner.png'} alt="animated logo spinning" />
       </SimpleGrid>
     </Container>
   )

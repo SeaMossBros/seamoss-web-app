@@ -34,11 +34,22 @@ export const title = style({
   marginBottom: 'var(--mantine-spacing-xs)',
   textAlign: 'center',
   fontFamily: 'Palantino',
+  backgroundColor: defaultThemeVars.colors.teal[9],
+  padding: '3px 0',
 
   '@media': {
     [`(max-width: ${defaultThemeVars.breakpoints.xs})`]: {
       fontSize: 'rem(18px)',
-      textAlign: 'left',
+    },
+  },
+})
+
+export const content = style({
+  width: '51%',
+
+  '@media': {
+    [`(max-width: ${defaultThemeVars.breakpoints.xs})`]: {
+      width: '84%',
     },
   },
 })

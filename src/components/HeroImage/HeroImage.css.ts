@@ -38,17 +38,18 @@ export const inner = style({
   // zIndex: 2,
 })
 
-export const image = style({
-  '@media': {
-    [`(max-width: ${defaultThemeVars.breakpoints.md})`]: {
-      display: 'none',
-    },
-  },
-})
+// export const image = style({
+//   '@media': {
+//     [`(max-width: ${defaultThemeVars.breakpoints.md})`]: {
+//       display: 'none',
+//     },
+//   },
+// })
 
 export const content = style({
   paddingBottom: `calc(${defaultThemeVars.spacing.xl} * 2)`,
   marginRight: `calc(${defaultThemeVars.spacing.xl} * 3)`,
+
   '@media': {
     [`(max-width: ${defaultThemeVars.breakpoints.md})`]: {
       width: '81vw',
@@ -63,6 +64,7 @@ export const title = style({
   lineHeight: 1.05,
   maxWidth: 'rem(500px)',
   fontSize: 'rem(48px)',
+
   '@media': {
     [`(max-width: ${defaultThemeVars.breakpoints.md})`]: {
       fontSize: 'rem(34px)',
@@ -78,11 +80,14 @@ export const description = style({
   fontSize: defaultThemeVars.fontSizes.lg,
   opacity: 0.75,
   maxWidth: 'rem(500px)',
+  marginTop: 30,
 
   '@media': {
     [`(max-width: ${defaultThemeVars.breakpoints.md})`]: {
       backgroundColor: 'transparent',
       color: 'transparent',
+      marginTop: 0,
+      height: 0,
     },
   },
 })
@@ -90,6 +95,13 @@ export const description = style({
 export const heroButtonContainer = style({
   display: 'flex',
   flexDirection: 'column',
+  width: 'fit-content',
+
+  '@media': {
+    [`(max-width: ${defaultThemeVars.breakpoints.sm})`]: {
+      marginTop: 64,
+    },
+  },
 })
 
 export const actionButtons = style({
@@ -100,11 +112,10 @@ export const actionButtons = style({
   display: 'flex',
   justifyContent: 'center',
   flexWrap: 'wrap',
+  width: 'fit-content',
 
   '@media': {
     [`(max-width: ${defaultThemeVars.breakpoints.sm})`]: {
-      width: '42%',
-      minWidth: 'fit-content',
       padding: '10px',
     },
   },

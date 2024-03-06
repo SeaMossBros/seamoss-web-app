@@ -1,7 +1,7 @@
 import { Container, Overlay, Text, Title } from '@mantine/core'
 import { Metadata } from 'next'
 
-import { inner, title, wrapper } from './hero-image-background.css'
+import { content, inner, title, wrapper } from './hero-image-background.css'
 
 export const metadata: Metadata = {
   title: 'Terms Of Service | SeaTheMoss',
@@ -17,7 +17,7 @@ const PrivacyPolicyPage: React.FC = () => {
           <Title className={title}>Terms Of Service</Title>
         </div>
       </div>
-      <Container w={'51%'} pt={54}>
+      <Container className={content} pt={54}>
         <Text fw={700} mb={9}>
           OVERVIEW
         </Text>
@@ -372,7 +372,7 @@ const PrivacyPolicyPage: React.FC = () => {
           SECTION 20 - CONTACT INFORMATION
         </Text>
         <Text fw={400}>
-          Questions about the Terms of Service should be sent to us at supoprt@seathemoss.com
+          Questions about the Terms of Service should be sent to us at support@seathemoss.com
         </Text>
         <br />
         <br />

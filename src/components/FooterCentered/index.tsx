@@ -1,9 +1,11 @@
 'use client'
-import { ActionIcon, Anchor, Group, Image, Text } from '@mantine/core'
+import { ActionIcon, Anchor, Center, Flex, Group, Text, useMantineColorScheme } from '@mantine/core'
 import { IconBrandYoutube } from '@tabler/icons-react'
+import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import React from 'react'
 
-import { externalFooterLinks, footerImage, footerLinks, inner, rightsReserved } from './Footer.css'
+import { companyInfo, externalFooterLinks, footerImage, footerLinks, inner } from './Footer.css'
 
 const links = [
   { link: '/products', label: 'Shop Products' },
@@ -16,6 +18,9 @@ const links = [
 ]
 
 const FooterCentered = () => {
+  const router = useRouter()
+  const { colorScheme } = useMantineColorScheme()
+  const isDarkTheme = colorScheme === 'dark'
   const items = links.map((link, i) => (
     <Text key={link.label}>
       <Anchor c="dimmed" href={link.link} lh={1} size="sm" inline px={0} mx={0}>
@@ -39,8 +44,11 @@ const FooterCentered = () => {
       <div className={inner}>
         <Image
           className={footerImage}
+          width={81}
+          height={81}
           src={'/images/SeaTheMoss-StillSpinner.svg'}
           alt="footer logo"
+          onClick={() => router.push('/')}
         />
 
         <Group className={footerLinks}>{items}</Group>
@@ -65,9 +73,24 @@ const FooterCentered = () => {
           </ActionIcon> */}
         </Group>
       </div>
-      <Text size="xs" lh={0.6} span inline c="dimmed" className={rightsReserved}>
-        © 2024. SeaTheMoss LLC. All Rights Reserved
-      </Text>
+      <Center w={'100vw'}>
+        <Flex align={'center'} my={42} className={companyInfo}>
+          <Text ml={21} fw={200} fz={'xs'} style={{ display: 'flex', alignItems: 'center' }}>
+            powered by
+            <Image
+              src={`/images/icons8-stripe-${isDarkTheme ? '64' : '50'}.png`}
+              height={33}
+              width={33}
+              alt="stripe-icon"
+              onClick={() => router.push('https://stripe.com')}
+              style={{ cursor: 'pointer', marginLeft: 9 }}
+            />
+          </Text>
+          <Text size="xs" lh={0.6} span inline c="dimmed">
+            © 2024. SeaTheMoss LLC. All Rights Reserved
+          </Text>
+        </Flex>
+      </Center>
     </Group>
   )
 }

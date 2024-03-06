@@ -35,8 +35,6 @@ const BlogsList: React.FC<BlogListProps> = ({ queryParams }) => {
           key={article.id}
           span={{
             base: 6,
-            xs: 2,
-            sm: 2,
             md: 3,
           }}
         >

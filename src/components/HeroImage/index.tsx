@@ -57,7 +57,7 @@ const HeroImage: React.FC = () => {
         plugins={[autoplay.current]}
         onSlideChange={resetAutoplay}
         controlSize={42}
-        speed={6}
+        speed={7}
         loop
       >
         {images.map((image) => (
@@ -86,7 +86,6 @@ const HeroImage: React.FC = () => {
 
           <Text
             className={description}
-            mt={30}
             py={6}
             style={{
               textAlign: 'center',

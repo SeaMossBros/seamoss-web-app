@@ -23,7 +23,12 @@ import { PurchaseType } from '@/types/PurchaseOption'
 import { getStrapiUploadUrl } from '@/utils/cms'
 import { formatPrice } from '@/utils/price'
 
-import { itemInfoWrapper, priceInfoWrapper, productImg } from './CartItemSingle.css'
+import {
+  cartItemWrapper,
+  itemInfoWrapper,
+  priceInfoWrapper,
+  productImg,
+} from './CartItemSingle.css'
 
 export type CartItemSingleProps = {
   item: CartItem
@@ -91,7 +96,7 @@ const CartItemSingle: React.FC<CartItemSingleProps> = ({
 
   return (
     <Card withBorder>
-      <Flex gap="md" w="100%">
+      <Flex gap="md" w="100%" className={cartItemWrapper}>
         <Image
           className={productImg}
           src={
@@ -112,7 +117,7 @@ const CartItemSingle: React.FC<CartItemSingleProps> = ({
           <Text fz="sm">
             {purchaseType === PurchaseType.Recurring ? purchaseOptionName : 'one-time purchase'}
           </Text>
-          <Flex align="center">
+          <Flex align="center" w={'100%'}>
             <Badge color="gray" size="sm" component="span">
               {options?.product_variant?.data?.attributes.name ?? ''}
             </Badge>{' '}
@@ -132,16 +137,6 @@ const CartItemSingle: React.FC<CartItemSingleProps> = ({
               onClick={onEditClick}
             >
               <Pencil />
-            </ActionIcon>
-            <ActionIcon
-              type="button"
-              variant="transparent"
-              c="red"
-              mx="md"
-              size="sm"
-              onClick={onRemove}
-            >
-              <IconTrash />
             </ActionIcon>
           </Flex>
           {options?.properties?.length ? (
@@ -177,7 +172,7 @@ const CartItemSingle: React.FC<CartItemSingleProps> = ({
           ) : null}
         </Stack>
         <Box className={priceInfoWrapper}>
-          <Skeleton visible={!discountedPrice && !total} w="100%" ta="right">
+          <Skeleton visible={!discountedPrice && !total} w="fit-content" ta="right" mb={9}>
             <Text c="teal" fw={600} ta="right" component="div">
               {formatPrice(discountedPrice ?? total)}
               {discountedPrice && total ? (
@@ -187,6 +182,16 @@ const CartItemSingle: React.FC<CartItemSingleProps> = ({
               ) : null}
             </Text>
           </Skeleton>
+          <ActionIcon
+            type="button"
+            variant="transparent"
+            c="red"
+            mx="md"
+            size="sm"
+            onClick={onRemove}
+          >
+            <IconTrash />
+          </ActionIcon>
         </Box>
       </Flex>
     </Card>

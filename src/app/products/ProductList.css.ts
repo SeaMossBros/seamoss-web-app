@@ -12,7 +12,13 @@ export const productsContainer = style({
 
   '@media': {
     [`(max-width: ${defaultThemeVars.breakpoints.md})`]: {
+      paddingTop: 'none',
+    },
+    [`(max-width: ${defaultThemeVars.breakpoints.lg})`]: {
       paddingTop: '9vh',
+    },
+    [`(max-width: ${defaultThemeVars.breakpoints.xl})`]: {
+      paddingTop: 'none',
     },
   },
 })

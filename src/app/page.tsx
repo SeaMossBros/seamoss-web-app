@@ -21,7 +21,7 @@ const HomePage: React.FC = async () => {
     populate: ['images', 'thumbnail', 'product_variants'],
     pagination: {
       page: 1,
-      pageSize: 2,
+      pageSize: 4,
     },
   }
 

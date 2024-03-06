@@ -72,7 +72,7 @@ const ProductList: React.FC<ProductListProps> = ({ queryParams, onPage }) => {
     <Stack gap="xl" className={productsContainer}>
       {onPage === 'Home' && <Title size={'h1'}>Our Best Sellers 🔥🪸</Title>}
 
-      <Grid w={'100%'}>
+      <Grid>
         {products?.data?.map((product) => (
           <ProductCol key={product.id}>
             <ProductCard product={product} onQuickViewClick={onQuickViewClick} />
