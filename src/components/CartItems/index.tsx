@@ -1,4 +1,4 @@
-import { Anchor, Button, Center, Divider, Flex, Skeleton, Stack, Text } from '@mantine/core'
+import { Button, Card, Divider, Flex, Skeleton, Stack, Text } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import Link from 'next/link'
 import { useCallback, useState } from 'react'
@@ -7,7 +7,7 @@ import { CartItem } from '@/types/CartItem'
 
 import CartItemUpdateModal from '../CartItemUpdateModal'
 import CartItemSingle from './CartItemSingle'
-import { bottomCheckoutButton } from './CartItemSingle.css'
+import { bottomCheckoutButton, bottomCheckoutDivider } from './CartItemSingle.css'
 
 export type CartItemsProps = {
   isLoading: boolean
@@ -56,14 +56,14 @@ const CartItems: React.FC<CartItemsProps> = ({
 
   if (isFetched && !items?.length)
     return (
-      <Center>
-        <Text>
-          There are no items in your cart.
-          <Anchor href="/products" pt={12}>
-            Continue Shopping
-          </Anchor>
-        </Text>
-      </Center>
+      <Card withBorder>
+        <Flex direction={'column'} align={'center'} pt={33} pb={33}>
+          <Text mb={21}>There are no items in your cart. </Text>
+          <Link href="/products" passHref>
+            <Button variant="outline">Continue Shopping</Button>
+          </Link>
+        </Flex>
+      </Card>
     )
 
   return (
@@ -98,7 +98,7 @@ const CartItems: React.FC<CartItemsProps> = ({
         >
           CHECKOUT
         </Button>
-        <Divider label="or" variant="solid" w={120} py={21} />
+        <Divider label="or" variant="solid" className={bottomCheckoutDivider} />
         <Link href="/products" passHref style={{ width: '60%' }}>
           <Button variant="outline" w={'100%'}>
             Continue Shopping

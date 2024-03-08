@@ -8,7 +8,8 @@ import ProductVariantSelection from './ProductVariantSelection'
 
 const ProductVariants: React.FC<{
   showImages?: boolean
-}> = ({ showImages }) => {
+  setVariantChanged: (bool: boolean) => void
+}> = ({ showImages, setVariantChanged }) => {
   const fieldsetLegend = useWatch<
     ProductSelectionFormData,
     'product.attributes.variant_selection_text'
@@ -28,6 +29,7 @@ const ProductVariants: React.FC<{
             key={productVariant.id}
             variant={productVariant}
             showImage={showImages}
+            setVariantChanged={setVariantChanged}
           />
         ))}
       </Flex>

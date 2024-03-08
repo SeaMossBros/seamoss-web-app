@@ -6,6 +6,7 @@ export const navbarStyles = style({
   backgroundColor: 'transparent',
   height: '100%',
   maxHeight: '90vh',
+  marginBottom: '9px',
   maxWidth: '90vw',
   display: 'flex',
   flexDirection: 'column',

@@ -9,8 +9,16 @@ import ProductPropertySelection from './ProductPropertySelection'
 const ProductProperties: React.FC<{
   showImages?: boolean
   isFromCartModal: boolean
-  setPropertyIsSelected: (bool: boolean) => void
-}> = ({ showImages, isFromCartModal, setPropertyIsSelected }) => {
+  variantChanged?: boolean
+  setMaxPropertySelected: (bool: boolean) => void
+  setVariantChanged: (bool: boolean) => void
+}> = ({
+  showImages,
+  isFromCartModal,
+  setMaxPropertySelected,
+  setVariantChanged,
+  variantChanged,
+}) => {
   const product = useWatch<ProductSelectionFormData, 'product'>({
     name: 'product',
   })
@@ -28,34 +36,30 @@ const ProductProperties: React.FC<{
     keyName: 'key',
   })
 
-  const [quantityHasNotChanged, setQuantityHasNotChanged] = useState(true)
   const [sumArray, setSumArray] = useState<number[]>([])
-  const [sum, setSum] = useState<number>(0)
-
-  const getIsFromCartModal = () => {
-    return isFromCartModal && quantityHasNotChanged
-  }
 
   const selectedMaxAmount = () => {
-    return sum !== variant?.quantity
+    let summedQuantities = 0
+    sumArray.forEach((quantity) => (summedQuantities += quantity))
+    return summedQuantities === variant?.quantity
+  }
+
+  const getRemainingAmountToSelect = () => {
+    let summedQuantities = 0
+    sumArray.forEach((quantity) => (summedQuantities += quantity))
+    return summedQuantities
   }
 
   const variantCountIsFilled = (): boolean => {
-    return !!(
-      !getIsFromCartModal() &&
-      sum !== null &&
-      !isNaN(sum) &&
+    const bool = !!(
+      isFromCartModal &&
       selectedMaxAmount() &&
       sumArray.length &&
       sumArray.some((num) => num + 1 > 0)
     )
+    setMaxPropertySelected(bool || (variant && variant.quantity === getRemainingAmountToSelect()))
+    return bool
   }
-
-  useMemo(() => {
-    let summedQuantities = 0
-    sumArray.forEach((quantity) => (summedQuantities += quantity))
-    setSum(summedQuantities)
-  }, [sumArray])
 
   useMemo(() => {
     selectedProperties.map((property) => remove(property.id))
@@ -63,43 +67,67 @@ const ProductProperties: React.FC<{
   }, [variant?.id, remove])
 
   useEffect(() => {
-    setSumArray(Array(product?.attributes.product_properties?.data?.length).fill(0))
-  }, [product?.attributes.product_properties?.data])
-
-  useEffect(() => {
-    sumArray.length && setQuantityHasNotChanged(false)
-    setPropertyIsSelected(variantCountIsFilled())
-  }, [variant?.id, sumArray, setPropertyIsSelected])
-
-  if (!product || !variant) return null
-
-  const { attributes } = product
+    if (!isFromCartModal) {
+      setSumArray(Array(product?.attributes.product_properties?.data?.length).fill(0))
+    }
+  }, [product?.attributes.product_properties?.data.length])
 
   const updateQuantitySum = (num: number, id: number) => {
-    setQuantityHasNotChanged(false)
-    const index = attributes.product_properties?.data?.findIndex((property) => property.id === id)
+    const index = selectedProperties.findIndex((property) => property.id === id)
+    if (index === -1) {
+      setSumArray((prev) => {
+        const newArray: number[] = []
+        prev.map((num) => (num > 0 ? newArray.push(num) : null))
+        return [...newArray, num]
+      })
+      return
+    }
+
+    let sum = 0
+    sumArray.forEach((number, i) => {
+      index !== i ? (sum += number) : null
+    })
+    if (!variant?.quantity || num + sum > variant.quantity) return
 
     setSumArray((prev) => {
-      const newArraySum = [...prev]
+      const newArraySum: number[] = [...prev]
       newArraySum[index] = num
+      if (num === 0) newArraySum.splice(index, 1)
       return newArraySum
     })
-    const countIsFilled = variantCountIsFilled()
-    setPropertyIsSelected(countIsFilled)
   }
+
+  useEffect(() => {
+    if (isFromCartModal) {
+      selectedProperties.forEach((property) => {
+        updateQuantitySum(property.quantity, property.id)
+      })
+    }
+  }, [])
+
+  const sum = useMemo(() => {
+    const sumOfQuants = sumArray.reduce((partialSum, a) => partialSum + a, 0)
+    variantCountIsFilled()
+    return sumOfQuants
+  }, [sumArray])
+
+  if (!product?.attributes || !variant) return null
+
+  const { attributes } = product
+  const showWarnings = !variantCountIsFilled() && variant.quantity !== getRemainingAmountToSelect()
 
   return (
     <Fieldset
       legend={attributes.unit_property_selection_text || 'Select Properties'}
       style={{
-        borderColor: !getIsFromCartModal() && variant.quantity - sum > 0 ? 'red' : '#373a40',
+        borderColor: showWarnings ? 'red' : '',
         borderWidth: '1px',
         userSelect: 'none',
       }}
     >
-      {variantCountIsFilled() && (
+      {showWarnings && (
         <Text c={'red'} style={{ userSelect: 'none' }}>
-          Choose {variant.quantity - sum} before you continue!
+          Choose {variant.quantity - getRemainingAmountToSelect()} before you continue!
         </Text>
       )}
       <Flex gap="sm" wrap="wrap">
@@ -114,6 +142,9 @@ const ProductProperties: React.FC<{
             update={update}
             showImage={showImages}
             updateQuantitySum={updateQuantitySum}
+            sum={sum}
+            variantChanged={variantChanged}
+            setVariantChanged={setVariantChanged}
           />
         ))}
       </Flex>

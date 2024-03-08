@@ -20,7 +20,12 @@ const OrdersPage: React.FC = async () => {
 
   return (
     <Container size={'100%'} className={pageCont}>
-      <Group display={'flex'} style={{ flexDirection: 'column' }} w={'100%'} justify="center">
+      <Group
+        display={'flex'}
+        style={{ flexDirection: 'column', justifyContent: 'flex-start' }}
+        w={'100%'}
+        justify="center"
+      >
         <Title className={title}>Your Orders</Title>
         <OrdersListClientSide user={user} />
       </Group>

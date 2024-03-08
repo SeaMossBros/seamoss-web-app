@@ -42,9 +42,18 @@ const BillingDetail: React.FC<BillingDetailProps> = ({ total, onCheckout, isChec
             </Text>
           </Skeleton>
         </Box>
-        <Button loading={isCheckingOut} onClick={onCheckoutClick} fullWidth>
+        <Button
+          loading={isCheckingOut}
+          onClick={onCheckoutClick}
+          fullWidth
+          disabled={!total || total === 0}
+          style={{ border: !total || total === 0 ? '1px solid #373a40' : '' }}
+        >
           CHECKOUT
         </Button>
+        <Text fw={300} fz={9}>
+          Taxes & Shipping fees not included
+        </Text>
         <Flex align={'center'}>
           <Text fw={200} fz={'xs'} mr={6}>
             powered by

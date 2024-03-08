@@ -16,7 +16,6 @@ export const orderWrapper = style({
   maxHeight: '90vh',
   overflowY: 'auto',
   position: 'relative',
-  boxShadow: '0px -12px 9px -12px inset teal',
 })
 
 export const orderStyle = style({

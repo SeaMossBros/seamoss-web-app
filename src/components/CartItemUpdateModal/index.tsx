@@ -18,7 +18,7 @@ export type CartItemUpdateModalProps = ModalProps & {
 }
 
 const CartItemUpdateModal: React.FC<CartItemUpdateModalProps> = ({ item, ...modalProps }) => {
-  const [propertyIsSelected, setPropertyIsSelected] = useState(false)
+  const [maxPropertySelected, setMaxPropertySelected] = useState(true)
   const { updateItem, isUpdatingItem } = useCart()
 
   const { product: productDetails, methods } = useProductForm(
@@ -95,10 +95,6 @@ const CartItemUpdateModal: React.FC<CartItemUpdateModalProps> = ({ item, ...moda
     [item, modalProps, updateItem],
   )
 
-  const handleSetPropertyIsSelected = (value: boolean) => {
-    setPropertyIsSelected(value)
-  }
-
   return (
     <Modal {...modalProps} size="90%" closeOnClickOutside centered>
       {productDetails ? (
@@ -128,7 +124,8 @@ const CartItemUpdateModal: React.FC<CartItemUpdateModalProps> = ({ item, ...moda
                     product={productDetails}
                     showOptionImages={false}
                     isFromCartModal={true}
-                    setPropertyIsSelected={handleSetPropertyIsSelected}
+                    setMaxPropertySelected={(value: boolean) => setMaxPropertySelected(value)}
+                    setVariantChanged={() => null}
                   />
                   <Flex gap="sm">
                     <Button
@@ -143,7 +140,7 @@ const CartItemUpdateModal: React.FC<CartItemUpdateModalProps> = ({ item, ...moda
                       type="submit"
                       loading={isUpdatingItem}
                       fullWidth
-                      disabled={propertyIsSelected}
+                      disabled={!maxPropertySelected}
                     >
                       Update
                     </Button>

@@ -1,6 +1,6 @@
 'use client'
 
-import { Box, Button, Text } from '@mantine/core'
+import { Box, Button, Text, useMantineColorScheme, useMantineTheme } from '@mantine/core'
 import { notifications } from '@mantine/notifications'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import omit from 'lodash/omit'
@@ -15,6 +15,9 @@ import { ProductSelectionFormData } from '@/types/ProductForm'
 import { useService } from './useService'
 
 export const useCart = () => {
+  const { colors } = useMantineTheme()
+  const { colorScheme } = useMantineColorScheme()
+  const isDarkTheme = colorScheme === 'dark'
   const { cartId, setCartId, ...cartContext } = useContext(CartContext)
   const queryClient = useQueryClient()
   const cartService = useService(CartService)
@@ -41,9 +44,15 @@ export const useCart = () => {
       notifications.show({
         variant: 'success',
         message: (
-          <Box>
-            <Text>Added {variables.product_name} to cart</Text>
-            <Button variant="transparent" component={Link} href={ROUTE_PATHS.CART} p={0}>
+          <Box component={Link} href={ROUTE_PATHS.CART}>
+            <Text c={isDarkTheme ? colors.gray[1] : colors.gray[9]}>
+              Added{' '}
+              <Text c={colors.teal[9]} span inline>
+                {variables.product_name}
+              </Text>{' '}
+              to cart
+            </Text>
+            <Button variant="transparent" c={colors.teal[9]} p={0}>
               View cart
             </Button>
           </Box>

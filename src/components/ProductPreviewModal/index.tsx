@@ -19,7 +19,8 @@ export type ProductPreviewModalProps = ModalProps & {
 }
 
 const ProductPreviewModal: React.FC<ProductPreviewModalProps> = ({ product, ...modalProps }) => {
-  const [propertyIsSelected, setPropertyIsSelected] = useState(false)
+  const [maxPropertySelected, setMaxPropertySelected] = useState(false)
+  const [variantChanged, setVariantChanged] = useState(false)
   const { addToCart, isAddingToCart } = useCart()
 
   const { product: productDetails, methods } = useProductForm(product?.attributes.slug, {
@@ -57,13 +58,10 @@ const ProductPreviewModal: React.FC<ProductPreviewModalProps> = ({ product, ...m
           modalProps.onClose()
         },
       })
+      setVariantChanged(true)
     },
     [addToCart, modalProps],
   )
-
-  const handleSetPropertyIsSelected = (value: boolean) => {
-    setPropertyIsSelected(value)
-  }
 
   if (!product) return null
 
@@ -95,13 +93,15 @@ const ProductPreviewModal: React.FC<ProductPreviewModalProps> = ({ product, ...m
                   <ProductDetails
                     product={productDetails}
                     showOptionImages={false}
-                    setPropertyIsSelected={handleSetPropertyIsSelected}
+                    setMaxPropertySelected={(value: boolean) => setMaxPropertySelected(value)}
+                    setVariantChanged={setVariantChanged}
+                    variantChanged={variantChanged}
                   />
                   <Button
                     type="submit"
                     loading={isAddingToCart}
                     fullWidth
-                    disabled={propertyIsSelected}
+                    disabled={!maxPropertySelected}
                     className={addToCartButton}
                   >
                     Add To Cart

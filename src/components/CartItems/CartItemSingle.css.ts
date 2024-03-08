@@ -22,6 +22,18 @@ export const bottomCheckoutButton = style({
   },
 })
 
+export const bottomCheckoutDivider = style({
+  width: 120,
+  paddingTop: 21,
+  paddingBottom: 21,
+
+  '@media': {
+    [`(min-width: ${defaultThemeVars.breakpoints.sm})`]: {
+      display: 'none',
+    },
+  },
+})
+
 export const productImg = style({
   flex: 1,
   maxWidth: 70,

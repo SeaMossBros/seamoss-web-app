@@ -21,7 +21,7 @@ export type ProductSingleProps = {
 }
 
 const ProductSingle: React.FC<ProductSingleProps> = ({ slug, queryParams }) => {
-  const [propertyIsSelected, setPropertyIsSelected] = useState(false)
+  const [maxPropertySelected, setMaxPropertySelected] = useState(false)
   const { addToCart, isAddingToCart } = useCart()
   const { product, methods, refetch } = useProductForm(slug, queryParams)
 
@@ -47,10 +47,6 @@ const ProductSingle: React.FC<ProductSingleProps> = ({ slug, queryParams }) => {
   const onRefetch = useCallback(() => {
     refetch()
   }, [refetch])
-
-  const handleSetPropertyIsSelected = (value: boolean) => {
-    setPropertyIsSelected(value)
-  }
 
   if (!product) return null
 
@@ -80,13 +76,14 @@ const ProductSingle: React.FC<ProductSingleProps> = ({ slug, queryParams }) => {
               <Stack gap="lg">
                 <ProductDetails
                   product={product}
-                  setPropertyIsSelected={handleSetPropertyIsSelected}
+                  setMaxPropertySelected={(value: boolean) => setMaxPropertySelected(value)}
+                  setVariantChanged={() => null}
                 />
                 <Button
                   type="submit"
                   loading={isAddingToCart}
                   fullWidth
-                  disabled={propertyIsSelected}
+                  disabled={!maxPropertySelected}
                 >
                   ADD TO CART
                 </Button>

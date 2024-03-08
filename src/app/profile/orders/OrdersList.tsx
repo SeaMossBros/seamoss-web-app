@@ -53,7 +53,11 @@ const OrdersList = ({ user }: OrdersListProps) => {
   return (
     <Container
       className={orderWrapper}
-      style={{ borderBottomLeftRadius: defaultRadius, borderBottomRightRadius: defaultRadius }}
+      style={{
+        borderBottomLeftRadius: defaultRadius,
+        borderBottomRightRadius: defaultRadius,
+        boxShadow: carts.length > 0 ? '0px -12px 9px -12px inset teal' : '',
+      }}
     >
       {carts.map((cart, i) => {
         // console.log('order:::', cart);

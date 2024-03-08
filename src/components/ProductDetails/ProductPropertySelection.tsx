@@ -38,6 +38,9 @@ export type ProductPropertySelectionProps = {
   variant: ProductSelectionFormData['variant']
   showImage?: boolean
   updateQuantitySum: (num: number, id: number) => void
+  sum: number
+  variantChanged?: boolean
+  setVariantChanged: (bool: boolean) => void
 }
 
 const ProductPropertySelection: React.FC<ProductPropertySelectionProps> = ({
@@ -49,6 +52,9 @@ const ProductPropertySelection: React.FC<ProductPropertySelectionProps> = ({
   remove,
   showImage,
   updateQuantitySum,
+  sum,
+  variantChanged,
+  setVariantChanged,
 }) => {
   const { colors } = useMantineTheme()
   const { attributes } = property
@@ -64,6 +70,13 @@ const ProductPropertySelection: React.FC<ProductPropertySelectionProps> = ({
     () => selectedProperties[selectedIndex],
     [selectedIndex, selectedProperties],
   )
+
+  useEffect(() => {
+    if (variantChanged) {
+      remove(selectedIndex)
+      setVariantChanged(false)
+    }
+  }, [variant?.id])
 
   const max = useMemo(() => {
     if (!variant) return undefined
@@ -167,7 +180,7 @@ const ProductPropertySelection: React.FC<ProductPropertySelectionProps> = ({
                 size={12}
                 onClick={(e) => {
                   e.stopPropagation()
-                  quantityInput.current?.decrement()
+                  sum > 0 && quantityInput.current?.decrement()
                 }}
               />
             }
@@ -177,7 +190,7 @@ const ProductPropertySelection: React.FC<ProductPropertySelectionProps> = ({
                 size={12}
                 onClick={(e) => {
                   e.stopPropagation()
-                  quantityInput.current?.increment()
+                  sum < variant?.quantity && quantityInput.current?.increment()
                 }}
               />
             }
