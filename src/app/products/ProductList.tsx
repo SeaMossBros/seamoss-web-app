@@ -19,7 +19,7 @@ import { useProducts } from '@/queries/useProducts'
 import { Product, Product_NoRelations } from '@/types/Product'
 import { QueryParams } from '@/types/QueryParams'
 
-import { pagination, productsContainer } from './ProductList.css'
+import { pagination, productsContainer, topProductsTitle } from './ProductList.css'
 
 const ProductCol: React.FC<PropsWithChildren> = ({ children }) => {
   return (
@@ -81,7 +81,11 @@ const ProductList: React.FC<ProductListProps> = ({ queryParams, onPage }) => {
   return (
     <Stack gap="xl" className={productsContainer}>
       {onPage === 'Home' && (
-        <Title size={'h1'} c={isDarkTheme ? colors.gray[3] : colors.gray[9]}>
+        <Title
+          size={'h1'}
+          c={isDarkTheme ? colors.gray[3] : colors.gray[9]}
+          className={topProductsTitle}
+        >
           Our Top Products
         </Title>
       )}
