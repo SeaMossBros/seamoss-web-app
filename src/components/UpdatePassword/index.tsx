@@ -18,8 +18,6 @@ const UpdatePassword = ({ password }: UpdatePasswordProps) => {
   const [submittedForm, setSubmittedForm] = useState(false)
   const code = useSearchParams().get('code')
 
-  console.log('code', code)
-
   const form = useForm({
     initialValues: {
       password: !password ? '' : password,
