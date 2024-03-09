@@ -22,6 +22,7 @@ import { ROUTE_PATHS } from '@/consts/route-paths'
 // import AuthService from '@/services/auth.service'
 
 const AuthenticationForm = () => {
+  const [isNotValidForm, setIsNotValidForm] = useState(true)
   const [submittedForm, setSubmittedForm] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
   // const [googleTextColor, setGoogleTextColor] = useState('white')
@@ -45,6 +46,8 @@ const AuthenticationForm = () => {
     },
 
     validate: {
+      username: (val) =>
+        val && val.length > 1 ? null : 'Username should be at least 2 characters',
       email: (val) => (/^\S+@\S+$/.test(val) ? null : 'Invalid email'),
       password: (val) => (val.length <= 6 ? 'Password should include at least 6 characters' : null),
     },
@@ -92,6 +95,12 @@ const AuthenticationForm = () => {
   const handleToggle = () => {
     toggle()
     form.setFieldValue('terms', false)
+    checkIsFormValid()
+  }
+
+  const checkIsFormValid = () => {
+    const formIsNotValidBool = !form.values.terms && form.validate().hasErrors
+    setIsNotValidForm(formIsNotValidBool)
   }
 
   return (
@@ -233,7 +242,7 @@ const AuthenticationForm = () => {
             h="fit-contnet"
             fz={18}
             style={{ borderRadius: defaultRadius }}
-            disabled={submittedForm}
+            disabled={isNotValidForm || submittedForm}
           >
             {type[0].toUpperCase() + type.slice(1)}
           </Button>

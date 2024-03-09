@@ -2,6 +2,7 @@ import { Container, Group, Title } from '@mantine/core'
 import { Metadata } from 'next'
 import dynamic from 'next/dynamic'
 
+import ColorSchemeToggler from '@/components/ColorSchemeToggler'
 import { getSessionFromCookies } from '@/lib/crypt'
 import { AuthUser } from '@/types/Auth'
 
@@ -21,6 +22,7 @@ const SettingsPage: React.FC = async () => {
     <Container size={'100%'} className={pageCont}>
       <Group display={'flex'} style={{ flexDirection: 'column' }} w={'100%'}>
         <Title className={title}>Settings</Title>
+        <ColorSchemeToggler />
       </Group>
       <NavbarClientSide user={user} key={2} />
     </Container>
