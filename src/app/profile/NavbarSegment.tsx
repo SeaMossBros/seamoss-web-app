@@ -8,7 +8,7 @@ import {
   useMantineTheme,
 } from '@mantine/core'
 import {
-  IconBellRinging,
+  // IconBellRinging,
   IconKey,
   IconLicense,
   IconLogout,
@@ -30,11 +30,11 @@ interface NavbarSegmentProps {
 
 const tabs = {
   general: [
-    { link: '/orders', label: 'Orders', icon: IconLicense },
+    { link: '/orders', label: 'Your Orders', icon: IconLicense },
     { link: '/reviews', label: 'Your Reviews', icon: IconMessage2 },
   ],
   account: [
-    { link: '/notifications', label: 'Notifications', icon: IconBellRinging },
+    // { link: '/notifications', label: 'Notifications', icon: IconBellRinging },
     { link: '/change-password', label: 'Change Password', icon: IconKey },
     { link: '/settings', label: 'Other Settings', icon: IconSettings },
     // { link: '', label: 'Billing', icon: IconReceipt2 }, // * link to Stripe
