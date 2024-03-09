@@ -18,6 +18,7 @@ const ForgotPassword = ({ email }: ResetPasswordProps) => {
     return true
   }
 
+  const [emailSentSuccessfully, setEmailSentSuccessfully] = useState(false)
   const [submittedForm, setSubmittedForm] = useState(false)
   const [userEmail, setUserEmail] = useState(email)
   const [isValidEmail, setIsValidEmail] = useState(isValid(email))
@@ -35,7 +36,7 @@ const ForgotPassword = ({ email }: ResetPasswordProps) => {
         },
         data: JSON.stringify({ email: userEmail }),
       })
-      // router.push('/profile');
+      setEmailSentSuccessfully(true)
     } catch (err) {
       setSubmittedForm(false)
       console.error(err)
@@ -64,28 +65,35 @@ const ForgotPassword = ({ email }: ResetPasswordProps) => {
         Forgot Password
       </Title>
       <Text style={{ textAlign: 'center' }}>
-        Click to recieve a link to your email in order to reset your password
+        {emailSentSuccessfully
+          ? 'Email sent! Please check your email and click the link to reset your password.'
+          : 'Enter the email associated with your account to recieve a link and reset your password'}
       </Text>
-      <Input
-        value={userEmail}
-        w={'75%'}
-        maw={240}
-        onChange={(e) => {
-          setUserEmail(e.target.value)
-          setIsValidEmail(isValid(e.target.value))
-        }}
-      />
-      <Button
-        w="100%"
-        miw={100}
-        maw={201}
-        mt={12}
-        disabled={submittedForm || !isValidEmail}
-        title={isValidEmail ? 'Send Reset Password Link' : 'Enter a valid email'}
-        onClick={handleSubmit}
-      >
-        Send Link to Your Email
-      </Button>
+      {!emailSentSuccessfully && (
+        <>
+          <Input
+            value={userEmail}
+            w={'75%'}
+            maw={240}
+            placeholder="Enter your email"
+            onChange={(e) => {
+              setUserEmail(e.target.value)
+              setIsValidEmail(isValid(e.target.value))
+            }}
+          />
+          <Button
+            w="100%"
+            miw={100}
+            maw={201}
+            mt={12}
+            disabled={submittedForm || !isValidEmail}
+            title={isValidEmail ? 'Send Reset Password Link' : 'Enter a valid email'}
+            onClick={handleSubmit}
+          >
+            Send Link to Your Email
+          </Button>
+        </>
+      )}
     </Group>
   )
 }

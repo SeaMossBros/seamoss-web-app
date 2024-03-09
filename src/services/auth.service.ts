@@ -97,14 +97,31 @@ export default class AuthService extends CMSService {
     }
   }
 
+  resetPassword = async (code: string, newPassword: string, confirmNewPassword: string) => {
+    if (!newPassword || !confirmNewPassword || !code) return null
+
+    try {
+      await axios(`${this.baseUrl}/api/auth/reset-password`, {
+        method: 'POST',
+        headers: this.headers,
+        data: JSON.stringify({ code, newPassword, confirmNewPassword }),
+      })
+
+      return
+    } catch (err) {
+      console.log('err', err)
+      throw new Error(JSON.stringify({ message: err }))
+    }
+  }
+
   sendForgotPasswordLinkToEmail = async (email: string) => {
     if (!email) return null
 
     try {
-      console.log('email in service, sending forgot pass coe to email', email)
+      // console.log('email in service, sending forgot pass coe to email', email)
       const res = await axios.post(`${this.baseUrl}/api/auth/forgot-password`, { email })
 
-      console.log('send email res', res)
+      // console.log('send email res', res)
 
       return res.data
     } catch (err) {

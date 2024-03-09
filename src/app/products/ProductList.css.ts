@@ -2,6 +2,20 @@ import { style } from '@vanilla-extract/css'
 
 import { defaultThemeVars } from '@/themes/default'
 
+export const topProductsTitle = style({
+  '@media': {
+    [`(max-width: ${defaultThemeVars.breakpoints.md})`]: {
+      marginTop: 'none',
+    },
+    [`(max-width: ${defaultThemeVars.breakpoints.lg})`]: {
+      marginTop: '9vh',
+    },
+    [`(max-width: ${defaultThemeVars.breakpoints.xl})`]: {
+      marginTop: 'none',
+    },
+  },
+})
+
 export const productsContainer = style({
   display: 'flex',
   flexDirection: 'column',

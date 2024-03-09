@@ -3,7 +3,7 @@
 import { Button, Group, PasswordInput, Title, useMantineTheme } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import axios from 'axios'
-import { useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useState } from 'react'
 
 import { updatePasswordCont, updatePasswordInput } from './update-password.css'
@@ -13,11 +13,10 @@ interface UpdatePasswordProps {
 }
 
 const UpdatePassword = ({ password }: UpdatePasswordProps) => {
+  const router = useRouter()
   const { defaultRadius } = useMantineTheme()
   const [submittedForm, setSubmittedForm] = useState(false)
   const code = useSearchParams().get('code')
-
-  console.log('code', code)
 
   const form = useForm({
     initialValues: {
@@ -36,20 +35,35 @@ const UpdatePassword = ({ password }: UpdatePasswordProps) => {
     setSubmittedForm(true)
     const { password, newPassword, confirmNewPassword } = form.values
     try {
-      await axios('/api/auth/update-password', {
-        method: 'POST',
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        data: JSON.stringify({
-          password,
-          newPassword,
-          confirmNewPassword,
-        }),
-      })
-      // router.prefetch('/profile');
-      // router.push('/profile');
+      if (code) {
+        await axios('/api/auth/reset-password', {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          data: JSON.stringify({
+            code,
+            newPassword,
+            confirmNewPassword,
+          }),
+        })
+      } else {
+        await axios('/api/auth/update-password', {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+          data: JSON.stringify({
+            password,
+            newPassword,
+            confirmNewPassword,
+          }),
+        })
+      }
+
+      router.push('/profile')
     } catch (err) {
       setSubmittedForm(false)
       console.log(err)
@@ -62,15 +76,17 @@ const UpdatePassword = ({ password }: UpdatePasswordProps) => {
       <Title fz={27} mb={21} style={{ alignSelf: 'center' }}>
         Update Your Password
       </Title>
-      <PasswordInput
-        label="Current Password"
-        placeholder="Enter your current password"
-        value={form.values.password}
-        className={updatePasswordInput}
-        onChange={(event) => form.setFieldValue('password', event.currentTarget.value)}
-        required
-        disabled={submittedForm}
-      />
+      {!code && (
+        <PasswordInput
+          label="Current Password"
+          placeholder="Enter your current password"
+          value={form.values.password}
+          className={updatePasswordInput}
+          onChange={(event) => form.setFieldValue('password', event.currentTarget.value)}
+          required
+          disabled={submittedForm}
+        />
+      )}
       <PasswordInput
         label="New Password"
         placeholder="Enter your new password"
