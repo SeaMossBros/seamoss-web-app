@@ -2,6 +2,7 @@ import {
   Anchor,
   Button,
   Checkbox,
+  Flex,
   // Divider,
   Group,
   Paper,
@@ -15,13 +16,14 @@ import { useForm } from '@mantine/form'
 import { useToggle } from '@mantine/hooks'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 // import { GoogleLoginButton } from 'react-social-login-buttons'
 import { ROUTE_PATHS } from '@/consts/route-paths'
 // import AuthService from '@/services/auth.service'
 
 const AuthenticationForm = () => {
+  const [termsIsNotChecked, setTermsIsNotChecked] = useState(true)
   const [isNotValidForm, setIsNotValidForm] = useState(true)
   const [submittedForm, setSubmittedForm] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
@@ -46,12 +48,18 @@ const AuthenticationForm = () => {
     },
 
     validate: {
+      terms: (val) => (val ? null : 'You must agree to our terms before registering'),
       username: (val) =>
         val && val.length > 1 ? null : 'Username should be at least 2 characters',
-      email: (val) => (/^\S+@\S+$/.test(val) ? null : 'Invalid email'),
+      email: (val) => (emailIsValid(val || '') ? null : 'Invalid email'),
       password: (val) => (val.length <= 6 ? 'Password should include at least 6 characters' : null),
     },
   })
+
+  const emailIsValid = (email: string): boolean => {
+    if (!email || email.length < 5 || !email.includes('@') || !email.includes('.')) return false
+    return true
+  }
 
   const handleSubmit = async (e: any) => {
     e.preventDefault()
@@ -95,13 +103,24 @@ const AuthenticationForm = () => {
   const handleToggle = () => {
     toggle()
     form.setFieldValue('terms', false)
-    checkIsFormValid()
   }
 
   const checkIsFormValid = () => {
-    const formIsNotValidBool = !form.values.terms && form.validate().hasErrors
-    setIsNotValidForm(formIsNotValidBool)
+    if (type === 'login') {
+      setIsNotValidForm(false)
+      return
+    }
+
+    setIsNotValidForm(!form.isValid())
   }
+
+  useEffect(() => {
+    checkIsFormValid()
+  }, [form.errors])
+
+  useEffect(() => {
+    setTermsIsNotChecked(!form.isValid('terms'))
+  }, [form.values.terms])
 
   return (
     <Paper
@@ -148,6 +167,7 @@ const AuthenticationForm = () => {
               placeholder="Username"
               value={form.values.username}
               onChange={(event) => form.setFieldValue('username', event.currentTarget.value)}
+              error={!form.isValid('username') && 'Username should be at least 2 characters'}
               radius="md"
               required
               disabled={submittedForm}
@@ -160,7 +180,7 @@ const AuthenticationForm = () => {
             placeholder="your-email@google.com"
             value={form.values.email}
             onChange={(event) => form.setFieldValue('email', event.currentTarget.value)}
-            error={form.errors.email && 'Invalid email'}
+            error={type === 'register' && !form.isValid('email') && 'Invalid email'}
             radius="md"
             required
             disabled={submittedForm}
@@ -172,7 +192,11 @@ const AuthenticationForm = () => {
             placeholder="Your password"
             value={form.values.password}
             onChange={(event) => form.setFieldValue('password', event.currentTarget.value)}
-            error={form.errors.password && 'Password should include at least 6 characters'}
+            error={
+              type === 'register' &&
+              !form.isValid('password') &&
+              'Password should include at least 6 characters'
+            }
             radius="md"
             required
             disabled={submittedForm}
@@ -193,9 +217,9 @@ const AuthenticationForm = () => {
           )}
 
           {type === 'register' && (
-            <Text display={'flex'} style={{ alignItems: 'center' }}>
+            <Flex align={'center'}>
               <Checkbox
-                label="I accept the"
+                label="I accept the "
                 checked={form.values.terms}
                 onChange={(event) => form.setFieldValue('terms', event.currentTarget.checked)}
                 disabled={submittedForm}
@@ -215,6 +239,11 @@ const AuthenticationForm = () => {
               >
                 terms and conditions
               </Anchor>
+            </Flex>
+          )}
+          {type === 'register' && termsIsNotChecked && (
+            <Text fz={'sm'} fw={300} c={'red'}>
+              You must agree to our terms before registering
             </Text>
           )}
         </Stack>
