@@ -104,7 +104,11 @@ export default class AuthService extends CMSService {
       await axios(`${this.baseUrl}/api/auth/reset-password`, {
         method: 'POST',
         headers: this.headers,
-        data: JSON.stringify({ code, newPassword, confirmNewPassword }),
+        data: JSON.stringify({
+          code,
+          password: newPassword,
+          passwordConfirmation: confirmNewPassword,
+        }),
       })
 
       return
