@@ -242,7 +242,7 @@ const AuthenticationForm = () => {
             h="fit-contnet"
             fz={18}
             style={{ borderRadius: defaultRadius }}
-            disabled={isNotValidForm || submittedForm}
+            disabled={(type === 'register' && isNotValidForm) || submittedForm}
           >
             {type[0].toUpperCase() + type.slice(1)}
           </Button>
