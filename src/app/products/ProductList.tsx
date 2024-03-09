@@ -1,6 +1,13 @@
 'use client'
 
-import { Grid, Pagination, Stack, Title } from '@mantine/core'
+import {
+  Grid,
+  Pagination,
+  Stack,
+  Title,
+  useMantineColorScheme,
+  useMantineTheme,
+} from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import Link from 'next/link'
 import { usePathname, useSearchParams } from 'next/navigation'
@@ -35,6 +42,9 @@ export type ProductListProps = {
 }
 
 const ProductList: React.FC<ProductListProps> = ({ queryParams, onPage }) => {
+  const { colors } = useMantineTheme()
+  const { colorScheme } = useMantineColorScheme()
+  const isDarkTheme = colorScheme === 'dark'
   const searchParams = useSearchParams()
   const pathname = usePathname()
 
@@ -70,7 +80,11 @@ const ProductList: React.FC<ProductListProps> = ({ queryParams, onPage }) => {
 
   return (
     <Stack gap="xl" className={productsContainer}>
-      {onPage === 'Home' && <Title size={'h1'}>Our Best Sellers 🔥🪸</Title>}
+      {onPage === 'Home' && (
+        <Title size={'h1'} c={isDarkTheme ? colors.gray[3] : colors.gray[9]}>
+          Our Top Products
+        </Title>
+      )}
 
       <Grid>
         {products?.data?.map((product) => (

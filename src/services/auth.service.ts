@@ -101,10 +101,10 @@ export default class AuthService extends CMSService {
     if (!email) return null
 
     try {
-      console.log('email in service, sending forgot pass coe to email', email)
+      // console.log('email in service, sending forgot pass coe to email', email)
       const res = await axios.post(`${this.baseUrl}/api/auth/forgot-password`, { email })
 
-      console.log('send email res', res)
+      // console.log('send email res', res)
 
       return res.data
     } catch (err) {

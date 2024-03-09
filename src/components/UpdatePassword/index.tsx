@@ -3,7 +3,7 @@
 import { Button, Group, PasswordInput, Title, useMantineTheme } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import axios from 'axios'
-import { useSearchParams } from 'next/navigation'
+// import { useSearchParams } from 'next/navigation'
 import { useState } from 'react'
 
 import { updatePasswordCont, updatePasswordInput } from './update-password.css'
@@ -15,9 +15,9 @@ interface UpdatePasswordProps {
 const UpdatePassword = ({ password }: UpdatePasswordProps) => {
   const { defaultRadius } = useMantineTheme()
   const [submittedForm, setSubmittedForm] = useState(false)
-  const code = useSearchParams().get('code')
+  // const code = useSearchParams().get('code')
 
-  console.log('code', code)
+  // console.log('code', code)
 
   const form = useForm({
     initialValues: {

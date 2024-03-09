@@ -7,7 +7,7 @@ export const revalidate = 0 // No cache
 export const POST = async (req: NextRequest) => {
   const { email } = await req.json()
   const authService = new AuthService()
-  console.log('email in route', email)
+  // console.log('email in route', email)
   if (email) {
     await authService.sendForgotPasswordLinkToEmail(email)
 
