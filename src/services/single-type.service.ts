@@ -22,11 +22,18 @@ export default class SingleTypeService extends CMSService {
       addQueryPrefix: true,
     })
 
+    console.log('fetching homepage images...')
+    console.log('url:', url)
+    console.log('search:', search)
+
     const res = await fetch(`${url}${search}`, {
       cache: 'no-cache',
     })
 
-    return res.json() as Promise<QueryResponse<HomePage>>
+    const resD = await res.json()
+    console.log('res:', resD)
+
+    return resD as Promise<QueryResponse<HomePage>>
   }
 
   getSupportPageData = async () => {

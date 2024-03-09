@@ -57,9 +57,16 @@ export default class APIService extends CMSService {
       quantity,
     })
 
+    console.log('in estimation query:')
+    console.log('variantId:', variantId)
+    console.log('purchaseOptionId:', purchaseOptionId)
+    console.log('quantity:', quantity)
+
     const res = await axios(`/api/cart/estimations?${search}`, {
       method: 'GET',
     })
+
+    console.log('res', res.data)
 
     return res.data as Promise<{
       data: {

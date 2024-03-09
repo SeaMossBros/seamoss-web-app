@@ -23,6 +23,7 @@ export const usePriceCalculation = (
 ) => {
   const apiService = useService(APIService)
 
+  console.log('should get estimation...')
   return useQuery({
     queryKey: APIService.queryKeys.getPriceEstimation(
       data.variantId!,

@@ -28,6 +28,7 @@ const HeroImage: React.FC = () => {
 
   const { data } = useHomePage()
 
+  console.log('homepage data:', data)
   const images = useMemo(() => {
     return data?.attributes.hero_images?.data ?? []
   }, [data?.attributes.hero_images?.data])

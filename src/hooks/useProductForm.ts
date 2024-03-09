@@ -41,6 +41,8 @@ export default function useProductForm(
     purchaseOptionId: purchaseOption?.id,
   })
 
+  console.log('estimation', estimation)
+
   useEffect(() => {
     if (product) {
       methods.setValue('product', product, {
