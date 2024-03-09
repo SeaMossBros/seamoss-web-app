@@ -101,17 +101,13 @@ export default class AuthService extends CMSService {
     if (!newPassword || !confirmNewPassword || !code) return null
 
     try {
-      await axios(`${this.baseUrl}/api/auth/reset-password`, {
-        method: 'POST',
-        headers: this.headers,
-        data: JSON.stringify({
-          code,
-          password: newPassword,
-          passwordConfirmation: confirmNewPassword,
-        }),
+      const res = await axios.post(`${this.baseUrl}/api/auth/reset-password`, {
+        code,
+        password: newPassword,
+        passwordConfirmation: confirmNewPassword,
       })
 
-      return
+      return res.data
     } catch (err) {
       console.log('err', err)
       throw new Error(JSON.stringify({ message: err }))
@@ -122,10 +118,7 @@ export default class AuthService extends CMSService {
     if (!email) return null
 
     try {
-      // console.log('email in service, sending forgot pass coe to email', email)
       const res = await axios.post(`${this.baseUrl}/api/auth/forgot-password`, { email })
-
-      // console.log('send email res', res)
 
       return res.data
     } catch (err) {
