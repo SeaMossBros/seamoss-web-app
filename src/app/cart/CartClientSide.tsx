@@ -63,6 +63,8 @@ const CartClientSide: React.FC = () => {
               items={cartItems?.data ?? []}
               billingInfo={billingDetails?.data.items ?? {}}
               onRefetch={onRefetch}
+              onCheckout={onCheckout}
+              isCheckingOut={isCheckingOut}
             />
           </Grid.Col>
           <Grid.Col

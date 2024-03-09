@@ -27,11 +27,13 @@ import {
 export type ProductVariantSelectionProps = {
   variant: ProductVariant
   showImage?: boolean
+  setVariantChanged: (bool: boolean) => void
 }
 
 const ProductVariantSelection: React.FC<ProductVariantSelectionProps> = ({
   variant,
   showImage,
+  setVariantChanged,
 }) => {
   const { colors } = useMantineTheme()
   const { attributes } = variant
@@ -54,6 +56,7 @@ const ProductVariantSelection: React.FC<ProductVariantSelectionProps> = ({
       ...variant,
       quantity: 1,
     })
+    setVariantChanged(true)
   }, [methods, variant])
 
   const isSelected = variant.id === selectedVariant?.id
@@ -63,7 +66,7 @@ const ProductVariantSelection: React.FC<ProductVariantSelectionProps> = ({
       <Card
         className={variantWrapper}
         data-selected={isSelected}
-        onClick={onSelect}
+        onClick={() => (!isSelected ? onSelect() : undefined)}
         withBorder
         style={{ borderColor: isSelected ? colors.teal[9] : 'lightgray' }}
       >

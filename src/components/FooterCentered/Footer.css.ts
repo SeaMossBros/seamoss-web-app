@@ -9,10 +9,12 @@ export const inner = style({
   padding: defaultThemeVars.spacing.sm,
   position: 'relative',
   width: '100%',
+  marginTop: 42,
 
   '@media': {
     [`(max-width: ${defaultThemeVars.breakpoints.sm})`]: {
       flexDirection: 'column',
+      marginTop: 12,
     },
   },
 })
@@ -71,17 +73,13 @@ export const externalFooterLinks = style({
 
   '@media': {
     [`(max-width: ${defaultThemeVars.breakpoints.sm})`]: {
-      marginBottom: defaultThemeVars.spacing.xl,
       justifyContent: 'center',
-      marginTop: '21px',
     },
   },
 })
 
-export const rightsReserved = style({
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  width: '100%',
-  margin: '42px 0',
+export const companyInfo = style({
+  height: 60,
+  flexDirection: 'column',
+  justifyContent: 'space-between',
 })

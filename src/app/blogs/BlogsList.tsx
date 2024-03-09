@@ -29,14 +29,12 @@ const BlogsList: React.FC<BlogListProps> = ({ queryParams }) => {
   if (articles?.error) return <div>Error loading articles.</div>
 
   return (
-    <Grid>
+    <Grid p={15}>
       {articles?.data?.map((article) => (
         <Grid.Col
           key={article.id}
           span={{
-            base: 12,
-            xs: 6,
-            sm: 4,
+            base: 6,
             md: 3,
           }}
         >

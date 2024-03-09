@@ -1,11 +1,15 @@
-import { Center, Skeleton, Stack, Text } from '@mantine/core'
+import { Button, Card, Divider, Flex, Skeleton, Stack, Text } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
+import Link from 'next/link'
 import { useCallback, useState } from 'react'
 
+import { useCart } from '@/hooks/useCart'
+import { useCartBillingDetails } from '@/queries/useCartBillingDetails'
 import { CartItem } from '@/types/CartItem'
 
 import CartItemUpdateModal from '../CartItemUpdateModal'
 import CartItemSingle from './CartItemSingle'
+import { bottomCheckoutButton, bottomCheckoutDivider } from './CartItemSingle.css'
 
 export type CartItemsProps = {
   isLoading: boolean
@@ -19,6 +23,8 @@ export type CartItemsProps = {
     }
   >
   onRefetch: () => void
+  onCheckout: () => void
+  isCheckingOut: boolean
 }
 
 const CartItems: React.FC<CartItemsProps> = ({
@@ -27,7 +33,16 @@ const CartItems: React.FC<CartItemsProps> = ({
   items,
   billingInfo,
   onRefetch,
+  onCheckout,
+  isCheckingOut,
 }) => {
+  const { cartId } = useCart()
+  const { data: billingDetails } = useCartBillingDetails(cartId!)
+
+  const onCheckoutClick = useCallback(() => {
+    onCheckout()
+  }, [onCheckout])
+
   const [itemToUpdate, setItemToUpdate] = useState<CartItem | null>(null)
   const [updateModalOpened, updateModal] = useDisclosure(false, {
     onClose: () => {
@@ -46,10 +61,17 @@ const CartItems: React.FC<CartItemsProps> = ({
 
   if (isFetched && !items?.length)
     return (
-      <Center>
-        <Text>There is no items in your cart</Text>
-      </Center>
+      <Card withBorder>
+        <Flex direction={'column'} align={'center'} pt={33} pb={33}>
+          <Text mb={21}>There are no items in your cart. </Text>
+          <Link href="/products" passHref>
+            <Button variant="outline">Continue Shopping</Button>
+          </Link>
+        </Flex>
+      </Card>
     )
+
+  const total: number | undefined = billingDetails?.data.total
 
   return (
     <Stack gap="sm">
@@ -74,6 +96,23 @@ const CartItems: React.FC<CartItemsProps> = ({
           onClose={updateModal.close}
         />
       ) : null}
+      <Flex direction={'column'} align={'center'} pt={33}>
+        <Button
+          loading={isCheckingOut}
+          onClick={onCheckoutClick}
+          w={'60%'}
+          className={bottomCheckoutButton}
+          disabled={!total || total === 0}
+        >
+          CHECKOUT
+        </Button>
+        <Divider label="or" variant="solid" className={bottomCheckoutDivider} />
+        <Link href="/products" passHref style={{ width: '60%' }}>
+          <Button variant="outline" w={'100%'}>
+            Continue Shopping
+          </Button>
+        </Link>
+      </Flex>
     </Stack>
   )
 }

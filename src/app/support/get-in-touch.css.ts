@@ -12,6 +12,8 @@ export const wrapper = style({
   '@media': {
     [`(max-width: ${defaultThemeVars.breakpoints.sm})`]: {
       flexDirection: 'column',
+      alignItems: 'center',
+      padding: 0,
     },
   },
 })
@@ -25,10 +27,10 @@ export const form = style({
   minWidth: '50vw',
 
   '@media': {
-    [`(max-width: ${defaultThemeVars.breakpoints.md})`]: {
-      padding: 'var(--mantine- spacing-md)',
+    [`(max-width: ${defaultThemeVars.breakpoints.sm})`]: {
+      paddingTop: 'var(--mantine- spacing-md)',
       paddingLeft: 'var(--mantine-spacing-md)',
-      // minWidth: '1px'
+      minWidth: '90vw',
     },
   },
 })

@@ -123,18 +123,18 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickViewClick }) 
           {/* </ToolTip> */}
           <Indicator
             ml={6}
-            mt={3}
             position="middle-start"
             processing={isInStock}
             color={isInStock ? colors.teal[9] : colors.red[9]}
+            style={{ display: 'flex', alignItems: 'center' }}
           >
             <Text fz="sm" ml="md" c={isDarkTheme ? '#f5f5f5' : 'black'}>
               {isInStock ? 'In stock' : 'Out of stock'}
             </Text>
           </Indicator>
           <Group className={actionsContainer} justify="space-between" gap={0}>
-            <Text fz="sm" c={isDarkTheme ? '#f5f5f5' : 'black'}>
-              From {formatPrice(lowestPrice)}
+            <Text fz="sm" c={isDarkTheme ? '#f5f5f5' : 'black'} my={3}>
+              Starting at {formatPrice(lowestPrice)}
             </Text>
             <Button
               onClick={(e) => clickedQuickView(e)}

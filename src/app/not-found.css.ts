@@ -43,7 +43,3 @@ export const notFoundControl = style({
     },
   },
 })
-
-export const notFoundVideo = style({
-  display: 'block',
-})

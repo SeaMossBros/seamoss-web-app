@@ -82,7 +82,7 @@ const Header: React.FC<HeaderProps> = ({ navOpened, toggleNav }) => {
             title="About us"
             style={{ borderRadius: defaultRadius }}
           />
-          <UserMenu />
+          <UserMenu onClick={() => null} navOpened={navOpened} />
           <ColorSchemeToggler />
           <ActionIcon
             variant="subtle"

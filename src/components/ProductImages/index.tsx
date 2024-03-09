@@ -47,11 +47,9 @@ const ProductImages: React.FC<ProductImagesProps> = ({ defaultImage, images, pro
         fit="contain"
         loading="eager"
       />
-      <ScrollArea maw="100%" mx="auto">
+      <ScrollArea maw="100%" mx={0} px={0}>
         <Flex gap="md">
           {images.map((image) => {
-            // console.log('currentImage.id === image.id', currentImage.id === image.id);
-
             return (
               <Box
                 key={image.id}

@@ -12,13 +12,15 @@ import { ProductSelectionFormData } from '@/types/ProductForm'
 
 import ProductDetails from '../ProductDetails'
 import ProductImages from '../ProductImages'
+import { addToCartButton } from './ProductPreviewModal.css'
 
 export type ProductPreviewModalProps = ModalProps & {
   product: Product | null
 }
 
 const ProductPreviewModal: React.FC<ProductPreviewModalProps> = ({ product, ...modalProps }) => {
-  const [propertyIsSelected, setPropertyIsSelected] = useState(false)
+  const [maxPropertySelected, setMaxPropertySelected] = useState(false)
+  const [variantChanged, setVariantChanged] = useState(false)
   const { addToCart, isAddingToCart } = useCart()
 
   const { product: productDetails, methods } = useProductForm(product?.attributes.slug, {
@@ -56,22 +58,19 @@ const ProductPreviewModal: React.FC<ProductPreviewModalProps> = ({ product, ...m
           modalProps.onClose()
         },
       })
+      setVariantChanged(true)
     },
     [addToCart, modalProps],
   )
 
-  const handleSetPropertyIsSelected = (value: boolean) => {
-    setPropertyIsSelected(value)
-  }
-
   if (!product) return null
 
   return (
-    <Modal {...modalProps} size="90%" centered>
+    <Modal {...modalProps} size="90%" centered xOffset={'2vw'} yOffset={'2vh'}>
       {productDetails ? (
         <FormProvider {...methods}>
           <form onSubmit={methods.handleSubmit(onSubmit)}>
-            <Grid gutter="xl">
+            <Grid gutter="xl" px={9}>
               <Grid.Col
                 span={{
                   base: 12,
@@ -94,14 +93,16 @@ const ProductPreviewModal: React.FC<ProductPreviewModalProps> = ({ product, ...m
                   <ProductDetails
                     product={productDetails}
                     showOptionImages={false}
-                    setPropertyIsSelected={handleSetPropertyIsSelected}
+                    setMaxPropertySelected={(value: boolean) => setMaxPropertySelected(value)}
+                    setVariantChanged={setVariantChanged}
+                    variantChanged={variantChanged}
                   />
-                  {/* // TODO: disabled when no property is selected */}
                   <Button
                     type="submit"
                     loading={isAddingToCart}
                     fullWidth
-                    disabled={propertyIsSelected}
+                    disabled={!maxPropertySelected}
+                    className={addToCartButton}
                   >
                     Add To Cart
                   </Button>

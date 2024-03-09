@@ -5,7 +5,9 @@ import dynamic from 'next/dynamic'
 import { getSessionFromCookies } from '@/lib/crypt'
 import { AuthUser } from '@/types/Auth'
 
-const ForgotPasswordClientSide = dynamic(() => import('./ForgotPassword'), { ssr: false })
+const ForgotPasswordClientSide = dynamic(() => import('@/components/ForgotPassword'), {
+  ssr: false,
+})
 
 export const metadata: Metadata = {
   title: 'Forgot Password | SeaTheMoss',

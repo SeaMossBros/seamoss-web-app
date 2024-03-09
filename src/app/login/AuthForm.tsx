@@ -2,7 +2,7 @@ import {
   Anchor,
   Button,
   Checkbox,
-  Divider,
+  // Divider,
   Group,
   Paper,
   PasswordInput,
@@ -16,24 +16,24 @@ import { useToggle } from '@mantine/hooks'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
-import { GoogleLoginButton } from 'react-social-login-buttons'
 
+// import { GoogleLoginButton } from 'react-social-login-buttons'
 import { ROUTE_PATHS } from '@/consts/route-paths'
-import AuthService from '@/services/auth.service'
+// import AuthService from '@/services/auth.service'
 
 const AuthenticationForm = () => {
   const [submittedForm, setSubmittedForm] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
-  const [googleTextColor, setGoogleTextColor] = useState('white')
+  // const [googleTextColor, setGoogleTextColor] = useState('white')
   const { defaultRadius } = useMantineTheme()
-  const authService = new AuthService()
+  // const authService = new AuthService()
   const router = useRouter()
 
-  const onLoginClick = async () => {
-    authService.getGoogleLoginUrl()
-    // const data = await signIn('google')
-    // console.log('data on google click', data);
-  }
+  // const onLoginClick = async () => {
+  //   authService.getGoogleLoginUrl()
+  // const data = await signIn('google')
+  // console.log('data on google click', data);
+  // }
 
   const [type, toggle] = useToggle<'login' | 'register'>(['login', 'register'])
   const form = useForm({
@@ -240,10 +240,10 @@ const AuthenticationForm = () => {
         </Group>
       </form>
 
-      <Divider label="Or continue with provider" labelPosition="center" my="lg" />
+      {/* <Divider label="Or continue with provider" labelPosition="center" my="lg" /> */}
 
-      <Group grow>
-        <Button
+      {/* <Group grow> */}
+      {/* <Button
           px={12}
           bg={'blue'}
           h={'100%'}
@@ -265,8 +265,8 @@ const AuthenticationForm = () => {
             </Text>{' '}
             Google
           </Text>
-        </Button>
-        {/* <Button
+        </Button> */}
+      {/* <Button
                     px={12}
                     h={'100%'}
                     miw={'100%'} 
@@ -287,7 +287,7 @@ const AuthenticationForm = () => {
                         Apple
                     </Text>
                 </Button> */}
-      </Group>
+      {/* </Group> */}
     </Paper>
   )
 }
