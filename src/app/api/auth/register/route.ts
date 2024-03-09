@@ -7,10 +7,8 @@ export const revalidate = 0 // No cache
 
 export const POST = async (req: NextRequest) => {
   const { username, email, password } = await req.json()
-  // console.log('creds in signin', { username, email, password });
   const authService = new AuthService()
   const registerRes = await authService.registerUser(username, email, password)
-  // console.log('registerRes in route', registerRes)
 
   if (registerRes?.user.id) {
     await setSessionCookie(registerRes.user)

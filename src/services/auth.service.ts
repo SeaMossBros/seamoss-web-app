@@ -41,12 +41,6 @@ export default class AuthService extends CMSService {
         }),
       })
 
-      // console.log('response in registerUser::', response);
-
-      // console.log('data in registerUser', response.data);
-      // const emailConfirmationLinkRes = await this.sendEmailConfirmationLink(email);
-      // console.log('emailConfirmationLinkRes::', emailConfirmationLinkRes);
-
       return response.data
     } catch (err) {
       console.log('err', err)
@@ -96,8 +90,6 @@ export default class AuthService extends CMSService {
         data: JSON.stringify({ password, newPassword, confirmNewPassword }),
       })
 
-      // console.log('response', response)
-
       return
     } catch (err) {
       console.log('err', err)
@@ -109,13 +101,10 @@ export default class AuthService extends CMSService {
     if (!email) return null
 
     try {
-      const res = await axios(`${this.baseUrl}/api/auth/forgot-password`, {
-        method: 'POST',
-        headers: this.headers,
-        data: JSON.stringify({ email }),
-      })
+      console.log('email in service, sending forgot pass coe to email', email)
+      const res = await axios.post(`${this.baseUrl}/api/auth/forgot-password`, { email })
 
-      console.log('res', res)
+      console.log('send email res', res)
 
       return res.data
     } catch (err) {

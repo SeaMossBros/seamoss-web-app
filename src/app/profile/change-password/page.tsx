@@ -8,8 +8,9 @@ import { AuthUser } from '@/types/Auth'
 import { pageCont, title } from '../profile-page.css'
 
 const NavbarClientSide = dynamic(() => import('../NavbarSegment'), { ssr: false })
-const UpdatePasswordClientSide = dynamic(() => import('./UpdatePassword'), { ssr: false })
-const ResetPasswordClientSide = dynamic(() => import('./ResetPassword'), { ssr: false })
+const UpdatePasswordClientSide = dynamic(() => import('@/components/UpdatePassword'), {
+  ssr: false,
+})
 
 export const metadata: Metadata = {
   title: 'Change Password | Profile | SeaTheMoss',
@@ -25,7 +26,6 @@ const ChangePasswordPage: React.FC = async () => {
       <Group display={'flex'} style={{ flexDirection: 'column', flexWrap: 'nowrap' }} w={'100%'}>
         <Title className={title}>Secure Your Account</Title>
         <UpdatePasswordClientSide password={password ? password : ''} />
-        <ResetPasswordClientSide email={user.email ? user.email : ''} />
       </Group>
       <NavbarClientSide user={user} key={6} />
     </Container>

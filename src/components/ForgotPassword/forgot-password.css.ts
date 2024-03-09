@@ -1,5 +1,7 @@
 import { style } from '@vanilla-extract/css'
 
+import { defaultThemeVars } from '@/themes/default'
+
 export const forgotPassword = style({
   display: 'flex',
   alignItems: 'center',
@@ -12,4 +14,10 @@ export const forgotPassword = style({
   marginTop: 30,
   border: '1px solid',
   padding: 21,
+
+  '@media': {
+    [`(max-width: ${defaultThemeVars.breakpoints.sm})`]: {
+      width: '90%',
+    },
+  },
 })

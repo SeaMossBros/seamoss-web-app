@@ -3,26 +3,25 @@
 import { Button, Group, PasswordInput, Title, useMantineTheme } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import axios from 'axios'
+import { useSearchParams } from 'next/navigation'
 import { useState } from 'react'
 
-import { updatePasswordCont, updatePasswordInput } from '../profile-page.css'
-// import { useRouter } from "next/navigation";
+import { updatePasswordCont, updatePasswordInput } from './update-password.css'
 
 interface UpdatePasswordProps {
-  password: string
+  password?: string
 }
 
 const UpdatePassword = ({ password }: UpdatePasswordProps) => {
   const { defaultRadius } = useMantineTheme()
   const [submittedForm, setSubmittedForm] = useState(false)
-  // const router = useRouter();
-  // const [currentPassword, setCurrentPassword] = useState(password);
-  // const [newPassword, setNewPassword] = useState('');
-  // const [confirmNewPassword, setConfirmNewPassword] = useState('');
+  const code = useSearchParams().get('code')
+
+  console.log('code', code)
 
   const form = useForm({
     initialValues: {
-      password,
+      password: !password ? '' : password,
       newPassword: '',
       confirmNewPassword: '',
     },
@@ -37,14 +36,17 @@ const UpdatePassword = ({ password }: UpdatePasswordProps) => {
     setSubmittedForm(true)
     const { password, newPassword, confirmNewPassword } = form.values
     try {
-      // console.log(`${JSON.stringify({ password, newPassword, confirmNewPassword })}`)
       await axios('/api/auth/update-password', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
-        data: JSON.stringify({ password, newPassword, confirmNewPassword }),
+        data: JSON.stringify({
+          password,
+          newPassword,
+          confirmNewPassword,
+        }),
       })
       // router.prefetch('/profile');
       // router.push('/profile');

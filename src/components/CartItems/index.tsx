@@ -3,6 +3,8 @@ import { useDisclosure } from '@mantine/hooks'
 import Link from 'next/link'
 import { useCallback, useState } from 'react'
 
+import { useCart } from '@/hooks/useCart'
+import { useCartBillingDetails } from '@/queries/useCartBillingDetails'
 import { CartItem } from '@/types/CartItem'
 
 import CartItemUpdateModal from '../CartItemUpdateModal'
@@ -34,6 +36,9 @@ const CartItems: React.FC<CartItemsProps> = ({
   onCheckout,
   isCheckingOut,
 }) => {
+  const { cartId } = useCart()
+  const { data: billingDetails } = useCartBillingDetails(cartId!)
+
   const onCheckoutClick = useCallback(() => {
     onCheckout()
   }, [onCheckout])
@@ -66,6 +71,8 @@ const CartItems: React.FC<CartItemsProps> = ({
       </Card>
     )
 
+  const total: number | undefined = billingDetails?.data.total
+
   return (
     <Stack gap="sm">
       {isLoading
@@ -95,6 +102,7 @@ const CartItems: React.FC<CartItemsProps> = ({
           onClick={onCheckoutClick}
           w={'60%'}
           className={bottomCheckoutButton}
+          disabled={!total || total === 0}
         >
           CHECKOUT
         </Button>
