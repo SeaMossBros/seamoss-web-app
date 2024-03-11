@@ -18,6 +18,7 @@ export type CartItemUpdateModalProps = ModalProps & {
 }
 
 const CartItemUpdateModal: React.FC<CartItemUpdateModalProps> = ({ item, ...modalProps }) => {
+  const [variantChanged, setVariantChanged] = useState(false)
   const [maxPropertySelected, setMaxPropertySelected] = useState(true)
   const { updateItem, isUpdatingItem } = useCart()
 
@@ -125,7 +126,8 @@ const CartItemUpdateModal: React.FC<CartItemUpdateModalProps> = ({ item, ...moda
                     showOptionImages={false}
                     isFromCartModal={true}
                     setMaxPropertySelected={(value: boolean) => setMaxPropertySelected(value)}
-                    setVariantChanged={() => null}
+                    setVariantChanged={setVariantChanged}
+                    variantChanged={variantChanged}
                   />
                   <Flex gap="sm">
                     <Button

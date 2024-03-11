@@ -69,7 +69,7 @@ const MOCKDATA: Array<Omit<ContactIconProps, 'icon'> & { icon: typeof IconSun }>
     icon: IconMapPin,
     inputMode: 'text',
   },
-  { title: 'Working hours', description: '8 a.m. – 9 p.m. EST', icon: IconSun, inputMode: 'text' },
+  { title: 'Working hours', description: '9 a.m. – 5 p.m. EST', icon: IconSun, inputMode: 'text' },
 ]
 
 export function ContactIconsList() {

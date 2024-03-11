@@ -9,7 +9,7 @@ import {
   useMantineTheme,
 } from '@mantine/core'
 import { IconMinus, IconPlus } from '@tabler/icons-react'
-import { useCallback, useRef } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 import { useFormContext } from 'react-hook-form'
 
 import { ProductSelectionFormData } from '@/types/ProductForm'
@@ -27,13 +27,23 @@ import {
 export type ProductVariantSelectionProps = {
   variant: ProductVariant
   showImage?: boolean
+  isFromCartModal?: boolean
+  maxPropertySelected?: boolean
   setVariantChanged: (bool: boolean) => void
+  index: number
+  borderIsRed: { active: boolean; label: string }
+  handleSetBorderRedTemporarily: (label: string, time?: number) => void
 }
 
 const ProductVariantSelection: React.FC<ProductVariantSelectionProps> = ({
   variant,
   showImage,
   setVariantChanged,
+  index,
+  isFromCartModal,
+  maxPropertySelected,
+  handleSetBorderRedTemporarily,
+  borderIsRed,
 }) => {
   const { colors } = useMantineTheme()
   const { attributes } = variant
@@ -59,6 +69,10 @@ const ProductVariantSelection: React.FC<ProductVariantSelectionProps> = ({
     setVariantChanged(true)
   }, [methods, variant])
 
+  useEffect(() => {
+    !isFromCartModal && index === 0 && onSelect()
+  }, [])
+
   const isSelected = variant.id === selectedVariant?.id
 
   return (
@@ -68,7 +82,14 @@ const ProductVariantSelection: React.FC<ProductVariantSelectionProps> = ({
         data-selected={isSelected}
         onClick={() => (!isSelected ? onSelect() : undefined)}
         withBorder
-        style={{ borderColor: isSelected ? colors.teal[9] : 'lightgray' }}
+        style={{
+          transition: '0.24s ease-in-out',
+          borderColor: isSelected
+            ? borderIsRed.active
+              ? colors.red[9]
+              : colors.teal[9]
+            : 'lightgray',
+        }}
       >
         {attributes.image?.data?.attributes.url && showImage ? (
           <Box>
@@ -106,7 +127,11 @@ const ProductVariantSelection: React.FC<ProductVariantSelectionProps> = ({
               <IconMinus
                 size={15}
                 onClick={() => {
-                  quantityInput.current?.decrement()
+                  if (!isFromCartModal && maxPropertySelected) {
+                    handleSetBorderRedTemporarily('First remove flavor below')
+                  } else {
+                    quantityInput.current?.decrement()
+                  }
                 }}
               />
             }

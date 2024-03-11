@@ -22,12 +22,14 @@ export type ProductSingleProps = {
 
 const ProductSingle: React.FC<ProductSingleProps> = ({ slug, queryParams }) => {
   const [maxPropertySelected, setMaxPropertySelected] = useState(false)
+  const [variantChanged, setVariantChanged] = useState(false)
   const { addToCart, isAddingToCart } = useCart()
   const { product, methods, refetch } = useProductForm(slug, queryParams)
 
   const onSubmit = useCallback(
     (data: ProductSelectionFormData) => {
       addToCart(data)
+      setVariantChanged(true)
     },
     [addToCart],
   )
@@ -77,7 +79,9 @@ const ProductSingle: React.FC<ProductSingleProps> = ({ slug, queryParams }) => {
                 <ProductDetails
                   product={product}
                   setMaxPropertySelected={(value: boolean) => setMaxPropertySelected(value)}
-                  setVariantChanged={() => null}
+                  maxPropertySelected={maxPropertySelected}
+                  setVariantChanged={setVariantChanged}
+                  variantChanged={variantChanged}
                 />
                 <Button
                   type="submit"

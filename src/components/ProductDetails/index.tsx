@@ -1,6 +1,7 @@
 'use client'
 
 import { Rating, Stack, Title } from '@mantine/core'
+import { useState } from 'react'
 
 import { Product } from '@/types/Product'
 
@@ -17,6 +18,7 @@ export type ProductDetailsProps = {
   shouldUpdatedAfterChange?: boolean
   setVariantChanged: (bool: boolean) => void
   variantChanged?: boolean
+  maxPropertySelected?: boolean
 }
 
 const ProductDetails: React.FC<ProductDetailsProps> = ({
@@ -26,8 +28,16 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
   setMaxPropertySelected,
   setVariantChanged,
   variantChanged,
+  maxPropertySelected,
 }) => {
+  const [borderIsRed, setBorderIsRed] = useState({ active: false, label: '' })
+
   const { attributes } = product
+
+  const handleSetBorderRedTemporarily = (label: string, time: number = 1500) => {
+    setBorderIsRed({ active: true, label })
+    setTimeout(() => setBorderIsRed({ active: false, label: '' }), time)
+  }
 
   return (
     <Stack>
@@ -35,7 +45,14 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
       <Rating value={attributes.rating ?? 0} fractions={100} readOnly />
       <TotalPrice />
       {attributes.product_variants?.data?.length ? (
-        <ProductVariants showImages={showOptionImages} setVariantChanged={setVariantChanged} />
+        <ProductVariants
+          showImages={showOptionImages}
+          setVariantChanged={setVariantChanged}
+          isFromCartModal={isFromCartModal}
+          borderIsRed={borderIsRed}
+          maxPropertySelected={maxPropertySelected}
+          handleSetBorderRedTemporarily={handleSetBorderRedTemporarily}
+        />
       ) : null}
       {attributes.product_properties?.data?.length ? (
         <ProductProperties
@@ -44,6 +61,8 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
           setMaxPropertySelected={setMaxPropertySelected}
           variantChanged={variantChanged}
           setVariantChanged={setVariantChanged}
+          borderIsRed={borderIsRed}
+          handleSetBorderRedTemporarily={handleSetBorderRedTemporarily}
         />
       ) : null}
       {attributes.purchase_options?.data?.length ? <PurchaseOptions /> : null}
