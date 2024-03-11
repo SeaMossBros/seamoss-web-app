@@ -77,7 +77,7 @@ const HeroImage: React.FC = () => {
       <Box className={inner}>
         <Box className={content}>
           <Title className={title}>
-            Explore Earth&apos;s Oceanic Wonders with{' '}
+            Explore Belizean Oceanic Wonders with{' '}
             <Text component="span" inherit variant="gradient">
               SeaTheMoss
             </Text>{' '}

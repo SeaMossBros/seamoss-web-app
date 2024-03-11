@@ -1,7 +1,8 @@
 'use client'
 
-import { Modal, Text } from '@mantine/core'
+import { Button, Flex, Group, Modal, Text } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 
 // import ToolTip from '@/components/ToolTip'
@@ -21,7 +22,22 @@ const PaymentCancelModal: React.FC<{
   return (
     // <ToolTip title="Payment Cancelled">
     <Modal opened={opened} onClose={close} centered>
-      <Text>Your payment has been cancelled.</Text>
+      <Flex px={33} pb={33} direction={'column'} align={'center'}>
+        <Text fw={700} fz={24} mb={12} c={'red'}>
+          Order Cancelled
+        </Text>
+        <Text fw={400} fz={'md'}>
+          Your payment was not processed.
+        </Text>
+        <Group justify="center" mt={21}>
+          <Button variant="outline" component={Link} href={ROUTE_PATHS.CART} w={'81%'}>
+            Go Back To Cart
+          </Button>
+          <Button variant="filled" w={'81%'} component={Link} href={ROUTE_PATHS.PRODUCT.INDEX}>
+            Continue shopping
+          </Button>
+        </Group>
+      </Flex>
     </Modal>
     // </ToolTip>
   )

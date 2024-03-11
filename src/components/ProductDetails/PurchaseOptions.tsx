@@ -1,4 +1,4 @@
-import { Fieldset, Paper, Radio, SegmentedControl, Stack } from '@mantine/core'
+import { Fieldset, Paper, Radio, SegmentedControl, Stack, Text } from '@mantine/core'
 import { useCallback } from 'react'
 import { useFormContext } from 'react-hook-form'
 
@@ -35,14 +35,14 @@ const PurchaseOptions: React.FC = () => {
     <Fieldset legend="Purchase Options" style={{ userSelect: 'none' }}>
       <Stack gap="md">
         <SegmentedControl
-          // color={getPrimaryColor()}
           value={selectedOption?.attributes.type}
           onChange={onChangeType}
           data={[
-            {
-              value: PurchaseType.Recurring,
-              label: 'Subscribe',
-            },
+            // TODO: Get working with Stripe subscriptions
+            // {
+            //   value: PurchaseType.Recurring,
+            //   label: 'Subscribe',
+            // },
             {
               value: PurchaseType.OneTime,
               label: 'One-time purchase',
@@ -50,14 +50,13 @@ const PurchaseOptions: React.FC = () => {
           ]}
         />
         <Paper>
-          {selectedOption?.attributes.type === PurchaseType.Recurring ? (
+          {selectedOption?.attributes.type === PurchaseType.OneTime ? (
             <Radio.Group value={selectedOption?.id.toString()} onChange={onChangeOption}>
               <Stack gap="sm">
                 {purchaseOptions.data
-                  .filter((option) => option.attributes.type === PurchaseType.Recurring)
+                  .filter((option) => option.attributes.type === PurchaseType.OneTime)
                   .map((option) => (
                     <Radio
-                      // color={getPrimaryColor()}
                       key={option.id}
                       value={option.id.toString()}
                       label={option.attributes.name}
@@ -66,6 +65,9 @@ const PurchaseOptions: React.FC = () => {
               </Stack>
             </Radio.Group>
           ) : null}
+          <Text fw={300} fz={'xs'} mt={9}>
+            Subscription Options Coming Soon!
+          </Text>
         </Paper>
       </Stack>
     </Fieldset>

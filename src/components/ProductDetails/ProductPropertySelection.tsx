@@ -41,6 +41,8 @@ export type ProductPropertySelectionProps = {
   sum: number
   variantChanged?: boolean
   setVariantChanged: (bool: boolean) => void
+  borderIsRed: { active: boolean; label: string }
+  handleSetBorderRedTemporarily: (label: string, time?: number) => void
 }
 
 const ProductPropertySelection: React.FC<ProductPropertySelectionProps> = ({
@@ -54,7 +56,9 @@ const ProductPropertySelection: React.FC<ProductPropertySelectionProps> = ({
   updateQuantitySum,
   sum,
   variantChanged,
-  setVariantChanged,
+  borderIsRed,
+  handleSetBorderRedTemporarily,
+  // setVariantChanged,
 }) => {
   const { colors } = useMantineTheme()
   const { attributes } = property
@@ -68,15 +72,14 @@ const ProductPropertySelection: React.FC<ProductPropertySelectionProps> = ({
 
   const selected = useMemo(
     () => selectedProperties[selectedIndex],
-    [selectedIndex, selectedProperties],
+    [selectedIndex, selectedProperties, sum],
   )
 
   useEffect(() => {
     if (variantChanged) {
       remove(selectedIndex)
-      setVariantChanged(false)
     }
-  }, [variant?.id])
+  }, [variant?.id, variantChanged])
 
   const max = useMemo(() => {
     if (!variant) return undefined
@@ -86,14 +89,17 @@ const ProductPropertySelection: React.FC<ProductPropertySelectionProps> = ({
     } = variant
 
     const totalUnits = quantity * units_per_stock
-
-    const selectedUnitsCount = selectedProperties.reduce<number>((sum, p) => {
+    let selectedUnitsCount = selectedProperties.reduce<number>((sum, p) => {
       if (p.id === property.id) return sum
       return sum + p.quantity
     }, 0)
 
-    const availableStocks = totalUnits - selectedUnitsCount
+    if (selectedUnitsCount - 1 === quantity) {
+      selectedUnitsCount = selectedUnitsCount - 1
+      quantityInput.current?.decrement()
+    }
 
+    const availableStocks = totalUnits - selectedUnitsCount
     return availableStocks
   }, [property.id, selectedProperties, variant])
 
@@ -105,6 +111,10 @@ const ProductPropertySelection: React.FC<ProductPropertySelectionProps> = ({
 
   const onSelect = useCallback(() => {
     if (!!selected) return
+    if (!max) {
+      handleSetBorderRedTemporarily('First increase the amount above or remove 1 flavor', 2100)
+      return
+    }
     append({
       ...property,
       quantity: 1,
@@ -130,15 +140,32 @@ const ProductPropertySelection: React.FC<ProductPropertySelectionProps> = ({
     [remove, selected, selectedIndex, update, property.id, updateQuantitySum],
   )
 
+  // console.log('selected', selected)
+  // console.log('selected?.quantity', selected?.quantity)
+  const isSelected = () => !!selected && selected?.quantity > 0
+
+  if (selected?.quantity === 0) {
+    remove(selectedIndex)
+  }
+
   return (
     <Box className={propertySelectionContainer}>
       <Card
         className={propertyWrapper}
         data-selected={!!selected}
-        data-disabled={!max}
+        // data-disabled={!max}
         onClick={() => onSelect()}
         data-withimage={showImage}
-        style={{ borderColor: !!selected ? colors.teal[9] : 'lightgray', userSelect: 'none' }}
+        style={{
+          transition: '0.24s ease-in-out',
+          borderColor: isSelected()
+            ? borderIsRed.active &&
+              borderIsRed.label === 'First increase the amount above or remove 1 flavor'
+              ? colors.red[9]
+              : colors.teal[9]
+            : 'lightgray',
+          userSelect: 'none',
+        }}
         withBorder
       >
         {attributes.image?.data?.attributes.url && showImage ? (
@@ -190,7 +217,9 @@ const ProductPropertySelection: React.FC<ProductPropertySelectionProps> = ({
                 size={12}
                 onClick={(e) => {
                   e.stopPropagation()
-                  sum < variant?.quantity && quantityInput.current?.increment()
+                  sum < variant?.quantity
+                    ? quantityInput.current?.increment()
+                    : handleSetBorderRedTemporarily('First increase the amount above')
                 }}
               />
             }

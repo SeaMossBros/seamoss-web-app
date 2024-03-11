@@ -10,7 +10,11 @@ import { useCheckout } from '@/mutations/useCheckout'
 import { useCartBillingDetails } from '@/queries/useCartBillingDetails'
 import { useCartItems } from '@/queries/useCartItems'
 
-const CartClientSide: React.FC = () => {
+interface CartClientSideProps {
+  email: string
+}
+
+const CartClientSide: React.FC<CartClientSideProps> = ({ email }) => {
   const { cartId } = useCart()
 
   const {
@@ -24,7 +28,7 @@ const CartClientSide: React.FC = () => {
   })
 
   const { data: billingDetails, refetch: refetchBilling } = useCartBillingDetails(cartId!)
-  const { mutate: checkout, isPending: isCheckingOut } = useCheckout()
+  const { mutate: checkout, isPending: isCheckingOut } = useCheckout(email)
 
   const onRefetch = useCallback(() => {
     refetchItems()

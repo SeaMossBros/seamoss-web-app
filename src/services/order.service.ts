@@ -13,7 +13,7 @@ export default class OrderService extends CMSService {
     confirmPayment: (sessionId: string) => ['/payments/confirm', sessionId],
   }
 
-  create = async (data: { cartId: number }) => {
+  create = async (data: { cartId: number; email: string }) => {
     const url = `${this.baseURL}/orders`
 
     const payload = {

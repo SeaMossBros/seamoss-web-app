@@ -1,4 +1,4 @@
-import { notFound, redirect, RedirectType } from 'next/navigation'
+import { redirect, RedirectType } from 'next/navigation'
 import QueryString, { ParsedQs } from 'qs'
 
 import getQueryClient from '@/react-query/getQueryClient'
@@ -14,31 +14,32 @@ const PaymentCancelPage: React.FC<{
 
   const { session_id } = searchParams
 
-  if (!session_id) {
-    notFound()
-  }
+  if (session_id) {
+    const getRes = async () => {
+      const res = await queryClient.fetchQuery({
+        queryKey: OrderService.queryKeys.confirmPayment(session_id as string),
+        queryFn: () => orderService.confirmPayment(session_id as string),
+        gcTime: 0,
+      })
 
-  const res = await queryClient.fetchQuery({
-    queryKey: OrderService.queryKeys.confirmPayment(session_id as string),
-    queryFn: () => orderService.confirmPayment(session_id as string),
-    gcTime: 0,
-  })
-
-  if (res.status !== 'expired') {
-    if (res.status === 'complete') {
-      redirect(
-        `/payments/success${QueryString.stringify(
-          {
-            session_id,
-          },
-          {
-            addQueryPrefix: true,
-          },
-        )}`,
-        RedirectType.replace,
-      )
+      if (res.status !== 'expired') {
+        if (res.status === 'complete') {
+          redirect(
+            `/payments/success${QueryString.stringify(
+              {
+                session_id,
+              },
+              {
+                addQueryPrefix: true,
+              },
+            )}`,
+            RedirectType.replace,
+          )
+        }
+        redirect('/error')
+      }
     }
-    redirect('/error')
+    getRes()
   }
 
   return <PaymentCancelModal defaultOpened />

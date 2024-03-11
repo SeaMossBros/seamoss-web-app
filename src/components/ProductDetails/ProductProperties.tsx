@@ -12,12 +12,16 @@ const ProductProperties: React.FC<{
   variantChanged?: boolean
   setMaxPropertySelected: (bool: boolean) => void
   setVariantChanged: (bool: boolean) => void
+  handleSetBorderRedTemporarily: (label: string) => void
+  borderIsRed: { active: boolean; label: string }
 }> = ({
   showImages,
   isFromCartModal,
   setMaxPropertySelected,
   setVariantChanged,
   variantChanged,
+  handleSetBorderRedTemporarily,
+  borderIsRed,
 }) => {
   const product = useWatch<ProductSelectionFormData, 'product'>({
     name: 'product',
@@ -66,6 +70,10 @@ const ProductProperties: React.FC<{
     setSumArray(Array(sumArray.length).fill(0))
   }, [variant?.id, remove])
 
+  // useMemo(() => {
+  //   selectedProperties.map((property) => property.quantity === 1 ? remove(property.quantity) : null)
+  // }, [variant?.quantity])
+
   useEffect(() => {
     if (!isFromCartModal) {
       setSumArray(Array(product?.attributes.product_properties?.data?.length).fill(0))
@@ -98,12 +106,33 @@ const ProductProperties: React.FC<{
   }
 
   useEffect(() => {
-    if (isFromCartModal) {
+    const sumOfQuants = sumArray.reduce((partialSum, a) => partialSum + a, 0)
+    const sumOfSelectedQuants = selectedProperties.reduce(
+      (partialSum, a) => partialSum + a.quantity,
+      0,
+    )
+    console.log('sumOfQuants', sumOfQuants)
+    console.log('sumOfSelectedQuants', sumOfSelectedQuants)
+    if (
+      isFromCartModal &&
+      sumOfQuants === sumOfSelectedQuants &&
+      variant?.quantity === sumOfQuants - 1
+    ) {
+      const lastIndex = selectedProperties.length - 1
+      selectedProperties.forEach((property, i) => {
+        if (i === lastIndex) {
+          console.log('property.quantity', property.quantity)
+          updateQuantitySum(property.quantity - 1, property.id)
+          // property.quantity === 1 ? remove(property.id)
+          update(i, { ...property, quantity: property.quantity - 1 })
+        }
+      })
+    } else if (isFromCartModal) {
       selectedProperties.forEach((property) => {
         updateQuantitySum(property.quantity, property.id)
       })
     }
-  }, [])
+  }, [variant?.quantity])
 
   const sum = useMemo(() => {
     const sumOfQuants = sumArray.reduce((partialSum, a) => partialSum + a, 0)
@@ -115,6 +144,7 @@ const ProductProperties: React.FC<{
 
   const { attributes } = product
   const showWarnings = !variantCountIsFilled() && variant.quantity !== getRemainingAmountToSelect()
+  const remaining = variant.quantity - getRemainingAmountToSelect()
 
   return (
     <Fieldset
@@ -127,7 +157,12 @@ const ProductProperties: React.FC<{
     >
       {showWarnings && (
         <Text c={'red'} style={{ userSelect: 'none' }}>
-          Choose {variant.quantity - getRemainingAmountToSelect()} before you continue!
+          Add {remaining} more before you continue!
+        </Text>
+      )}
+      {borderIsRed.active && borderIsRed.label !== 'First remove flavor below' && (
+        <Text c={'red'} fw={300} fz={'sm'} mb={6}>
+          {borderIsRed.label}
         </Text>
       )}
       <Flex gap="sm" wrap="wrap">
@@ -145,6 +180,8 @@ const ProductProperties: React.FC<{
             sum={sum}
             variantChanged={variantChanged}
             setVariantChanged={setVariantChanged}
+            handleSetBorderRedTemporarily={handleSetBorderRedTemporarily}
+            borderIsRed={borderIsRed}
           />
         ))}
       </Flex>
