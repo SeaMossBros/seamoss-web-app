@@ -27,20 +27,11 @@ export const variantWrapper = style({
 export const quantitySelection = style({
   flexGrow: 1,
   width: 0,
-  ':hover': {
-    boxShadow: defaultThemeVars.shadows.md,
-  },
 })
 
 export const quantitySelectionInput = style({
   maxWidth: '100%',
   textAlign: 'center',
-
-  '@media': {
-    [`(max-width: ${defaultThemeVars.breakpoints.sm})`]: {
-      userSelect: 'none',
-    },
-  },
 })
 
 export const quantityControl = style({

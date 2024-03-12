@@ -123,6 +123,7 @@ const ProductVariantSelection: React.FC<ProductVariantSelectionProps> = ({
             min={1}
             defaultValue={1}
             allowNegative={false}
+            readOnly
             leftSection={
               <IconMinus
                 size={15}
