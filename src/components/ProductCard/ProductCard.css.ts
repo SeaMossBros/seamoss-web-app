@@ -3,6 +3,8 @@ import { style } from '@vanilla-extract/css'
 import { defaultThemeVars } from '@/themes/default'
 
 export const card = style({
+  minWidth: 126,
+
   ':hover': {
     boxShadow: defaultThemeVars.shadows.lg,
   },

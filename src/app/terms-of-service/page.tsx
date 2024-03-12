@@ -7,16 +7,16 @@ export const metadata: Metadata = {
   title: 'Terms Of Service | SeaTheMoss',
 }
 
-const PrivacyPolicyPage: React.FC = () => {
+const TermsOfServicePage: React.FC = () => {
   return (
     <div>
       <div className={wrapper}>
-        <Overlay color="#1a1b1e" opacity={0.65} zIndex={1} />
-
         <div className={inner}>
-          <Title className={title}>Terms Of Service</Title>
+          <Overlay color="#1a1b1e" opacity={0.65} zIndex={1} />
         </div>
       </div>
+
+      <Title className={title}>Terms Of Service</Title>
       <Container className={content} pt={54}>
         <Text fw={700} mb={9}>
           OVERVIEW
@@ -381,4 +381,4 @@ const PrivacyPolicyPage: React.FC = () => {
   )
 }
 
-export default PrivacyPolicyPage
+export default TermsOfServicePage

@@ -88,7 +88,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickViewClick }) 
       withBorder
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
-      style={{ border: `1px solid ${colors.teal[9]}` }}
+      style={{ border: `1.2px solid ${colors.teal[9]}` }}
     >
       <Card.Section
         component={Link}

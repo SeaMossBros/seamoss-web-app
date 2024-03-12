@@ -11,12 +11,12 @@ const PrivacyPolicyPage: React.FC = () => {
   return (
     <div>
       <div className={wrapper}>
-        <Overlay color="#1a1b1e" opacity={0.65} zIndex={1} />
-
         <div className={inner}>
-          <Title className={title}>Privacy Policy</Title>
+          <Overlay color="#1a1b1e" opacity={0.65} zIndex={1} />
         </div>
       </div>
+
+      <Title className={title}>Privacy Policy</Title>
       <Container className={content} pt={42}>
         <Text fw={400}>
           This Privacy Policy describes how your personal information is collected, used, and shared

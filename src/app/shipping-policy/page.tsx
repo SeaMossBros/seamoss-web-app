@@ -7,16 +7,16 @@ export const metadata: Metadata = {
   title: 'Shipping Policy | SeaTheMoss',
 }
 
-const PrivacyPolicyPage: React.FC = () => {
+const ShippingPolicyPage: React.FC = () => {
   return (
     <div>
       <div className={wrapper}>
-        <Overlay color="#1a1b1e" opacity={0.65} zIndex={1} />
-
         <div className={inner}>
-          <Title className={title}>Shipping & Return Policies</Title>
+          <Overlay color="#1a1b1e" opacity={0.65} zIndex={1} />
         </div>
       </div>
+
+      <Title className={title}>Shipping & Return Policies</Title>
       <Container w={'51%'} pt={54}>
         <Text fw={700} mb={9}>
           Shipping Policy
@@ -51,4 +51,4 @@ const PrivacyPolicyPage: React.FC = () => {
   )
 }
 
-export default PrivacyPolicyPage
+export default ShippingPolicyPage

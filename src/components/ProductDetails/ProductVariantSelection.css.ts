@@ -4,6 +4,7 @@ import { defaultThemeVars } from '@/themes/default'
 
 export const variantSelectionContainer = style({
   display: 'inline-block',
+  maxWidth: '90px',
 })
 
 export const variantWrapper = style({
@@ -34,6 +35,12 @@ export const quantitySelection = style({
 export const quantitySelectionInput = style({
   maxWidth: '100%',
   textAlign: 'center',
+
+  '@media': {
+    [`(max-width: ${defaultThemeVars.breakpoints.sm})`]: {
+      userSelect: 'none',
+    },
+  },
 })
 
 export const quantityControl = style({

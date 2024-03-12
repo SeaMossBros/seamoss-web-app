@@ -9,13 +9,14 @@ export const metadata: Metadata = {
 
 const AboutUsPage: React.FC = () => {
   return (
-    <div className={wrapper}>
-      <Overlay color="#1a1b1e" opacity={0.65} zIndex={1} />
-
-      <div className={inner}>
-        <Title className={title}>About Us</Title>
+    <>
+      <div className={wrapper}>
+        <div className={inner}>
+          <Overlay color="#1a1b1e" opacity={0.65} zIndex={1} />
+        </div>
       </div>
-    </div>
+      <Title className={title}>About Us</Title>
+    </>
   )
 }
 

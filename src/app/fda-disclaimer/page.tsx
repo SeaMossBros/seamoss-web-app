@@ -7,16 +7,16 @@ export const metadata: Metadata = {
   title: 'FDA Disclaimer | SeaTheMoss',
 }
 
-const PrivacyPolicyPage: React.FC = () => {
+const FdaDisclaimerPage: React.FC = () => {
   return (
     <div>
       <div className={wrapper}>
-        <Overlay color="#1a1b1e" opacity={0.65} zIndex={1} />
-
         <div className={inner}>
-          <Title className={title}>FDA Disclaimer</Title>
+          <Overlay color="#1a1b1e" opacity={0.65} zIndex={1} />
         </div>
       </div>
+
+      <Title className={title}>FDA Disclaimer</Title>
       <Container pt={54} className={content}>
         <Text fw={400}>
           These statements have not been evaluated by the Food and Drug Administration (FDA). This
@@ -36,4 +36,4 @@ const PrivacyPolicyPage: React.FC = () => {
   )
 }
 
-export default PrivacyPolicyPage
+export default FdaDisclaimerPage

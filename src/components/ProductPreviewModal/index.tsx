@@ -94,6 +94,7 @@ const ProductPreviewModal: React.FC<ProductPreviewModalProps> = ({ product, ...m
                     product={productDetails}
                     showOptionImages={false}
                     setMaxPropertySelected={(value: boolean) => setMaxPropertySelected(value)}
+                    maxPropertySelected={maxPropertySelected}
                     setVariantChanged={setVariantChanged}
                     variantChanged={variantChanged}
                   />
