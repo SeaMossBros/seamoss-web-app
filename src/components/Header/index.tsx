@@ -95,10 +95,11 @@ const Header: React.FC<HeaderProps> = ({ navOpened, toggleNav }) => {
           </ActionIcon>
           <CartDropdown />
         </Flex>
-        {/* Hamburger Menu */}
         <Flex hiddenFrom="md" className={navLinkContainer} gap="sm" align="center">
+          <IconSearch />
           <CartDropdown />
           {/* <ToolTip title='Toggle navigation'> */}
+          {/* Hamburger Menu */}
           <Burger opened={navOpened} onClick={toggleNav} />
           {/* </ToolTip> */}
         </Flex>

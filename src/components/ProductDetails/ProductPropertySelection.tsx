@@ -201,6 +201,7 @@ const ProductPropertySelection: React.FC<ProductPropertySelectionProps> = ({
             max={max}
             defaultValue={1}
             allowNegative={false}
+            readOnly
             leftSection={
               <IconMinus
                 role="button"

@@ -4,6 +4,7 @@ import { defaultThemeVars } from '@/themes/default'
 
 export const variantSelectionContainer = style({
   display: 'inline-block',
+  maxWidth: '90px',
 })
 
 export const variantWrapper = style({
@@ -26,9 +27,6 @@ export const variantWrapper = style({
 export const quantitySelection = style({
   flexGrow: 1,
   width: 0,
-  ':hover': {
-    boxShadow: defaultThemeVars.shadows.md,
-  },
 })
 
 export const quantitySelectionInput = style({

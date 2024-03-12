@@ -11,7 +11,7 @@ import {
 import { useDisclosure } from '@mantine/hooks'
 import Link from 'next/link'
 import { usePathname, useSearchParams } from 'next/navigation'
-import React, { PropsWithChildren, useCallback, useMemo, useState } from 'react'
+import React, { PropsWithChildren, useCallback, useEffect, useMemo, useState } from 'react'
 
 import ProductCard from '@/components/ProductCard'
 import ProductPreviewModal from '@/components/ProductPreviewModal'
@@ -21,14 +21,44 @@ import { QueryParams } from '@/types/QueryParams'
 
 import { pagination, productsContainer, topProductsTitle } from './ProductList.css'
 
-const ProductCol: React.FC<PropsWithChildren> = ({ children }) => {
+const ProductExtraSmallCol: React.FC<PropsWithChildren> = ({ children }) => {
+  return (
+    <Grid.Col
+      span={{
+        base: 12,
+        xs: 4,
+        sm: 4,
+        md: 4,
+      }}
+    >
+      {children}
+    </Grid.Col>
+  )
+}
+
+const ProductSmallCol: React.FC<PropsWithChildren> = ({ children }) => {
   return (
     <Grid.Col
       span={{
         base: 6,
-        xs: 3,
+        xs: 6,
+        sm: 6,
+        md: 4,
+      }}
+    >
+      {children}
+    </Grid.Col>
+  )
+}
+
+const ProductCol: React.FC<PropsWithChildren> = ({ children }) => {
+  return (
+    <Grid.Col
+      span={{
+        base: 8,
+        xs: 4,
         sm: 4,
-        md: 6,
+        md: 4,
       }}
     >
       {children}
@@ -48,6 +78,8 @@ const ProductList: React.FC<ProductListProps> = ({ queryParams, onPage }) => {
   const searchParams = useSearchParams()
   const pathname = usePathname()
 
+  const [windowIsMobileView, setWindowIsMobileView] = useState(false)
+  const [windowIsExtraSmallMobileView, setWindowIsExtraSmallMobileView] = useState(false)
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
   const [productPreviewOpened, productPreview] = useDisclosure(false, {
     onClose: () => {
@@ -78,6 +110,15 @@ const ProductList: React.FC<ProductListProps> = ({ queryParams, onPage }) => {
     return href
   }
 
+  useEffect(() => {
+    window.addEventListener('resize', () => {
+      setWindowIsMobileView(window.innerWidth < 540)
+      setWindowIsExtraSmallMobileView(window.innerWidth < 350)
+    })
+    setWindowIsMobileView(window.innerWidth < 540)
+    setWindowIsExtraSmallMobileView(window.innerWidth < 350)
+  }, [])
+
   return (
     <Stack gap="xl" className={productsContainer}>
       {onPage === 'Home' && (
@@ -89,13 +130,24 @@ const ProductList: React.FC<ProductListProps> = ({ queryParams, onPage }) => {
           Our Top Products
         </Title>
       )}
-
       <Grid>
-        {products?.data?.map((product) => (
-          <ProductCol key={product.id}>
-            <ProductCard product={product} onQuickViewClick={onQuickViewClick} />
-          </ProductCol>
-        ))}
+        {products?.data?.map((product) =>
+          windowIsMobileView ? (
+            windowIsExtraSmallMobileView ? (
+              <ProductExtraSmallCol key={product.id}>
+                <ProductCard product={product} onQuickViewClick={onQuickViewClick} />
+              </ProductExtraSmallCol>
+            ) : (
+              <ProductSmallCol key={product.id}>
+                <ProductCard product={product} onQuickViewClick={onQuickViewClick} />
+              </ProductSmallCol>
+            )
+          ) : (
+            <ProductCol key={product.id}>
+              <ProductCard product={product} onQuickViewClick={onQuickViewClick} />
+            </ProductCol>
+          ),
+        )}
       </Grid>
       {onPage !== 'Home' && (
         <Pagination

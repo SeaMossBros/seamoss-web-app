@@ -237,7 +237,22 @@ const AuthenticationForm = () => {
                 px={0}
                 mx={0}
               >
-                terms and conditions
+                terms & conditions
+              </Anchor>
+              <Text fz={'sm'} c={'gray'} span>
+                &nbsp;and&nbsp;
+              </Text>
+              <Anchor
+                c="teal"
+                key={'shipping policy'}
+                href={'/shipping-policy'}
+                lh={1}
+                size="sm"
+                inline
+                px={0}
+                mx={0}
+              >
+                shipping policy
               </Anchor>
             </Flex>
           )}

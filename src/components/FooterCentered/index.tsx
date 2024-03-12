@@ -15,6 +15,7 @@ const links = [
   { link: '/privacy-policy', label: 'Privacy Policy' },
   { link: '/fda-disclaimer', label: 'FDA Disclaimer' },
   { link: '/terms-of-service', label: 'Terms Of Service' },
+  { link: '/shipping-policy', label: 'Shipping Policy' },
 ]
 
 const FooterCentered = () => {

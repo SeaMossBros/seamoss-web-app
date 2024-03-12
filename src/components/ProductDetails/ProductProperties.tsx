@@ -111,8 +111,8 @@ const ProductProperties: React.FC<{
       (partialSum, a) => partialSum + a.quantity,
       0,
     )
-    console.log('sumOfQuants', sumOfQuants)
-    console.log('sumOfSelectedQuants', sumOfSelectedQuants)
+    // console.log('sumOfQuants', sumOfQuants)
+    // console.log('sumOfSelectedQuants', sumOfSelectedQuants)
     if (
       isFromCartModal &&
       sumOfQuants === sumOfSelectedQuants &&
@@ -121,7 +121,7 @@ const ProductProperties: React.FC<{
       const lastIndex = selectedProperties.length - 1
       selectedProperties.forEach((property, i) => {
         if (i === lastIndex) {
-          console.log('property.quantity', property.quantity)
+          // console.log('property.quantity', property.quantity)
           updateQuantitySum(property.quantity - 1, property.id)
           // property.quantity === 1 ? remove(property.id)
           update(i, { ...property, quantity: property.quantity - 1 })
@@ -157,7 +157,9 @@ const ProductProperties: React.FC<{
     >
       {showWarnings && (
         <Text c={'red'} style={{ userSelect: 'none' }}>
-          Add {remaining} more before you continue!
+          {isNaN(remaining)
+            ? 'Enter a valid amount, at least 1'
+            : `Add ${remaining} more before you continue!`}
         </Text>
       )}
       {borderIsRed.active && borderIsRed.label !== 'First remove flavor below' && (
