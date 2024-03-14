@@ -11,6 +11,7 @@ import ProductImages from '@/components/ProductImages'
 import ProductReviews from '@/components/ProductReviews'
 import { useCart } from '@/hooks/useCart'
 import useProductForm from '@/hooks/useProductForm'
+import { AuthUser } from '@/types/Auth'
 import { Product_Plain } from '@/types/Product'
 import { ProductSelectionFormData } from '@/types/ProductForm'
 import { QueryParams } from '@/types/QueryParams'
@@ -18,9 +19,10 @@ import { QueryParams } from '@/types/QueryParams'
 export type ProductSingleProps = {
   slug: string
   queryParams: QueryParams<Product_Plain>
+  user: AuthUser | null
 }
 
-const ProductSingle: React.FC<ProductSingleProps> = ({ slug, queryParams }) => {
+const ProductSingle: React.FC<ProductSingleProps> = ({ slug, queryParams, user }) => {
   const [maxPropertySelected, setMaxPropertySelected] = useState(false)
   const [variantChanged, setVariantChanged] = useState(false)
   const { addToCart, isAddingToCart } = useCart()
@@ -128,7 +130,7 @@ const ProductSingle: React.FC<ProductSingleProps> = ({ slug, queryParams }) => {
           <Markdown>{product.attributes.description}</Markdown>
         </Box>
       ) : null}
-      <ProductReviews product={product} onRefetch={onRefetch} />
+      <ProductReviews product={product} onRefetch={onRefetch} user={user} />
     </Stack>
   )
 }

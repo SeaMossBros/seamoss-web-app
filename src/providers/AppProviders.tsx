@@ -35,7 +35,7 @@ const AppProviders: React.FC<PropsWithChildren> = ({ children }) => {
         defaultColorScheme={schemeManager.defaultScheme}
         colorSchemeManager={schemeManager}
       >
-        <ProgressBar // TODO: progress bar is only changing color after a refresh (should change as soon as color toggle is pressed)
+        <ProgressBar
           height="3px"
           color={defaultThemeVars.colors.teal[9]}
           options={{ showSpinner: true }}

@@ -7,7 +7,21 @@ export const reviewSummary = style({
   borderBottom: `1px solid ${defaultThemeVars.colors.gray[3]}`,
 })
 
+export const reviewHeader = style({
+  display: 'flex',
+  width: '100%',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+
+  '@media': {
+    [`(max-width: ${defaultThemeVars.breakpoints.xs})`]: {
+      flexDirection: 'column',
+    },
+  },
+})
+
 export const reviewItem = style({
   padding: `${defaultThemeVars.spacing.xl} 0`,
   borderBottom: `1px solid ${defaultThemeVars.colors.gray[3]}`,
+  display: 'flex',
 })

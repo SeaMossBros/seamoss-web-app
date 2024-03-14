@@ -47,15 +47,6 @@ const NavBar: React.FC<NavBarProps> = ({ onClose, navOpened }) => {
       />
       <NavLinkItem
         className={navLink}
-        label="Support"
-        title="Support"
-        href={ROUTE_PATHS.SUPPORT}
-        active={pathname.startsWith(ROUTE_PATHS.SUPPORT)}
-        onClick={onClose}
-        style={{ borderRadius: defaultRadius }}
-      />
-      <NavLinkItem
-        className={navLink}
         label="Blogs"
         title="Blogs"
         href={ROUTE_PATHS.BLOG.INDEX}
@@ -69,6 +60,15 @@ const NavBar: React.FC<NavBarProps> = ({ onClose, navOpened }) => {
         title="About us"
         href={ROUTE_PATHS.ABOUT}
         active={pathname.startsWith(ROUTE_PATHS.ABOUT)}
+        onClick={onClose}
+        style={{ borderRadius: defaultRadius }}
+      />
+      <NavLinkItem
+        className={navLink}
+        label="Support"
+        title="Support"
+        href={ROUTE_PATHS.SUPPORT}
+        active={pathname.startsWith(ROUTE_PATHS.SUPPORT)}
         onClick={onClose}
         style={{ borderRadius: defaultRadius }}
       />

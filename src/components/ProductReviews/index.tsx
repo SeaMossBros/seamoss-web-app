@@ -2,10 +2,13 @@
 
 import { Button, Center, Flex, Pagination, Rating, Stack, Text, Title } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
-import React, { useCallback, useMemo, useState } from 'react'
+import { useSearchParams } from 'next/navigation'
+import React, { useCallback, useEffect, useLayoutEffect, useMemo, useState } from 'react'
 
 import { useProductReviews } from '@/queries/useProductReviews'
+import { AuthUser } from '@/types/Auth'
 import { Product } from '@/types/Product'
+import { ProductReview } from '@/types/ProductReview'
 import { PaginationOptions } from '@/types/QueryParams'
 
 import ReviewModal from '../ReviewModal'
@@ -15,9 +18,15 @@ import ReviewItem from './ReviewItem'
 export type ProductReviewsProps = {
   product: Product
   onRefetch: () => void
+  user: AuthUser | null
 }
 
-const ProductReviews: React.FC<ProductReviewsProps> = ({ product, onRefetch }) => {
+const ProductReviews: React.FC<ProductReviewsProps> = ({ product, onRefetch, user }) => {
+  const id = 'product-reviews'
+  const [review, setReview] = useState<ProductReview | null>(null)
+  const [willDelete, setWillDelete] = useState(false)
+  const [shouldShowReviewModal, setShouldShowReviewModal] = useState(false)
+  const searchParams = useSearchParams()
   const [reviewModalOpened, reviewModal] = useDisclosure()
   const [pagination, setPagination] = useState<Pick<PaginationOptions, 'page' | 'pageSize'>>({
     page: 1,
@@ -29,7 +38,6 @@ const ProductReviews: React.FC<ProductReviewsProps> = ({ product, onRefetch }) =
       filters: {
         product: product.id,
       },
-      // fields: [],
       pagination: {
         withCount: true,
         ...pagination,
@@ -39,9 +47,6 @@ const ProductReviews: React.FC<ProductReviewsProps> = ({ product, onRefetch }) =
       enabled: Boolean(product.id),
     },
   )
-
-  // if (!reviews || !reviews.meta) return null;
-  // console.log('reviews', reviews);
 
   const { total, totalPages } = useMemo(() => {
     const _total = reviews?.meta.pagination.total ?? 1
@@ -72,8 +77,39 @@ const ProductReviews: React.FC<ProductReviewsProps> = ({ product, onRefetch }) =
     }, 500)
   }, [onRefetch, refetchReviews, reviewModal])
 
+  useLayoutEffect(() => {
+    if (!!searchParams.get('showReviewModal')) {
+      setShouldShowReviewModal(true)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (shouldShowReviewModal) {
+      reviewModal.open()
+    }
+  }, [shouldShowReviewModal])
+
+  useEffect(() => {
+    setTimeout(() => {
+      const productReviewsEle = document.getElementById(id)
+      if (reviewModalOpened && productReviewsEle) {
+        productReviewsEle.scrollIntoView({ behavior: 'smooth' })
+      }
+    }, 120)
+  }, [reviewModalOpened])
+
+  const showUpdateModal = (review: ProductReview | null, willDelete: boolean = false) => {
+    if (review) {
+      setReview(review)
+      setWillDelete(willDelete)
+      reviewModal.open()
+    }
+  }
+
+  if (!reviews || !reviews.meta) return null
+
   return (
-    <Stack gap={0}>
+    <Stack gap={0} id={id}>
       <Title order={3}>Customer Reviews</Title>
       <Flex className={reviewSummary} align="center" justify="space-between">
         <Stack w={120}>
@@ -90,13 +126,20 @@ const ProductReviews: React.FC<ProductReviewsProps> = ({ product, onRefetch }) =
           </Stack>
         </Stack>
         <Flex justify="flex-end">
-          <Button variant="outline" onClick={reviewModal.open}>
-            Write a review
-          </Button>
+          {/* // TODO: Only allow logged in users to write a review. Otherwise instruct them to log in first. *this way only people who have purchased an item (or made an account) can leave reviews* */}
+          {/* // TODO: Put on Forgot Password Page -> If they are unsure if they have an account, let them know every person who has purchased a product has an account, just click forgot password if they do not remember and look through their emails and search for `seathemoss` to see if we sent them any mail previously */}
+          <Button onClick={reviewModal.open}>Write a review</Button>
         </Flex>
       </Flex>
       <Stack gap={0}>
-        {reviews?.data?.map((review) => <ReviewItem key={review.id} review={review} />)}
+        {reviews?.data?.map((review) => (
+          <ReviewItem
+            key={review.id}
+            review={review}
+            showUpdateModal={showUpdateModal}
+            isCurrentUsersReview={review.attributes.user_email === user?.email}
+          />
+        ))}
       </Stack>
       <Center mt="xl">
         <Pagination
@@ -107,9 +150,12 @@ const ProductReviews: React.FC<ProductReviewsProps> = ({ product, onRefetch }) =
       </Center>
       <ReviewModal
         product={product}
+        user={user}
         opened={reviewModalOpened}
         onClose={reviewModal.close}
         onSuccess={onReviewSubmitted}
+        willDelete={willDelete}
+        currentReview={review}
       />
     </Stack>
   )

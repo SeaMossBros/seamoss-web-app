@@ -1,14 +1,14 @@
-import { Container, Group, Title } from '@mantine/core'
+import { Container } from '@mantine/core'
 import { Metadata } from 'next'
 import dynamic from 'next/dynamic'
 
 import { getSessionFromCookies } from '@/lib/crypt'
 import { AuthUser } from '@/types/Auth'
 
-import { pageCont, title } from '../profile-page.css'
+import { pageCont } from '../profile-page.css'
+import OrdersContainer from './OrdersContainer'
 
 const NavbarClientSide = dynamic(() => import('../NavbarSegment'), { ssr: false })
-const OrdersListClientSide = dynamic(() => import('./OrdersList'), { ssr: false })
 
 export const metadata: Metadata = {
   title: 'Orders | Profile | SeaTheMoss',
@@ -20,15 +20,7 @@ const OrdersPage: React.FC = async () => {
 
   return (
     <Container size={'100%'} className={pageCont}>
-      <Group
-        display={'flex'}
-        style={{ flexDirection: 'column', justifyContent: 'flex-start' }}
-        w={'100%'}
-        justify="center"
-      >
-        <Title className={title}>Your Orders</Title>
-        <OrdersListClientSide user={user} />
-      </Group>
+      <OrdersContainer user={user} />
       <NavbarClientSide user={user} key={4} />
     </Container>
   )

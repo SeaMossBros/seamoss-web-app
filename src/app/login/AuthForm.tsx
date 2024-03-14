@@ -67,6 +67,7 @@ const AuthenticationForm = () => {
     const { username, email, password } = form.values
     try {
       if (type === 'login') {
+        router.prefetch(ROUTE_PATHS.PROFILE.INDEX)
         await axios('/api/auth/login', {
           method: 'POST',
           headers: {
@@ -75,8 +76,8 @@ const AuthenticationForm = () => {
           },
           data: JSON.stringify({ email, password }),
         })
-
-        router.push('/profile')
+        router.push(ROUTE_PATHS.PROFILE.INDEX)
+        setSubmittedForm(false)
       } else if (type === 'register') {
         await axios('/api/auth/register', {
           method: 'POST',
@@ -86,14 +87,14 @@ const AuthenticationForm = () => {
           },
           data: JSON.stringify({ username, email, password }),
         })
-        router.push('/profile')
+        router.push(ROUTE_PATHS.PROFILE.INDEX)
+        setSubmittedForm(false)
       }
     } catch (err) {
       setSubmittedForm(false)
       setErrorMessage('Something went wrong. Please refresh and try again.')
       console.log(err)
     }
-    setSubmittedForm(false)
   }
 
   const handleForgotPassword = () => {

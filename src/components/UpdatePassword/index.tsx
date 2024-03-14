@@ -6,6 +6,8 @@ import axios from 'axios'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useState } from 'react'
 
+import { ROUTE_PATHS } from '@/consts/route-paths'
+
 import { updatePasswordCont, updatePasswordInput } from './update-password.css'
 
 interface UpdatePasswordProps {
@@ -63,7 +65,7 @@ const UpdatePassword = ({ password }: UpdatePasswordProps) => {
         })
       }
 
-      router.push('/profile')
+      router.push(ROUTE_PATHS.PROFILE.INDEX)
     } catch (err) {
       setSubmittedForm(false)
       console.log(err)

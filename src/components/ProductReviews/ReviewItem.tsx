@@ -1,16 +1,45 @@
-import { Box, Rating, Stack, Text } from '@mantine/core'
-import { useMemo } from 'react'
+import {
+  Anchor,
+  Box,
+  Button,
+  Divider,
+  Flex,
+  Image,
+  Rating,
+  Stack,
+  Text,
+  useMantineColorScheme,
+  useMantineTheme,
+} from '@mantine/core'
+import { useRouter } from 'next/navigation'
+import { useMemo, useState } from 'react'
 
+import { ROUTE_PATHS } from '@/consts/route-paths'
 import { Media } from '@/types/Media'
 import { ProductReview } from '@/types/ProductReview'
+import { getStrapiUploadUrl } from '@/utils/cms'
 
-import { reviewItem } from './ProductReviews.css'
+import { reviewHeader, reviewItem } from './ProductReviews.css'
 
 export type ReviewItemProps = {
   review: ProductReview
+  isOnProfile?: boolean
+  showUpdateModal: (review: ProductReview | null, willDelete?: true) => void
+  isCurrentUsersReview: boolean
 }
 
-const ReviewItem: React.FC<ReviewItemProps> = ({ review }) => {
+const ReviewItem: React.FC<ReviewItemProps> = ({
+  review,
+  isOnProfile,
+  showUpdateModal,
+  isCurrentUsersReview,
+}) => {
+  const { colorScheme } = useMantineColorScheme()
+  const isDarkTheme = colorScheme === 'dark'
+  const router = useRouter()
+  const isUsersReview = !!isOnProfile || isCurrentUsersReview
+  const [isHovering, setIsHovering] = useState(false)
+  const { colors } = useMantineTheme()
   const files = useMemo(() => {
     return review.attributes.attachments?.data || []
   }, [review.attributes.attachments?.data])
@@ -26,19 +55,117 @@ const ReviewItem: React.FC<ReviewItemProps> = ({ review }) => {
 
     return <img src={file.attributes.url} height={120} alt={file.attributes.alternativeText} />
   }
-  // console.log('review', review);
+
+  const productUrl = ROUTE_PATHS.PRODUCT.SLUG.replace(
+    '{slug}',
+    review.attributes.product?.data.attributes.slug || '',
+  )
+
   return (
-    <Stack className={reviewItem} gap="xs">
-      <Box>
+    <Stack
+      className={reviewItem}
+      gap="xs"
+      style={{
+        borderBottomColor: isOnProfile && isHovering ? colors.teal[9] : '',
+        transition: '0.24s ease-in-out',
+        alignItems: isOnProfile ? 'center' : 'flex-start',
+      }}
+      onMouseEnter={() => setIsHovering(true)}
+      onMouseLeave={() => setIsHovering(false)}
+    >
+      <Box w={isOnProfile ? '81%' : '100%'}>
+        {isOnProfile && (
+          <>
+            <Flex className={reviewHeader}>
+              <Flex direction={'column'}>
+                <Text fw={200} fz={'sm'} mb={12}>
+                  Created On:{' '}
+                  {new Date(review.attributes.createdAt).toLocaleDateString(undefined, {
+                    month: 'long',
+                    day: 'numeric',
+                    year: 'numeric',
+                  })}
+                </Text>
+                <Text fw={200} fz={'sm'} mb={12}>
+                  Last Updated:{' '}
+                  {new Date(review.attributes.updatedAt).toLocaleDateString(undefined, {
+                    month: 'long',
+                    day: 'numeric',
+                    year: 'numeric',
+                  })}
+                </Text>
+              </Flex>
+              <Flex direction={'column'}>
+                <Button mb={12} onClick={() => showUpdateModal(review || null)}>
+                  Update Review
+                </Button>
+                <Button mb={12} bg={'red'} onClick={() => showUpdateModal(review || null, true)}>
+                  Delete Your Review
+                </Button>
+              </Flex>
+            </Flex>
+            <Divider
+              mb={12}
+              variant="dashed"
+              bg={isHovering ? colors.white[9] : ''}
+              style={{ transition: '0.24s ease-in-out' }}
+            />
+            <Flex>
+              <Image
+                src={
+                  review.attributes.product?.data.attributes.thumbnail?.data.attributes.url
+                    ? getStrapiUploadUrl(
+                        review.attributes.product?.data.attributes.thumbnail?.data.attributes.url,
+                      )
+                    : ''
+                }
+                alt={review.attributes.product?.data.attributes.name}
+                h={'100px'}
+                w={'auto'}
+                onClick={() => router.push(productUrl)}
+                style={{ cursor: 'pointer' }}
+                mr={9}
+                mb={9}
+              />
+              <Anchor
+                fz={'sm'}
+                w={'100%'}
+                maw={210}
+                href={productUrl}
+                c={isDarkTheme ? 'lightgray' : 'gray'}
+              >
+                {review.attributes.product?.data.attributes.name}
+              </Anchor>
+            </Flex>
+          </>
+        )}
         <Rating value={review.attributes.rating} size="xs" readOnly />
-        <Text fw={600} fz="sm" mt={4}>
-          {review.attributes.user_name}
-        </Text>
+        {!isOnProfile && (
+          <Text fw={600} fz="sm" mt={4}>
+            {review.attributes.user_name}
+          </Text>
+        )}
         <div className="media">
           {files.length > 0 && files.map((file, i) => <div key={i}>{getFileElement(file)}</div>)}
         </div>
       </Box>
-      <Text>{review.attributes.comment}</Text>
+      <Text w={isOnProfile ? '81%' : '100%'}>{review.attributes.comment}</Text>
+      {!isOnProfile && isUsersReview && (
+        <Flex direction={'column'}>
+          <Button my={12} onClick={() => showUpdateModal(review || null)}>
+            Update Your Review
+          </Button>
+          <Button
+            mb={12}
+            c={colors.red[9]}
+            onClick={() => showUpdateModal(review || null, true)}
+            variant="outline"
+            style={{ borderColor: colors.red[9] }}
+          >
+            Delete Your Review
+          </Button>
+        </Flex>
+      )}
     </Stack>
   )
 }

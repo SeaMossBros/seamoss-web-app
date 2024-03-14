@@ -56,4 +56,5 @@ export interface QueryParams<TData = any> {
   publicationState?: 'live' | 'preview'
   sort?: string | string[]
   pagination?: PaginationOptions
+  showReviewModal?: 'true' | 'false'
 }

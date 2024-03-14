@@ -62,13 +62,6 @@ const Header: React.FC<HeaderProps> = ({ navOpened, toggleNav }) => {
             style={{ borderRadius: defaultRadius }}
           />
           <NavLinkItem
-            label="Support"
-            title="Support"
-            href={ROUTE_PATHS.SUPPORT}
-            active={pathname.startsWith(ROUTE_PATHS.SUPPORT)}
-            style={{ borderRadius: defaultRadius }}
-          />
-          <NavLinkItem
             label="Blogs"
             title="Blogs"
             href={ROUTE_PATHS.BLOG.INDEX}
@@ -80,6 +73,13 @@ const Header: React.FC<HeaderProps> = ({ navOpened, toggleNav }) => {
             href={ROUTE_PATHS.ABOUT}
             active={pathname.startsWith(ROUTE_PATHS.ABOUT)}
             title="About us"
+            style={{ borderRadius: defaultRadius }}
+          />
+          <NavLinkItem
+            label="Support"
+            title="Support"
+            href={ROUTE_PATHS.SUPPORT}
+            active={pathname.startsWith(ROUTE_PATHS.SUPPORT)}
             style={{ borderRadius: defaultRadius }}
           />
           <UserMenu onClick={() => null} navOpened={navOpened} />

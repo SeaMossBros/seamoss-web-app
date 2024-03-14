@@ -2,7 +2,7 @@ import { style } from '@vanilla-extract/css'
 
 import { defaultThemeVars } from '@/themes/default'
 
-export const orderWrapper = style({
+export const reviewsWrapper = style({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
@@ -10,15 +10,13 @@ export const orderWrapper = style({
   paddingTop: defaultThemeVars.spacing.xl,
   paddingLeft: defaultThemeVars.spacing.sm,
   paddingRight: defaultThemeVars.spacing.md,
-  width: 'fit-content',
+  width: '100%',
   height: 'fit-content',
   minHeight: 'fit-content',
-  maxHeight: '90vh',
-  overflowY: 'auto',
   position: 'relative',
 })
 
-export const orderStyle = style({
+export const reviewStyle = style({
   position: 'relative',
   marginBottom: '30px',
   width: '60vw',
@@ -34,38 +32,6 @@ export const orderStyle = style({
   '@media': {
     [`(max-width: ${defaultThemeVars.breakpoints.sm})`]: {
       width: '81vw',
-    },
-  },
-})
-
-export const description = style({
-  display: 'flex',
-
-  '@media': {
-    [`(max-width: ${defaultThemeVars.breakpoints.lg})`]: {
-      display: 'none',
-    },
-  },
-})
-
-export const orderPrice = style({
-  fontSize: defaultThemeVars.fontSizes.xs,
-
-  '@media': {
-    [`(min-width: ${defaultThemeVars.breakpoints.sm})`]: {
-      fontSize: defaultThemeVars.fontSizes.xl,
-    },
-  },
-})
-
-export const cartItemCard = style({
-  display: 'flex',
-  width: '100%',
-  flexDirection: 'column',
-
-  '@media': {
-    [`(min-width: ${defaultThemeVars.breakpoints.sm})`]: {
-      flexDirection: 'row',
     },
   },
 })

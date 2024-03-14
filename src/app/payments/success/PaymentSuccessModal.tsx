@@ -76,7 +76,7 @@ const PaymentSuccessModal: React.FC<{
                 <Text pl={12}>
                   Temporary Password:{' '}
                   <Text c={'gray'} span>
-                    {user.password}
+                    ************
                   </Text>
                 </Text>
               </>
