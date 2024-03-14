@@ -16,9 +16,11 @@ import {
   IconSettings,
 } from '@tabler/icons-react'
 import axios from 'axios'
+import { PrefetchKind } from 'next/dist/client/components/router-reducer/router-reducer-types'
 import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
+import { ROUTE_PATHS } from '@/consts/route-paths'
 import { AuthUser } from '@/types/Auth'
 
 import { footer, link, linkIcon, navbarMain, navbarStyles } from './navbar-segment.css'
@@ -30,13 +32,13 @@ interface NavbarSegmentProps {
 
 const tabs = {
   general: [
-    { link: '/orders', label: 'Your Orders', icon: IconLicense },
-    { link: '/reviews', label: 'Your Reviews', icon: IconMessage2 },
+    { link: ROUTE_PATHS.PROFILE.ORDERS, label: 'Your Orders', icon: IconLicense },
+    { link: ROUTE_PATHS.PROFILE.REVIEWS, label: 'Your Reviews', icon: IconMessage2 },
   ],
   account: [
     // { link: '/notifications', label: 'Notifications', icon: IconBellRinging },
-    { link: '/change-password', label: 'Change Password', icon: IconKey },
-    { link: '/settings', label: 'Other Settings', icon: IconSettings },
+    { link: ROUTE_PATHS.PROFILE.CHANGE_PASSWORD, label: 'Change Password', icon: IconKey },
+    { link: ROUTE_PATHS.PROFILE.SETTINGS, label: 'Other Settings', icon: IconSettings },
     // { link: '', label: 'Billing', icon: IconReceipt2 }, // * link to Stripe
   ],
 }
@@ -54,7 +56,7 @@ const NavbarSegment = ({ user }: NavbarSegmentProps) => {
   let activeLabel = ''
   switch (currentPath) {
     case 'orders':
-      activeLabel = 'Orders'
+      activeLabel = 'Your Orders'
       break
 
     case 'reviews':
@@ -80,7 +82,7 @@ const NavbarSegment = ({ user }: NavbarSegmentProps) => {
   const [active, setActive] = useState(activeLabel)
 
   useEffect(() => {
-    if (shouldRedirectToOrders) router.push('/profile/orders')
+    if (shouldRedirectToOrders) router.push(ROUTE_PATHS.PROFILE.ORDERS)
     const isOnGeneralSection =
       !currentPath || pathname.includes('orders') || pathname.includes('reviews')
     setSection(isOnGeneralSection ? 'general' : 'account')
@@ -88,6 +90,7 @@ const NavbarSegment = ({ user }: NavbarSegmentProps) => {
 
   const handleLogout = async () => {
     try {
+      router.prefetch(ROUTE_PATHS.PRODUCT.INDEX, { kind: PrefetchKind.FULL })
       await axios('/api/auth/logout', {
         method: 'POST',
         headers: {
@@ -96,7 +99,7 @@ const NavbarSegment = ({ user }: NavbarSegmentProps) => {
         },
       })
 
-      router.push('/products')
+      router.push(ROUTE_PATHS.PRODUCT.INDEX)
     } catch (err) {
       console.log(err)
     }
@@ -115,7 +118,7 @@ const NavbarSegment = ({ user }: NavbarSegmentProps) => {
       onClick={(event) => {
         event.preventDefault()
         setActive(item.label)
-        router.push(`/profile${item.link}`)
+        router.push(item.link)
       }}
     >
       <item.icon className={linkIcon} color={isDarkTheme ? 'gray' : 'black'} stroke={1.5} />

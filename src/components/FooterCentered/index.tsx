@@ -5,6 +5,8 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import React from 'react'
 
+import { ROUTE_PATHS } from '@/consts/route-paths'
+
 import { companyInfo, externalFooterLinks, footerImage, footerLinks, inner } from './Footer.css'
 
 const links = [
@@ -49,7 +51,7 @@ const FooterCentered = () => {
           height={81}
           src={'/images/SeaTheMoss-StillSpinner.svg'}
           alt="footer logo"
-          onClick={() => router.push('/')}
+          onClick={() => router.push(ROUTE_PATHS.HOME)}
         />
 
         <Group className={footerLinks}>{items}</Group>

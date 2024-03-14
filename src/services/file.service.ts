@@ -15,11 +15,7 @@ export default class FileService extends CMSService {
     files.forEach((file) => data.append('files', file))
 
     const res = await axios(url, {
-      headers: {
-        // ! WARNING // TODO: this auth token can not be here
-        Authorization:
-          'Bearer 17c0a7d8cbc3a31567fb11dd2997648d4857e80e5b1dfb6553f3897ad28883a1f72dd1fbf37ca5046fcaa551188b0352c2651ba50f156bdb3bb306ff0d3053b321fdeb68bd9d7af7b5cf907375647246f5f13645f36c8b869fc7e6a3ee8fca194d9ccc61950804e20781b79bd938083c54ac41eeea3240e7f907c95721186cd0',
-      },
+      headers: this.headers,
       method: 'post',
       data: data,
     })

@@ -105,9 +105,48 @@ export default class ProductService extends CMSService {
     return res.json() as Promise<QueryResponse<ProductReview>>
   }
 
+  updateReview = async (
+    data: Omit<
+      ProductReview_NoRelations,
+      'product' | 'createdAt' | 'updatedAt' | 'publishedAt' | 'attributes'
+    >,
+  ) => {
+    const url = `${this.baseURL}/product-reviews/${data.id}`
+    const payload = { data }
+
+    const body = JSON.stringify(payload)
+    const res = await fetch(url, {
+      method: 'put',
+      headers: {
+        ...this.headers,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body,
+    })
+
+    return res.json() as Promise<QueryResponse<ProductReview>>
+  }
+
+  deleteReview = async (reviewId: number | null) => {
+    if (!reviewId) return
+    const url = `${this.baseURL}/product-reviews/${reviewId}`
+
+    const res = await fetch(url, {
+      method: 'delete',
+      headers: {
+        ...this.headers,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    })
+
+    return await res.json()
+  }
+
   getProductReviews = async (params: QueryParams<ProductReview_NoRelations>) => {
     const url = `${this.baseURL}/product-reviews?${qs.stringify(params)}`
-    // console.log('url', url)
+
     const res = await fetch(url, {
       headers: this.headers,
     })

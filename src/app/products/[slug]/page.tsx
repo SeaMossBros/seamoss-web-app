@@ -3,8 +3,10 @@ import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 
+import { getSessionFromCookies } from '@/lib/crypt'
 import getQueryClient from '@/react-query/getQueryClient'
 import ProductService from '@/services/product.service'
+import { AuthUser } from '@/types/Auth'
 import { Product_Plain } from '@/types/Product'
 import { QueryParams } from '@/types/QueryParams'
 
@@ -31,6 +33,7 @@ const ProductDetailPage: React.FC<Props> = async ({ params }: Props) => {
   if (!params.slug) {
     notFound()
   }
+  const user: AuthUser | null = await getSessionFromCookies()
 
   const queryClient = getQueryClient()
   const productService = new ProductService()
@@ -58,7 +61,7 @@ const ProductDetailPage: React.FC<Props> = async ({ params }: Props) => {
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <Container mt={90}>
-        <ProductSingle slug={params.slug} queryParams={queryParams} />
+        <ProductSingle slug={params.slug} queryParams={queryParams} user={user} />
       </Container>
     </HydrationBoundary>
   )

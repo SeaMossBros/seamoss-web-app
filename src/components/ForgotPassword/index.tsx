@@ -5,6 +5,8 @@ import axios from 'axios'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
+import { ROUTE_PATHS } from '@/consts/route-paths'
+
 import { forgotPassword } from './forgot-password.css'
 
 interface ResetPasswordProps {
@@ -54,7 +56,7 @@ const ForgotPassword = ({ email }: ResetPasswordProps) => {
     >
       <Anchor
         c={'blue'}
-        onClick={() => router.push('/login')}
+        onClick={() => router.push(ROUTE_PATHS.LOGIN)}
         style={{ alignSelf: 'flex-start', cursor: 'pointer' }}
         ml={21}
         fz={15}

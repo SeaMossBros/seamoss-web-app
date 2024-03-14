@@ -1,12 +1,25 @@
 import axios from 'axios'
 import qs from 'qs'
 
+import { Cart } from '@/types/Cart'
 import { CartItem } from '@/types/CartItem'
 import { Order_NoRelations } from '@/types/Order'
 import { QueryResponse } from '@/types/QueryResponse'
 
 import CartService from './cart.service'
 import CMSService from './core/cms.service'
+
+type CartArrType = (Cart & {
+  orderId: number[]
+  orderTotal: number
+})[]
+
+type CartItemArrType = CartItem[][]
+
+interface OrderResult {
+  carts: CartArrType
+  cartItems: CartItemArrType
+}
 
 export default class OrderService extends CMSService {
   static queryKeys = {
@@ -98,7 +111,7 @@ export default class OrderService extends CMSService {
         const cartId = orders[i].attributes.cart.data.id
         const cartItemsRes: QueryResponse<CartItem[]> = await cartService.getCartItems(cartId, true) // get cart items
         const { data } = await cartService.getById(cartId, true) // get cart data (like created date)
-        // TODO: Get billing for each line item // NOT WORKING
+        // TODO: NOT WORKING Get billing for each line item (this would also allow for the quantity purchased in each order) // Currently just getting total amount from order
         // const billingRes = await fetch(`/api/cart/${cartId}/billing`, { // get cart billing details
         //   method: 'GET',
         //   headers: {
@@ -126,6 +139,6 @@ export default class OrderService extends CMSService {
 
     const cartsData = await fetchCarts(data)
 
-    return cartsData
+    return cartsData as OrderResult
   }
 }

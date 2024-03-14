@@ -25,3 +25,11 @@ export const title = style({
   marginTop: 15,
   marginBottom: 15,
 })
+
+export const totalTitleStyle = style({
+  fontWeight: 400,
+  fontSize: '1.5em',
+  marginTop: 33,
+  marginBottom: 15,
+  color: defaultThemeVars.colors.teal[9],
+})
