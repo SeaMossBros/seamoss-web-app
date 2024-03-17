@@ -77,24 +77,17 @@ const ReviewItem: React.FC<ReviewItemProps> = ({
         {isOnProfile && (
           <>
             <Flex className={reviewHeader}>
-              <Flex direction={'column'}>
-                <Text fw={200} fz={'sm'} mb={12}>
-                  Created On:{' '}
-                  {new Date(review.attributes.createdAt).toLocaleDateString(undefined, {
-                    month: 'long',
-                    day: 'numeric',
-                    year: 'numeric',
-                  })}
-                </Text>
-                <Text fw={200} fz={'sm'} mb={12}>
-                  Last Updated:{' '}
-                  {new Date(review.attributes.updatedAt).toLocaleDateString(undefined, {
-                    month: 'long',
-                    day: 'numeric',
-                    year: 'numeric',
-                  })}
-                </Text>
-              </Flex>
+              <Text fw={200} fz={'sm'} mb={12}>
+                {review.attributes.createdAt === review.attributes.updatedAt
+                  ? 'Created On'
+                  : 'Last Updated'}
+                :{' '}
+                {new Date(review.attributes.updatedAt).toLocaleDateString(undefined, {
+                  month: 'long',
+                  day: 'numeric',
+                  year: 'numeric',
+                })}
+              </Text>
               <Flex direction={'column'}>
                 <Button mb={12} onClick={() => showUpdateModal(review || null)}>
                   Update Review

@@ -11,9 +11,9 @@ import { companyInfo, externalFooterLinks, footerImage, footerLinks, inner } fro
 
 const links = [
   { link: '/products', label: 'Shop Products' },
-  { link: '/support', label: 'Contact Support' },
   { link: '/blogs', label: 'Blogs' },
   { link: '/about-us', label: 'About Us' },
+  { link: '/support', label: 'Contact Support' },
   { link: '/privacy-policy', label: 'Privacy Policy' },
   { link: '/fda-disclaimer', label: 'FDA Disclaimer' },
   { link: '/terms-of-service', label: 'Terms Of Service' },
