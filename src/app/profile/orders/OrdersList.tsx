@@ -100,7 +100,7 @@ const OrdersList = ({ user, setTotalOrders }: OrdersListProps) => {
                   <Text fz={'xs'}>Order #{cart.orderId}</Text>
                   <Group display={'flex'} align={'center'}>
                     <Text fz={'xs'}>
-                      {new Date(cart.attributes.createdAt).toLocaleDateString(undefined, {
+                      {new Date(cart.attributes.updatedAt).toLocaleDateString(undefined, {
                         month: 'long',
                         day: 'numeric',
                         year: 'numeric',

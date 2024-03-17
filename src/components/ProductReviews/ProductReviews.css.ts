@@ -11,7 +11,7 @@ export const reviewHeader = style({
   display: 'flex',
   width: '100%',
   justifyContent: 'space-between',
-  alignItems: 'center',
+  alignItems: 'flex-end',
 
   '@media': {
     [`(max-width: ${defaultThemeVars.breakpoints.xs})`]: {
