@@ -1,5 +1,5 @@
 import { Box, Stack, Text } from '@mantine/core'
-import { IconAt, IconMapPin, IconPhone, IconSun } from '@tabler/icons-react'
+import { IconAt, IconSun } from '@tabler/icons-react'
 
 import { descriptionStyle, linkStyle, wrapper } from './contact-icons.css'
 
@@ -62,14 +62,14 @@ function ContactIcon({ icon: Icon, title, description, inputMode, ...others }: C
 
 const MOCKDATA: Array<Omit<ContactIconProps, 'icon'> & { icon: typeof IconSun }> = [
   { title: 'Email', description: 'support@seathemoss.com', icon: IconAt, inputMode: 'email' },
-  { title: 'Phone', description: '+1 (240) 273-5088', icon: IconPhone, inputMode: 'tel' },
-  {
-    title: 'Address',
-    description: '68 White St, 224, Red Bank, NJ',
-    icon: IconMapPin,
-    inputMode: 'text',
-  },
-  { title: 'Working hours', description: '9 a.m. – 5 p.m. EST', icon: IconSun, inputMode: 'text' },
+  // { title: 'Phone', description: '+1 (000) 000-0000', icon: IconPhone, inputMode: 'tel' },
+  // {
+  //   title: 'Address',
+  //   description: '# Street, City, State, Country',
+  //   icon: IconMapPin,
+  //   inputMode: 'text',
+  // },
+  // { title: 'Working hours', description: '9 a.m. – 5 p.m. EST', icon: IconSun, inputMode: 'text' },
 ]
 
 export function ContactIconsList() {
