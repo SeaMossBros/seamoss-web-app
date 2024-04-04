@@ -17,7 +17,7 @@ const AboutUsPage: React.FC = () => {
       </div>
 
       <Title className={title}>About Us</Title>
-      <Container w={'51%'} pt={54}>
+      <Container w={'72%'} pt={54}>
         <Text fw={400}>
           Sea The Moss is family owned and operated by Nubia and her young adult children: Elijah,
           Ras and Yanine.
