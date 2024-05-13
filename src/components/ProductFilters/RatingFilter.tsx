@@ -1,4 +1,4 @@
-import { Button, Flex, Rating } from '@mantine/core'
+import { Button, Flex, Rating, Text } from '@mantine/core'
 import React, { useCallback, useState } from 'react'
 
 export type RatingFilterProps = {
@@ -34,7 +34,10 @@ const RatingFilter: React.FC<RatingFilterProps> = ({ rating, onChange }) => {
 
   return (
     <Flex justify="space-between" align="center">
-      <Rating name="rating" size="md" value={value} onChange={_onChange} />
+      <Flex>
+        <Rating name="rating" size="md" value={value} onChange={_onChange} fractions={2} />
+        <Text ml={9}>& up</Text>
+      </Flex>
       <Button type="button" variant="subtle" color="gray" size="xs" onClick={onClear}>
         Clear
       </Button>

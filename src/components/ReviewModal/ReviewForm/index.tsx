@@ -249,6 +249,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
                     <Rating
                       value={value}
                       readOnly={willDelete}
+                      fractions={2}
                       onChange={(val) => {
                         if (willDelete) return
                         setHasClickedRating(true)

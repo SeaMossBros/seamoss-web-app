@@ -24,7 +24,7 @@ import { CartItem } from '@/types/CartItem'
 import { getStrapiUploadUrl } from '@/utils/cms'
 import { formatDescription } from '@/utils/common'
 
-import { cartItemCard, description, orderPrice, orderStyle, orderWrapper } from './order-list.css'
+import { cartItemCard, description, orderPrice, orderStyle, orderWrapper, arrowShow, orderNumberCont, orderDateAndPriceCont, dividerPrice } from './order-list.css'
 
 interface OrdersListProps {
   user: AuthUser
@@ -49,7 +49,8 @@ const OrdersList = ({ user, setTotalOrders }: OrdersListProps) => {
   const isDarkTheme = colorScheme === 'dark'
   const [carts, setCarts] = useState<CartArrType>()
   const [cartItems, setCartItems] = useState<CartItemArrType>()
-  const redirect = useRouter()
+  const redirect = useRouter();
+  const [shouldShowCartItems, setShouldShowCartItems] = useState<boolean[]>([]);
 
   useEffect(() => {
     if (!user.email) return
@@ -57,19 +58,33 @@ const OrdersList = ({ user, setTotalOrders }: OrdersListProps) => {
 
     const fetchOrders = async () => {
       const { carts, cartItems }: OrderResult = await orderService.getOrdersByEmail(user.email)
-      setCarts(carts)
-      setCartItems(cartItems)
-      setTotalOrders(carts.length)
+      setCarts(carts);
+      setCartItems(cartItems);
+      setTotalOrders(carts.length);
+      setShouldShowCartItems(new Array(carts.length).fill(false))
     }
 
     fetchOrders()
-  }, [user.email])
+  }, [setTotalOrders, user.email])
 
   const getProductReviewUrl = (productUrl: string): string => {
     if (!productUrl) return ''
     const myURL = new URL(productUrl, window.location.origin)
     myURL.searchParams.append('showReviewModal', 'true')
     return myURL.toString()
+  }
+
+  const handleShowOrderClick = (e: any, i: number) => {
+    setShouldShowCartItems(prev => {
+      const newArr = [...prev];
+      newArr[i] = !prev[i];
+      if (e.target.childNodes[0].data === '>') {
+        e.target.style.transform = newArr[i] ? 'rotate(90deg)' : 'rotate(0deg)';
+      } else {
+        e.target.offsetParent.firstElementChild.childNodes[0].childNodes[0].style.transform = newArr[i] ? 'rotate(90deg)' : 'rotate(0deg)';
+      }
+      return newArr;
+    })
   }
 
   if (!user.id) return <div>no user</div>
@@ -84,7 +99,8 @@ const OrdersList = ({ user, setTotalOrders }: OrdersListProps) => {
       }}
     >
       {carts &&
-        carts.map((cart, i) => {
+        carts.toReversed().map((cart, i) => {
+
           return (
             <Group key={i} className={orderStyle} style={{ borderRadius: defaultRadius }}>
               {cart && (
@@ -96,14 +112,18 @@ const OrdersList = ({ user, setTotalOrders }: OrdersListProps) => {
                   justify={'space-between'}
                   style={{ alignItems: 'center', borderRadius: defaultRadius }}
                 >
-                  {/* // * this is fine! leave it! Just had to mix order type and cart[] type in getOrdersByEmail() */}
-                  <Text fz={'xs'}>Order #{cart.orderId}</Text>
-                  <Group display={'flex'} align={'center'}>
+                  <Group onClick={(e) => handleShowOrderClick(e, i)} w={'fit-contnent'} h={'fit-contnent'} className={orderNumberCont} style={{ borderRadius: defaultRadius }}>
+                    <Text fz={'xs'} fw={600} className={arrowShow}>&gt;</Text>
+                    <Text fz={'xs'}>Order #{cart.orderId}</Text>
+                  </Group>
+                  <Group display={'flex'} align={'center'} className={orderDateAndPriceCont}>
                     <Text fz={'xs'}>
                       {new Date(cart.attributes.updatedAt).toLocaleDateString(undefined, {
                         month: 'long',
                         day: 'numeric',
                         year: 'numeric',
+                        hour: 'numeric',
+                        minute: 'numeric'
                       })}
                     </Text>
                     <Divider
@@ -112,8 +132,8 @@ const OrdersList = ({ user, setTotalOrders }: OrdersListProps) => {
                       mx="xs"
                       variant="dotted"
                       orientation="vertical"
+                      className={dividerPrice}
                     />
-                    {/* // * this is fine! leave it! Just had to mix order type and cart[] type in getOrdersByEmail() */}
                     <Text c={'teal'} fw={900} className={orderPrice}>
                       ${cart.orderTotal.toFixed(2)}
                     </Text>
@@ -121,11 +141,35 @@ const OrdersList = ({ user, setTotalOrders }: OrdersListProps) => {
                 </Flex>
               )}
               {cartItems &&
-                cartItems[i] && ( // ? not sure why this was included, but if breaks put back... && cart.attributes.cart_items.data.length
+                cartItems[i] && shouldShowCartItems[i] &&( 
                   <Stack h={'fit-content'} w={'100%'}>
                     {cartItems[i].map((cartItem, num) => {
-                      const slug = cartItem.attributes.product?.data.attributes.slug || ''
-                      const productUrl = ROUTE_PATHS.PRODUCT.SLUG.replace('{slug}', slug)
+                      if (!cartItem.attributes.product?.data) {
+                        // product is not in db (or is not published)
+                        return (
+                          <Card key={num + Math.random()}>
+                            <Group display={'flex'} style={{ flexDirection: 'column' }} w={'100%'}>
+                              <Text fz={'lg'} w='100%' ff={'fantasy'}>
+                                Item {num + 1}:
+                              </Text>
+                              <Text fz={'sm'}>
+                                Product is No longer Available. Please Contact Support for the product information.
+                              </Text>
+                              <Anchor
+                                fz={'sm'}
+                                type='email'
+                                c={'blue'}
+                                underline='always'
+                              >
+                                support@seathemoss.com
+                              </Anchor>
+                            </Group>
+                          </Card>
+                        )
+                      }
+                      
+                      const slug = cartItem.attributes.product?.data?.attributes.slug || '';
+                      const productUrl = ROUTE_PATHS.PRODUCT.SLUG.replace('{slug}', slug);
                       return (
                         <Card key={num} className={cartItemCard} mih={'240px'}>
                           <Group
@@ -134,10 +178,13 @@ const OrdersList = ({ user, setTotalOrders }: OrdersListProps) => {
                             w={'21%'}
                             miw={'100px'}
                           >
+                            <Text fz={'lg'} w='100%' ff={'fantasy'}>
+                              Item {num + 1}:
+                            </Text>
                             <Image
                               src={
                                 getStrapiUploadUrl(
-                                  cartItem.attributes.product?.data.attributes.thumbnail?.data
+                                  cartItem.attributes.product?.data?.attributes.thumbnail?.data
                                     .attributes.url ||
                                     // || cartItem.attributes.,
                                     '',
@@ -155,10 +202,20 @@ const OrdersList = ({ user, setTotalOrders }: OrdersListProps) => {
                               href={productUrl}
                               c={isDarkTheme ? 'lightgray' : 'gray'}
                             >
-                              {cartItem.attributes.product?.data.attributes.name}
+                              {cartItem.attributes.product?.data?.attributes.name}
                             </Anchor>
                           </Group>
                           <Group display={'flex'} style={{ flexDirection: 'column' }} w={'100%'}>
+                            <Divider
+                              label={cartItem.attributes.product?.data?.attributes.unit_property_selection_text?.split(' ')[1] || ''}
+                              labelPosition="center"
+                              my="xs"
+                              w={'90%'}
+                              variant="dashed"
+                            />
+                            <Text fz={'sm'}>
+                              {cartItem.attributes.options?.properties[0]?.product_property?.data?.attributes.name || ''}
+                            </Text>
                             <Divider
                               label="Ingredients"
                               labelPosition="center"
@@ -167,7 +224,7 @@ const OrdersList = ({ user, setTotalOrders }: OrdersListProps) => {
                               variant="dashed"
                             />
                             <Text fz={'sm'}>
-                              {cartItem.attributes.product?.data.attributes.ingredients || ''}
+                              {cartItem.attributes.product?.data?.attributes.ingredients || ''}
                             </Text>
                             <Divider
                               label="Tips For Storage"
@@ -177,7 +234,7 @@ const OrdersList = ({ user, setTotalOrders }: OrdersListProps) => {
                               variant="dotted"
                             />
                             <Text fz={'sm'}>
-                              {cartItem.attributes.product?.data.attributes.tipsForStorage || ''}
+                              {cartItem.attributes.product?.data?.attributes.tipsForStorage || ''}
                             </Text>
                             <Divider
                               label="Weight"
@@ -187,7 +244,7 @@ const OrdersList = ({ user, setTotalOrders }: OrdersListProps) => {
                               variant="dashed"
                             />
                             <Text fz={'sm'}>
-                              {`${cartItem.attributes.product?.data.attributes.weight} ${cartItem.attributes.product?.data.attributes.units}` ||
+                              {`${cartItem.attributes.options?.product_variant?.data?.attributes.weight} ${cartItem.attributes.options?.product_variant?.data?.attributes.weight_unit}` ||
                                 ''}
                             </Text>
                             <Divider
@@ -219,7 +276,7 @@ const OrdersList = ({ user, setTotalOrders }: OrdersListProps) => {
                             <Text fz={'md'}>Description</Text>
                             <Text fz={'sm'}>
                               {formatDescription(
-                                cartItem.attributes.product?.data.attributes.description || '',
+                                cartItem.attributes.product?.data?.attributes.description || '',
                                 555,
                               ) || ''}
                             </Text>

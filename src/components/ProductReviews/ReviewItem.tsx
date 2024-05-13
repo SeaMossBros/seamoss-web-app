@@ -2,7 +2,6 @@ import {
   Anchor,
   Box,
   Button,
-  Divider,
   Flex,
   Image,
   Rating,
@@ -19,13 +18,14 @@ import { Media } from '@/types/Media'
 import { ProductReview } from '@/types/ProductReview'
 import { getStrapiUploadUrl } from '@/utils/cms'
 
-import { reviewHeader, reviewItem } from './ProductReviews.css'
+import { reviewHeader, reviewItem, reviewIndexStyle } from './ProductReviews.css'
 
 export type ReviewItemProps = {
   review: ProductReview
   isOnProfile?: boolean
   showUpdateModal: (review: ProductReview | null, willDelete?: true) => void
   isCurrentUsersReview: boolean
+  reviewIndex: number
 }
 
 const ReviewItem: React.FC<ReviewItemProps> = ({
@@ -33,6 +33,7 @@ const ReviewItem: React.FC<ReviewItemProps> = ({
   isOnProfile,
   showUpdateModal,
   isCurrentUsersReview,
+  reviewIndex
 }) => {
   const { colorScheme } = useMantineColorScheme()
   const isDarkTheme = colorScheme === 'dark'
@@ -58,8 +59,44 @@ const ReviewItem: React.FC<ReviewItemProps> = ({
 
   const productUrl = ROUTE_PATHS.PRODUCT.SLUG.replace(
     '{slug}',
-    review.attributes.product?.data.attributes.slug || '',
+    review.attributes.product?.data?.attributes.slug || '',
   )
+
+  if ((!review.attributes.product || !review.attributes.product.data) && isOnProfile) {
+    // product is not in db (or is not published)
+    return (
+      <Stack 
+        className={reviewItem}
+        gap="xs"
+        style={{
+          borderBottomColor: isOnProfile && isHovering ? colors.teal[9] : '',
+          transition: '0.24s ease-in-out',
+          alignItems: isOnProfile ? 'center' : 'flex-start',
+        }}
+        onMouseEnter={() => setIsHovering(true)}
+        onMouseLeave={() => setIsHovering(false)}
+      >
+        <Box w={isOnProfile ? '81%' : '100%'}>
+          <Flex className={reviewHeader} direction={'column'} align={'flex-start'}>
+            <Text fz={'md'} ff='fantasy'>
+              review {reviewIndex + 1}:
+            </Text>
+            <Text fz={'sm'}>
+              Product is No longer Available. Please Contact Support for the product information.
+            </Text>
+            <Anchor
+              fz={'sm'}
+              type='email'
+              c={'blue'}
+              underline='always'
+            >
+              support@seathemoss.com
+            </Anchor>
+          </Flex> 
+        </Box>
+      </Stack>
+    )
+  }
 
   return (
     <Stack
@@ -73,10 +110,13 @@ const ReviewItem: React.FC<ReviewItemProps> = ({
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
     >
-      <Box w={isOnProfile ? '81%' : '100%'}>
+      <Box w={'100%'}>
         {isOnProfile && (
           <>
             <Flex className={reviewHeader}>
+              <Text fz={'md'} ff='fantasy' className={reviewIndexStyle}>
+                review {reviewIndex + 1}:
+              </Text>
               <Text fw={200} fz={'sm'} mb={12}>
                 {review.attributes.createdAt === review.attributes.updatedAt
                   ? 'Created On'
@@ -86,6 +126,8 @@ const ReviewItem: React.FC<ReviewItemProps> = ({
                   month: 'long',
                   day: 'numeric',
                   year: 'numeric',
+                  hour: 'numeric',
+                  minute: 'numeric'
                 })}
               </Text>
               <Flex direction={'column'}>
@@ -97,42 +139,9 @@ const ReviewItem: React.FC<ReviewItemProps> = ({
                 </Button>
               </Flex>
             </Flex>
-            <Divider
-              mb={12}
-              variant="dashed"
-              bg={isHovering ? colors.white[9] : ''}
-              style={{ transition: '0.24s ease-in-out' }}
-            />
-            <Flex>
-              <Image
-                src={
-                  review.attributes.product?.data.attributes.thumbnail?.data.attributes.url
-                    ? getStrapiUploadUrl(
-                        review.attributes.product?.data.attributes.thumbnail?.data.attributes.url,
-                      )
-                    : ''
-                }
-                alt={review.attributes.product?.data.attributes.name}
-                h={'100px'}
-                w={'auto'}
-                onClick={() => router.push(productUrl)}
-                style={{ cursor: 'pointer' }}
-                mr={9}
-                mb={9}
-              />
-              <Anchor
-                fz={'sm'}
-                w={'100%'}
-                maw={210}
-                href={productUrl}
-                c={isDarkTheme ? 'lightgray' : 'gray'}
-              >
-                {review.attributes.product?.data.attributes.name}
-              </Anchor>
-            </Flex>
           </>
         )}
-        <Rating value={review.attributes.rating} size="xs" readOnly />
+        <Rating value={review.attributes.rating} size="xs" readOnly fractions={2}/>
         {!isOnProfile && (
           <Text fw={600} fz="sm" mt={4}>
             {review.attributes.user_name}
@@ -142,7 +151,36 @@ const ReviewItem: React.FC<ReviewItemProps> = ({
           {files.length > 0 && files.map((file, i) => <div key={i}>{getFileElement(file)}</div>)}
         </div>
       </Box>
-      <Text w={isOnProfile ? '81%' : '100%'}>{review.attributes.comment}</Text>
+      <Text w={'100%'}>{review.attributes.comment}</Text>
+      {isOnProfile && (
+        <Flex align={'flex-end'}>
+          <Image
+            src={
+              review.attributes.product?.data.attributes.thumbnail?.data.attributes.url
+                ? getStrapiUploadUrl(
+                    review.attributes.product?.data.attributes.thumbnail?.data.attributes.url,
+                  )
+                : ''
+            }
+            alt={review.attributes.product?.data.attributes.name}
+            h={'100px'}
+            w={'auto'}
+            onClick={() => router.push(productUrl)}
+            style={{ cursor: 'pointer' }}
+            mr={9}
+            mb={9}
+          />
+          <Anchor
+            fz={'sm'}
+            w={'100%'}
+            maw={210}
+            href={productUrl}
+            c={isDarkTheme ? 'lightgray' : 'gray'}
+          >
+            {review.attributes.product?.data.attributes.name}
+          </Anchor>
+        </Flex>
+      )}
       {!isOnProfile && isUsersReview && (
         <Flex direction={'column'}>
           <Button my={12} onClick={() => showUpdateModal(review || null)}>

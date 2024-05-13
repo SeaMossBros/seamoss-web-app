@@ -27,6 +27,7 @@ export const variantWrapper = style({
 export const quantitySelection = style({
   flexGrow: 1,
   width: 0,
+  minWidth: '75px',
 })
 
 export const quantitySelectionInput = style({

@@ -43,7 +43,7 @@ const ProductsPage: React.FC<ProductsPageProps> = async ({ searchParams }) => {
   Object.entries(plainFilters).forEach(([key, value]) => {
     let val = value
     if (key === 'price_from' || key === 'price_to') val = parseFloat(value as unknown as string)
-    if (key === 'rating') val = parseInt(value as unknown as string)
+    if (key === 'rating') val = Number(value as unknown as string)
     set(parsedFilters, key, val)
   })
 

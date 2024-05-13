@@ -50,7 +50,7 @@ const ReviewModal: React.FC<ReviewModalProps> = ({
             We appreciate you sharing your feedback with us and our customers!
           </Text>
           <Text mb={12} fz={'md'} fw={300}>
-            We only ask you to login to limit spam, thank you for understanding!
+            We ask you to login first to limit fake reviews, thank you for understanding!
           </Text>
           <Text mb={12} fz={'md'} fw={300}>
             If you have a complaint and want help regarding your purchase, please{' '}

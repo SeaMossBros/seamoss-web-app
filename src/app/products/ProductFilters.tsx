@@ -36,7 +36,6 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({ filters }) => {
       })
 
       const url = `${pathname}?${search}`
-
       router.replace(url)
     },
     [pathname, router, searchParams],
@@ -86,7 +85,7 @@ const ProductFilters: React.FC<ProductFiltersProps> = ({ filters }) => {
             newFilters.rating = undefined
             break
           }
-          newFilters.rating = parseInt(value)
+          newFilters.rating = Number(value)
           break
         }
         default:

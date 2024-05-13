@@ -132,9 +132,10 @@ const ProductReviews: React.FC<ProductReviewsProps> = ({ product, onRefetch, use
         </Flex>
       </Flex>
       <Stack gap={0}>
-        {reviews?.data?.map((review) => (
+        {reviews?.data?.map((review, reviewIndex) => (
           <ReviewItem
             key={review.id}
+            reviewIndex={reviewIndex}
             review={review}
             showUpdateModal={showUpdateModal}
             isCurrentUsersReview={review.attributes.user_email === user?.email}
