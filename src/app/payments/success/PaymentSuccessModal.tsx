@@ -30,7 +30,11 @@ const PaymentSuccessModal: React.FC<{
             Accept: 'application/json',
             'Content-Type': 'application/json',
           },
-          data: JSON.stringify({ email: user.email, password: user.password, isTempPass: true }),
+          data: JSON.stringify({
+            email: user?.email || order?.user_email || '',
+            password: user.password,
+            isTempPass: true,
+          }),
         })
       }
     }
@@ -93,10 +97,10 @@ const PaymentSuccessModal: React.FC<{
           </Flex>
         ) : (
           <Center w={'100%'} mt={12}>
-            {user.email === order?.user_email ? (
+            {isNewUser ? (
               <Text>Go to your profile to view your order details</Text>
             ) : (
-              <Text>Log in to your profile to view your order</Text>
+              <Text>Log into your profile to view your order</Text>
             )}
           </Center>
         )}
@@ -105,13 +109,9 @@ const PaymentSuccessModal: React.FC<{
         <Button
           variant="outline"
           component={Link}
-          href={isNewUser ? ROUTE_PATHS.PROFILE.CHANGE_PASSWORD : (
-            user.email === order?.user_email ? ROUTE_PATHS.PROFILE.ORDERS : ROUTE_PATHS.LOGIN
-          )}
+          href={isNewUser ? ROUTE_PATHS.PROFILE.CHANGE_PASSWORD : ROUTE_PATHS.PROFILE.ORDERS}
         >
-          {isNewUser ? 'Go To Profile & Reset Password' : (
-            user.email === order?.user_email ? 'Your Profile' : 'Login'
-          )}
+          {isNewUser ? 'Go To Profile & Reset Password' : 'Your Profile'}
         </Button>
         <Button variant="filled" component={Link} href={ROUTE_PATHS.PRODUCT.INDEX}>
           Continue shopping
