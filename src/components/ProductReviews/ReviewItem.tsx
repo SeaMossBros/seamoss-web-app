@@ -18,7 +18,7 @@ import { Media } from '@/types/Media'
 import { ProductReview } from '@/types/ProductReview'
 import { getStrapiUploadUrl } from '@/utils/cms'
 
-import { reviewHeader, reviewItem, reviewIndexStyle } from './ProductReviews.css'
+import { reviewHeader, reviewIndexStyle, reviewItem } from './ProductReviews.css'
 
 export type ReviewItemProps = {
   review: ProductReview
@@ -33,7 +33,7 @@ const ReviewItem: React.FC<ReviewItemProps> = ({
   isOnProfile,
   showUpdateModal,
   isCurrentUsersReview,
-  reviewIndex
+  reviewIndex,
 }) => {
   const { colorScheme } = useMantineColorScheme()
   const isDarkTheme = colorScheme === 'dark'
@@ -65,7 +65,7 @@ const ReviewItem: React.FC<ReviewItemProps> = ({
   if ((!review.attributes.product || !review.attributes.product.data) && isOnProfile) {
     // product is not in db (or is not published)
     return (
-      <Stack 
+      <Stack
         className={reviewItem}
         gap="xs"
         style={{
@@ -78,21 +78,16 @@ const ReviewItem: React.FC<ReviewItemProps> = ({
       >
         <Box w={isOnProfile ? '81%' : '100%'}>
           <Flex className={reviewHeader} direction={'column'} align={'flex-start'}>
-            <Text fz={'md'} ff='fantasy'>
+            <Text fz={'md'} ff="fantasy">
               review {reviewIndex + 1}:
             </Text>
             <Text fz={'sm'}>
               Product is No longer Available. Please Contact Support for the product information.
             </Text>
-            <Anchor
-              fz={'sm'}
-              type='email'
-              c={'blue'}
-              underline='always'
-            >
+            <Anchor fz={'sm'} type="email" c={'blue'} underline="always">
               support@seathemoss.com
             </Anchor>
-          </Flex> 
+          </Flex>
         </Box>
       </Stack>
     )
@@ -114,7 +109,7 @@ const ReviewItem: React.FC<ReviewItemProps> = ({
         {isOnProfile && (
           <>
             <Flex className={reviewHeader}>
-              <Text fz={'md'} ff='fantasy' className={reviewIndexStyle}>
+              <Text fz={'md'} ff="fantasy" className={reviewIndexStyle}>
                 review {reviewIndex + 1}:
               </Text>
               <Text fw={200} fz={'sm'} mb={12}>
@@ -127,7 +122,7 @@ const ReviewItem: React.FC<ReviewItemProps> = ({
                   day: 'numeric',
                   year: 'numeric',
                   hour: 'numeric',
-                  minute: 'numeric'
+                  minute: 'numeric',
                 })}
               </Text>
               <Flex direction={'column'}>
@@ -141,7 +136,7 @@ const ReviewItem: React.FC<ReviewItemProps> = ({
             </Flex>
           </>
         )}
-        <Rating value={review.attributes.rating} size="xs" readOnly fractions={2}/>
+        <Rating value={review.attributes.rating} size="xs" readOnly fractions={2} />
         {!isOnProfile && (
           <Text fw={600} fz="sm" mt={4}>
             {review.attributes.user_name}
