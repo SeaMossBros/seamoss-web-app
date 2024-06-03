@@ -37,6 +37,7 @@ const PaymentSuccessPage: React.FC<{
         RedirectType.replace,
       )
     }
+    redirect('/error')
   }
 
   return <PaymentSuccessModal order={res.order!} user={res.user!} defaultOpened />
