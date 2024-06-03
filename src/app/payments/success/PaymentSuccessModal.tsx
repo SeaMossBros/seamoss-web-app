@@ -18,7 +18,7 @@ const PaymentSuccessModal: React.FC<{
 }> = ({ defaultOpened, user, order }) => {
   const { colors } = useMantineTheme()
   const [opened, { close }] = useDisclosure(defaultOpened)
-  const isNewUser = !!(user && user.role)
+  const isNewUser = !Boolean(user)
 
   useEffect(() => {
     const loginUserWithTempPassword = async () => {
