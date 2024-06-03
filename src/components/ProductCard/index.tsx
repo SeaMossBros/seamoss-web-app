@@ -93,17 +93,20 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickViewClick }) 
       <Card.Section
         component={Link}
         href={productUrl}
-        style={{ backgroundColor: colors.teal[9], paddingBottom: '2px' }}
+        style={{
+          backgroundColor: 'transparent',
+          paddingBottom: '2px',
+          borderBottom: `1.2px solid ${colors.teal[9]}`,
+        }}
       >
         <AspectRatio ratio={1}>
           <Image
             src={thumbnail?.url ? getStrapiUploadUrl(thumbnail.url) : undefined}
             style={{ boxShadow: isHovering ? `2px 3px 12px 2px ${colors}` : 'none' }}
             alt={product.attributes.name}
-            height={250}
-            width={350}
+            height={150}
             fallbackSrc="/images/placeholder.webp"
-            fit="fill"
+            fit="contain"
             loading="eager"
           />
         </AspectRatio>

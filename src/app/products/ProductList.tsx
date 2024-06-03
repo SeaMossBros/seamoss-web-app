@@ -87,9 +87,8 @@ const ProductList: React.FC<ProductListProps> = ({ queryParams, onPage }) => {
     },
   })
 
-  console.log('queryParams', queryParams);
   const { data: products } = useProducts(queryParams)
-  
+
   const totalPages = useMemo(
     () =>
       Math.ceil((products?.meta?.pagination.total ?? 0) / (queryParams.pagination?.pageSize || 1)),
