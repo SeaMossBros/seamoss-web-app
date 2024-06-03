@@ -18,7 +18,7 @@ const PaymentSuccessModal: React.FC<{
 }> = ({ defaultOpened, user, order }) => {
   const { colors } = useMantineTheme()
   const [opened, { close }] = useDisclosure(defaultOpened)
-  const isNewUser = !Boolean(user)
+  const isNewUser = !!(user && user.role)
 
   useEffect(() => {
     const loginUserWithTempPassword = async () => {
@@ -97,7 +97,9 @@ const PaymentSuccessModal: React.FC<{
           </Flex>
         ) : (
           <Center w={'100%'} mt={12}>
-            {isNewUser ? (
+            {!user?.email ? (
+              <Text>Log into your profile to view your order</Text>
+            ) : user?.email === order?.user_email ? (
               <Text>Go to your profile to view your order details</Text>
             ) : (
               <Text>Log into your profile to view your order</Text>
@@ -109,9 +111,19 @@ const PaymentSuccessModal: React.FC<{
         <Button
           variant="outline"
           component={Link}
-          href={isNewUser ? ROUTE_PATHS.PROFILE.CHANGE_PASSWORD : ROUTE_PATHS.PROFILE.ORDERS}
+          href={
+            isNewUser
+              ? ROUTE_PATHS.PROFILE.CHANGE_PASSWORD
+              : user?.email === order?.user_email
+                ? ROUTE_PATHS.PROFILE.ORDERS
+                : ROUTE_PATHS.LOGIN
+          }
         >
-          {isNewUser ? 'Go To Profile & Reset Password' : 'Your Profile'}
+          {isNewUser
+            ? 'Go To Profile & Reset Password'
+            : user?.email === order?.user_email
+              ? 'Your Profile'
+              : 'Login'}
         </Button>
         <Button variant="filled" component={Link} href={ROUTE_PATHS.PRODUCT.INDEX}>
           Continue shopping

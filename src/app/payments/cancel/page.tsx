@@ -36,6 +36,7 @@ const PaymentCancelPage: React.FC<{
             RedirectType.replace,
           )
         }
+        redirect('/error')
       }
     }
     getRes()
