@@ -24,7 +24,17 @@ import { CartItem } from '@/types/CartItem'
 import { getStrapiUploadUrl } from '@/utils/cms'
 import { formatDescription } from '@/utils/common'
 
-import { cartItemCard, description, orderPrice, orderStyle, orderWrapper } from './order-list.css'
+import {
+  arrowShow,
+  cartItemCard,
+  description,
+  dividerPrice,
+  orderDateAndPriceCont,
+  orderNumberCont,
+  orderPrice,
+  orderStyle,
+  orderWrapper,
+} from './order-list.css'
 
 interface OrdersListProps {
   user: AuthUser
@@ -50,6 +60,7 @@ const OrdersList = ({ user, setTotalOrders }: OrdersListProps) => {
   const [carts, setCarts] = useState<CartArrType>()
   const [cartItems, setCartItems] = useState<CartItemArrType>()
   const redirect = useRouter()
+  const [shouldShowCartItems, setShouldShowCartItems] = useState<boolean[]>([])
 
   useEffect(() => {
     if (!user.email) return
@@ -60,16 +71,31 @@ const OrdersList = ({ user, setTotalOrders }: OrdersListProps) => {
       setCarts(carts)
       setCartItems(cartItems)
       setTotalOrders(carts.length)
+      setShouldShowCartItems(new Array(carts.length).fill(false))
     }
 
     fetchOrders()
-  }, [user.email])
+  }, [setTotalOrders, user.email])
 
   const getProductReviewUrl = (productUrl: string): string => {
     if (!productUrl) return ''
     const myURL = new URL(productUrl, window.location.origin)
     myURL.searchParams.append('showReviewModal', 'true')
     return myURL.toString()
+  }
+
+  const handleShowOrderClick = (e: any, i: number) => {
+    setShouldShowCartItems((prev) => {
+      const newArr = [...prev]
+      newArr[i] = !prev[i]
+      if (e.target.childNodes[0].data === '>') {
+        e.target.style.transform = newArr[i] ? 'rotate(90deg)' : 'rotate(0deg)'
+      } else {
+        e.target.offsetParent.firstElementChild.childNodes[0].childNodes[0].style.transform =
+          newArr[i] ? 'rotate(90deg)' : 'rotate(0deg)'
+      }
+      return newArr
+    })
   }
 
   if (!user.id) return <div>no user</div>
@@ -84,7 +110,7 @@ const OrdersList = ({ user, setTotalOrders }: OrdersListProps) => {
       }}
     >
       {carts &&
-        carts.map((cart, i) => {
+        carts.toReversed().map((cart, i) => {
           return (
             <Group key={i} className={orderStyle} style={{ borderRadius: defaultRadius }}>
               {cart && (
@@ -96,14 +122,26 @@ const OrdersList = ({ user, setTotalOrders }: OrdersListProps) => {
                   justify={'space-between'}
                   style={{ alignItems: 'center', borderRadius: defaultRadius }}
                 >
-                  {/* // * this is fine! leave it! Just had to mix order type and cart[] type in getOrdersByEmail() */}
-                  <Text fz={'xs'}>Order #{cart.orderId}</Text>
-                  <Group display={'flex'} align={'center'}>
+                  <Group
+                    onClick={(e) => handleShowOrderClick(e, i)}
+                    w={'fit-contnent'}
+                    h={'fit-contnent'}
+                    className={orderNumberCont}
+                    style={{ borderRadius: defaultRadius }}
+                  >
+                    <Text fz={'xs'} fw={600} className={arrowShow}>
+                      &gt;
+                    </Text>
+                    <Text fz={'xs'}>Order #{cart.orderId}</Text>
+                  </Group>
+                  <Group display={'flex'} align={'center'} className={orderDateAndPriceCont}>
                     <Text fz={'xs'}>
                       {new Date(cart.attributes.updatedAt).toLocaleDateString(undefined, {
                         month: 'long',
                         day: 'numeric',
                         year: 'numeric',
+                        hour: 'numeric',
+                        minute: 'numeric',
                       })}
                     </Text>
                     <Divider
@@ -112,123 +150,160 @@ const OrdersList = ({ user, setTotalOrders }: OrdersListProps) => {
                       mx="xs"
                       variant="dotted"
                       orientation="vertical"
+                      className={dividerPrice}
                     />
-                    {/* // * this is fine! leave it! Just had to mix order type and cart[] type in getOrdersByEmail() */}
                     <Text c={'teal'} fw={900} className={orderPrice}>
                       ${cart.orderTotal.toFixed(2)}
                     </Text>
                   </Group>
                 </Flex>
               )}
-              {cartItems &&
-                cartItems[i] && ( // ? not sure why this was included, but if breaks put back... && cart.attributes.cart_items.data.length
-                  <Stack h={'fit-content'} w={'100%'}>
-                    {cartItems[i].map((cartItem, num) => {
-                      const slug = cartItem.attributes.product?.data.attributes.slug || ''
-                      const productUrl = ROUTE_PATHS.PRODUCT.SLUG.replace('{slug}', slug)
+              {cartItems && cartItems[i] && shouldShowCartItems[i] && (
+                <Stack h={'fit-content'} w={'100%'}>
+                  {cartItems[i].map((cartItem, num) => {
+                    if (!cartItem.attributes.product?.data) {
+                      // product is not in db (or is not published)
                       return (
-                        <Card key={num} className={cartItemCard} mih={'240px'}>
-                          <Group
-                            display={'flex'}
-                            style={{ flexDirection: 'column' }}
-                            w={'21%'}
-                            miw={'100px'}
-                          >
-                            <Image
-                              src={
-                                getStrapiUploadUrl(
-                                  cartItem.attributes.product?.data.attributes.thumbnail?.data
-                                    .attributes.url ||
-                                    // || cartItem.attributes.,
-                                    '',
-                                ) || '/images/img-placeholder.webp'
-                              }
-                              alt="product-image"
-                              w={81}
-                              h="auto"
-                              onClick={() => redirect.push(productUrl)}
-                              style={{ cursor: 'pointer', borderRadius: defaultRadius }}
-                            />
-                            <Anchor
-                              fz={'sm'}
-                              w={'100%'}
-                              href={productUrl}
-                              c={isDarkTheme ? 'lightgray' : 'gray'}
-                            >
-                              {cartItem.attributes.product?.data.attributes.name}
-                            </Anchor>
-                          </Group>
+                        <Card key={num + Math.random()}>
                           <Group display={'flex'} style={{ flexDirection: 'column' }} w={'100%'}>
-                            <Divider
-                              label="Ingredients"
-                              labelPosition="center"
-                              my="xs"
-                              w={'90%'}
-                              variant="dashed"
-                            />
-                            <Text fz={'sm'}>
-                              {cartItem.attributes.product?.data.attributes.ingredients || ''}
+                            <Text fz={'lg'} w="100%" ff={'fantasy'}>
+                              Item {num + 1}:
                             </Text>
-                            <Divider
-                              label="Tips For Storage"
-                              labelPosition="center"
-                              my="xs"
-                              w={'90%'}
-                              variant="dotted"
-                            />
                             <Text fz={'sm'}>
-                              {cartItem.attributes.product?.data.attributes.tipsForStorage || ''}
+                              Product is No longer Available. Please Contact Support for the product
+                              information.
                             </Text>
-                            <Divider
-                              label="Weight"
-                              labelPosition="center"
-                              my="xs"
-                              w={'90%'}
-                              variant="dashed"
-                            />
-                            <Text fz={'sm'}>
-                              {`${cartItem.attributes.product?.data.attributes.weight} ${cartItem.attributes.product?.data.attributes.units}` ||
-                                ''}
-                            </Text>
-                            <Divider
-                              label="more info"
-                              labelPosition="center"
-                              my="xs"
-                              variant="dotted"
-                              w={'90%'}
-                            />
-                            <Flex>
-                              <Anchor fz={'sm'} href={productUrl} c={'teal'} ml={5}>
-                                Visit Product Page
-                              </Anchor>
-                              <Anchor
-                                fz={'sm'}
-                                href={getProductReviewUrl(productUrl)}
-                                c={'yellow'}
-                                ml={9}
-                              >
-                                Leave A Review
-                              </Anchor>
-                            </Flex>
-                          </Group>
-                          <Group
-                            style={{ flexDirection: 'column' }}
-                            w={'100%'}
-                            className={description}
-                          >
-                            <Text fz={'md'}>Description</Text>
-                            <Text fz={'sm'}>
-                              {formatDescription(
-                                cartItem.attributes.product?.data.attributes.description || '',
-                                555,
-                              ) || ''}
-                            </Text>
+                            <Anchor fz={'sm'} type="email" c={'blue'} underline="always">
+                              support@seathemoss.com
+                            </Anchor>
                           </Group>
                         </Card>
                       )
-                    })}
-                  </Stack>
-                )}
+                    }
+
+                    const slug = cartItem.attributes.product?.data?.attributes.slug || ''
+                    const productUrl = ROUTE_PATHS.PRODUCT.SLUG.replace('{slug}', slug)
+                    return (
+                      <Card key={num} className={cartItemCard} mih={'240px'}>
+                        <Group
+                          display={'flex'}
+                          style={{ flexDirection: 'column' }}
+                          w={'21%'}
+                          miw={'100px'}
+                        >
+                          <Text fz={'lg'} w="100%" ff={'fantasy'}>
+                            Item {num + 1}:
+                          </Text>
+                          <Image
+                            src={
+                              getStrapiUploadUrl(
+                                cartItem.attributes.product?.data?.attributes.thumbnail?.data
+                                  .attributes.url ||
+                                  // || cartItem.attributes.,
+                                  '',
+                              ) || '/images/img-placeholder.webp'
+                            }
+                            alt="product-image"
+                            w={81}
+                            h="auto"
+                            onClick={() => redirect.push(productUrl)}
+                            style={{ cursor: 'pointer', borderRadius: defaultRadius }}
+                          />
+                          <Anchor
+                            fz={'sm'}
+                            w={'100%'}
+                            href={productUrl}
+                            c={isDarkTheme ? 'lightgray' : 'gray'}
+                          >
+                            {cartItem.attributes.product?.data?.attributes.name}
+                          </Anchor>
+                        </Group>
+                        <Group display={'flex'} style={{ flexDirection: 'column' }} w={'100%'}>
+                          <Divider
+                            label={
+                              cartItem.attributes.product?.data?.attributes.unit_property_selection_text?.split(
+                                ' ',
+                              )[1] || ''
+                            }
+                            labelPosition="center"
+                            my="xs"
+                            w={'90%'}
+                            variant="dashed"
+                          />
+                          <Text fz={'sm'}>
+                            {cartItem.attributes.options?.properties[0]?.product_property?.data
+                              ?.attributes.name || ''}
+                          </Text>
+                          <Divider
+                            label="Ingredients"
+                            labelPosition="center"
+                            my="xs"
+                            w={'90%'}
+                            variant="dashed"
+                          />
+                          <Text fz={'sm'}>
+                            {cartItem.attributes.product?.data?.attributes.ingredients || ''}
+                          </Text>
+                          <Divider
+                            label="Tips For Storage"
+                            labelPosition="center"
+                            my="xs"
+                            w={'90%'}
+                            variant="dotted"
+                          />
+                          <Text fz={'sm'}>
+                            {cartItem.attributes.product?.data?.attributes.tipsForStorage || ''}
+                          </Text>
+                          <Divider
+                            label="Weight"
+                            labelPosition="center"
+                            my="xs"
+                            w={'90%'}
+                            variant="dashed"
+                          />
+                          <Text fz={'sm'}>
+                            {`${cartItem.attributes.options?.product_variant?.data?.attributes.weight} ${cartItem.attributes.options?.product_variant?.data?.attributes.weight_unit}` ||
+                              ''}
+                          </Text>
+                          <Divider
+                            label="more info"
+                            labelPosition="center"
+                            my="xs"
+                            variant="dotted"
+                            w={'90%'}
+                          />
+                          <Flex>
+                            <Anchor fz={'sm'} href={productUrl} c={'teal'} ml={5}>
+                              Visit Product Page
+                            </Anchor>
+                            <Anchor
+                              fz={'sm'}
+                              href={getProductReviewUrl(productUrl)}
+                              c={'yellow'}
+                              ml={9}
+                            >
+                              Leave A Review
+                            </Anchor>
+                          </Flex>
+                        </Group>
+                        <Group
+                          style={{ flexDirection: 'column' }}
+                          w={'100%'}
+                          className={description}
+                        >
+                          <Text fz={'md'}>Description</Text>
+                          <Text fz={'sm'}>
+                            {formatDescription(
+                              cartItem.attributes.product?.data?.attributes.description || '',
+                              555,
+                            ) || ''}
+                          </Text>
+                        </Group>
+                      </Card>
+                    )
+                  })}
+                </Stack>
+              )}
             </Group>
           )
         })}

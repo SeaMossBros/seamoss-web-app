@@ -35,6 +35,9 @@ export default function useProductForm(
     enabled: !!slug,
   })
 
+  // console.log('variantId', variant?.id);
+  // console.log('quantity', variant?.quantity);
+  // console.log('purchaseOptionId', purchaseOption?.id);
   const { data: estimation } = usePriceCalculation({
     variantId: variant?.id,
     quantity: variant?.quantity,

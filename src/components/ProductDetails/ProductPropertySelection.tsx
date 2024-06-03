@@ -155,7 +155,7 @@ const ProductPropertySelection: React.FC<ProductPropertySelectionProps> = ({
         data-selected={!!selected}
         // data-disabled={!max}
         onClick={() => onSelect()}
-        data-withimage={showImage}
+        data-withimage={attributes.image?.data?.attributes.url && showImage}
         style={{
           transition: '0.24s ease-in-out',
           borderColor: isSelected()

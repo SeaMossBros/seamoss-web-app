@@ -82,7 +82,22 @@ export default class OrderService extends CMSService {
         user_email: email,
       },
       populate: {
-        cart: true,
+        cart: {
+          populate: {
+            product: true,
+            purchase_option: true,
+            options: {
+              populate: {
+                product_variant: true,
+                properties: {
+                  populate: {
+                    product_property: true
+                  }
+                }
+              }
+            }
+          }
+        },
       },
     }
 

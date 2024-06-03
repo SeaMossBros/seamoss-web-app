@@ -17,16 +17,18 @@ const BlogsList: React.FC<BlogListProps> = ({ queryParams }) => {
   const { data: articles } = useArticles(queryParams)
 
   useEffect(() => {
-    if (articles?.error) {
+    console.log('articles', articles);
+    if (articles?.data && articles?.error) {
       notifications.show({
         id: 'articles',
         color: 'red',
-        message: 'Unexpected error occurred when loading articles',
+        message: 'Unexpected error occurred when loading Blogs',
       })
     }
-  }, [articles?.error])
+  }, [articles, articles?.error])
 
-  if (articles?.error) return <div>Error loading articles.</div>
+  if (!articles?.data) return <div>No Blogs Found</div>
+  if (articles?.error) return <div>Error loading Blogs</div>
 
   return (
     <Grid p={15}>

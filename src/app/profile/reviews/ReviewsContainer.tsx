@@ -1,23 +1,27 @@
 'use client'
-
+// base
 import { Group, Title } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { useCallback, useMemo, useState } from 'react'
 
+// components
 import ReviewModal from '@/components/ReviewModal'
+// hooks
 import { useProductReviews } from '@/queries/useProductReviews'
+// types
 import { AuthUser } from '@/types/Auth'
 import { ProductReview } from '@/types/ProductReview'
 import { PaginationOptions } from '@/types/QueryParams'
 
+// css
 import { totalTitleStyle } from '../profile-page.css'
 import ReviewsList from './ReviewsList'
 
-interface OrdersListProps {
+interface ReviewsListProps {
   user: AuthUser
 }
 
-const ReviewsContainer = ({ user }: OrdersListProps) => {
+const ReviewsContainer = ({ user }: ReviewsListProps) => {
   const [review, setReview] = useState<ProductReview | null>(null)
   const [reviewModalOpened, reviewModal] = useDisclosure()
   const [willDelete, setWillDelete] = useState(false)

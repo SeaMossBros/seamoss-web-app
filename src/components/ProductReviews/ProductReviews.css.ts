@@ -20,8 +20,12 @@ export const reviewHeader = style({
   },
 })
 
+export const reviewIndexStyle = style({
+  alignSelf: 'flex-start'
+})
+
 export const reviewItem = style({
-  padding: `${defaultThemeVars.spacing.xl} 0`,
+  padding: `${defaultThemeVars.spacing.xl} ${defaultThemeVars.spacing.xs}`,
   borderBottom: `1px solid ${defaultThemeVars.colors.gray[3]}`,
   display: 'flex',
 })

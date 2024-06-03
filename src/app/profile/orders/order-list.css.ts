@@ -33,7 +33,7 @@ export const orderStyle = style({
   },
   '@media': {
     [`(max-width: ${defaultThemeVars.breakpoints.sm})`]: {
-      width: '81vw',
+      width: '84vw',
     },
   },
 })
@@ -49,7 +49,7 @@ export const description = style({
 })
 
 export const orderPrice = style({
-  fontSize: defaultThemeVars.fontSizes.xs,
+  fontSize: defaultThemeVars.fontSizes.sm,
 
   '@media': {
     [`(min-width: ${defaultThemeVars.breakpoints.sm})`]: {
@@ -68,4 +68,46 @@ export const cartItemCard = style({
       flexDirection: 'row',
     },
   },
+})
+
+export const orderNumberCont = style({
+  alignSelf: 'flex-start',
+  minWidth: 96,
+  minHeight: 42,
+  maxHeight: 60,
+  padding: '3px 6px',
+  cursor: 'pointer',
+  backgroundColor: '#8181812b',
+  userSelect: 'none',
+
+  selectors: {
+    '&:hover': {
+      backgroundColor: '#8181814d',
+    },
+  },
+})
+
+export const arrowShow = style({
+  padding: 3,
+})
+
+export const dividerPrice = style({
+  display: 'block',
+
+  '@media': {
+    [`(max-width: ${defaultThemeVars.breakpoints.sm})`]: {
+      display: 'none',
+    },
+  },
+})
+
+export const orderDateAndPriceCont = style({
+  display: 'flex',
+  
+  '@media': {
+    [`(max-width: ${defaultThemeVars.breakpoints.sm})`]: {
+      flexDirection: 'column',
+      alignItems: 'flex-end',
+    },
+  }, 
 })

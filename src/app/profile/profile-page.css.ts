@@ -21,6 +21,7 @@ export const pageCont = style({
 })
 
 export const title = style({
+  fontFamily: 'Palantino',
   fontWeight: 600,
   marginTop: 15,
   marginBottom: 15,

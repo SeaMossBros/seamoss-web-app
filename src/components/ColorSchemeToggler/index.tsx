@@ -29,6 +29,7 @@ const ColorSchemeToggler: React.FC = () => {
         border: '1px solid gray',
         transition: '0.3s ease-in-out',
         cursor: 'pointer',
+        minWidth: 72,
       }}
       p={3}
     >
