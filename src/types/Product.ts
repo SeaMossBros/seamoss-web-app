@@ -5,11 +5,11 @@ import { ProductVariant, ProductVariant_Plain } from './ProductVariant'
 import { PurchaseOption, PurchaseOption_Plain } from './PurchaseOption'
 
 export enum Category {
-  Gel = 'Gel',
+  // Gel = 'Gel',
   Dried = 'Dried',
-  Gummies = 'Gummies',
-  Clothing = 'Clothing',
-  Accessory = 'Accessory',
+  // Gummies = 'Gummies',
+  // Clothing = 'Clothing',
+  // Accessory = 'Accessory',
 }
 
 export interface Product {

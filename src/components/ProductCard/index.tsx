@@ -88,7 +88,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickViewClick }) 
       withBorder
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
-      style={{ border: `1.2px solid ${colors.teal[9]}` }}
+      style={{ backgroundColor: 'transparent' }}
     >
       <Card.Section
         component={Link}
@@ -96,7 +96,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickViewClick }) 
         style={{
           backgroundColor: 'transparent',
           paddingBottom: '2px',
-          borderBottom: `1.2px solid ${colors.teal[9]}`,
+          borderBottom: `1.2px solid ${isDarkTheme ? colors.dark[4] : colors.gray[3]}`,
         }}
       >
         <AspectRatio ratio={1}>
@@ -107,6 +107,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onQuickViewClick }) 
             height={150}
             fallbackSrc="/images/placeholder.webp"
             fit="contain"
+            p={3}
+            pt={6}
             loading="eager"
           />
         </AspectRatio>

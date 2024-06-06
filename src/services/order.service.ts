@@ -3,7 +3,7 @@ import qs from 'qs'
 
 import { Cart } from '@/types/Cart'
 import { CartItem } from '@/types/CartItem'
-import { Order_NoRelations } from '@/types/Order'
+import { Order_NoRelations, PaymentStatus } from '@/types/Order'
 import { QueryResponse } from '@/types/QueryResponse'
 
 import CartService from './cart.service'
@@ -12,6 +12,9 @@ import CMSService from './core/cms.service'
 type CartArrType = (Cart & {
   orderId: number[]
   orderTotal: number
+  payment_status: PaymentStatus
+  tracking_url_provider?: string
+  customer_experience?: string
 })[]
 
 type CartItemArrType = CartItem[][]
@@ -91,12 +94,12 @@ export default class OrderService extends CMSService {
                 product_variant: true,
                 properties: {
                   populate: {
-                    product_property: true
-                  }
-                }
-              }
-            }
-          }
+                    product_property: true,
+                  },
+                },
+              },
+            },
+          },
         },
       },
     }
@@ -117,13 +120,15 @@ export default class OrderService extends CMSService {
 
     const { data } = await res.json()
 
+    console.log('data', data)
     const fetchCarts = async (orders: any[]) => {
       const cartService = new CartService()
       const carts: any[] = []
       const cartItems: CartItem[][] = []
 
       for (let i = 0; i < orders.length; i++) {
-        const cartId = orders[i].attributes.cart.data.id
+        const curOrder = orders[i]
+        const cartId = curOrder.attributes.cart.data.id
         const cartItemsRes: QueryResponse<CartItem[]> = await cartService.getCartItems(cartId, true) // get cart items
         const { data } = await cartService.getById(cartId, true) // get cart data (like created date)
         // TODO: NOT WORKING Get billing for each line item (this would also allow for the quantity purchased in each order) // Currently just getting total amount from order
@@ -140,8 +145,13 @@ export default class OrderService extends CMSService {
         // console.log('billing', billingData);
         const cart = {
           ...data,
-          orderTotal: orders[i].attributes.total,
-          orderId: orders[i].id,
+          orderTotal: curOrder.attributes.total,
+          payment_status: curOrder.attributes.payment_status,
+          tracking_url_provider: curOrder.attributes.tracking_url_provider,
+          label_url: curOrder.attributes.label_url,
+          // shipping_address: curOrder.attributes.shipping_address,
+          customer_experience: curOrder.attributes.customer_experience,
+          orderId: curOrder.id,
         }
 
         if (!cartItemsRes || !cartItemsRes.data || !cart) continue
