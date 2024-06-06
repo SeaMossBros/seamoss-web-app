@@ -40,10 +40,10 @@ const ProductSmallCol: React.FC<PropsWithChildren> = ({ children }) => {
   return (
     <Grid.Col
       span={{
-        base: 6,
+        base: 12,
         xs: 6,
         sm: 6,
-        md: 4,
+        md: 6,
       }}
     >
       {children}
@@ -55,10 +55,10 @@ const ProductCol: React.FC<PropsWithChildren> = ({ children }) => {
   return (
     <Grid.Col
       span={{
-        base: 8,
-        xs: 4,
-        sm: 4,
-        md: 4,
+        base: 12, // Full width for base
+        xs: 12, // Wider for extra small screens
+        sm: 12, // Wider for small screens
+        md: 12, // Wider for medium screens
       }}
     >
       {children}
@@ -130,7 +130,7 @@ const ProductList: React.FC<ProductListProps> = ({ queryParams, onPage }) => {
           Our Top Products
         </Title>
       )}
-      <Grid>
+      <Grid gutter={'sm'} m={0}>
         {products?.data?.map((product) =>
           windowIsMobileView ? (
             windowIsExtraSmallMobileView ? (

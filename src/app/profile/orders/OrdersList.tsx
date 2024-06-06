@@ -21,9 +21,10 @@ import OrderService from '@/services/order.service'
 import { AuthUser } from '@/types/Auth'
 import { Cart } from '@/types/Cart'
 import { CartItem } from '@/types/CartItem'
+import { PaymentStatus } from '@/types/Order'
 import { getStrapiUploadUrl } from '@/utils/cms'
-import { formatDescription } from '@/utils/common'
 
+// import { formatDescription } from '@/utils/common'
 import {
   arrowShow,
   cartItemCard,
@@ -44,6 +45,9 @@ interface OrdersListProps {
 type CartArrType = (Cart & {
   orderId: number[]
   orderTotal: number
+  payment_status: PaymentStatus
+  tracking_url_provider?: string
+  customer_experience?: string
 })[]
 
 type CartItemArrType = CartItem[][]
@@ -54,7 +58,7 @@ interface OrderResult {
 }
 
 const OrdersList = ({ user, setTotalOrders }: OrdersListProps) => {
-  const { defaultRadius } = useMantineTheme()
+  const { defaultRadius, colors } = useMantineTheme()
   const { colorScheme } = useMantineColorScheme()
   const isDarkTheme = colorScheme === 'dark'
   const [carts, setCarts] = useState<CartArrType>()
@@ -111,6 +115,7 @@ const OrdersList = ({ user, setTotalOrders }: OrdersListProps) => {
     >
       {carts &&
         carts.toReversed().map((cart, i) => {
+          console.log('cart', cart)
           return (
             <Group key={i} className={orderStyle} style={{ borderRadius: defaultRadius }}>
               {cart && (
@@ -272,32 +277,74 @@ const OrdersList = ({ user, setTotalOrders }: OrdersListProps) => {
                             variant="dotted"
                             w={'90%'}
                           />
-                          <Flex>
-                            <Anchor fz={'sm'} href={productUrl} c={'teal'} ml={5}>
-                              Visit Product Page
-                            </Anchor>
-                            <Anchor
-                              fz={'sm'}
-                              href={getProductReviewUrl(productUrl)}
-                              c={'yellow'}
-                              ml={9}
-                            >
-                              Leave A Review
-                            </Anchor>
-                          </Flex>
+                          <Anchor fz={'sm'} href={productUrl} c={'teal'} ml={5}>
+                            Visit Product Page
+                          </Anchor>
                         </Group>
                         <Group
                           style={{ flexDirection: 'column' }}
                           w={'100%'}
                           className={description}
                         >
-                          <Text fz={'md'}>Description</Text>
-                          <Text fz={'sm'}>
-                            {formatDescription(
+                          <Divider
+                            label="Payment Status"
+                            labelPosition="center"
+                            my="xs"
+                            w={'90%'}
+                          />
+                          <Text fz={'sm'} c={cart.payment_status === 'success' ? 'green' : 'red'}>
+                            {/* {formatDescription(
                               cartItem.attributes.product?.data?.attributes.description || '',
                               555,
-                            ) || ''}
+                            ) || ''} */}
+                            {cart.payment_status.toUpperCase()}
                           </Text>
+                          <Divider label="Tracking Info" labelPosition="center" my="xs" w={'90%'} />
+                          <Anchor
+                            fz={'sm'}
+                            href={cart.tracking_url_provider || '/not-found'}
+                            target="_blank"
+                            underline="always"
+                            c={'grape'}
+                            ml={9}
+                          >
+                            Track Your Order
+                          </Anchor>
+                          <Divider
+                            label="Your Shopping Experience"
+                            labelPosition="center"
+                            my="xs"
+                            w={'90%'}
+                          />
+                          <Text
+                            fz={'sm'}
+                            py={3}
+                            px={6}
+                            display={cart.customer_experience?.length ? 'block' : 'none'}
+                            bg={isDarkTheme ? colors.gray[9] : colors.gray[1]}
+                            style={{ borderRadius: defaultRadius }}
+                          >
+                            {cart.customer_experience}
+                          </Text>
+                          <Text
+                            fz={'xs'}
+                            mx={21}
+                            display={cart.customer_experience?.length ? 'block' : 'none'}
+                            c={'gray'}
+                          >
+                            Thank you for leaving feedback
+                          </Text>
+                          <Text fz={'xs'} mx={21} c={'gray'}>
+                            Please consider writing a public review!
+                          </Text>
+                          <Anchor
+                            fz={'sm'}
+                            href={getProductReviewUrl(productUrl)}
+                            c={'yellow'}
+                            ml={9}
+                          >
+                            Go Leave A Review
+                          </Anchor>
                         </Group>
                       </Card>
                     )

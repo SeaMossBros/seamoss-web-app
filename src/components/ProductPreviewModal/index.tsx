@@ -1,10 +1,11 @@
 'use client'
 
-import { Button, Grid, Modal, ModalProps, Stack } from '@mantine/core'
+import { Anchor, Button, Grid, Modal, ModalProps, Stack } from '@mantine/core'
 import uniqBy from 'lodash/uniqBy'
 import React, { useCallback, useMemo, useState } from 'react'
 import { FormProvider } from 'react-hook-form'
 
+import { ROUTE_PATHS } from '@/consts/route-paths'
 import { useCart } from '@/hooks/useCart'
 import useProductForm from '@/hooks/useProductForm'
 import { Product } from '@/types/Product'
@@ -65,6 +66,8 @@ const ProductPreviewModal: React.FC<ProductPreviewModalProps> = ({ product, ...m
 
   if (!product) return null
 
+  const productUrl = ROUTE_PATHS.PRODUCT.SLUG.replaceAll('{slug}', product.attributes.slug)
+
   return (
     <Modal {...modalProps} size="90%" centered xOffset={'2vw'} yOffset={'2vh'}>
       {productDetails ? (
@@ -90,6 +93,7 @@ const ProductPreviewModal: React.FC<ProductPreviewModalProps> = ({ product, ...m
                 }}
               >
                 <Stack gap="lg">
+                  <Anchor href={productUrl}>Go to Product Page</Anchor>
                   <ProductDetails
                     product={productDetails}
                     showOptionImages={false}

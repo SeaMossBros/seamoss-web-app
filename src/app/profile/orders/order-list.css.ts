@@ -43,7 +43,7 @@ export const description = style({
 
   '@media': {
     [`(max-width: ${defaultThemeVars.breakpoints.lg})`]: {
-      display: 'none',
+      // display: 'none',
     },
   },
 })
@@ -103,11 +103,11 @@ export const dividerPrice = style({
 
 export const orderDateAndPriceCont = style({
   display: 'flex',
-  
+
   '@media': {
     [`(max-width: ${defaultThemeVars.breakpoints.sm})`]: {
       flexDirection: 'column',
       alignItems: 'flex-end',
     },
-  }, 
+  },
 })

@@ -187,6 +187,8 @@ const ProductImages: React.FC<ProductImagesProps> = ({ defaultImage, images, pro
                   alt={image.attributes.alternativeText || productName}
                   width={100}
                   height={100}
+                  p={3}
+                  pt={6}
                   radius={Number(defaultRadius) - 2}
                 />
               </Box>
