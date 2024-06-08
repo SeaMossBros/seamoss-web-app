@@ -90,7 +90,7 @@ const FooterCentered = () => {
             />
           </Text>
           <Text size="xs" lh={0.6} span inline c="dimmed">
-            © 2024. SeaTheMoss LLC. All Rights Reserved
+            © 2024 SeaTheMoss LLC. All Rights Reserved
           </Text>
         </Flex>
       </Center>

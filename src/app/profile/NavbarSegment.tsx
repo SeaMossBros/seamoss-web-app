@@ -4,6 +4,7 @@ import {
   Button,
   Group,
   SegmentedControl,
+  Text,
   useMantineColorScheme,
   useMantineTheme,
 } from '@mantine/core'
@@ -43,6 +44,14 @@ const tabs = {
   ],
 }
 
+const adminTabs = [
+  {
+    link: ROUTE_PATHS.PROFILE.CUSTOMER_ORDERS,
+    label: 'Customer Orders',
+    icon: IconLicense,
+  },
+]
+
 const NavbarSegment = ({ user }: NavbarSegmentProps) => {
   const router = useRouter()
   const { defaultRadius, spacing } = useMantineTheme()
@@ -57,6 +66,10 @@ const NavbarSegment = ({ user }: NavbarSegmentProps) => {
   switch (currentPath) {
     case 'orders':
       activeLabel = 'Your Orders'
+      break
+
+    case 'customer-orders':
+      activeLabel = 'Customer Orders'
       break
 
     case 'reviews':
@@ -126,6 +139,27 @@ const NavbarSegment = ({ user }: NavbarSegmentProps) => {
     </Button>
   ))
 
+  const adminLinks = adminTabs.map((item) => (
+    <Button
+      key={item.link}
+      variant="outline"
+      size="md"
+      mt="xl"
+      className={link}
+      data-active={item.label === active || undefined}
+      style={{ borderRadius: defaultRadius }}
+      c="gray"
+      onClick={(event) => {
+        event.preventDefault()
+        setActive(item.label)
+        router.push(item.link)
+      }}
+    >
+      <item.icon className={linkIcon} color={isDarkTheme ? 'gray' : 'black'} stroke={1.5} />
+      {item.label}
+    </Button>
+  ))
+
   return (
     <Group
       className={navbarStyles}
@@ -135,6 +169,15 @@ const NavbarSegment = ({ user }: NavbarSegmentProps) => {
       style={{ borderBottomLeftRadius: defaultRadius, borderBottomRightRadius: defaultRadius }}
     >
       <br />
+      {user?.role?.type === 'admin' && (
+        <>
+          <div className={navbarMain}>
+            <Text c={'gray'}>Links for Admins:</Text>
+            {adminLinks}
+          </div>
+          <br />
+        </>
+      )}
       <SegmentedControl
         value={section}
         onChange={(value: any) => setSection(value)}

@@ -17,6 +17,7 @@ export const ROUTE_PATHS = {
   PROFILE: {
     INDEX: '/profile',
     ORDERS: '/profile/orders',
+    CUSTOMER_ORDERS: '/profile/customer-orders',
     NOTIFICATIONS: '/profile/notifications',
     SETTINGS: '/profile/settings',
     REVIEWS: '/profile/reviews',

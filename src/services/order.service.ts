@@ -14,7 +14,9 @@ type CartArrType = (Cart & {
   orderTotal: number
   payment_status: PaymentStatus
   tracking_url_provider?: string
+  label_url?: string
   customer_experience?: string
+  user_email?: string
 })[]
 
 type CartItemArrType = CartItem[][]
@@ -77,13 +79,15 @@ export default class OrderService extends CMSService {
     }>
   }
 
-  getOrdersByEmail = async (email: string) => {
+  getOrders = async ({ email, mustHaveLabels }: { email?: string; mustHaveLabels?: boolean }) => {
     const url = `${this.baseURL}/orders`
 
+    const filters: any = {}
+    email && email.length > 0 ? (filters.user_email = email) : null
+    mustHaveLabels ? (filters.label_url = { $ne: null }) : null
+
     const query = {
-      filters: {
-        user_email: email,
-      },
+      filters,
       populate: {
         cart: {
           populate: {
@@ -150,6 +154,7 @@ export default class OrderService extends CMSService {
           tracking_url_provider: curOrder.attributes.tracking_url_provider,
           label_url: curOrder.attributes.label_url,
           // shipping_address: curOrder.attributes.shipping_address,
+          user_email: curOrder.attributes.user_email,
           customer_experience: curOrder.attributes.customer_experience,
           orderId: curOrder.id,
         }
