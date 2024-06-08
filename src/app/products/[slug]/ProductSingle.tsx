@@ -1,6 +1,17 @@
 'use client'
 
-import { Accordion, Box, Button, Grid, Stack, Title } from '@mantine/core'
+import {
+  Accordion,
+  Box,
+  Button,
+  Flex,
+  Grid,
+  Image,
+  Stack,
+  Title,
+  useMantineColorScheme,
+  useMantineTheme,
+} from '@mantine/core'
 import uniqBy from 'lodash/uniqBy'
 import { useCallback, useMemo, useState } from 'react'
 import { FormProvider } from 'react-hook-form'
@@ -15,6 +26,7 @@ import { AuthUser } from '@/types/Auth'
 import { Product_Plain } from '@/types/Product'
 import { ProductSelectionFormData } from '@/types/ProductForm'
 import { QueryParams } from '@/types/QueryParams'
+import { getCertificationIcons } from '@/utils/common'
 
 export type ProductSingleProps = {
   slug: string
@@ -23,6 +35,9 @@ export type ProductSingleProps = {
 }
 
 const ProductSingle: React.FC<ProductSingleProps> = ({ slug, queryParams, user }) => {
+  const { defaultRadius, colors } = useMantineTheme()
+  const { colorScheme } = useMantineColorScheme()
+  const isDarkTheme = colorScheme === 'dark'
   const [maxPropertySelected, setMaxPropertySelected] = useState(false)
   const [variantChanged, setVariantChanged] = useState(false)
   const { addToCart, isAddingToCart } = useCart()
@@ -114,7 +129,28 @@ const ProductSingle: React.FC<ProductSingleProps> = ({ slug, queryParams, user }
                     <Accordion.Item value="certifications">
                       <Accordion.Control>Certifications</Accordion.Control>
                       <Accordion.Panel>
-                        <Markdown>{product.attributes.certifications}</Markdown>
+                        <Flex align={'center'} p={3} style={{ overflowX: 'auto' }}>
+                          {getCertificationIcons(product.attributes.certifications).map(
+                            (certIcon: { src: string; alt: string }, i: number) => {
+                              return (
+                                <Image
+                                  key={i}
+                                  src={`/images/${certIcon.src}`}
+                                  alt={certIcon.alt}
+                                  h={45}
+                                  mr={12}
+                                  title={certIcon.alt}
+                                  style={{
+                                    borderRadius: defaultRadius,
+                                    boxShadow: `-1px 2px 3px 0px ${
+                                      isDarkTheme ? colors.gray[9] : colors.gray[3]
+                                    }`,
+                                  }}
+                                />
+                              )
+                            },
+                          )}
+                        </Flex>
                       </Accordion.Panel>
                     </Accordion.Item>
                   ) : null}

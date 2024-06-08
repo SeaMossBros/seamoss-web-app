@@ -28,13 +28,14 @@ import { getStrapiUploadUrl } from '@/utils/cms'
 import {
   arrowShow,
   cartItemCard,
+  description,
   dividerPrice,
   orderDateAndPriceCont,
   orderNumberCont,
   orderPrice,
   orderStyle,
   orderWrapper,
-} from './order-list.css'
+} from './customer-order-list.css'
 
 interface OrdersListProps {
   user: AuthUser
@@ -47,11 +48,13 @@ type CartArrType = (Cart & {
   payment_status: PaymentStatus
   tracking_url_provider?: string
   customer_experience?: string
+  label_url?: string
+  user_email?: string
 })[]
 
 type CartItemArrType = CartItem[][]
 
-interface OrderResult {
+interface CustomerOrdersResult {
   carts: CartArrType
   cartItems: CartItemArrType
 }
@@ -69,23 +72,18 @@ const OrdersList = ({ user, setTotalOrders }: OrdersListProps) => {
     if (!user.email) return
     const orderService = new OrderService()
 
-    const fetchOrders = async () => {
-      const { carts, cartItems }: OrderResult = await orderService.getOrders({ email: user.email })
+    const fetchOrdersWithLabels = async () => {
+      const { carts, cartItems }: CustomerOrdersResult = await orderService.getOrders({
+        mustHaveLabels: true,
+      })
       setCarts(carts)
       setCartItems(cartItems)
       setTotalOrders(carts.length)
       setShouldShowCartItems(new Array(carts.length).fill(false))
     }
 
-    fetchOrders()
+    fetchOrdersWithLabels()
   }, [setTotalOrders, user.email])
-
-  const getProductReviewUrl = (productUrl: string): string => {
-    if (!productUrl) return ''
-    const myURL = new URL(productUrl, window.location.origin)
-    myURL.searchParams.append('showReviewModal', 'true')
-    return myURL.toString()
-  }
 
   const handleShowOrderClick = (e: any, i: number) => {
     setShouldShowCartItems((prev) => {
@@ -133,21 +131,29 @@ const OrdersList = ({ user, setTotalOrders }: OrdersListProps) => {
                     className={orderNumberCont}
                     style={{ borderRadius: defaultRadius }}
                   >
-                    <Text fz={'xs'} fw={600} className={arrowShow}>
+                    <Text
+                      fz={'xs'}
+                      fw={600}
+                      className={arrowShow}
+                      c={'black'}
+                      style={{ borderRadius: defaultRadius }}
+                    >
                       &gt;
                     </Text>
                     <Text fz={'xs'}>Order #{cart.orderId}</Text>
                   </Group>
-                  <Anchor
-                    fz={'sm'}
-                    href={cart.tracking_url_provider || '/not-found'}
-                    target="_blank"
-                    underline="always"
-                    c={'grape'}
-                    ml={9}
-                  >
-                    Track Order
-                  </Anchor>
+                  <Group justify="center">
+                    <Anchor
+                      fz={'sm'}
+                      href={cart.label_url || '/not-found'}
+                      target="_blank"
+                      underline="always"
+                      c={'grape'}
+                      ml={9}
+                    >
+                      View Label
+                    </Anchor>
+                  </Group>
                   <Group display={'flex'} align={'center'} className={orderDateAndPriceCont}>
                     <Text fz={'xs'}>
                       {new Date(cart.attributes.updatedAt).toLocaleDateString(undefined, {
@@ -179,26 +185,36 @@ const OrdersList = ({ user, setTotalOrders }: OrdersListProps) => {
                   align="center"
                   style={{ borderRadius: defaultRadius }}
                 >
-                  <Divider label="Payment Status" labelPosition="center" my="xs" w={'90%'} />
-                  <Text fz={'sm'} c={cart.payment_status === 'success' ? 'green' : 'red'}>
-                    {cart.payment_status.toUpperCase()}
-                  </Text>
-                  <Divider
-                    label="Your Shopping Experience"
-                    labelPosition="center"
-                    my="xs"
-                    w={'100%'}
-                  />
-                  <Text
+                  <Anchor
                     fz={'sm'}
-                    py={3}
-                    px={6}
-                    display={cart.customer_experience?.length ? 'block' : 'none'}
-                    bg={isDarkTheme ? colors.gray[9] : colors.gray[1]}
-                    style={{ borderRadius: defaultRadius }}
+                    href={cart.tracking_url_provider || '/not-found'}
+                    target="_blank"
+                    underline="always"
+                    c={'grape'}
                   >
-                    {cart.customer_experience}
+                    Track Order
+                  </Anchor>
+                  <Divider label="Customers Email" labelPosition="center" my="xs" w={'90%'} />
+                  <Text fz={'sm'} c={isDarkTheme ? colors.gray[2] : colors.dark[9]}>
+                    {cart.user_email}
                   </Text>
+                  <Group style={{ flexDirection: 'column' }} w={'100%'} className={description}>
+                    <Divider label="Payment Status" labelPosition="center" my="xs" w={'90%'} />
+                    <Text fz={'sm'} c={cart.payment_status === 'success' ? 'green' : 'red'}>
+                      {cart.payment_status.toUpperCase()}
+                    </Text>
+                    <Divider label="Shopping Experience" labelPosition="center" my="xs" w={'90%'} />
+                    <Text
+                      fz={'sm'}
+                      py={3}
+                      px={6}
+                      display={cart.customer_experience?.length ? 'block' : 'none'}
+                      bg={isDarkTheme ? colors.gray[9] : colors.gray[1]}
+                      style={{ borderRadius: defaultRadius }}
+                    >
+                      {cart.customer_experience}
+                    </Text>
+                  </Group>
                 </Stack>
               )}
               {cartItems && cartItems[i] && shouldShowCartItems[i] && (
@@ -212,13 +228,7 @@ const OrdersList = ({ user, setTotalOrders }: OrdersListProps) => {
                             <Text fz={'lg'} w="100%" ff={'fantasy'}>
                               Item {num + 1}:
                             </Text>
-                            <Text fz={'sm'}>
-                              Product is No longer Available. Please Contact Support for the product
-                              information.
-                            </Text>
-                            <Anchor fz={'sm'} type="email" c={'blue'} underline="always">
-                              support@seathemoss.com
-                            </Anchor>
+                            <Text fz={'sm'}>Product is No longer Available.</Text>
                           </Group>
                         </Card>
                       )
@@ -315,19 +325,9 @@ const OrdersList = ({ user, setTotalOrders }: OrdersListProps) => {
                             variant="dotted"
                             w={'90%'}
                           />
-                          <Flex>
-                            <Anchor fz={'sm'} href={productUrl} c={'teal'} ml={5}>
-                              Visit Product Page
-                            </Anchor>
-                            <Anchor
-                              fz={'sm'}
-                              href={getProductReviewUrl(productUrl)}
-                              c={'yellow'}
-                              ml={9}
-                            >
-                              Go Leave A Review
-                            </Anchor>
-                          </Flex>
+                          <Anchor fz={'sm'} href={productUrl} c={'teal'} ml={5}>
+                            Visit Product Page
+                          </Anchor>
                         </Group>
                       </Card>
                     )

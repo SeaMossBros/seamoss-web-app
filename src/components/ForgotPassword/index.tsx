@@ -63,10 +63,12 @@ const ForgotPassword = ({ email }: ResetPasswordProps) => {
       >
         {'<-'} back to login
       </Anchor>
-      <Title fz={27} mb={6}>
-        Forgot Password
-      </Title>
-      <Text style={{ textAlign: 'center' }}>
+      {!emailSentSuccessfully && (
+        <Title fz={27} mb={6}>
+          Forgot Password
+        </Title>
+      )}
+      <Text style={{ textAlign: 'center' }} mt={3}>
         {emailSentSuccessfully
           ? 'Email sent! Please check your email and click the link to reset your password.'
           : 'Enter the email associated with your account to recieve a link and reset your password'}
