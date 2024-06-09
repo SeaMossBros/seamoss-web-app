@@ -124,7 +124,7 @@ export default class OrderService extends CMSService {
 
     const { data } = await res.json()
 
-    console.log('data', data)
+    // console.log('data', data)
     const fetchCarts = async (orders: any[]) => {
       const cartService = new CartService()
       const carts: any[] = []
