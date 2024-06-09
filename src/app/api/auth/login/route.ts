@@ -12,7 +12,6 @@ export const POST = async (req: NextRequest) => {
   const loginRes = await authService.loginUser(email, password)
 
   if (loginRes?.user?.id) {
-    // Test123456!!
     await setSessionCookie(loginRes.user)
     isTempPass && (await setCookie(password, 'tp'))
     loginRes.jwt && (await setCookie(loginRes.jwt, 'jwt'))

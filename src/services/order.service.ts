@@ -9,19 +9,20 @@ import { QueryResponse } from '@/types/QueryResponse'
 import CartService from './cart.service'
 import CMSService from './core/cms.service'
 
-type CartArrType = (Cart & {
-  orderId: number[]
+export type CartArrType = (Cart & {
+  orderId: number
   orderTotal: number
   payment_status: PaymentStatus
   tracking_url_provider?: string
   label_url?: string
+  label_is_printed?: boolean
   customer_experience?: string
   user_email?: string
 })[]
 
-type CartItemArrType = CartItem[][]
+export type CartItemArrType = CartItem[][]
 
-interface OrderResult {
+export interface OrderResult {
   carts: CartArrType
   cartItems: CartItemArrType
 }
@@ -51,6 +52,25 @@ export default class OrderService extends CMSService {
     return res.data as Promise<{
       data: Order_NoRelations
       paymentUrl: string
+    }>
+  }
+
+  update = async (orderId: number, data: Partial<Order_NoRelations>) => {
+    const url = `${this.baseURL}/orders/${orderId}`
+
+    const res = await axios(url, {
+      headers: {
+        ...this.headers,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      method: 'put',
+      data: JSON.stringify({ data }),
+    })
+
+    console.log('res', res)
+    return res.data as Promise<{
+      data: Order_NoRelations
     }>
   }
 
@@ -106,10 +126,12 @@ export default class OrderService extends CMSService {
           },
         },
       },
+      sort: 'createdAt:desc',
     }
 
     const searchString = qs.stringify(query, {
       addQueryPrefix: true,
+      encode: false, // Do not encode to prevent issues with nested JSON structures
     })
 
     const res = await fetch(`${url}${searchString}`, {
@@ -153,6 +175,7 @@ export default class OrderService extends CMSService {
           payment_status: curOrder.attributes.payment_status,
           tracking_url_provider: curOrder.attributes.tracking_url_provider,
           label_url: curOrder.attributes.label_url,
+          label_is_printed: curOrder.attributes.label_is_printed,
           // shipping_address: curOrder.attributes.shipping_address,
           user_email: curOrder.attributes.user_email,
           customer_experience: curOrder.attributes.customer_experience,

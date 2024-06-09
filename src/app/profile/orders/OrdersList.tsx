@@ -17,11 +17,8 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 import { ROUTE_PATHS } from '@/consts/route-paths'
-import OrderService from '@/services/order.service'
+import OrderService, { CartArrType, CartItemArrType, OrderResult } from '@/services/order.service'
 import { AuthUser } from '@/types/Auth'
-import { Cart } from '@/types/Cart'
-import { CartItem } from '@/types/CartItem'
-import { PaymentStatus } from '@/types/Order'
 import { getStrapiUploadUrl } from '@/utils/cms'
 
 // import { formatDescription } from '@/utils/common'
@@ -39,21 +36,6 @@ import {
 interface OrdersListProps {
   user: AuthUser
   setTotalOrders: (num: number) => void
-}
-
-type CartArrType = (Cart & {
-  orderId: number[]
-  orderTotal: number
-  payment_status: PaymentStatus
-  tracking_url_provider?: string
-  customer_experience?: string
-})[]
-
-type CartItemArrType = CartItem[][]
-
-interface OrderResult {
-  carts: CartArrType
-  cartItems: CartItemArrType
 }
 
 const OrdersList = ({ user, setTotalOrders }: OrdersListProps) => {

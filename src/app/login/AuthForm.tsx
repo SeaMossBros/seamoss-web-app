@@ -67,7 +67,6 @@ const AuthenticationForm = () => {
     const { username, email, password } = form.values
     try {
       if (type === 'login') {
-        router.prefetch(ROUTE_PATHS.PROFILE.INDEX)
         await axios('/api/auth/login', {
           method: 'POST',
           headers: {
@@ -76,6 +75,7 @@ const AuthenticationForm = () => {
           },
           data: JSON.stringify({ email, password }),
         })
+        router.prefetch(ROUTE_PATHS.PROFILE.INDEX)
         router.push(ROUTE_PATHS.PROFILE.INDEX)
         setSubmittedForm(false)
       } else if (type === 'register') {
@@ -218,15 +218,16 @@ const AuthenticationForm = () => {
           )}
 
           {type === 'register' && (
-            <Flex align={'center'}>
+            <Flex align={'center'} justify={'flex-start'} wrap={'wrap'} h={51}>
               <Checkbox
-                label="I accept the "
+                label="Accept the "
                 checked={form.values.terms}
                 onChange={(event) => form.setFieldValue('terms', event.currentTarget.checked)}
                 disabled={submittedForm}
                 size="sm"
                 c="gray"
                 mr={4}
+                miw={'96px'}
               />
               <Anchor
                 c="teal"
@@ -237,6 +238,7 @@ const AuthenticationForm = () => {
                 inline
                 px={0}
                 mx={0}
+                miw={'120px'}
               >
                 terms & conditions
               </Anchor>
@@ -252,6 +254,7 @@ const AuthenticationForm = () => {
                 inline
                 px={0}
                 mx={0}
+                miw={'120px'}
               >
                 shipping policy
               </Anchor>

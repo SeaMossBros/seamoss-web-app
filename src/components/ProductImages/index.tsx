@@ -4,7 +4,9 @@ import './magnify-image.css'
 
 import {
   Box,
+  Card,
   Flex,
+  Group,
   Image,
   ScrollArea,
   Stack,
@@ -107,8 +109,11 @@ const ProductImages: React.FC<ProductImagesProps> = ({ defaultImage, images, pro
           'magnify-overlay-cont',
         )[0] as HTMLElement
         magnifyOverlayCont.style.display = 'none'
+
         const imgCont = document.getElementsByClassName('image-container')[0] as HTMLElement
-        imgCont.style.cursor = 'auto'
+        if (imgCont) {
+          imgCont.style.cursor = 'auto'
+        }
       } else {
         const inner = document.getElementsByClassName('magnify-overlay')[0] as HTMLElement
         inner.style.transform = 'scale(1.44) translate(0px, 0px)'
@@ -139,23 +144,30 @@ const ProductImages: React.FC<ProductImagesProps> = ({ defaultImage, images, pro
 
   return (
     <Stack className={imagesCont}>
-      <div
+      <Card
         className="image-container"
         onMouseLeave={onMouseLeaveHandler}
         onMouseMove={onMouseMoveHandler}
+        withBorder
+        style={{ borderColor: shouldMagnify ? '' : 'transparent' }}
+        bg={'transparent'}
       >
         <img
           src={getStrapiUploadUrl(currentImage.attributes.url)}
           alt={currentImage.attributes.alternativeText || productName}
           className="default-image"
         />
-        <div className="magnify-overlay-cont">
+        <Group
+          className="magnify-overlay-cont"
+          bg={isDarkTheme ? colors.dark[6] : colors.gray[0]}
+          style={{ borderRadius: defaultRadius }}
+        >
           <div
             className="magnify-overlay"
             style={{ backgroundImage: `url(${getStrapiUploadUrl(currentImage.attributes.url)})` }}
           ></div>
-        </div>
-      </div>
+        </Group>
+      </Card>
       <img
         src={
           shouldMagnify && !isTouchDevice()

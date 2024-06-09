@@ -74,5 +74,5 @@ const MOCKDATA: Array<Omit<ContactIconProps, 'icon'> & { icon: typeof IconSun }>
 
 export function ContactIconsList() {
   const items = MOCKDATA.map((item, index) => <ContactIcon key={index} {...item} />)
-  return <Stack>{items}</Stack>
+  return <Stack h={'fit-content'}>{items}</Stack>
 }

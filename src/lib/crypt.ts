@@ -8,7 +8,7 @@ import { AuthUser } from '@/types/Auth'
 const key = `${process.env.JWT_SECRET}` || 'secret'
 const cookieStore = cookies
 
-// session
+// * session
 
 export const encryptSession = async (payload: AuthUser) => {
   return CryptoJS.AES.encrypt(JSON.stringify(payload), key).toString()
@@ -26,7 +26,7 @@ export const getSessionFromCookies = async (): Promise<AuthUser | null> => {
 }
 
 export const setSessionCookie = async (user: AuthUser) => {
-  const expires = new Date(Date.now() + 60 * 60 * 24 * 7 * 1000) // expires in 7 days
+  const expires = new Date(Date.now() + 60 * 60 * 24 * 3 * 1000) // expires in 3 days
   const session = await encryptSession(user)
 
   cookieStore().set('session', session, {
@@ -35,18 +35,18 @@ export const setSessionCookie = async (user: AuthUser) => {
     sameSite: 'strict',
     secure: process.env.NODE_ENV !== 'development',
     path: '/',
-    maxAge: 60 * 60 * 24 * 7, // expires in 7 days
+    maxAge: 60 * 60 * 24 * 3, // expires in 3 days
   })
 }
 
-// all
+// * all
 
 export const clearCookie = async (name: 'jwt' | 'tp' | 'session') => {
   if (!name) return
   return cookieStore().delete(name)
 }
 
-// temp pass or jwt
+// * temp pass or jwt
 
 export const encryptCookie = async (payload: string) => {
   return CryptoJS.AES.encrypt(JSON.stringify(payload), key).toString()

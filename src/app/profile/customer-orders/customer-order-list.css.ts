@@ -88,7 +88,6 @@ export const orderNumberCont = style({
 })
 
 export const arrowShow = style({
-  backgroundColor: defaultThemeVars.colors.gray[3],
   padding: '0px 6px',
   paddingTop: '1px',
 })

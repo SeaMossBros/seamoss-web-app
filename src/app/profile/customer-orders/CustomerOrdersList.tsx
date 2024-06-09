@@ -3,11 +3,13 @@
 import {
   Anchor,
   Card,
+  Checkbox,
   Container,
   Divider,
   Flex,
   Group,
   Image,
+  SegmentedControl,
   Stack,
   Text,
   useMantineColorScheme,
@@ -17,14 +19,10 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 import { ROUTE_PATHS } from '@/consts/route-paths'
-import OrderService from '@/services/order.service'
+import OrderService, { CartArrType, CartItemArrType, OrderResult } from '@/services/order.service'
 import { AuthUser } from '@/types/Auth'
-import { Cart } from '@/types/Cart'
-import { CartItem } from '@/types/CartItem'
-import { PaymentStatus } from '@/types/Order'
 import { getStrapiUploadUrl } from '@/utils/cms'
 
-// import { formatDescription } from '@/utils/common'
 import {
   arrowShow,
   cartItemCard,
@@ -42,23 +40,6 @@ interface OrdersListProps {
   setTotalOrders: (num: number) => void
 }
 
-type CartArrType = (Cart & {
-  orderId: number[]
-  orderTotal: number
-  payment_status: PaymentStatus
-  tracking_url_provider?: string
-  customer_experience?: string
-  label_url?: string
-  user_email?: string
-})[]
-
-type CartItemArrType = CartItem[][]
-
-interface CustomerOrdersResult {
-  carts: CartArrType
-  cartItems: CartItemArrType
-}
-
 const OrdersList = ({ user, setTotalOrders }: OrdersListProps) => {
   const { defaultRadius, colors } = useMantineTheme()
   const { colorScheme } = useMantineColorScheme()
@@ -67,21 +48,23 @@ const OrdersList = ({ user, setTotalOrders }: OrdersListProps) => {
   const [cartItems, setCartItems] = useState<CartItemArrType>()
   const redirect = useRouter()
   const [shouldShowCartItems, setShouldShowCartItems] = useState<boolean[]>([])
+  const [shouldShowNotPrinted, setShouldShowNotPrinted] = useState<boolean>(true)
+  const [section, setSection] = useState<'Not Yet Printed' | 'Already Printed'>('Not Yet Printed')
+  const orderService = new OrderService()
+
+  const fetchOrdersWithLabels = async () => {
+    const { carts, cartItems }: OrderResult = await orderService.getOrders({
+      mustHaveLabels: true,
+    })
+    console.log('carts', carts)
+    setCarts(carts)
+    setCartItems(cartItems)
+    setTotalOrders(carts.filter((cart) => !cart.label_is_printed).length)
+    setShouldShowCartItems(new Array(carts.length).fill(false))
+  }
 
   useEffect(() => {
     if (!user.email) return
-    const orderService = new OrderService()
-
-    const fetchOrdersWithLabels = async () => {
-      const { carts, cartItems }: CustomerOrdersResult = await orderService.getOrders({
-        mustHaveLabels: true,
-      })
-      setCarts(carts)
-      setCartItems(cartItems)
-      setTotalOrders(carts.length)
-      setShouldShowCartItems(new Array(carts.length).fill(false))
-    }
-
     fetchOrdersWithLabels()
   }, [setTotalOrders, user.email])
 
@@ -99,6 +82,15 @@ const OrdersList = ({ user, setTotalOrders }: OrdersListProps) => {
     })
   }
 
+  const handleLabelPrintedCheckbox = async (cartIndex: number) => {
+    if (carts && carts[cartIndex]) {
+      await orderService.update(carts[cartIndex].orderId, {
+        label_is_printed: !!!carts[cartIndex].label_is_printed,
+      })
+      fetchOrdersWithLabels()
+    }
+  }
+
   if (!user.id) return <div>no user</div>
 
   return (
@@ -110,11 +102,39 @@ const OrdersList = ({ user, setTotalOrders }: OrdersListProps) => {
         boxShadow: carts && carts.length > 0 ? '0px -12px 9px -12px inset teal' : '',
       }}
     >
+      <Group>
+        <SegmentedControl
+          value={section}
+          onChange={(value: any) => {
+            setShouldShowNotPrinted(value !== 'Already Printed')
+            return setSection(value)
+          }}
+          transitionTimingFunction="ease"
+          fullWidth
+          data={[
+            { label: 'Not Yet Printed', value: 'Not Yet Printed' },
+            { label: 'Already Printed', value: 'Already Printed' },
+          ]}
+          maw={'fit-content'}
+          mb={42}
+        />
+      </Group>
       {carts &&
-        carts.toReversed().map((cart, i) => {
+        carts.map((cart, i) => {
+          console.log(cart.label_is_printed)
+          if (
+            (shouldShowNotPrinted && cart.label_is_printed) ||
+            (!shouldShowNotPrinted && !cart.label_is_printed)
+          )
+            return
           // console.log('cart', cart)
           return (
-            <Group key={i} className={orderStyle} style={{ borderRadius: defaultRadius }}>
+            <Group
+              key={i}
+              className={orderStyle}
+              style={{ borderRadius: defaultRadius }}
+              justify="center"
+            >
               {cart && (
                 <Flex
                   gap="md"
@@ -123,6 +143,7 @@ const OrdersList = ({ user, setTotalOrders }: OrdersListProps) => {
                   display={'flex'}
                   justify={'space-between'}
                   style={{ alignItems: 'center', borderRadius: defaultRadius }}
+                  wrap={'wrap'}
                 >
                   <Group
                     onClick={(e) => handleShowOrderClick(e, i)}
@@ -135,6 +156,7 @@ const OrdersList = ({ user, setTotalOrders }: OrdersListProps) => {
                       fz={'xs'}
                       fw={600}
                       className={arrowShow}
+                      bg={isDarkTheme ? colors.dark[3] : colors.dark[0]}
                       c={'black'}
                       style={{ borderRadius: defaultRadius }}
                     >
@@ -153,6 +175,17 @@ const OrdersList = ({ user, setTotalOrders }: OrdersListProps) => {
                     >
                       View Label
                     </Anchor>
+                    <Divider orientation="vertical" />
+                    <Checkbox
+                      checked={cart.label_is_printed}
+                      label="Label was printed"
+                      onChange={() => handleLabelPrintedCheckbox(i)}
+                      // disabled={submittedForm}
+                      size="sm"
+                      c="gray"
+                      mr={4}
+                      miw={'96px'}
+                    />
                   </Group>
                   <Group display={'flex'} align={'center'} className={orderDateAndPriceCont}>
                     <Text fz={'xs'}>
@@ -180,10 +213,11 @@ const OrdersList = ({ user, setTotalOrders }: OrdersListProps) => {
               )}
               {shouldShowCartItems[i] && (
                 <Stack
-                  bg={isDarkTheme ? colors.dark[6] : colors.gray[2]}
+                  bg={isDarkTheme ? colors.dark[8] : colors.gray[1]}
                   p={6}
                   align="center"
                   style={{ borderRadius: defaultRadius }}
+                  w={'100%'}
                 >
                   <Anchor
                     fz={'sm'}
