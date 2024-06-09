@@ -2,6 +2,7 @@
 
 import {
   Button,
+  Divider,
   Group,
   SegmentedControl,
   Text,
@@ -175,7 +176,7 @@ const NavbarSegment = ({ user }: NavbarSegmentProps) => {
             <Text c={'gray'}>Links for Admins:</Text>
             {adminLinks}
           </div>
-          <br />
+          <Divider w={'100%'} my={9} />
         </>
       )}
       <SegmentedControl
@@ -189,7 +190,6 @@ const NavbarSegment = ({ user }: NavbarSegmentProps) => {
         ]}
         w={'100%'}
       />
-
       <div className={navbarMain}>{links}</div>
       <div className={footer}>
         <Button

@@ -1,7 +1,9 @@
 import {
+  Anchor,
   Box,
   Button,
   Card,
+  Divider,
   Flex,
   Image,
   Skeleton,
@@ -64,6 +66,37 @@ const BillingDetail: React.FC<BillingDetailProps> = ({ total, onCheckout, isChec
             onClick={() => router.push('https://stripe.com')}
             style={{ cursor: 'pointer' }}
           />
+        </Flex>
+        <Divider />
+        <Flex align={'center'} justify={'flex-start'} wrap={'wrap'} h={'fit-content'}>
+          <Text fz={'xs'}>By checking out you agree to our&nbsp;</Text>
+          <Anchor
+            c="teal"
+            key={'terms and conditions'}
+            href={'/terms-of-service'}
+            lh={1}
+            size="xs"
+            inline
+            px={0}
+            mx={0}
+            miw={'90px'}
+          >
+            terms & conditions
+          </Anchor>
+          <Text fz={'xs'}>&nbsp;and&nbsp;</Text>
+          <Anchor
+            c="teal"
+            key={'shipping policy'}
+            href={'/shipping-policy'}
+            lh={1}
+            size="xs"
+            inline
+            px={0}
+            mx={0}
+            miw={'90px'}
+          >
+            shipping policy
+          </Anchor>
         </Flex>
       </Stack>
     </Card>

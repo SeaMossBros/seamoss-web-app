@@ -28,7 +28,7 @@ export const form = style({
 
   '@media': {
     [`(max-width: ${defaultThemeVars.breakpoints.sm})`]: {
-      paddingTop: 'var(--mantine- spacing-md)',
+      paddingTop: 'var(--mantine-spacing-md)',
       paddingLeft: 'var(--mantine-spacing-md)',
       minWidth: '90vw',
     },
@@ -69,7 +69,6 @@ export const contacts = style({
   backgroundPosition: 'center',
   border: 'rem(1px) solid transparent',
   padding: 'var(--mantine-spacing-xl)',
-  flex: '0 0 rem(280px)',
 
   '@media': {
     [`(max-width: ${defaultThemeVars.breakpoints.sm})`]: {

@@ -17,6 +17,7 @@ export interface Order {
     payment_status: PaymentStatus
     tracking_url_provider?: string
     label_url?: string
+    label_is_printed?: boolean
     shipping_address?: string
     customer_experience?: string
     user_email?: string
@@ -33,6 +34,7 @@ export interface Order_Plain {
   payment_status: PaymentStatus
   tracking_url_provider?: string
   label_url?: string
+  label_is_printed?: boolean
   shipping_address?: string
   customer_experience?: string
   user_email?: string
@@ -49,6 +51,7 @@ export interface Order_NoRelations {
   payment_status: PaymentStatus
   tracking_url_provider?: string
   label_url?: string
+  label_is_printed?: boolean
   shipping_address?: string
   customer_experience?: string
   user_email?: string

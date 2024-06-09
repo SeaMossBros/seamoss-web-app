@@ -21,7 +21,13 @@ const CustomerOrdersContainer = ({ user }: CustomerOrdersListProps) => {
   return (
     <Group display={'flex'} style={{ flexDirection: 'column' }} w={'100%'}>
       <Title className={totalTitleStyle}>
-        There are {totalOrders} order{totalOrders === 1 ? '' : 's'} left to ship
+        There{' '}
+        {totalOrders > 1
+          ? `are ${totalOrders} orders`
+          : totalOrders === 1
+            ? `is ${totalOrders} order`
+            : 'are no orders'}{' '}
+        left to ship
       </Title>
       <CusstomerOrdersListClientSide user={user} setTotalOrders={(num) => setTotalOrders(num)} />
     </Group>
