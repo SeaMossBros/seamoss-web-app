@@ -138,16 +138,18 @@ const OrdersList = ({ user, setTotalOrders }: OrdersListProps) => {
                     </Text>
                     <Text fz={'xs'}>Order #{cart.orderId}</Text>
                   </Group>
-                  <Anchor
-                    fz={'sm'}
-                    href={cart.tracking_url_provider || '/not-found'}
-                    target="_blank"
-                    underline="always"
-                    c={'grape'}
-                    ml={9}
-                  >
-                    Track Order
-                  </Anchor>
+                  {cart.tracking_url_provider && cart.tracking_url_provider.length > 0 && (
+                    <Anchor
+                      fz={'sm'}
+                      href={cart.tracking_url_provider || '/not-found'}
+                      target="_blank"
+                      underline="always"
+                      c={'grape'}
+                      ml={9}
+                    >
+                      Track Order
+                    </Anchor>
+                  )}
                   <Group display={'flex'} align={'center'} className={orderDateAndPriceCont}>
                     <Text fz={'xs'}>
                       {new Date(cart.attributes.updatedAt).toLocaleDateString(undefined, {
