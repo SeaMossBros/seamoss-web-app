@@ -21,7 +21,7 @@ export const reviewHeader = style({
 })
 
 export const reviewIndexStyle = style({
-  alignSelf: 'flex-start'
+  alignSelf: 'flex-start',
 })
 
 export const reviewItem = style({

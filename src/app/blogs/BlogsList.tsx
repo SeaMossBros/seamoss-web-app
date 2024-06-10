@@ -17,7 +17,7 @@ const BlogsList: React.FC<BlogListProps> = ({ queryParams }) => {
   const { data: articles } = useArticles(queryParams)
 
   useEffect(() => {
-    console.log('articles', articles);
+    // console.log('articles', articles);
     if (articles?.data && articles?.error) {
       notifications.show({
         id: 'articles',

@@ -68,7 +68,7 @@ export default class OrderService extends CMSService {
       data: JSON.stringify({ data }),
     })
 
-    console.log('res', res)
+    // console.log('res', res)
     return res.data as Promise<{
       data: Order_NoRelations
     }>

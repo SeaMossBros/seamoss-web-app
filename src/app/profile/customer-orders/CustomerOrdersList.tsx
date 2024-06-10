@@ -56,7 +56,7 @@ const OrdersList = ({ user, setTotalOrders }: OrdersListProps) => {
     const { carts, cartItems }: OrderResult = await orderService.getOrders({
       mustHaveLabels: true,
     })
-    console.log('carts', carts)
+    // console.log('carts', carts)
     setCarts(carts)
     setCartItems(cartItems)
     setTotalOrders(carts.filter((cart) => !cart.label_is_printed).length)
@@ -121,7 +121,7 @@ const OrdersList = ({ user, setTotalOrders }: OrdersListProps) => {
       </Group>
       {carts &&
         carts.map((cart, i) => {
-          console.log(cart.label_is_printed)
+          // console.log(cart.label_is_printed)
           if (
             (shouldShowNotPrinted && cart.label_is_printed) ||
             (!shouldShowNotPrinted && !cart.label_is_printed)

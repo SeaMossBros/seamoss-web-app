@@ -13,7 +13,6 @@ export const metadata: Metadata = {
   title: 'Forgot Password | SeaTheMoss',
 }
 
-
 /* // TODO: Fix error
 error: SMTP code:550 msg:550-5.7.25 [65.220.21.34] The IP address sending this message does not have a
 550-5.7.25 PTR record setup, or the corresponding forward DNS entry does not

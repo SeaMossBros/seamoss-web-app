@@ -31,11 +31,11 @@ export interface ProductVariant {
     stock?: number
     units_per_stock?: number
     image?: { data: Media }
-    weight?: number;
-    weight_unit?: WeightUnit;
-    sku?: Sku;
-    package_dimensions_unit?: PackageDimensionsUnit;
-    package_dimensions?: PackageDimensions;
+    weight?: number
+    weight_unit?: WeightUnit
+    sku?: Sku
+    package_dimensions_unit?: PackageDimensionsUnit
+    package_dimensions?: PackageDimensions
   }
 }
 
@@ -51,11 +51,11 @@ export interface ProductVariant_Plain {
   stock?: number
   units_per_stock?: number
   image?: Media
-  weight?: number;
-  weight_unit?: WeightUnit;
-  sku?: Sku;
-  package_dimensions_unit?: PackageDimensionsUnit;
-  package_dimensions?: PackageDimensions;
+  weight?: number
+  weight_unit?: WeightUnit
+  sku?: Sku
+  package_dimensions_unit?: PackageDimensionsUnit
+  package_dimensions?: PackageDimensions
 }
 
 export interface ProductVariant_NoRelations {
@@ -70,9 +70,9 @@ export interface ProductVariant_NoRelations {
   stock?: number
   units_per_stock?: number
   image?: number
-  weight?: number;
-  weight_unit?: WeightUnit;
-  sku?: Sku;
-  package_dimensions_unit?: PackageDimensionsUnit;
-  package_dimensions?: PackageDimensions;
+  weight?: number
+  weight_unit?: WeightUnit
+  sku?: Sku
+  package_dimensions_unit?: PackageDimensionsUnit
+  package_dimensions?: PackageDimensions
 }

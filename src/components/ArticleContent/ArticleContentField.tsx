@@ -7,6 +7,7 @@ import sanitizeHtml from 'sanitize-html'
 import { ArticleFormData } from '@/types/ArticleForm'
 
 import ContentEditor from '../ContentEditor'
+import Markdown from '../Markdown'
 import { ArticleComponentCommonProps } from './common'
 import { articleInputField, contentEditorContent, contentEditorToolbar } from './styles.css'
 
@@ -30,13 +31,7 @@ const ArticleContentField: React.FC<ArticleContentFieldProps> = ({ mode }) => {
     const html = methods.getValues('content')
     if (!html) return null
     const sanitizedHtml = sanitizeHtml(html)
-    return (
-      <div
-        dangerouslySetInnerHTML={{
-          __html: sanitizedHtml,
-        }}
-      />
-    )
+    return <Markdown>{sanitizedHtml}</Markdown>
   }
 
   return (
