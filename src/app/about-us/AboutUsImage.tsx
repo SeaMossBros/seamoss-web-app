@@ -13,6 +13,7 @@ const AboutUsImage: React.FC<{ number: number }> = ({ number }) => {
     return data?.attributes.hero_images?.data ?? []
   }, [data?.attributes.hero_images?.data])
 
+  console.log('images', images)
   if (!images[number]?.attributes?.url) return
 
   return (
