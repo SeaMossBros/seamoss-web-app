@@ -1,5 +1,6 @@
 import qs from 'qs'
 
+import { AboutUsPage, AboutUsPage_Plain } from '@/types/AboutUsPage'
 import { HomePage, HomePage_Plain } from '@/types/HomePage'
 import { QueryParams } from '@/types/QueryParams'
 import { QueryResponse } from '@/types/QueryResponse'
@@ -10,6 +11,7 @@ import CMSService from './core/cms.service'
 export default class SingleTypeService extends CMSService {
   static queryKeys = {
     getHomePageData: () => ['/home-page'],
+    getAboutUsPageData: () => ['/about-us-page'],
     getSupportPageData: () => ['/support-page'],
   }
 
@@ -27,6 +29,22 @@ export default class SingleTypeService extends CMSService {
     })
 
     return res.json() as Promise<QueryResponse<HomePage>>
+  }
+
+  getAboutUsPageData = async () => {
+    const url = `${this.baseURL}/about-us-page`
+    const query: QueryParams<AboutUsPage_Plain> = {
+      populate: ['hero_images'],
+    }
+    const search = qs.stringify(query, {
+      addQueryPrefix: true,
+    })
+
+    const res = await fetch(`${url}${search}`, {
+      cache: 'no-cache',
+    })
+
+    return res.json() as Promise<QueryResponse<AboutUsPage>>
   }
 
   getSupportPageData = async () => {

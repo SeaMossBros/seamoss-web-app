@@ -69,11 +69,11 @@ const Header: React.FC<HeaderProps> = ({ navOpened, toggleNav }) => {
             style={{ borderRadius: defaultRadius }}
           />
           <NavLinkItem
-            label="About us"
+            label="About Us"
             href={ROUTE_PATHS.ABOUT}
             active={pathname.startsWith(ROUTE_PATHS.ABOUT)}
-            title="About us"
-            style={{ borderRadius: defaultRadius }}
+            title="About Us"
+            style={{ borderRadius: defaultRadius, display: 'flex', flexWrap: 'nowrap' }}
           />
           <NavLinkItem
             label="Support"

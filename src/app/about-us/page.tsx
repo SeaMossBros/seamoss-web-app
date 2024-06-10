@@ -1,15 +1,28 @@
 import { Container, Overlay, Text, Title } from '@mantine/core'
+import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
 import { Metadata } from 'next'
 
+import getQueryClient from '@/react-query/getQueryClient'
+import SingleTypeService from '@/services/single-type.service'
+
+import AboutUsImage from './AboutUsImage'
 import { inner, title, wrapper } from './hero-image-background.css'
 
 export const metadata: Metadata = {
   title: 'About Us | SeaTheMoss',
 }
 
-const AboutUsPage: React.FC = () => {
+const AboutUsPage: React.FC = async () => {
+  const queryClient = getQueryClient()
+  const singleTypeService = new SingleTypeService()
+
+  await queryClient.prefetchQuery({
+    queryKey: SingleTypeService.queryKeys.getAboutUsPageData(),
+    queryFn: () => singleTypeService.getAboutUsPageData(),
+  })
+
   return (
-    <>
+    <HydrationBoundary state={dehydrate(queryClient)}>
       <div className={wrapper}>
         <div className={inner}>
           <Overlay color="#1a1b1e" opacity={0.65} zIndex={1} />
@@ -42,6 +55,7 @@ const AboutUsPage: React.FC = () => {
           betterment of her clientele.
         </Text>
         <br />
+        <AboutUsImage number={0} />
         <Text fw={400}>
           After visiting Belize and learning of the exceptionally clean and sustainable Seamoss
           growing in protected ocean waters, it was no surprise when Nubia took an immediate
@@ -103,7 +117,7 @@ const AboutUsPage: React.FC = () => {
         <br />
         <Text fw={400}>Thank you for trusting and supporting our family business!</Text>
       </Container>
-    </>
+    </HydrationBoundary>
   )
 }
 

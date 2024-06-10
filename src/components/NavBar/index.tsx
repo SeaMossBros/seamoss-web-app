@@ -56,12 +56,12 @@ const NavBar: React.FC<NavBarProps> = ({ onClose, navOpened }) => {
       />
       <NavLinkItem
         className={navLink}
-        label="About us"
-        title="About us"
+        label="About Us"
+        title="About Us"
         href={ROUTE_PATHS.ABOUT}
         active={pathname.startsWith(ROUTE_PATHS.ABOUT)}
         onClick={onClose}
-        style={{ borderRadius: defaultRadius }}
+        style={{ borderRadius: defaultRadius, display: 'flex', flexWrap: 'nowrap' }}
       />
       <NavLinkItem
         className={navLink}
