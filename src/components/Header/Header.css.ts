@@ -1,5 +1,7 @@
 import { style } from '@vanilla-extract/css'
 
+import { defaultThemeVars } from '@/themes/default'
+
 export const container = style({
   height: '100%',
 })
@@ -17,7 +19,25 @@ export const logoContainer = style({
   flex: 1,
   display: 'flex',
   alignItems: 'center',
-  gap: 10,
+  gap: 9,
+  minWidth: 'fit-content',
+
+  '@media': {
+    [`(max-width: 950px)`]: {},
+  },
+})
+
+export const appTitle = style({
+  fontSize: 33,
+
+  '@media': {
+    [`(max-width: ${defaultThemeVars.breakpoints.lg})`]: {
+      fontSize: 21,
+    },
+    [`(max-width: ${defaultThemeVars.breakpoints.md})`]: {
+      fontSize: 18,
+    },
+  },
 })
 
 export const navLink = style({

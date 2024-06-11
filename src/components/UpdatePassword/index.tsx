@@ -3,7 +3,7 @@
 import { Button, Group, PasswordInput, Title, useMantineTheme } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import axios from 'axios'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 import { useState } from 'react'
 
 import { ROUTE_PATHS } from '@/consts/route-paths'
@@ -15,7 +15,6 @@ interface UpdatePasswordProps {
 }
 
 const UpdatePassword = ({ password }: UpdatePasswordProps) => {
-  const router = useRouter()
   const { defaultRadius } = useMantineTheme()
   const [submittedForm, setSubmittedForm] = useState(false)
   const code = useSearchParams().get('code')
@@ -65,7 +64,8 @@ const UpdatePassword = ({ password }: UpdatePasswordProps) => {
         })
       }
 
-      router.push(ROUTE_PATHS.PROFILE.INDEX)
+      window.location.replace(ROUTE_PATHS.PROFILE.INDEX)
+      // router.replace(ROUTE_PATHS.PROFILE.INDEX);
     } catch (err) {
       setSubmittedForm(false)
       console.log(err)
@@ -107,7 +107,7 @@ const UpdatePassword = ({ password }: UpdatePasswordProps) => {
         required
         disabled={submittedForm}
       />
-      <Button w="100%" miw={100} mt={12} onClick={handleSubmit}>
+      <Button w="100%" miw={100} mt={12} onClick={handleSubmit} disabled={submittedForm}>
         Update
       </Button>
     </Group>

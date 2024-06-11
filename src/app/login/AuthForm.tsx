@@ -3,7 +3,6 @@ import {
   Button,
   Checkbox,
   Flex,
-  // Divider,
   Group,
   Paper,
   PasswordInput,
@@ -75,8 +74,7 @@ const AuthenticationForm = () => {
           },
           data: JSON.stringify({ email, password }),
         })
-        router.prefetch(ROUTE_PATHS.PROFILE.INDEX)
-        router.push(ROUTE_PATHS.PROFILE.INDEX)
+        window.location.replace(ROUTE_PATHS.PROFILE.INDEX)
         setSubmittedForm(false)
       } else if (type === 'register') {
         await axios('/api/auth/register', {
@@ -87,7 +85,7 @@ const AuthenticationForm = () => {
           },
           data: JSON.stringify({ username, email, password }),
         })
-        router.push(ROUTE_PATHS.PROFILE.INDEX)
+        window.location.replace(ROUTE_PATHS.PROFILE.INDEX)
         setSubmittedForm(false)
       }
     } catch (err) {

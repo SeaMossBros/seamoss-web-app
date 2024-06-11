@@ -14,7 +14,9 @@ import React from 'react'
 import DefaultLayout from '@/components/DefaultLayout'
 import SpotlightController from '@/components/SpotlightController'
 import { interFont } from '@/fonts/inter'
+import { getSessionFromCookies } from '@/lib/crypt'
 import AppProviders from '@/providers/AppProviders'
+import { AuthUser } from '@/types/Auth'
 
 export const metadata: Metadata = {
   title: 'SeaTheMoss',
@@ -22,7 +24,7 @@ export const metadata: Metadata = {
 }
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  // console.log('userData', userData);
+  const user: AuthUser | null = await getSessionFromCookies()
 
   return (
     <html lang="en">
@@ -42,7 +44,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <body className={interFont.className}>
         <CookiesProvider>
           <AppProviders>
-            <DefaultLayout>
+            <DefaultLayout user={user}>
               <Notifications />
               <SpotlightController />
               {children}
