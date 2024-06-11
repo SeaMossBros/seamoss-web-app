@@ -44,8 +44,8 @@ const Header: React.FC<HeaderProps> = ({ navOpened, toggleNav, user }) => {
     <Container className={container}>
       <Group className={wrapper} justify="space-between" align="center">
         <Link href={ROUTE_PATHS.HOME} className={logoContainer}>
-          <Image src="/images/SeaTheMoss-Empty-Icon.png" alt="Logo" height={40} />
-          <Title c={primaryColor} order={2} visibleFrom="sm" className={appTitle}>
+          <Image src="/images/SeaTheMoss-Empty-Icon.png" alt="Logo" height={40} visibleFrom="xs" />
+          <Title c={primaryColor} order={2} className={appTitle}>
             SeaTheMoss
           </Title>
         </Link>

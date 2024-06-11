@@ -1,4 +1,4 @@
-import { Group, Text, UnstyledButton } from '@mantine/core'
+import { Group, Text, UnstyledButton, useMantineColorScheme, useMantineTheme } from '@mantine/core'
 
 import { AuthUser } from '@/types/Auth'
 
@@ -9,6 +9,10 @@ interface UserButtonProps {
 }
 
 const UserButton = ({ user }: UserButtonProps) => {
+  const { colors } = useMantineTheme()
+  const { colorScheme } = useMantineColorScheme()
+  const isDarkTheme = colorScheme === 'dark'
+
   if (!user.email)
     return (
       <UnstyledButton className={userStyles}>
@@ -17,7 +21,10 @@ const UserButton = ({ user }: UserButtonProps) => {
             src={'/images/icons8-account.gif'}
             width={60}
             alt="user profile pic"
-            style={{ borderRadius: '15px' }}
+            style={{
+              borderRadius: '15px',
+              backgroundColor: isDarkTheme ? colors.gray[1] : 'transparent',
+            }}
           />
 
           <div style={{ flex: 1 }}>
@@ -41,7 +48,10 @@ const UserButton = ({ user }: UserButtonProps) => {
           onError={(e) => (e.currentTarget.src = '/images/icons8-account.gif')}
           width={60}
           alt="user profile pic"
-          style={{ borderRadius: '15px' }}
+          style={{
+            borderRadius: '15px',
+            backgroundColor: isDarkTheme ? colors.gray[1] : 'transparent',
+          }}
         />
 
         <div style={{ flex: 1 }}>

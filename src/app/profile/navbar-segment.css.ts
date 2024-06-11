@@ -66,7 +66,7 @@ export const linkIcon = style({
 
 export const footer = style({
   borderTop: `1px solid ${defaultThemeVars.colors.gray3}`, // Adjust for light-dark variation
-  paddingTop: defaultThemeVars.spacing.md,
+  padding: `${defaultThemeVars.spacing.md} 0`,
   width: '100%',
 })
 
