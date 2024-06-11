@@ -54,7 +54,7 @@ const adminTabs = [
 
 const NavbarSegment = ({ user }: NavbarSegmentProps) => {
   const router = useRouter()
-  const { defaultRadius, spacing } = useMantineTheme()
+  const { colors, defaultRadius, spacing } = useMantineTheme()
   const { colorScheme } = useMantineColorScheme()
   const isDarkTheme = colorScheme === 'dark'
   const [section, setSection] = useState<'account' | 'general'>('general')
@@ -63,6 +63,7 @@ const NavbarSegment = ({ user }: NavbarSegmentProps) => {
   const currentPath = pathname.split('/')[2]
   let shouldRedirectToOrders = false
   let activeLabel = ''
+
   switch (currentPath) {
     case 'orders':
       activeLabel = 'Your Orders'
@@ -92,12 +93,17 @@ const NavbarSegment = ({ user }: NavbarSegmentProps) => {
       shouldRedirectToOrders = true
       break
   }
-  if (user?.role?.type === 'admin') activeLabel = 'Customer Orders'
   const [active, setActive] = useState(activeLabel)
 
   useEffect(() => {
-    if (user?.role?.type === 'admin') router.push(ROUTE_PATHS.PROFILE.CUSTOMER_ORDERS)
-    if (shouldRedirectToOrders) router.push(ROUTE_PATHS.PROFILE.ORDERS)
+    if (shouldRedirectToOrders) {
+      if (user?.role?.type === 'admin') {
+        router.push(ROUTE_PATHS.PROFILE.CUSTOMER_ORDERS)
+        setActive('Customer Orders')
+      } else {
+        router.push(ROUTE_PATHS.PROFILE.ORDERS)
+      }
+    }
     const isOnGeneralSection =
       !currentPath || pathname.includes('orders') || pathname.includes('reviews')
     setSection(isOnGeneralSection ? 'general' : 'account')
@@ -192,6 +198,7 @@ const NavbarSegment = ({ user }: NavbarSegmentProps) => {
       />
       <div className={navbarMain}>{links}</div>
       <div className={footer}>
+        <UserButton user={user} />
         <Button
           className={link}
           onClick={(event) => {
@@ -199,12 +206,16 @@ const NavbarSegment = ({ user }: NavbarSegmentProps) => {
             handleLogout()
           }}
           variant="subtle"
+          c={colors.red[6]}
         >
-          <IconLogout className={linkIcon} stroke={0.9} color={isDarkTheme ? 'gray' : 'black'} />
+          <IconLogout
+            className={linkIcon}
+            stroke={0.9}
+            color={isDarkTheme ? colors.red[6] : colors.red[6]}
+          />
           <span>Logout</span>
         </Button>
       </div>
-      <UserButton user={user} />
     </Group>
   )
 }

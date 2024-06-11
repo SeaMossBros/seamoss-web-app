@@ -32,6 +32,9 @@ export const appTitle = style({
     [`(max-width: ${defaultThemeVars.breakpoints.md})`]: {
       fontSize: 18,
     },
+    [`(max-width: ${defaultThemeVars.breakpoints.sm})`]: {
+      fontSize: 18,
+    },
   },
 })
 
