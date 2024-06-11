@@ -20,11 +20,6 @@ export const logoContainer = style({
   display: 'flex',
   alignItems: 'center',
   gap: 9,
-  minWidth: 'fit-content',
-
-  '@media': {
-    [`(max-width: 950px)`]: {},
-  },
 })
 
 export const appTitle = style({
