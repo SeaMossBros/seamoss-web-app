@@ -18,7 +18,6 @@ import {
   IconSettings,
 } from '@tabler/icons-react'
 import axios from 'axios'
-import { PrefetchKind } from 'next/dist/client/components/router-reducer/router-reducer-types'
 import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
@@ -93,9 +92,11 @@ const NavbarSegment = ({ user }: NavbarSegmentProps) => {
       shouldRedirectToOrders = true
       break
   }
+  if (user?.role?.type === 'admin') activeLabel = 'Customer Orders'
   const [active, setActive] = useState(activeLabel)
 
   useEffect(() => {
+    if (user?.role?.type === 'admin') router.push(ROUTE_PATHS.PROFILE.CUSTOMER_ORDERS)
     if (shouldRedirectToOrders) router.push(ROUTE_PATHS.PROFILE.ORDERS)
     const isOnGeneralSection =
       !currentPath || pathname.includes('orders') || pathname.includes('reviews')
@@ -104,7 +105,6 @@ const NavbarSegment = ({ user }: NavbarSegmentProps) => {
 
   const handleLogout = async () => {
     try {
-      router.prefetch(ROUTE_PATHS.PRODUCT.INDEX, { kind: PrefetchKind.FULL })
       await axios('/api/auth/logout', {
         method: 'POST',
         headers: {
@@ -113,7 +113,7 @@ const NavbarSegment = ({ user }: NavbarSegmentProps) => {
         },
       })
 
-      router.push(ROUTE_PATHS.PRODUCT.INDEX)
+      window.location.replace(ROUTE_PATHS.PRODUCT.INDEX)
     } catch (err) {
       console.log(err)
     }

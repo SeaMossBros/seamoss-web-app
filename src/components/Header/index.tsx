@@ -12,25 +12,29 @@ import {
 } from '@mantine/core'
 import { spotlight } from '@mantine/spotlight'
 import { IconSearch } from '@tabler/icons-react'
+import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React from 'react'
 
 import { ROUTE_PATHS } from '@/consts/route-paths'
+import { AuthUser } from '@/types/Auth'
 
 import CartDropdown from '../CartNavLink'
 import ColorSchemeToggler from '../ColorSchemeToggler'
 import NavLinkItem from '../NavLinkItem'
 // import ToolTip from '../ToolTip'
-import UserMenu from '../UserMenu'
-import { container, logoContainer, navLinkContainer, wrapper } from './Header.css'
+import { appTitle, container, logoContainer, navLinkContainer, wrapper } from './Header.css'
+
+const LogoutBtnClientSide = dynamic(() => import('../LogoutBtn'), { ssr: false })
 
 export type HeaderProps = {
   navOpened: boolean
   toggleNav: () => void
+  user: AuthUser | null
 }
 
-const Header: React.FC<HeaderProps> = ({ navOpened, toggleNav }) => {
+const Header: React.FC<HeaderProps> = ({ navOpened, toggleNav, user }) => {
   const pathname = usePathname()
   const { primaryColor, defaultRadius } = useMantineTheme()
   const { colorScheme } = useMantineColorScheme()
@@ -40,8 +44,8 @@ const Header: React.FC<HeaderProps> = ({ navOpened, toggleNav }) => {
     <Container className={container}>
       <Group className={wrapper} justify="space-between" align="center">
         <Link href={ROUTE_PATHS.HOME} className={logoContainer}>
-          <Image src="/images/SeaTheMoss-Empty-Icon.png" alt="Logo" height={40} visibleFrom="sm" />
-          <Title c={primaryColor} order={2}>
+          <Image src="/images/SeaTheMoss-Empty-Icon.png" alt="Logo" height={40} />
+          <Title c={primaryColor} order={2} visibleFrom="sm" className={appTitle}>
             SeaTheMoss
           </Title>
         </Link>
@@ -53,6 +57,7 @@ const Header: React.FC<HeaderProps> = ({ navOpened, toggleNav }) => {
             href={ROUTE_PATHS.HOME}
             active={pathname === '' || pathname === '/'}
             style={{ borderRadius: defaultRadius }}
+            visibleFrom="lg"
           />
           <NavLinkItem
             label="Products"
@@ -82,7 +87,14 @@ const Header: React.FC<HeaderProps> = ({ navOpened, toggleNav }) => {
             active={pathname.startsWith(ROUTE_PATHS.SUPPORT)}
             style={{ borderRadius: defaultRadius }}
           />
-          <UserMenu onClick={() => null} navOpened={navOpened} />
+          <NavLinkItem
+            label="Profile"
+            title={'Visit Your Profile'}
+            href={ROUTE_PATHS.PROFILE.INDEX}
+            active={pathname.startsWith(ROUTE_PATHS.PROFILE.INDEX)}
+            style={{ borderRadius: defaultRadius }}
+          />
+          <LogoutBtnClientSide user={user} />
           <ColorSchemeToggler />
           <ActionIcon
             variant="subtle"

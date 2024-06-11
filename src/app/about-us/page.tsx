@@ -55,7 +55,7 @@ const AboutUsPage: React.FC = async () => {
           betterment of her clientele.
         </Text>
         <br />
-        <AboutUsImage number={0} />
+        <AboutUsImage index={0} />
         <Text fw={400}>
           After visiting Belize and learning of the exceptionally clean and sustainable Seamoss
           growing in protected ocean waters, it was no surprise when Nubia took an immediate

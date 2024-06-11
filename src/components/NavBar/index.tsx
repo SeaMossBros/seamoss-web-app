@@ -1,20 +1,24 @@
-import { Group, Stack, Text, useMantineColorScheme, useMantineTheme } from '@mantine/core'
+import { Flex, Group, Stack, Text, useMantineColorScheme, useMantineTheme } from '@mantine/core'
+import dynamic from 'next/dynamic'
 import { usePathname } from 'next/navigation'
 import React from 'react'
 
 import { ROUTE_PATHS } from '@/consts/route-paths'
+import { AuthUser } from '@/types/Auth'
 
 import ColorSchemeToggler from '../ColorSchemeToggler'
 import NavLinkItem from '../NavLinkItem'
-import UserMenu from '../UserMenu'
 import { navLink, navLinkContClosed, navLinkContOpened } from './NavBar.css'
+
+const LogoutBtnClientSide = dynamic(() => import('../LogoutBtn'), { ssr: false })
 
 export type NavBarProps = {
   onClose: () => void
   navOpened: boolean
+  user: AuthUser | null
 }
 
-const NavBar: React.FC<NavBarProps> = ({ onClose, navOpened }) => {
+const NavBar: React.FC<NavBarProps> = ({ onClose, navOpened, user }) => {
   const pathname = usePathname()
   const { colors, defaultRadius } = useMantineTheme()
   const { colorScheme } = useMantineColorScheme()
@@ -72,9 +76,22 @@ const NavBar: React.FC<NavBarProps> = ({ onClose, navOpened }) => {
         onClick={onClose}
         style={{ borderRadius: defaultRadius }}
       />
-      <UserMenu onClick={onClose} navOpened={navOpened} />
+      <NavLinkItem
+        label="Profile"
+        title={'Visit Your Profile'}
+        href={ROUTE_PATHS.PROFILE.INDEX}
+        active={pathname.startsWith(ROUTE_PATHS.PROFILE.INDEX)}
+        style={{ borderRadius: defaultRadius }}
+        onClick={onClose}
+        className={navOpened ? navLink : ''}
+        w={navOpened ? '100%' : 'fit-content'}
+      />
       <Group w={'93%'} display={'flex'} style={{ flexDirection: 'column', alignItems: 'center' }}>
-        <ColorSchemeToggler />
+        <Flex w={'100%'} justify={'center'} wrap={'nowrap'} p={0} m={0}>
+          <LogoutBtnClientSide user={user} />
+          <div style={{ width: '21px' }}></div>
+          <ColorSchemeToggler />
+        </Flex>
         <Text
           onClick={onClose}
           style={{
@@ -90,7 +107,7 @@ const NavBar: React.FC<NavBarProps> = ({ onClose, navOpened }) => {
           pr={10}
           mr={-12}
         >
-          {'<'} close
+          X close
         </Text>
       </Group>
     </Stack>
