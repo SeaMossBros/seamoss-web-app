@@ -2,8 +2,10 @@
 
 import { Group, Title } from '@mantine/core'
 import dynamic from 'next/dynamic'
-import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
 
+import { ROUTE_PATHS } from '@/consts/route-paths'
 import { AuthUser } from '@/types/Auth'
 
 import { totalTitleStyle } from '../profile-page.css'
@@ -16,6 +18,14 @@ interface CustomerOrdersListProps {
 
 const CustomerOrdersContainer = ({ user }: CustomerOrdersListProps) => {
   const [totalOrders, setTotalOrders] = useState(0)
+  const router = useRouter()
+
+  useEffect(() => {
+    if (!user?.id || user.role?.type !== 'admin') {
+      router.push(ROUTE_PATHS.PROFILE.ORDERS)
+    }
+  }, [])
+
   if (!user.id) return <div>no user</div>
 
   return (
