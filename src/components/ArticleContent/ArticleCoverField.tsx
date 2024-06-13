@@ -136,23 +136,20 @@ const ArticleCoverField: React.FC<ArticleCoverFieldProps> = ({ mode }) => {
       >
         {cover ? (
           cover?.attributes.mime.startsWith('image') ? (
-            <>
-              <canvas id="canvas" style={{ borderRadius: defaultRadius }}></canvas>
-              <Image
-                src={
-                  cover?.attributes?.url ? getStrapiUploadUrl(cover?.attributes?.url) : undefined
-                }
-                alt={cover?.attributes?.alternativeText ?? ''}
-                width={1200}
-                height={628}
-                fit="cover"
-                fallbackSrc="/images/placeholder.webp"
-                placeholder="blur"
-                loading="eager"
-                radius={`${defaultRadius}px`}
-                // style={{ boxShadow: `0px 3px 12px -6px gray` }}
-              />
-            </>
+            <Image
+              src={
+                cover?.attributes?.url
+                  ? getStrapiUploadUrl(cover?.attributes?.url)
+                  : '/placeholder.webp'
+              }
+              alt={cover?.attributes?.alternativeText ?? ''}
+              width={1200}
+              fit="cover"
+              fallbackSrc="/images/placeholder.webp"
+              placeholder="blur"
+              loading="eager"
+              radius={`${defaultRadius}px`}
+            />
           ) : (
             <video
               src={cover?.attributes?.url ? getStrapiUploadUrl(cover?.attributes?.url) : undefined}
