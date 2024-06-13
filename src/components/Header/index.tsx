@@ -90,8 +90,13 @@ const Header: React.FC<HeaderProps> = ({ navOpened, toggleNav, user }) => {
           <NavLinkItem
             label="Profile"
             title={'Visit Your Profile'}
-            href={ROUTE_PATHS.PROFILE.INDEX}
-            active={pathname.startsWith(ROUTE_PATHS.PROFILE.INDEX)}
+            href={
+              pathname.startsWith(ROUTE_PATHS.LOGIN) ? ROUTE_PATHS.LOGIN : ROUTE_PATHS.PROFILE.INDEX
+            }
+            active={
+              pathname.startsWith(ROUTE_PATHS.PROFILE.INDEX) ||
+              pathname.startsWith(ROUTE_PATHS.LOGIN)
+            }
             style={{ borderRadius: defaultRadius }}
           />
           <LogoutBtnClientSide user={user} />
