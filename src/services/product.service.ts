@@ -145,10 +145,26 @@ export default class ProductService extends CMSService {
   }
 
   getProductReviews = async (params: QueryParams<ProductReview_NoRelations>) => {
-    const url = `${this.baseURL}/product-reviews?${qs.stringify(params)}`
+    const url = `${this.baseURL}/product-reviews`
 
-    const res = await fetch(url, {
-      headers: this.headers,
+    const query = {
+      ...params,
+      sort: 'createdAt:desc',
+    }
+
+    const searchString = qs.stringify(query, {
+      addQueryPrefix: true,
+      encode: false, // Do not encode to prevent issues with nested JSON structures
+    })
+
+    const res = await fetch(`${url}${searchString}`, {
+      method: 'GET',
+      headers: {
+        ...this.headers,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      cache: 'no-store',
     })
 
     return res.json() as Promise<QueryResponse<ProductReview[]>>

@@ -15,12 +15,15 @@ import {
   IconLicense,
   IconLogout,
   IconMessage2,
+  IconReceipt2,
   IconSettings,
 } from '@tabler/icons-react'
 import axios from 'axios'
+import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
+import NavLinkItem from '@/components/NavLinkItem'
 import { ROUTE_PATHS } from '@/consts/route-paths'
 import { AuthUser } from '@/types/Auth'
 
@@ -48,7 +51,7 @@ const adminTabs = [
   {
     link: ROUTE_PATHS.PROFILE.CUSTOMER_ORDERS,
     label: 'Customer Orders',
-    icon: IconLicense,
+    icon: IconReceipt2,
   },
 ]
 
@@ -126,45 +129,48 @@ const NavbarSegment = ({ user }: NavbarSegmentProps) => {
   }
 
   const links = tabs[section].map((item) => (
-    <Button
+    <Link
       key={item.link}
-      variant="outline"
-      size="md"
-      mt="xl"
+      href={item.link}
       className={link}
-      data-active={item.label === active || undefined}
       style={{ borderRadius: defaultRadius }}
-      c="gray"
-      onClick={(event) => {
-        event.preventDefault()
-        setActive(item.label)
-        router.push(item.link)
-      }}
+      data-active={item.label === active || undefined}
+      passHref
     >
       <item.icon className={linkIcon} color={isDarkTheme ? 'gray' : 'black'} stroke={1.5} />
-      {item.label}
-    </Button>
+      <NavLinkItem
+        label={item.label}
+        title={item.label}
+        href={item.link}
+        onClick={() => setActive(item.label)}
+        active={false}
+        style={{ borderRadius: defaultRadius, backgroundColor: 'transparent' }}
+        c={'gray'}
+      />
+    </Link>
   ))
 
   const adminLinks = adminTabs.map((item) => (
-    <Button
+    <Link
       key={item.link}
-      variant="outline"
-      size="md"
-      mt="xl"
+      href={item.link}
       className={link}
+      style={{ borderRadius: defaultRadius, marginTop: 9 }}
       data-active={item.label === active || undefined}
-      style={{ borderRadius: defaultRadius }}
-      c="gray"
-      onClick={(event) => {
-        event.preventDefault()
-        setActive(item.label)
-        router.push(item.link)
-      }}
+      passHref
     >
       <item.icon className={linkIcon} color={isDarkTheme ? 'gray' : 'black'} stroke={1.5} />
-      {item.label}
-    </Button>
+      <NavLinkItem
+        key={item.link}
+        label={item.label}
+        title={item.label}
+        href={item.link}
+        onClick={() => setActive(item.label)}
+        active={false}
+        style={{ borderRadius: defaultRadius, backgroundColor: 'transparent' }}
+        c={'gray'}
+      />
+    </Link>
   ))
 
   return (
@@ -179,7 +185,7 @@ const NavbarSegment = ({ user }: NavbarSegmentProps) => {
       {user?.role?.type === 'admin' && (
         <>
           <div className={navbarMain}>
-            <Text c={'gray'}>Links for Admins:</Text>
+            <Text c={'gray'}>Admins Pages:</Text>
             {adminLinks}
           </div>
           <Divider w={'100%'} my={9} />
@@ -207,12 +213,9 @@ const NavbarSegment = ({ user }: NavbarSegmentProps) => {
           }}
           variant="subtle"
           c={colors.red[6]}
+          style={{ borderColor: colors.red[6] }}
         >
-          <IconLogout
-            className={linkIcon}
-            stroke={0.9}
-            color={isDarkTheme ? colors.red[6] : colors.red[6]}
-          />
+          <IconLogout className={linkIcon} stroke={0.9} color={colors.red[6]} />
           <span>Logout</span>
         </Button>
       </div>

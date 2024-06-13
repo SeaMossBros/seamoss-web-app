@@ -2,10 +2,12 @@
 
 import { Button, Center, Flex, Group, Modal, Text, useMantineTheme } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
+import { IconUser } from '@tabler/icons-react'
 import axios from 'axios'
 import Link from 'next/link'
 import { useEffect } from 'react'
 
+import NavLinkItem from '@/components/NavLinkItem'
 // import ToolTip from '@/components/ToolTip'
 import { ROUTE_PATHS } from '@/consts/route-paths'
 import { Order_NoRelations } from '@/types/Order'
@@ -16,7 +18,7 @@ const PaymentSuccessModal: React.FC<{
   user?: any
   jwt?: string
 }> = ({ defaultOpened, user, order }) => {
-  const { colors } = useMantineTheme()
+  const { colors, defaultRadius } = useMantineTheme()
   const [opened, { close }] = useDisclosure(defaultOpened)
   const isNewUser = !!(user && user.role)
 
@@ -108,9 +110,7 @@ const PaymentSuccessModal: React.FC<{
         )}
       </Group>
       <Group justify="flex-end" mt={21}>
-        <Button
-          variant="outline"
-          component={Link}
+        <Link
           href={
             isNewUser
               ? ROUTE_PATHS.PROFILE.CHANGE_PASSWORD
@@ -118,13 +118,44 @@ const PaymentSuccessModal: React.FC<{
                 ? ROUTE_PATHS.PROFILE.ORDERS
                 : ROUTE_PATHS.LOGIN
           }
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            borderRadius: defaultRadius,
+            border: `1px solid ${colors.gray[6]}`,
+            color: colors.gray[6],
+          }}
+          data-active={false}
+          passHref
         >
-          {isNewUser
-            ? 'Go To Profile & Reset Password'
-            : user?.email === order?.user_email
-              ? 'Your Profile'
-              : 'Login'}
-        </Button>
+          <IconUser color={colors.gray[6]} stroke={1.5} />
+          <NavLinkItem
+            label={
+              isNewUser
+                ? 'Go To Profile & Change Password'
+                : user?.email === order?.user_email
+                  ? 'Your Profile'
+                  : 'Login'
+            }
+            title={
+              isNewUser
+                ? 'Go to Profile & Change Password'
+                : user?.email === order?.user_email
+                  ? 'Go to Orders on Profile'
+                  : 'Go to Login'
+            }
+            href={
+              isNewUser
+                ? ROUTE_PATHS.PROFILE.CHANGE_PASSWORD
+                : user?.email === order?.user_email
+                  ? ROUTE_PATHS.PROFILE.ORDERS
+                  : ROUTE_PATHS.LOGIN
+            }
+            active={false}
+            style={{ borderRadius: defaultRadius, backgroundColor: 'transparent', paddingLeft: 0 }}
+            c={'gray'}
+          />
+        </Link>
         <Button variant="filled" component={Link} href={ROUTE_PATHS.PRODUCT.INDEX}>
           Continue shopping
         </Button>
