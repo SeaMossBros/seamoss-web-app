@@ -95,7 +95,7 @@ const OrdersList = ({ user, setTotalOrders }: OrdersListProps) => {
       }}
     >
       {carts &&
-        carts.toReversed().map((cart, i) => {
+        carts.map((cart, i) => {
           // console.log('cart', cart)
           return (
             <Group key={i} className={orderStyle} style={{ borderRadius: defaultRadius }}>

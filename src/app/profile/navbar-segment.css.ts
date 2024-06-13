@@ -37,19 +37,21 @@ export const link = style({
   textDecoration: 'none',
   fontSize: defaultThemeVars.fontSizes.sm,
   color: defaultThemeVars.colors.gray[7],
-  padding: `${defaultThemeVars.spacing.xs} ${defaultThemeVars.spacing.sm}`,
+  border: `1px solid ${defaultThemeVars.colors.gray[7]}`,
+  padding: `0 ${defaultThemeVars.spacing.sm}`,
   width: '100%',
   fontWeight: 500,
+  marginBottom: 9,
 
   selectors: {
     '&:hover': {
-      backgroundColor: defaultThemeVars.colors.gray[0],
+      backgroundColor: defaultThemeVars.colors.gray[2],
     },
     '&[data-active]': {
-      backgroundColor: defaultThemeVars.colors.teal[1],
+      backgroundColor: defaultThemeVars.colors.teal[3],
     },
     '&[data-active]:hover': {
-      backgroundColor: defaultThemeVars.colors.teal[6],
+      backgroundColor: defaultThemeVars.colors.teal[3],
     },
     // '&:hover .linkIcon, &[data-active] .linkIcon, &[data-active]:hover .linkIcon': {
     //     color: defaultThemeVars.colors.red[1], // This combines the conditions for hover and active states

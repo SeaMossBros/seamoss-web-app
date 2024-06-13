@@ -38,8 +38,9 @@ const AppProviders: React.FC<PropsWithChildren> = ({ children }) => {
         <ProgressBar
           height="3px"
           color={defaultThemeVars.colors.teal[9]}
-          options={{ showSpinner: true }}
-          shallowRouting
+          options={{ showSpinner: true, easing: 'ease-in-out' }}
+          shallowRouting={false}
+          delay={1}
         />
         <ModalsProvider>
           <CartProvider>{children}</CartProvider>

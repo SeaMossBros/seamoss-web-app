@@ -31,7 +31,7 @@ const ReviewsList = ({
     <Container className={reviewsWrapper}>
       <Group className={reviewStyle} style={{ borderRadius: defaultRadius }}>
         <Flex direction={'column'} mt="xl" w={'100%'}>
-          {reviews.data.toReversed().map((review, i) => {
+          {reviews.data.map((review, i) => {
             return (
               <Stack gap={0} key={i}>
                 <ReviewItem
