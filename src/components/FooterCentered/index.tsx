@@ -7,7 +7,7 @@ import React from 'react'
 
 import { ROUTE_PATHS } from '@/consts/route-paths'
 
-import { companyInfo, footerImage, footerLinks, inner } from './Footer.css'
+import { companyInfo, externalFooterLinks, footerImage, footerLinks, inner } from './Footer.css'
 
 const links = [
   { link: '/products', label: 'Shop Products' },
@@ -44,7 +44,7 @@ const FooterCentered = () => {
       justify="center"
       style={{ flexDirection: 'column', alignItems: 'flex-start' }}
     >
-      <div className={inner}>
+      <Flex className={inner}>
         <Image
           className={footerImage}
           width={81}
@@ -56,11 +56,11 @@ const FooterCentered = () => {
 
         <Group className={footerLinks}>{items}</Group>
 
-        {/* <Group className={externalFooterLinks} gap="xs" justify="flex-end" wrap="nowrap"> */}
-        {/* <ActionIcon size="lg" variant="default" radius="xl">
+        <Group className={externalFooterLinks} gap="xs" justify="flex-end" wrap="nowrap">
+          {/* <ActionIcon size="lg" variant="default" radius="xl">
             <IconBrandTwitter style={{ width: 18, height: 18 }} stroke={1.5} />
           </ActionIcon> */}
-        {/* <Anchor
+          {/* <Anchor
             c="dimmed"
             href={'https://www.youtube.com/channel/UCdRAVki3AJLRUyi2sg-SliA'}
             lh={1}
@@ -71,11 +71,11 @@ const FooterCentered = () => {
               <IconBrandYoutube style={{ width: 18, height: 18 }} stroke={1.5} />
             </ActionIcon>
           </Anchor> */}
-        {/* <ActionIcon size="lg" variant="default" radius="xl">
+          {/* <ActionIcon size="lg" variant="default" radius="xl">
             <IconBrandInstagram style={{ width: 18, height: 18 }} stroke={1.5} />
           </ActionIcon> */}
-        {/* </Group> */}
-      </div>
+        </Group>
+      </Flex>
       <Center w={'100vw'}>
         <Flex align={'center'} my={42} className={companyInfo}>
           <Text ml={21} fw={200} fz={'xs'} style={{ display: 'flex', alignItems: 'center' }}>
