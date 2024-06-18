@@ -69,7 +69,7 @@ export const externalFooterLinks = style({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
-  width: '24%',
+  width: '12%',
 
   '@media': {
     [`(max-width: ${defaultThemeVars.breakpoints.sm})`]: {
