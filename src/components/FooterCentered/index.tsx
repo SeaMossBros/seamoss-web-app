@@ -1,13 +1,13 @@
 'use client'
-import { ActionIcon, Anchor, Center, Flex, Group, Text, useMantineColorScheme } from '@mantine/core'
-import { IconBrandYoutube } from '@tabler/icons-react'
+import { Anchor, Center, Flex, Group, Text, useMantineColorScheme } from '@mantine/core'
+// import { IconBrandYoutube } from '@tabler/icons-react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import React from 'react'
 
 import { ROUTE_PATHS } from '@/consts/route-paths'
 
-import { companyInfo, externalFooterLinks, footerImage, footerLinks, inner } from './Footer.css'
+import { companyInfo, footerImage, footerLinks, inner } from './Footer.css'
 
 const links = [
   { link: '/products', label: 'Shop Products' },
@@ -56,11 +56,11 @@ const FooterCentered = () => {
 
         <Group className={footerLinks}>{items}</Group>
 
-        <Group className={externalFooterLinks} gap="xs" justify="flex-end" wrap="nowrap">
-          {/* <ActionIcon size="lg" variant="default" radius="xl">
+        {/* <Group className={externalFooterLinks} gap="xs" justify="flex-end" wrap="nowrap"> */}
+        {/* <ActionIcon size="lg" variant="default" radius="xl">
             <IconBrandTwitter style={{ width: 18, height: 18 }} stroke={1.5} />
           </ActionIcon> */}
-          <Anchor
+        {/* <Anchor
             c="dimmed"
             href={'https://www.youtube.com/channel/UCdRAVki3AJLRUyi2sg-SliA'}
             lh={1}
@@ -70,11 +70,11 @@ const FooterCentered = () => {
             <ActionIcon size="lg" variant="default" radius="xl">
               <IconBrandYoutube style={{ width: 18, height: 18 }} stroke={1.5} />
             </ActionIcon>
-          </Anchor>
-          {/* <ActionIcon size="lg" variant="default" radius="xl">
+          </Anchor> */}
+        {/* <ActionIcon size="lg" variant="default" radius="xl">
             <IconBrandInstagram style={{ width: 18, height: 18 }} stroke={1.5} />
           </ActionIcon> */}
-        </Group>
+        {/* </Group> */}
       </div>
       <Center w={'100vw'}>
         <Flex align={'center'} my={42} className={companyInfo}>
