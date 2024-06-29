@@ -1,4 +1,5 @@
 import { Media } from './Media'
+import { DiscountUnit } from './PurchaseOption'
 
 export enum WeightUnit {
   Oz = 'oz',
@@ -36,6 +37,9 @@ export interface ProductVariant {
     sku?: Sku
     package_dimensions_unit?: PackageDimensionsUnit
     package_dimensions?: PackageDimensions
+    has_discount?: boolean
+    discount_value?: number
+    discount_unit?: DiscountUnit
   }
 }
 
@@ -56,6 +60,9 @@ export interface ProductVariant_Plain {
   sku?: Sku
   package_dimensions_unit?: PackageDimensionsUnit
   package_dimensions?: PackageDimensions
+  has_discount?: boolean
+  discount_value?: number
+  discount_unit?: DiscountUnit
 }
 
 export interface ProductVariant_NoRelations {
@@ -75,4 +82,7 @@ export interface ProductVariant_NoRelations {
   sku?: Sku
   package_dimensions_unit?: PackageDimensionsUnit
   package_dimensions?: PackageDimensions
+  has_discount?: boolean
+  discount_value?: number
+  discount_unit?: DiscountUnit
 }
