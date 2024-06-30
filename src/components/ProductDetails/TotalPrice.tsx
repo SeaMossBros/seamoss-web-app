@@ -38,14 +38,25 @@ const TotalPrice: React.FC = () => {
     )
   }
 
-  if (variant.attributes.has_discount && variant.attributes.discount_unit === DiscountUnit.Fiat) {
+  if (
+    variant.attributes.has_discount &&
+    variant.attributes.discount_unit === DiscountUnit.Fiat &&
+    variant.attributes.discount_value
+  ) {
     return (
       <Text component="p">
-        <Text component="span" td="line-through">
-          {formatPrice(totalPrice + (variant.attributes.discount_value || 0))}
+        <Text component="p">
+          <Text component="span" c="teal" fz="xl" fw={600}>
+            {formatPrice(totalPrice)}
+          </Text>
         </Text>
-        <Text component="span" c="teal" ml="sm" fz="xl" fw={600}>
-          {formatPrice(totalPrice)}
+        <Text component="p">
+          <Text c="red" component="span" td="line-through">
+            {formatPrice(totalPrice + variant.attributes.discount_value * variant.quantity)}
+          </Text>{' '}
+          <Text component="span" fz="xs">
+            (Save {formatPrice(variant.attributes.discount_value * variant.quantity)})
+          </Text>
         </Text>
       </Text>
     )
