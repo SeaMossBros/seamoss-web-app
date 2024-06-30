@@ -21,3 +21,17 @@ globalStyle('a', {
 globalStyle('.pointer-cursor', {
   cursor: 'pointer',
 })
+
+globalStyle('.markdown-content img', {
+  display: 'block',
+  margin: '30px auto',
+  maxWidth: '100%',
+  maxHeight: '333px',
+  height: 'auto',
+  boxShadow: '1px 1px 9px -5px gray',
+  borderRadius: '3px',
+})
+
+globalStyle('.markdown-content p', {
+  margin: '0 0 20px',
+})
