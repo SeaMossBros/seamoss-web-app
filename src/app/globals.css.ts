@@ -35,3 +35,7 @@ globalStyle('.markdown-content img', {
 globalStyle('.markdown-content p', {
   margin: '0 0 20px',
 })
+
+globalStyle('.markdown-content a', {
+  color: 'teal',
+})
