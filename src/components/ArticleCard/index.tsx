@@ -3,12 +3,14 @@
 import { AspectRatio, Card, Image, Stack, Text } from '@mantine/core'
 import Link from 'next/link'
 import { useMemo } from 'react'
+import sanitizeHtml from 'sanitize-html'
 
 import { ROUTE_PATHS } from '@/consts/route-paths'
 import { Article } from '@/types/Article'
 import { getStrapiUploadUrl } from '@/utils/cms'
 import { isImage } from '@/utils/common'
 
+import Markdown from '../Markdown'
 // import ToolTip from '../ToolTip'
 import { card } from './ArticleCard.css'
 
@@ -51,9 +53,11 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
             {title}
           </Text>
           {/* </ToolTip> */}
-          <Text lineClamp={3} fz="sm">
-            {introduction}
-          </Text>
+          <Markdown isIntroOnBlogsList={true}>
+            {introduction
+              ? sanitizeHtml(introduction.slice(0, 99)) + (introduction.length > 99 ? '...' : '')
+              : ''}
+          </Markdown>
         </Stack>
       </Card>
     </Link>

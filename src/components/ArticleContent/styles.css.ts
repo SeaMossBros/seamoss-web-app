@@ -24,7 +24,6 @@ export const articleTitle = style({
 
 export const articleIntro = style({
   fontSize: defaultThemeVars.fontSizes.md,
-  fontWeight: 600,
   marginTop: 51,
   marginBottom: 12,
 })
