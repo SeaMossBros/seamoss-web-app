@@ -177,7 +177,11 @@ const OrdersList = ({ user, setTotalOrders }: OrdersListProps) => {
                     </Anchor>
                     <Divider orientation="vertical" />
                     <Checkbox
-                      label="Label was printed"
+                      label={
+                        section === 'Already Printed'
+                          ? "Move to 'Not Yet Printed'"
+                          : 'Label has been printed'
+                      }
                       onChange={() => {
                         setTimeout(() => handleLabelPrintedCheckbox(i), 150)
                       }}
