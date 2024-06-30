@@ -177,14 +177,15 @@ const OrdersList = ({ user, setTotalOrders }: OrdersListProps) => {
                     </Anchor>
                     <Divider orientation="vertical" />
                     <Checkbox
-                      checked={cart.label_is_printed}
                       label="Label was printed"
-                      onChange={() => handleLabelPrintedCheckbox(i)}
-                      // disabled={submittedForm}
+                      onChange={() => {
+                        setTimeout(() => handleLabelPrintedCheckbox(i), 150)
+                      }}
                       size="sm"
                       c="gray"
                       mr={4}
                       miw={'96px'}
+                      classNames={{ input: 'pointer-cursor' }}
                     />
                   </Group>
                   <Group display={'flex'} align={'center'} className={orderDateAndPriceCont}>

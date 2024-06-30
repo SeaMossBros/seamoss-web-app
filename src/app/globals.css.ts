@@ -17,3 +17,7 @@ globalStyle('a', {
   textDecoration: 'none',
   fontFamily: 'Palantino',
 })
+
+globalStyle('.pointer-cursor', {
+  cursor: 'pointer',
+})
