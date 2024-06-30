@@ -17,7 +17,7 @@ const ArticleIntroField: React.FC<ArticleIntroFieldProps> = ({ mode }) => {
   const methods = useFormContext<ArticleFormData>()
 
   if (mode === 'view') {
-    const html = methods.getValues('introduction') || 'Intro'
+    const html = methods.getValues('introduction') || ''
     if (!html) return null
     const sanitizedHtml = sanitizeHtml(html)
     return <Markdown className={articleIntro}>{sanitizedHtml}</Markdown>
