@@ -113,7 +113,13 @@ const Header: React.FC<HeaderProps> = ({ navOpened, toggleNav, user }) => {
           <CartDropdown />
         </Flex>
         <Flex hiddenFrom="md" className={navLinkContainer} gap="sm" align="center">
-          <IconSearch />
+          <ActionIcon
+            variant="subtle"
+            color={isDarkTheme ? '#f5f5f5' : 'dark'}
+            onClick={spotlight.open}
+          >
+            <IconSearch />
+          </ActionIcon>
           <CartDropdown />
           {/* <ToolTip title='Toggle navigation'> */}
           {/* Hamburger Menu */}

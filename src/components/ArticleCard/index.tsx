@@ -1,6 +1,6 @@
 'use client'
 
-import { AspectRatio, Card, Image, Stack, Text } from '@mantine/core'
+import { AspectRatio, Avatar, Card, Flex, Image, Stack, Text } from '@mantine/core'
 import Link from 'next/link'
 import { useMemo } from 'react'
 import sanitizeHtml from 'sanitize-html'
@@ -20,7 +20,7 @@ export type ArticleCardProps = {
 
 const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
   const {
-    attributes: { cover, title, slug, introduction },
+    attributes: { cover, title, slug, introduction, author, time_to_finish_reading },
   } = article
 
   const coverSrc = useMemo(
@@ -48,6 +48,36 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
           </AspectRatio>
         </Card.Section>
         <Stack mt="sm" pb={9}>
+          {author?.data.attributes.avatar && (
+            <Flex>
+              <Avatar
+                src={getStrapiUploadUrl(
+                  author?.data.attributes.avatar.data.attributes.formats?.small?.url ||
+                    author?.data.attributes.avatar.data.attributes.url ||
+                    '',
+                )}
+                alt={author?.data.attributes.name}
+              />
+              <Flex direction={'column'}>
+                <Text ml={12} mt={0}>
+                  {author?.data.attributes.name}
+                </Text>
+                <Flex>
+                  <Text ml={12} fz={'xs'}>
+                    {new Date(author.data.attributes.createdAt).toLocaleDateString(undefined, {
+                      month: 'short',
+                      day: 'numeric',
+                      year: 'numeric',
+                    })}
+                  </Text>
+                  <Text fz={'xs'} mx={3}>
+                    {'✴︎'}
+                  </Text>
+                  <Text fz={'xs'}>{time_to_finish_reading} min read</Text>
+                </Flex>
+              </Flex>
+            </Flex>
+          )}
           {/* <ToolTip title={title}> */}
           <Text lineClamp={2} fw={700}>
             {title}

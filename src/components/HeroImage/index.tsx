@@ -102,7 +102,6 @@ const HeroImage: React.FC = () => {
               component={Link}
               href={ROUTE_PATHS.PRODUCT.INDEX}
               className={actionButtons}
-              mt={40}
               size="md"
             >
               Shop Products

@@ -52,7 +52,9 @@ const DefaultLayout: React.FC<{ user: AuthUser | null } & PropsWithChildren> = (
       <AppShellNavbar withBorder>
         <NavBar onClose={navbar.close} navOpened={navOpened} user={user} />
       </AppShellNavbar>
-      <AppShellMain className={main}>{children}</AppShellMain>
+      <AppShellMain className={main} onClick={() => navOpened && navbar.close()}>
+        {children}
+      </AppShellMain>
       <AppShellFooter className={footer}>
         <FooterCentered />
       </AppShellFooter>

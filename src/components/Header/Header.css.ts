@@ -27,13 +27,13 @@ export const appTitle = style({
 
   '@media': {
     [`(max-width: ${defaultThemeVars.breakpoints.lg})`]: {
-      fontSize: 21,
+      fontSize: 27,
     },
     [`(max-width: ${defaultThemeVars.breakpoints.md})`]: {
-      fontSize: 18,
+      fontSize: 24,
     },
     [`(max-width: ${defaultThemeVars.breakpoints.sm})`]: {
-      fontSize: 18,
+      fontSize: 21,
     },
   },
 })

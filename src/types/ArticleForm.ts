@@ -6,4 +6,5 @@ export type ArticleFormData = {
   content: Article_Plain['content']
   cover: Article_Plain['cover']
   author: Article_Plain['author']
+  time_to_finish_reading?: Article_Plain['time_to_finish_reading']
 }

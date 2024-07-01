@@ -24,9 +24,24 @@ export default class BlogService extends CMSService {
   }
 
   list = async (params: QueryParams<Article_Plain>) => {
-    const url = `${this.baseURL}/articles${qs.stringify(params, {
-      addQueryPrefix: true,
-    })}`
+    const query = {
+      populate: {
+        author: {
+          populate: {
+            avatar: true,
+          },
+        },
+        cover: true,
+      },
+      sort: 'createdAt:desc',
+    }
+    const url = `${this.baseURL}/articles${qs.stringify(
+      { ...params, ...query },
+      {
+        addQueryPrefix: true,
+        encode: false,
+      },
+    )}`
 
     const res = await fetch(url, {
       headers: this.headers,
