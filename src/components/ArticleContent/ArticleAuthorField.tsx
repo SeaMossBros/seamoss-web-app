@@ -45,6 +45,13 @@ const ArticleAuthorField: React.FC<ArticleAuthorFieldProps> = ({ mode }) => {
             Author
           </Text>
           <Text fz="md">{author.name}</Text>
+          <Text fz={'xs'}>
+            {new Date(author.createdAt).toLocaleDateString(undefined, {
+              month: 'short',
+              day: 'numeric',
+              year: 'numeric',
+            })}
+          </Text>
         </Stack>
       </Flex>
     )

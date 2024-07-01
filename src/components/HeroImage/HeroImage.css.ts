@@ -113,10 +113,12 @@ export const actionButtons = style({
   justifyContent: 'center',
   flexWrap: 'wrap',
   width: 'fit-content',
+  marginTop: 40,
 
   '@media': {
     [`(max-width: ${defaultThemeVars.breakpoints.sm})`]: {
       padding: '10px',
+      marginTop: 2,
     },
   },
 })

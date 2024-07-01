@@ -25,8 +25,7 @@ const BlogsPage: React.FC = async () => {
   const blogService = new BlogService()
 
   const params: QueryParams<Article_Plain> = {
-    populate: ['cover'],
-    fields: ['title', 'slug', 'introduction', 'publishedAt'],
+    fields: ['title', 'slug', 'introduction', 'createdAt', 'time_to_finish_reading'],
   }
 
   await queryClient.prefetchQuery({

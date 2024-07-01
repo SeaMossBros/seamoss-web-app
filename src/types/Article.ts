@@ -13,6 +13,7 @@ export interface Article {
     slug?: string
     cover: { data: Media }
     author?: { data: Author }
+    time_to_finish_reading: number
   }
 }
 export interface Article_Plain {
@@ -26,6 +27,7 @@ export interface Article_Plain {
   slug?: string
   cover: Media
   author?: Author_Plain
+  time_to_finish_reading: number
 }
 
 export interface Article_NoRelations {
@@ -39,4 +41,5 @@ export interface Article_NoRelations {
   slug?: string
   cover: number
   author?: number
+  time_to_finish_reading: number
 }

@@ -159,30 +159,36 @@ const OrdersList = ({ user, setTotalOrders }: OrdersListProps) => {
               {shouldShowCartItems[i] && (
                 <Stack
                   bg={isDarkTheme ? colors.dark[6] : colors.gray[2]}
-                  p={6}
+                  py={6}
+                  px={15}
+                  w={240}
                   align="center"
                   style={{ borderRadius: defaultRadius }}
                 >
-                  <Divider label="Payment Status" labelPosition="center" my="xs" w={'90%'} />
+                  <Divider label="Payment Status" labelPosition="center" my="xs" w={'100%'} />
                   <Text fz={'sm'} c={cart.payment_status === 'success' ? 'green' : 'red'}>
                     {cart.payment_status.toUpperCase()}
                   </Text>
-                  <Divider
-                    label="Your Shopping Experience"
-                    labelPosition="center"
-                    my="xs"
-                    w={'100%'}
-                  />
-                  <Text
-                    fz={'sm'}
-                    py={3}
-                    px={6}
-                    display={cart.customer_experience?.length ? 'block' : 'none'}
-                    bg={isDarkTheme ? colors.gray[9] : colors.gray[1]}
-                    style={{ borderRadius: defaultRadius }}
-                  >
-                    {cart.customer_experience}
-                  </Text>
+                  {cart.customer_experience && (
+                    <>
+                      <Divider
+                        label="Your Shopping Experience"
+                        labelPosition="center"
+                        my="xs"
+                        w={'100%'}
+                      />
+                      <Text
+                        fz={'sm'}
+                        py={3}
+                        px={6}
+                        display={cart.customer_experience?.length ? 'block' : 'none'}
+                        bg={isDarkTheme ? colors.gray[9] : colors.gray[1]}
+                        style={{ borderRadius: defaultRadius }}
+                      >
+                        {cart.customer_experience}
+                      </Text>
+                    </>
+                  )}
                 </Stack>
               )}
               {cartItems && cartItems[i] && shouldShowCartItems[i] && (
@@ -193,9 +199,6 @@ const OrdersList = ({ user, setTotalOrders }: OrdersListProps) => {
                       return (
                         <Card key={num + Math.random()}>
                           <Group display={'flex'} style={{ flexDirection: 'column' }} w={'100%'}>
-                            <Text fz={'lg'} w="100%" ff={'fantasy'}>
-                              Item {num + 1}:
-                            </Text>
                             <Text fz={'sm'}>
                               Product is No longer Available. Please Contact Support for the product
                               information.
@@ -214,12 +217,16 @@ const OrdersList = ({ user, setTotalOrders }: OrdersListProps) => {
                       <Card key={num} className={cartItemCard} mih={'240px'}>
                         <Group
                           display={'flex'}
-                          style={{ flexDirection: 'column' }}
+                          style={{ flexDirection: 'column', alignItems: 'flex-start' }}
                           w={'21%'}
                           miw={'100px'}
                         >
-                          <Text fz={'lg'} w="100%" ff={'fantasy'}>
-                            Item {num + 1}:
+                          <Text fz={'xs'} span>
+                            $
+                            {
+                              cartItem.attributes.options?.product_variant?.data.attributes
+                                .unit_price
+                            }
                           </Text>
                           <Image
                             src={
@@ -236,14 +243,19 @@ const OrdersList = ({ user, setTotalOrders }: OrdersListProps) => {
                             onClick={() => redirect.push(productUrl)}
                             style={{ cursor: 'pointer', borderRadius: defaultRadius }}
                           />
-                          <Anchor
-                            fz={'sm'}
-                            w={'100%'}
-                            href={productUrl}
-                            c={isDarkTheme ? 'lightgray' : 'gray'}
-                          >
-                            {cartItem.attributes.product?.data?.attributes.name}
-                          </Anchor>
+                          <Flex>
+                            <Anchor
+                              fz={'sm'}
+                              w={'100%'}
+                              href={productUrl}
+                              c={isDarkTheme ? 'lightgray' : 'gray'}
+                            >
+                              {cartItem.attributes.product?.data?.attributes.name}
+                            </Anchor>
+                            <Text fz={'xs'} span>
+                              x{cartItem.attributes.options?.quantity}
+                            </Text>
+                          </Flex>
                         </Group>
                         <Group display={'flex'} style={{ flexDirection: 'column' }} w={'100%'}>
                           <Divider
