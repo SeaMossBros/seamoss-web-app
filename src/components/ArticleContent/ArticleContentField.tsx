@@ -53,7 +53,7 @@ const ArticleContentField: React.FC<ArticleContentFieldProps> = ({ mode }) => {
           height="auto"
           controls
           key={offset}
-          style={{ marginBottom: '33px', borderRadius: defaultRadius }}
+          style={{ marginBottom: '33px', borderRadius: defaultRadius, maxHeight: '420px' }}
         >
           <source src={videoUrl} type="video/mp4" />
           Your browser does not support the video tag.
