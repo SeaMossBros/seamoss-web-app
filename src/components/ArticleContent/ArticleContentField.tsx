@@ -49,7 +49,7 @@ const ArticleContentField: React.FC<ArticleContentFieldProps> = ({ mode }) => {
       // Push video element
       parts.push(
         <video
-          width="70%"
+          width="72%"
           height="auto"
           controls
           key={offset}
