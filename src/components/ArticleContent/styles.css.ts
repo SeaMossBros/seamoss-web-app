@@ -3,7 +3,7 @@ import { globalStyle, style } from '@vanilla-extract/css'
 import { defaultThemeVars } from '@/themes/default'
 
 export const blogWrapper = style({
-  marginTop: 60,
+  marginTop: 0,
 
   '@media': {
     [`(max-height: ${defaultThemeVars.breakpoints.md})`]: {

@@ -1,4 +1,4 @@
-import { Button, Container, Group, Text } from '@mantine/core'
+import { Button, Container, Flex, Group, Overlay, Text } from '@mantine/core'
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query'
 import { Metadata } from 'next'
 import Link from 'next/link'
@@ -13,7 +13,7 @@ import { AuthUser } from '@/types/Auth'
 import { QueryParams } from '@/types/QueryParams'
 
 import BlogsList from './BlogsList'
-import { title } from './BlogsPage.css'
+import { inner, title, wrapper } from './BlogsPage.css'
 
 export const metadata: Metadata = {
   title: 'Blogs | Sea the Moss',
@@ -25,7 +25,7 @@ const BlogsPage: React.FC = async () => {
   const blogService = new BlogService()
 
   const params: QueryParams<Article_Plain> = {
-    fields: ['title', 'slug', 'introduction', 'createdAt', 'time_to_finish_reading'],
+    fields: ['title', 'slug', 'introduction', 'createdAt', 'time_to_finish_reading', 'content'],
   }
 
   await queryClient.prefetchQuery({
@@ -35,15 +35,24 @@ const BlogsPage: React.FC = async () => {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
+      <div className={wrapper}>
+        <div className={inner}>
+          <Overlay color="#1a1b1e" opacity={0.65} zIndex={1} />
+        </div>
+      </div>
       <Container display={'flex'} style={{ flexDirection: 'column', alignItems: 'center' }}>
-        <Text className={title}>Blogs</Text>
-        {user && user.id && user.role?.type === 'admin' ? (
-          <Group justify="flex-end" mb={60}>
-            <Button component={Link} href={ROUTE_PATHS.BLOG.CREATE}>
-              Create new article
-            </Button>
-          </Group>
-        ) : null}
+        <Group justify="flex-end" mb={60}>
+          {user && user.id && user.role?.type === 'admin' ? (
+            <Flex w={'100vw'} direction={'column'} align={'center'}>
+              <Text className={title}>Blogs</Text>
+              <Button component={Link} href={ROUTE_PATHS.BLOG.CREATE} miw={'fit-content'}>
+                Create new article
+              </Button>
+            </Flex>
+          ) : (
+            <Text className={title}>Blogs</Text>
+          )}
+        </Group>
         <BlogsList queryParams={params} />
       </Container>
     </HydrationBoundary>

@@ -1,5 +1,6 @@
 'use client'
 
+import { Flex, useMantineTheme } from '@mantine/core'
 import { useCallback } from 'react'
 import { useFormContext } from 'react-hook-form'
 import sanitizeHtml from 'sanitize-html'
@@ -14,6 +15,7 @@ import { articleInputField, contentEditorContent, contentEditorToolbar } from '.
 export type ArticleContentFieldProps = ArticleComponentCommonProps
 
 const ArticleContentField: React.FC<ArticleContentFieldProps> = ({ mode }) => {
+  const { defaultRadius } = useMantineTheme()
   const methods = useFormContext<ArticleFormData>()
 
   const onChange = useCallback(
@@ -27,11 +29,59 @@ const ArticleContentField: React.FC<ArticleContentFieldProps> = ({ mode }) => {
     [methods],
   )
 
+  const replaceVideoLinksWithHtml = (inputText: string) => {
+    const videoLinkRegex = /\[([^\]]+\.mp4)\]\((http[^\)]+\.mp4)\)/g
+    const parts = []
+    let lastIndex = 0
+    let match
+
+    while ((match = videoLinkRegex.exec(inputText)) !== null) {
+      const [fullMatch, , videoUrl] = match
+      const offset = match.index
+
+      // Push sanitized HTML segment before the video link
+      if (offset > lastIndex) {
+        const htmlSegment = inputText.substring(lastIndex, offset)
+        const sanitizedHtml = sanitizeHtml(htmlSegment)
+        parts.push(<Markdown key={lastIndex}>{sanitizedHtml}</Markdown>)
+      }
+
+      // Push video element
+      parts.push(
+        <video
+          width="70%"
+          height="auto"
+          controls
+          key={offset}
+          style={{ marginBottom: '33px', borderRadius: defaultRadius }}
+        >
+          <source src={videoUrl} type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>,
+      )
+
+      lastIndex = offset + fullMatch.length
+    }
+
+    // Push remaining sanitized HTML segment after the last video link
+    if (lastIndex < inputText.length) {
+      const htmlSegment = inputText.substring(lastIndex)
+      const sanitizedHtml = sanitizeHtml(htmlSegment)
+      parts.push(<Markdown key={lastIndex}>{sanitizedHtml}</Markdown>)
+    }
+
+    return parts
+  }
+
   if (mode === 'view') {
     const html = methods.getValues('content')
     if (!html) return null
-    const sanitizedHtml = sanitizeHtml(html)
-    return <Markdown>{sanitizedHtml}</Markdown>
+
+    return (
+      <Flex direction={'column'} align={'center'}>
+        {replaceVideoLinksWithHtml(html)}
+      </Flex>
+    )
   }
 
   return (

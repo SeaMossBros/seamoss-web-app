@@ -15,12 +15,21 @@ import Markdown from '../Markdown'
 import { card } from './ArticleCard.css'
 
 export type ArticleCardProps = {
-  article: Omit<Article, 'content'>
+  article: Article
 }
 
 const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
   const {
-    attributes: { cover, title, slug, introduction, author, time_to_finish_reading },
+    attributes: {
+      cover,
+      title,
+      slug,
+      introduction,
+      author,
+      time_to_finish_reading,
+      content,
+      createdAt,
+    },
   } = article
 
   const coverSrc = useMemo(
@@ -35,6 +44,12 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
   )
 
   const href = useMemo(() => ROUTE_PATHS.BLOG.SINGULAR.replaceAll('{slug}', slug ?? ''), [slug])
+
+  const getSanitizedAndFormattedText = (text: string) => {
+    const sanitizedText = sanitizeHtml(text.trim().slice(0, 99))
+    return sanitizedText + (text.trim().length > 99 ? '...' : '')
+  }
+
   return (
     <Link href={href} passHref>
       <Card className={card}>
@@ -49,7 +64,7 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
         </Card.Section>
         <Stack mt="sm" pb={9}>
           {author?.data.attributes.avatar && (
-            <Flex>
+            <Flex wrap={'wrap'}>
               <Avatar
                 src={getStrapiUploadUrl(
                   author?.data.attributes.avatar.data.attributes.formats?.small?.url ||
@@ -57,36 +72,37 @@ const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
                     '',
                 )}
                 alt={author?.data.attributes.name}
+                mr={12}
+                mb={9}
               />
-              <Flex direction={'column'}>
-                <Text ml={12} mt={0}>
+              <Flex direction={'column'} wrap={'nowrap'}>
+                <Text mt={0} fz={'md'} fw={500}>
                   {author?.data.attributes.name}
                 </Text>
-                <Flex>
-                  <Text ml={12} fz={'xs'}>
-                    {new Date(author.data.attributes.createdAt).toLocaleDateString(undefined, {
-                      month: 'short',
-                      day: 'numeric',
-                      year: 'numeric',
-                    })}
-                  </Text>
-                  <Text fz={'xs'} mx={3}>
-                    {'✴︎'}
-                  </Text>
-                  <Text fz={'xs'}>{time_to_finish_reading} min read</Text>
-                </Flex>
+                <Text fz={'sm'}>
+                  {new Date(createdAt).toLocaleDateString(undefined, {
+                    month: 'short',
+                    day: 'numeric',
+                    year: 'numeric',
+                  })}
+                </Text>
+                <Text fz={10} fw={200}>
+                  {time_to_finish_reading} min read
+                </Text>
               </Flex>
             </Flex>
           )}
           {/* <ToolTip title={title}> */}
-          <Text lineClamp={2} fw={700}>
+          <Text lineClamp={3} fw={700}>
             {title}
           </Text>
           {/* </ToolTip> */}
           <Markdown isIntroOnBlogsList={true}>
             {introduction
-              ? sanitizeHtml(introduction.slice(0, 99)) + (introduction.length > 99 ? '...' : '')
-              : ''}
+              ? getSanitizedAndFormattedText(introduction)
+              : content
+                ? getSanitizedAndFormattedText(content)
+                : ''}
           </Markdown>
         </Stack>
       </Card>

@@ -122,11 +122,7 @@ const ProductList: React.FC<ProductListProps> = ({ queryParams, onPage }) => {
   return (
     <Stack gap="xl" className={productsContainer}>
       {onPage === 'Home' && (
-        <Title
-          size={'h1'}
-          c={isDarkTheme ? colors.gray[3] : colors.gray[9]}
-          className={topProductsTitle}
-        >
+        <Title c={isDarkTheme ? colors.gray[3] : colors.gray[9]} className={topProductsTitle}>
           Our Top Products
         </Title>
       )}
