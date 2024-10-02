@@ -87,9 +87,9 @@ const HomePage: React.FC = async () => {
           <li>Sea Moss Gel</li>
           <p style={{ marginLeft: '12px' }}>- choose quantity (comes in 32oz mason jars)</p>
           <p style={{ marginLeft: '12px' }}>
-            - choose up 3 fruits (Pineapple, Apple, Blueberry, Lemon)
+            - choose up 3 fruits (Pineapple, Mixed Berries, Blueberry, Mango)
           </p>
-          <p style={{ marginLeft: '12px' }}>- choose up 3 herbs (Mint, Basil, Cilantro)</p>
+          <p style={{ marginLeft: '12px' }}>- choose up 3 herbs (Tumeric, Ginger, Moringa)</p>
           <p style={{ marginLeft: '12px' }}>
             - choose 1 sweentener or say unsweetened. (Maple Syrup, Honey, Monkfruit Sweetener)
           </p>
