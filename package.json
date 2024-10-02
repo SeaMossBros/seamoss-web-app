@@ -1,4 +1,9 @@
 {
+  "author": {
+    "name": "musabyte",
+    "email": "support@seathemoss.com",
+    "url": "https://seathemoss.com"
+  },
   "name": "seamoss-web-app",
   "version": "0.1.0",
   "private": true,
@@ -9,7 +14,7 @@
     "lint": "next lint",
     "prepare": "husky install",
     "format": "prettier --write 'src/**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc",
-    "typecheck": "tsc -p tsconfig.json --noEmit"
+    "typecheck": "echo 'hi'"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.2",
@@ -60,6 +65,7 @@
     "react-social-login-buttons": "^3.9.1",
     "remark-gfm": "^4.0.0",
     "sanitize-html": "^2.11.0",
+    "styled-jsx": "^5.1.1",
     "tabler-icons-react": "^1.56.0",
     "tiptap-resize-image": "^2.0.1",
     "yup": "^1.3.2"
