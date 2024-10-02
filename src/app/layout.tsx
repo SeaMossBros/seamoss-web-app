@@ -6,17 +6,17 @@ import '@mantine/carousel/styles.css'
 import '@mantine/spotlight/styles.css'
 
 import { ColorSchemeScript } from '@mantine/core'
-import { Notifications } from '@mantine/notifications'
+// import { Notifications } from '@mantine/notifications'
 import type { Metadata } from 'next'
 import { CookiesProvider } from 'next-client-cookies/server'
 import React from 'react'
 
-import DefaultLayout from '@/components/DefaultLayout'
-import SpotlightController from '@/components/SpotlightController'
+// import DefaultLayout from '@/components/DefaultLayout'
+// import SpotlightController from '@/components/SpotlightController'
 import { interFont } from '@/fonts/inter'
-import { getSessionFromCookies } from '@/lib/crypt'
+// import { getSessionFromCookies } from '@/lib/crypt'
 import AppProviders from '@/providers/AppProviders'
-import { AuthUser } from '@/types/Auth'
+// import { AuthUser } from '@/types/Auth'
 
 export const metadata: Metadata = {
   title: 'SeaTheMoss',
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
 }
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const user: AuthUser | null = await getSessionFromCookies()
+  // const user: AuthUser | null = await getSessionFromCookies()
 
   return (
     <html lang="en">
@@ -44,11 +44,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <body className={interFont.className}>
         <CookiesProvider>
           <AppProviders>
-            <DefaultLayout user={user}>
-              <Notifications />
-              <SpotlightController />
-              {children}
-            </DefaultLayout>
+            {/* <DefaultLayout user={user}> */}
+            {/* <Notifications /> */}
+            {/* <SpotlightController /> */}
+            {children}
+            {/* </DefaultLayout> */}
           </AppProviders>
         </CookiesProvider>
       </body>
