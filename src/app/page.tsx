@@ -46,7 +46,6 @@ const HomePage: React.FC = async () => {
     // </HydrationBoundary>
     <div
       style={{
-        backgroundColor: '#242424',
         width: '100vw',
         display: 'flex',
         flexDirection: 'column',
